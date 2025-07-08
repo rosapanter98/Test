@@ -1,0 +1,15 @@
+<UserControl
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vm="using:AvaloniaApplication3.ViewModels"
+    x:Class="AvaloniaApplication3.Views.ToDoItemView"
+    x:DataType="vm:ToDoItemViewModel">
+
+	<StackPanel Margin="16" Spacing="12">
+		<TextBlock Text="ToDo Item Detail" FontSize="18"/>
+		<CheckBox IsChecked="{Binding IsChecked}" Content="Done?" />
+		<TextBlock Text="{Binding Content}" />
+		<Button Content="Back" Command="{Binding GoBackCommand}" />
+		<Button Content="Confirm Done" Command="{Binding ConfirmDoneCommand}" />
+	</StackPanel>
+</UserControl>
