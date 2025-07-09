@@ -1,5 +1,8 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using AvaloniaApplication3.Models;
+using AvaloniaApplication3.Services;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using System.Windows.Input;
 
 namespace AvaloniaApplication3.ViewModels
 {
@@ -8,30 +11,82 @@ namespace AvaloniaApplication3.ViewModels
         [ObservableProperty]
         private object? currentView;
 
-        private readonly ToDoListViewModel _toDoList;
+        [ObservableProperty]
+        private bool isLoggedIn;
+
+        [ObservableProperty]
+        private string? displayUsername;
+
+        [ObservableProperty]
+        private User? currentUser;
+
+        private ToDoListViewModel? _toDoList;
+        private readonly ILoginService _loginService;
 
         public MainWindowViewModel()
         {
-            _toDoList = new ToDoListViewModel(SwitchToItemView); // only once
-            GoHome(); // Start on landing page
+            // Swap this out later with a real login service
+            var userRepo = new HardcodedUserRepository();
+            _loginService = new SimpleLoginService(userRepo);
+
+            ShowLogin();
         }
 
-        [RelayCommand]
+        private void ShowLogin()
+        {
+            CurrentView = new LoginViewModel(_loginService, OnLoginSuccess);
+            IsLoggedIn = false;
+            DisplayUsername = null;
+            CurrentUser = null;
+        }
+
+        private void OnLoginSuccess(User user)
+        {
+            CurrentUser = user;
+            IsLoggedIn = true;
+            DisplayUsername = $"Logged in as: {user.DisplayName} ({user.Username})";
+
+            var todoRepo = new JsonToDoRepository();
+            _toDoList = new ToDoListViewModel(user.Username, SwitchToItemView, todoRepo);
+
+            CurrentView = _toDoList;
+            UpdateCommands();
+        }
+
+        [RelayCommand(CanExecute = nameof(IsLoggedIn))]
+        private void ShowToDoList()
+        {
+            if (_toDoList is not null)
+                CurrentView = _toDoList;
+        }
+
+        [RelayCommand(CanExecute = nameof(IsLoggedIn))]
         private void GoHome()
         {
             CurrentView = new MainPageViewModel();
         }
 
-        [RelayCommand]
-        private void ShowToDoList()
+        [RelayCommand(CanExecute = nameof(IsLoggedIn))]
+        private void Logout()
         {
-            CurrentView = _toDoList; // reuse existing instance
+            CurrentUser = null;
+            _toDoList = null;
+            ShowLogin();
+            UpdateCommands();
         }
 
         private void SwitchToItemView(ToDoItemViewModel item)
         {
-            _toDoList.PrepareItem(item, view => CurrentView = view);
+            _toDoList?.PrepareItem(item, view => CurrentView = view);
             CurrentView = item;
+        }
+
+        private void UpdateCommands()
+        {
+            // Notify all RelayCommands that CanExecute may have changed
+            ShowToDoListCommand.NotifyCanExecuteChanged();
+            GoHomeCommand.NotifyCanExecuteChanged();
+            LogoutCommand.NotifyCanExecuteChanged();
         }
     }
 }
