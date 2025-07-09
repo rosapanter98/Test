@@ -3,6 +3,7 @@ using AvaloniaApplication3.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System;
+using System.Threading.Tasks;
 
 namespace AvaloniaApplication3.ViewModels
 {
@@ -24,9 +25,9 @@ namespace AvaloniaApplication3.ViewModels
         }
 
         [RelayCommand]
-        private void Login()
+        private async Task Login()
         {
-            var user = _loginService.Authenticate(UsernameInput, PasswordInput);
+            var user = await _loginService.AuthenticateAsync(UsernameInput, PasswordInput);
             if (user is not null)
             {
                 _onLoginSuccess(user);
@@ -37,5 +38,6 @@ namespace AvaloniaApplication3.ViewModels
                 PasswordInput = string.Empty;
             }
         }
+
     }
 }

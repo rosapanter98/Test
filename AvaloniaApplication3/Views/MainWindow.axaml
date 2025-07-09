@@ -1,20 +1,20 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="clr-namespace:AvaloniaApplication3.ViewModels"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d"
+        xmlns:conv="clr-namespace:AvaloniaApplication3.Converters"
         x:Class="AvaloniaApplication3.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
         Title="ToDo App"
-        d:DesignWidth="800" d:DesignHeight="450"
+        Width="800" Height="450"
         Icon="/Assets/avalonia-logo.ico">
 
+	<Window.Resources>
+		<conv:InverseBoolConverter x:Key="InverseBoolConverter" />
+	</Window.Resources>
+
 	<DockPanel>
-		<!-- Navigation Bar -->
-		<Border DockPanel.Dock="Top"
-                Background="{DynamicResource ThemeControlLowBrush}"
-                Padding="8,4">
+		<!-- Top Navigation -->
+		<Border DockPanel.Dock="Top" Background="{DynamicResource ThemeControlLowBrush}" Padding="8,4">
 			<StackPanel Orientation="Horizontal" Margin="10" Spacing="10">
 
 				<Button Content="Home"
@@ -24,6 +24,10 @@
 				<Button Content="ToDo List"
                         Command="{Binding ShowToDoListCommand}"
                         IsEnabled="{Binding IsLoggedIn}" />
+
+				<Button Content="Register"
+                        Command="{Binding ShowRegisterCommand}"
+                        IsVisible="{Binding IsLoggedIn, Converter={StaticResource InverseBoolConverter}}" />
 
 				<TextBlock Text="{Binding DisplayUsername}"
                            Margin="10,0,0,0"
@@ -35,7 +39,7 @@
 			</StackPanel>
 		</Border>
 
-		<!-- Dynamic Content Area -->
+		<!-- Main View Content -->
 		<ContentControl Content="{Binding CurrentView}" />
 	</DockPanel>
 </Window>

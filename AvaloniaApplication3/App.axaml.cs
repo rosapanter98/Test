@@ -1,11 +1,13 @@
-using System.Linq;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core;
 using Avalonia.Data.Core.Plugins;
 using Avalonia.Markup.Xaml;
+using AvaloniaApplication3.Models;
 using AvaloniaApplication3.ViewModels;
 using AvaloniaApplication3.Views;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace AvaloniaApplication3
 {
@@ -18,11 +20,35 @@ namespace AvaloniaApplication3
 
         public override void OnFrameworkInitializationCompleted()
         {
+            using (var db = new AppDbContext())
+            {
+#if DEBUG
+                // Delete database if it exists to avoid schema mismatch
+                if (System.IO.File.Exists("app.db"))
+                    System.IO.File.Delete("app.db");
+
+                db.Database.EnsureCreated(); // Fast DB init for dev
+#else
+        db.Database.Migrate(); // Apply migrations in production
+#endif
+
+                // Add admin user if it doesn't exist
+                if (!db.Users.Any(u => u.Username == "admin"))
+                {
+                    db.Users.Add(new User
+                    {
+                        Username = "admin",
+                        DisplayName = "Administrator",
+                        PasswordHash = BCrypt.Net.BCrypt.HashPassword("admin123")
+                    });
+                    db.SaveChanges();
+                }
+            }
+
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
-                // Avoid duplicate validations from both Avalonia and the CommunityToolkit. 
-                // More info: https://docs.avaloniaui.net/docs/guides/development-guides/data-validation#manage-validationplugins
                 DisableAvaloniaDataAnnotationValidation();
+
                 desktop.MainWindow = new MainWindow
                 {
                     DataContext = new MainWindowViewModel(),
@@ -32,13 +58,13 @@ namespace AvaloniaApplication3
             base.OnFrameworkInitializationCompleted();
         }
 
+
+
         private void DisableAvaloniaDataAnnotationValidation()
         {
-            // Get an array of plugins to remove
             var dataValidationPluginsToRemove =
                 BindingPlugins.DataValidators.OfType<DataAnnotationsValidationPlugin>().ToArray();
 
-            // remove each entry found
             foreach (var plugin in dataValidationPluginsToRemove)
             {
                 BindingPlugins.DataValidators.Remove(plugin);

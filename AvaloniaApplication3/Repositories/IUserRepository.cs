@@ -1,15 +1,12 @@
 ﻿using AvaloniaApplication3.Models;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace AvaloniaApplication3.Repositories
+public interface IUserRepository
 {
-    public interface IUserRepository
-    {
-        User? GetUserByUsername(string username);
-        IEnumerable<User> GetAllUsers();
-    }
+    Task<User?> GetUserByUsernameAsync(string username);
+    Task<IEnumerable<User>> GetAllUsersAsync();
+    Task AddUserAsync(User user);
+    Task DeleteUserAsync(string username);
+    Task UpdateUserAsync(User user);
 }

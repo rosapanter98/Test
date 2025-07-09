@@ -9,6 +9,9 @@ namespace AvaloniaApplication3.Services
 {
     public interface ILoginService
     {
-        User? Authenticate(string? username, string? password);
+        Task<User?> AuthenticateAsync(string? username, string? password);
+        Task<bool> RegisterAsync(string username, string password);
+
     }
+
 }

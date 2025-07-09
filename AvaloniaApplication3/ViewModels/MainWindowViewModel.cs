@@ -5,6 +5,7 @@ using CommunityToolkit.Mvvm.Input;
 using System.Windows.Input;
 using AvaloniaApplication3.Repositories;
 
+
 namespace AvaloniaApplication3.ViewModels
 {
     public partial class MainWindowViewModel : ViewModelBase
@@ -26,12 +27,27 @@ namespace AvaloniaApplication3.ViewModels
 
         public MainWindowViewModel()
         {
-            // Swap this out later with a real login service
-            var userRepo = new HardcodedUserRepository();
-            _loginService = new SimpleLoginService(userRepo);
+            var userRepo = new EfUserRepository(new AppDbContext());
+            _loginService = new LoginService(userRepo);
 
             ShowLogin();
         }
+
+        [RelayCommand(CanExecute = nameof(NotLoggedIn))]
+        private void ShowRegister()
+        {
+            CurrentView = new RegisterViewModel(_loginService, OnRegisterSuccess, ShowLogin);
+        }
+
+        private void OnRegisterSuccess()
+        {
+            ShowLogin();
+        }
+
+        // Helper property
+        public bool NotLoggedIn => !IsLoggedIn;
+
+
 
         private void ShowLogin()
         {
@@ -89,5 +105,6 @@ namespace AvaloniaApplication3.ViewModels
             GoHomeCommand.NotifyCanExecuteChanged();
             LogoutCommand.NotifyCanExecuteChanged();
         }
+
     }
 }
