@@ -6,6 +6,10 @@ namespace AvaloniaApplication3
     public class AppDbContext : DbContext
     {
         public DbSet<User> Users { get; set; } = null!;
+        public DbSet<Quiz> Quizzes { get; set; } = null!;
+        public DbSet<Question> Questions { get; set; } = null!;
+        public DbSet<Answer> Answers { get; set; } = null!;
+        public DbSet<QuizAttempt> QuizAttempts { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

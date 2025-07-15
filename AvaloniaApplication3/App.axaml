@@ -12,6 +12,9 @@
 
 	<Application.Resources>
 		<converters:NullToBoolConverter x:Key="NullToBoolConverter"/>
+		<converters:InverseBoolConverter x:Key="InverseBoolConverter"/>
+		<converters:EqualityConverter x:Key="EqualityConverter"/>
+		<converters:LoginFieldsFilledConverter x:Key="LoginFieldsFilledConverter"/>
 	</Application.Resources>
   
     <Application.Styles>

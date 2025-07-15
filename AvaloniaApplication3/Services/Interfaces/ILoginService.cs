@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace AvaloniaApplication3.Services
-{
+{ 
     public interface ILoginService
     {
         Task<User?> AuthenticateAsync(string? username, string? password);

@@ -1,0 +1,62 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:AvaloniaApplication3.ViewModels"
+             x:Class="AvaloniaApplication3.Views.QuizRunnerView"
+             x:DataType="vm:QuizRunnerViewModel"
+             x:Name="Root"
+             mc:Ignorable="d"
+             d:DesignWidth="800"
+             d:DesignHeight="450">
+
+	<StackPanel Margin="20" Spacing="12">
+
+		<!-- Question text -->
+		<TextBlock Text="{Binding CurrentQuestion.Text}" FontSize="18" FontWeight="Bold" TextWrapping="Wrap" />
+
+		<!-- Options -->
+		<ItemsControl ItemsSource="{Binding CurrentQuestion.Answers}">
+			<ItemsControl.ItemTemplate>
+				<DataTemplate>
+					<StackPanel>
+
+						<!-- Single Choice (RadioButton) -->
+						<RadioButton Content="{Binding Text}"
+                                     GroupName="OptionsGroup"
+                                     Tag="{Binding Id}"
+                                     IsVisible="{Binding DataContext.IsSingleChoice, ElementName=Root}"
+                                     IsChecked="{Binding DataContext.SelectedOptionId,
+                                                 ElementName=Root,
+                                                 Mode=TwoWay,
+                                                 Converter={StaticResource EqualityConverter},
+                                                 ConverterParameter={Binding Id}}" />
+
+						<!-- Multiple Choice (CheckBox) -->
+						<CheckBox Content="{Binding Text}"
+                                  IsChecked="{Binding IsSelected, Mode=TwoWay}"
+                                  IsVisible="{Binding DataContext.IsMultipleChoice, ElementName=Root}" />
+
+					</StackPanel>
+				</DataTemplate>
+			</ItemsControl.ItemTemplate>
+		</ItemsControl>
+
+		<!-- Explanation -->
+		<TextBlock Text="{Binding Explanation}"
+                   Foreground="Green"
+                   TextWrapping="Wrap"
+                   IsVisible="{Binding ShowFeedback}" />
+
+		<!-- Buttons -->
+		<StackPanel Orientation="Horizontal" Spacing="8">
+			<Button Content="Submit"
+                    Command="{Binding SubmitCommand}"
+                    IsVisible="{Binding CanSubmit}" />
+			<Button Content="Next Question"
+                    Command="{Binding NextCommand}"
+                    IsVisible="{Binding CanGoNext}" />
+		</StackPanel>
+
+	</StackPanel>
+</UserControl>

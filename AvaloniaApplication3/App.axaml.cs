@@ -7,6 +7,7 @@ using AvaloniaApplication3.Models;
 using AvaloniaApplication3.ViewModels;
 using AvaloniaApplication3.Views;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace AvaloniaApplication3
@@ -41,8 +42,59 @@ namespace AvaloniaApplication3
                         DisplayName = "Administrator",
                         PasswordHash = BCrypt.Net.BCrypt.HashPassword("admin123")
                     });
-                    db.SaveChanges();
                 }
+
+                // Add sample quiz if none exist
+                if (!db.Quizzes.Any())
+                {
+                    var quiz = new Quiz
+                    {
+                        Title = "Sample Quiz",
+                        Description = "A test quiz with mixed questions",
+                        Questions = new List<Question>
+                {
+                    new Question
+                    {
+                        Text = "What is 2 + 2?",
+                        Type = QuestionType.SingleChoice,
+                        Explanation = "2 + 2 is 4.",
+                        Answers = new List<Answer>
+                        {
+                            new Answer { Text = "3", IsCorrect = false },
+                            new Answer { Text = "4", IsCorrect = true },
+                            new Answer { Text = "5", IsCorrect = false }
+                        }
+                    },
+                    new Question
+                    {
+                        Text = "Select all fruits.",
+                        Type = QuestionType.MultipleChoice,
+                        Explanation = "Apple and Banana are fruits. Carrot is not.",
+                        Answers = new List<Answer>
+                        {
+                            new Answer { Text = "Apple", IsCorrect = true },
+                            new Answer { Text = "Banana", IsCorrect = true },
+                            new Answer { Text = "Carrot", IsCorrect = false }
+                        }
+                    },
+                    new Question
+                    {
+                        Text = "The earth is flat.",
+                        Type = QuestionType.TrueFalse,
+                        Explanation = "No, the earth is spherical.",
+                        Answers = new List<Answer>
+                        {
+                            new Answer { Text = "True", IsCorrect = false },
+                            new Answer { Text = "False", IsCorrect = true }
+                        }
+                    }
+                }
+                    };
+
+                    db.Quizzes.Add(quiz);
+                }
+
+                db.SaveChanges(); // Apply all changes
             }
 
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
