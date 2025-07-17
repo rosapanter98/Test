@@ -36,15 +36,28 @@ namespace AvaloniaApplication3.ViewModels
 
         public string? Explanation => FeedbackText;
 
-        public bool CanSubmit => !ShowFeedback;
-        public bool CanGoNext => ShowFeedback && !QuizCompleted;
+        public int TotalCorrect => _score;
 
         public bool IsSingleChoice => CurrentQuestion?.Type == QuestionType.SingleChoice;
         public bool IsMultipleChoice => CurrentQuestion?.Type == QuestionType.MultipleChoice;
 
+        public bool CanSubmitAnswer =>
+            !ShowFeedback &&
+            (
+                (IsSingleChoice && SelectedOptionId.HasValue) ||
+                (IsMultipleChoice && CurrentQuestion.Answers.Any(a => a.IsSelected))
+            );
+
+        public bool CanGoNext => ShowFeedback && !QuizCompleted;
+
+        public IRelayCommand SubmitCommand { get; }
+        public IRelayCommand NextCommand { get; }
+
         public QuizRunnerViewModel(Quiz quiz)
         {
             _quiz = quiz;
+            SubmitCommand = new RelayCommand(Submit, () => CanSubmitAnswer);
+            NextCommand = new RelayCommand(Next, () => CanGoNext);
             LoadQuestion();
         }
 
@@ -56,24 +69,21 @@ namespace AvaloniaApplication3.ViewModels
             ShowFeedback = false;
             FeedbackText = null;
 
-            // Clear any selection state from previous question
             foreach (var answer in CurrentQuestion.Answers)
                 answer.IsSelected = false;
+
+            OnPropertyChanged(nameof(IsSingleChoice));
+            OnPropertyChanged(nameof(IsMultipleChoice));
+            SubmitCommand.NotifyCanExecuteChanged();
+            NextCommand.NotifyCanExecuteChanged();
         }
 
         partial void OnShowFeedbackChanged(bool value)
         {
-            OnPropertyChanged(nameof(CanSubmit));
-            OnPropertyChanged(nameof(CanGoNext));
+            SubmitCommand.NotifyCanExecuteChanged();
+            NextCommand.NotifyCanExecuteChanged();
         }
 
-        partial void OnCurrentQuestionChanged(Question value)
-        {
-            OnPropertyChanged(nameof(IsSingleChoice));
-            OnPropertyChanged(nameof(IsMultipleChoice));
-        }
-
-        [RelayCommand]
         private void Submit()
         {
             var correctAnswers = CurrentQuestion.Answers
@@ -103,7 +113,6 @@ namespace AvaloniaApplication3.ViewModels
             ShowFeedback = true;
         }
 
-        [RelayCommand]
         private void Next()
         {
             _currentIndex++;

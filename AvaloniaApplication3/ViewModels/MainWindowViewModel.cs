@@ -1,9 +1,8 @@
 ﻿using AvaloniaApplication3.Models;
+using AvaloniaApplication3.Repositories;
 using AvaloniaApplication3.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System.Windows.Input;
-using AvaloniaApplication3.Repositories;
 
 namespace AvaloniaApplication3.ViewModels
 {
@@ -23,11 +22,18 @@ namespace AvaloniaApplication3.ViewModels
 
         private ToDoListViewModel? _toDoList;
         private readonly ILoginService _loginService;
+        private readonly IQuizService _quizService;
+        private readonly QuizSelectionViewModel _quizSelectionViewModel;
 
         public MainWindowViewModel()
         {
             var userRepo = new EfUserRepository(new AppDbContext());
             _loginService = new LoginService(userRepo);
+
+            var quizRepo = new EfQuizRepository(new AppDbContext());
+            _quizService = new QuizService(quizRepo);
+
+            _quizSelectionViewModel = new QuizSelectionViewModel(_quizService, quiz => ShowQuizRunner(quiz));
 
             ShowLogin();
         }
@@ -43,10 +49,7 @@ namespace AvaloniaApplication3.ViewModels
             ShowLogin();
         }
 
-        // Helper property
         public bool NotLoggedIn => !IsLoggedIn;
-
-
 
         private void ShowLogin()
         {
@@ -83,6 +86,17 @@ namespace AvaloniaApplication3.ViewModels
         }
 
         [RelayCommand(CanExecute = nameof(IsLoggedIn))]
+        private void ShowQuiz()
+        {
+            CurrentView = _quizSelectionViewModel;
+        }
+
+        private void ShowQuizRunner(Quiz quiz)
+        {
+            CurrentView = new QuizRunnerViewModel(quiz);
+        }
+
+        [RelayCommand(CanExecute = nameof(IsLoggedIn))]
         private void Logout()
         {
             CurrentUser = null;
@@ -99,11 +113,10 @@ namespace AvaloniaApplication3.ViewModels
 
         private void UpdateCommands()
         {
-            // Notify all RelayCommands that CanExecute may have changed
             ShowToDoListCommand.NotifyCanExecuteChanged();
             GoHomeCommand.NotifyCanExecuteChanged();
             LogoutCommand.NotifyCanExecuteChanged();
+            ShowQuizCommand.NotifyCanExecuteChanged();
         }
-
     }
 }

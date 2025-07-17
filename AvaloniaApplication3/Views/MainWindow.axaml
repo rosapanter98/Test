@@ -25,6 +25,10 @@
                         Command="{Binding ShowToDoListCommand}"
                         IsEnabled="{Binding IsLoggedIn}" />
 
+				<Button Content="Quiz"
+						Command="{Binding ShowQuizCommand}" 
+						IsEnabled="{Binding IsLoggedIn}" />
+
 				<Button Content="Register"
                         Command="{Binding ShowRegisterCommand}"
                         IsVisible="{Binding IsLoggedIn, Converter={StaticResource InverseBoolConverter}}" />
