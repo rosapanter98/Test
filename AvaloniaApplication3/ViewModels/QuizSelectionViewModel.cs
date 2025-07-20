@@ -9,7 +9,7 @@ using System.Windows.Input;
 
 namespace AvaloniaApplication3.ViewModels
 {
-    public partial class QuizSelectionViewModel : ObservableObject
+    public partial class QuizSelectionViewModel : ViewModelBase
     {
         private readonly IQuizService _quizService;
         private readonly Action<Quiz> _onQuizSelected;
@@ -39,10 +39,21 @@ namespace AvaloniaApplication3.ViewModels
 
         private bool CanStartQuiz() => SelectedQuiz != null;
 
-        private void StartQuiz()
+        private async void StartQuiz()
         {
             if (SelectedQuiz != null)
-                _onQuizSelected.Invoke(SelectedQuiz);
+            {
+                var fullQuiz = await _quizService.GetFullQuizAsync(SelectedQuiz.Id); // ← FIXED
+                if (fullQuiz != null)
+                    _onQuizSelected.Invoke(fullQuiz);
+            }
         }
+
+
+        partial void OnSelectedQuizChanged(Quiz? value)
+        {
+            (StartQuizCommand as RelayCommand)?.NotifyCanExecuteChanged();
+        }
+
     }
 }

@@ -19,21 +19,9 @@ namespace AvaloniaApplication3.Services
             return _quizRepository.GetAllQuizzesAsync();
         }
 
-        public Task<Quiz?> GetQuizByIdAsync(int id)
+        public Task<Quiz?> GetFullQuizAsync(int id)
         {
-            return _quizRepository.GetQuizByIdAsync(id);
-        }
-
-        public async Task<Quiz?> GetQuizWithQuestionsAsync(int id)
-        {
-            var quiz = await _quizRepository.GetQuizByIdAsync(id);
-            if (quiz == null)
-                return null;
-
-            // Assuming the quiz has a navigation property `Questions`
-            // and the context is tracking correctly, this might already be loaded
-            // If not, you might need to use EF.Include in the repository layer
-            return quiz;
+            return _quizRepository.GetFullQuizByIdAsync(id);
         }
 
         public async Task<bool> CreateQuizAsync(Quiz quiz)

@@ -16,10 +16,10 @@ namespace AvaloniaApplication3.Repositories
 
         public async Task<List<Quiz>> GetAllQuizzesAsync()
         {
-            return await _context.Quizzes.ToListAsync();
+            return await _context.Quizzes.ToListAsync(); // lightweight, titles only
         }
 
-        public async Task<Quiz?> GetQuizByIdAsync(int id)
+        public async Task<Quiz?> GetFullQuizByIdAsync(int id)
         {
             return await _context.Quizzes
                 .Include(q => q.Questions)

@@ -2,9 +2,28 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-			 xmlns:vm="clr-namespace:AvaloniaApplication3.ViewModels"
-			 x:DataType="vm:MainWindowViewModel"
-             x:Class="AvaloniaApplication3.Views.QuizSelectionView">
-  Welcome to Avalonia!
+             xmlns:vm="clr-namespace:AvaloniaApplication3.ViewModels"
+             x:Class="AvaloniaApplication3.Views.QuizSelectionView"
+             x:DataType="vm:QuizSelectionViewModel"
+             mc:Ignorable="d"
+             d:DesignWidth="800"
+             d:DesignHeight="450">
+
+	<StackPanel Margin="20" Spacing="12">
+
+		<TextBlock Text="Select a Quiz" FontSize="20" FontWeight="Bold" />
+
+		<ListBox ItemsSource="{Binding Quizzes}"
+                 SelectedItem="{Binding SelectedQuiz}"
+                 Height="300">
+			<ListBox.ItemTemplate>
+				<DataTemplate>
+					<TextBlock Text="{Binding Title}" />
+				</DataTemplate>
+			</ListBox.ItemTemplate>
+		</ListBox>
+
+		<Button Content="Start Quiz"
+                Command="{Binding StartQuizCommand}" />
+	</StackPanel>
 </UserControl>

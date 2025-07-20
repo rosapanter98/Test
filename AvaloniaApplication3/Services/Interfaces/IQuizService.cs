@@ -7,9 +7,7 @@ namespace AvaloniaApplication3.Services
     public interface IQuizService
     {
         Task<List<Quiz>> GetAllQuizzesAsync();
-        Task<Quiz?> GetQuizByIdAsync(int id);
-        Task<Quiz?> GetQuizWithQuestionsAsync(int id);
-
+        Task<Quiz?> GetFullQuizAsync(int id);
         Task<bool> CreateQuizAsync(Quiz quiz);
         Task<bool> UpdateQuizAsync(Quiz quiz);
         Task<bool> DeleteQuizAsync(int id);
