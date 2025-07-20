@@ -5,12 +5,13 @@ using System.Globalization;
 
 namespace AvaloniaApplication3.Converters
 {
-    public class EqualityConverter : IValueConverter
+    public class IdEqualityConverter : IValueConverter
     {
-        public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
             => value?.ToString() == parameter?.ToString();
 
-        public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
             => value is true ? int.Parse(parameter!.ToString()!) : BindingOperations.DoNothing;
     }
+
 }

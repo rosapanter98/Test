@@ -10,6 +10,8 @@ namespace AvaloniaApplication3.ViewModels
     public partial class QuizRunnerViewModel : ViewModelBase
     {
         private readonly Quiz _quiz;
+        private readonly Action<string, int, int> _onQuizCompleted;
+        private readonly List<Question> _questionList;
         private int _currentIndex = 0;
         private int _score = 0;
 
@@ -25,40 +27,37 @@ namespace AvaloniaApplication3.ViewModels
         [ObservableProperty]
         private bool quizCompleted;
 
-        // Tracking user input
         [ObservableProperty]
         private List<int> selectedAnswerIds = new();
 
         [ObservableProperty]
         private int? selectedOptionId;
 
+        [ObservableProperty]
+        private bool isSingleChoice;
+
+        [ObservableProperty]
+        private bool isMultipleChoice;
+
+        [ObservableProperty]
+        private bool isTrueFalse;
+
         public int TotalQuestions => _quiz.Questions.Count;
         public int CurrentIndex => _currentIndex + 1;
         public int Score => _score;
         public int TotalCorrect => _score;
-
-        // Reuse feedback text for explanation placeholder
         public string? Explanation => FeedbackText;
 
-        public bool IsSingleChoice => CurrentQuestion?.Type == QuestionType.SingleChoice;
-        public bool IsMultipleChoice => CurrentQuestion?.Type == QuestionType.MultipleChoice;
-        public bool IsTrueFalse => CurrentQuestion?.Type == QuestionType.TrueFalse;
-
-
-        // Loosened guard: allow submit as long as feedback not showing
         public bool CanSubmitAnswer => !ShowFeedback;
-
-        // Next only after feedback and not finished
         public bool CanGoNext => ShowFeedback && !QuizCompleted;
 
         public IRelayCommand SubmitCommand { get; }
         public IRelayCommand NextCommand { get; }
 
-        private readonly List<Question> _questionList;
-
-        public QuizRunnerViewModel(Quiz quiz)
+        public QuizRunnerViewModel(Quiz quiz, Action<string, int, int> onQuizCompleted)
         {
             _quiz = quiz ?? throw new ArgumentNullException(nameof(quiz));
+            _onQuizCompleted = onQuizCompleted;
             _questionList = _quiz.Questions.ToList();
 
             SubmitCommand = new RelayCommand(Submit, () => CanSubmitAnswer);
@@ -69,12 +68,10 @@ namespace AvaloniaApplication3.ViewModels
 
         private void LoadQuestion()
         {
-            if (_quiz.Questions == null || !_quiz.Questions.Any())
+            if (_questionList.Count == 0)
                 throw new InvalidOperationException("Quiz has no questions.");
 
             CurrentQuestion = _questionList[_currentIndex];
-
-            // reset selection state
             SelectedAnswerIds = new();
             SelectedOptionId = null;
             ShowFeedback = false;
@@ -83,8 +80,9 @@ namespace AvaloniaApplication3.ViewModels
             foreach (var answer in CurrentQuestion.Answers)
                 answer.IsSelected = false;
 
-            OnPropertyChanged(nameof(IsSingleChoice));
-            OnPropertyChanged(nameof(IsMultipleChoice));
+            IsSingleChoice = CurrentQuestion.Type == QuestionType.SingleChoice;
+            IsMultipleChoice = CurrentQuestion.Type == QuestionType.MultipleChoice;
+            IsTrueFalse = CurrentQuestion.Type == QuestionType.TrueFalse;
 
             SubmitCommand.NotifyCanExecuteChanged();
             NextCommand.NotifyCanExecuteChanged();
@@ -101,7 +99,6 @@ namespace AvaloniaApplication3.ViewModels
             SubmitCommand.NotifyCanExecuteChanged();
         }
 
-        // You could also expose a method that the CheckBox bindings call via Command to refresh CanExecute
         public void NotifySelectionChanged()
         {
             SubmitCommand.NotifyCanExecuteChanged();
@@ -109,51 +106,55 @@ namespace AvaloniaApplication3.ViewModels
 
         private void Submit()
         {
-            // Build selected set
-            var selected = CurrentQuestion.Type switch
-            {
-                QuestionType.SingleChoice => SelectedOptionId.HasValue
-                    ? new HashSet<int> { SelectedOptionId.Value }
-                    : new HashSet<int>(),
+            HashSet<int> selectedIds;
 
-                QuestionType.MultipleChoice => CurrentQuestion.Answers
+            if (IsMultipleChoice)
+            {
+                selectedIds = CurrentQuestion.Answers
                     .Where(a => a.IsSelected)
                     .Select(a => a.Id)
-                    .ToHashSet(),
+                    .ToHashSet();
+            }
+            else
+            {
+                // Single choice or True/False uses SelectedOptionId
+                selectedIds = SelectedOptionId.HasValue ? new HashSet<int> { SelectedOptionId.Value } : new HashSet<int>();
+            }
 
-                _ => new HashSet<int>()
-            };
-
-            // Compare against correct answers
-            var correctAnswers = CurrentQuestion.Answers
+            var correctIds = CurrentQuestion.Answers
                 .Where(a => a.IsCorrect)
                 .Select(a => a.Id)
                 .ToHashSet();
 
-            var isCorrect = selected.SetEquals(correctAnswers);
-
+            var isCorrect = selectedIds.SetEquals(correctIds);
             if (isCorrect)
-            {
                 _score++;
-                FeedbackText = "Correct!";
-            }
-            else
+
+            foreach (var answer in CurrentQuestion.Answers)
             {
-                var correctText = string.Join(", ",
-                    CurrentQuestion.Answers.Where(a => a.IsCorrect).Select(a => a.Text));
-                FeedbackText = $"Wrong. Correct answer(s): {correctText}";
+                if (selectedIds.Contains(answer.Id))
+                    answer.IsUserCorrect = answer.IsCorrect;
+                else if (answer.IsCorrect)
+                    answer.IsUserCorrect = false;
+                else
+                    answer.IsUserCorrect = null;
             }
+
+            FeedbackText = isCorrect
+                ? "Correct!"
+                : $"Wrong. Correct answer(s): {string.Join(", ", CurrentQuestion.Answers.Where(a => a.IsCorrect).Select(a => a.Text))}";
 
             ShowFeedback = true;
         }
 
+
         private void Next()
         {
             _currentIndex++;
-            if (_currentIndex >= _quiz.Questions.Count)
+            if (_currentIndex >= _questionList.Count)
             {
                 QuizCompleted = true;
-                NextCommand.NotifyCanExecuteChanged();
+                _onQuizCompleted.Invoke(_quiz.Title, _score, _quiz.Questions.Count);
             }
             else
             {

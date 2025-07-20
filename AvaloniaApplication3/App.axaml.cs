@@ -47,6 +47,8 @@ namespace AvaloniaApplication3
                 // Add sample quiz if none exist
                 if (!db.Quizzes.Any())
                 {
+                    int nextAnswerId = 1;
+
                     var quiz = new Quiz
                     {
                         Title = "Sample Quiz",
@@ -60,9 +62,9 @@ namespace AvaloniaApplication3
                         Explanation = "2 + 2 is 4.",
                         Answers = new List<Answer>
                         {
-                            new Answer { Text = "3", IsCorrect = false },
-                            new Answer { Text = "4", IsCorrect = true },
-                            new Answer { Text = "5", IsCorrect = false }
+                            new Answer { Id = nextAnswerId++, Text = "3", IsCorrect = false },
+                            new Answer { Id = nextAnswerId++, Text = "4", IsCorrect = true },
+                            new Answer { Id = nextAnswerId++, Text = "5", IsCorrect = false }
                         }
                     },
                     new Question
@@ -72,9 +74,9 @@ namespace AvaloniaApplication3
                         Explanation = "Apple and Banana are fruits. Carrot is not.",
                         Answers = new List<Answer>
                         {
-                            new Answer { Text = "Apple", IsCorrect = true },
-                            new Answer { Text = "Banana", IsCorrect = true },
-                            new Answer { Text = "Carrot", IsCorrect = false }
+                            new Answer { Id = nextAnswerId++, Text = "Apple", IsCorrect = true },
+                            new Answer { Id = nextAnswerId++, Text = "Banana", IsCorrect = true },
+                            new Answer { Id = nextAnswerId++, Text = "Carrot", IsCorrect = false }
                         }
                     },
                     new Question
@@ -84,8 +86,8 @@ namespace AvaloniaApplication3
                         Explanation = "No, the earth is spherical.",
                         Answers = new List<Answer>
                         {
-                            new Answer { Text = "True", IsCorrect = false },
-                            new Answer { Text = "False", IsCorrect = true }
+                            new Answer { Id = nextAnswerId++, Text = "True", IsCorrect = false },
+                            new Answer { Id = nextAnswerId++, Text = "False", IsCorrect = true }
                         }
                     }
                 }
@@ -109,8 +111,6 @@ namespace AvaloniaApplication3
 
             base.OnFrameworkInitializationCompleted();
         }
-
-
 
         private void DisableAvaloniaDataAnnotationValidation()
         {

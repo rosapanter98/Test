@@ -33,7 +33,7 @@ namespace AvaloniaApplication3.ViewModels
             var quizRepo = new EfQuizRepository(new AppDbContext());
             _quizService = new QuizService(quizRepo);
 
-            _quizSelectionViewModel = new QuizSelectionViewModel(_quizService, quiz => ShowQuizRunner(quiz));
+            _quizSelectionViewModel = new QuizSelectionViewModel(_quizService, ShowQuizRunner);
 
             ShowLogin();
         }
@@ -93,7 +93,15 @@ namespace AvaloniaApplication3.ViewModels
 
         private void ShowQuizRunner(Quiz quiz)
         {
-            CurrentView = new QuizRunnerViewModel(quiz);
+            CurrentView = new QuizRunnerViewModel(quiz, ShowQuizResults);
+        }
+
+        private void ShowQuizResults(string title, int score, int totalQuestions)
+        {
+            CurrentView = new QuizResultsViewModel(score, totalQuestions, title, () =>
+            {
+                CurrentView = _quizSelectionViewModel;
+            });
         }
 
         [RelayCommand(CanExecute = nameof(IsLoggedIn))]

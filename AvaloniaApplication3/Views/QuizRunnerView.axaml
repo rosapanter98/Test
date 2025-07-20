@@ -3,12 +3,18 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:AvaloniaApplication3.ViewModels"
+             xmlns:converters="clr-namespace:AvaloniaApplication3.Converters"
              x:Class="AvaloniaApplication3.Views.QuizRunnerView"
              x:DataType="vm:QuizRunnerViewModel"
              x:Name="Root"
              mc:Ignorable="d"
              d:DesignWidth="800"
              d:DesignHeight="450">
+
+	<UserControl.Resources>
+		<converters:IdEqualityMultiConverter x:Key="IdEqualityMultiConverter" />
+		<converters:AnswerFeedbackConverter x:Key="AnswerFeedbackConverter" />
+	</UserControl.Resources>
 
 	<StackPanel Margin="20" Spacing="12">
 
@@ -19,40 +25,44 @@
 		<ItemsControl ItemsSource="{Binding CurrentQuestion.Answers}">
 			<ItemsControl.ItemTemplate>
 				<DataTemplate>
-					<StackPanel>
+					<Border Padding="4" CornerRadius="4"
+                            Background="{Binding IsUserCorrect, Converter={StaticResource AnswerFeedbackConverter}}">
+						<StackPanel>
 
-						<!-- Single Choice (RadioButton) -->
-						<RadioButton Content="{Binding Text}"
-									 GroupName="OptionsGroup"
-									 Tag="{Binding Id}"
-									 IsVisible="{Binding DataContext.IsSingleChoice, ElementName=Root}"
-									 IsChecked="{Binding DataContext.SelectedOptionId,
-                                         ElementName=Root,
-                                         Mode=TwoWay,
-                                         Converter={StaticResource EqualityConverter},
-                                         ConverterParameter={Binding Id}}" />
+							<!-- Single Choice -->
+							<RadioButton Content="{Binding Text}"
+                                         GroupName="OptionsGroup"
+                                         IsVisible="{Binding DataContext.IsSingleChoice, ElementName=Root}">
+								<RadioButton.IsChecked>
+									<MultiBinding Converter="{StaticResource IdEqualityMultiConverter}" Mode="TwoWay">
+										<Binding Path="DataContext.SelectedOptionId" ElementName="Root"/>
+										<Binding Path="Id"/>
+									</MultiBinding>
+								</RadioButton.IsChecked>
+							</RadioButton>
 
-						<!-- Multiple Choice (CheckBox) -->
-						<CheckBox Content="{Binding Text}"
-								  IsChecked="{Binding IsSelected, Mode=TwoWay}"
-								  IsVisible="{Binding DataContext.IsMultipleChoice, ElementName=Root}" />
+							<!-- Multiple Choice -->
+							<CheckBox Content="{Binding Text}"
+                                      IsVisible="{Binding DataContext.IsMultipleChoice, ElementName=Root}"
+                                      IsChecked="{Binding IsSelected, Mode=TwoWay}" />
 
-						<!-- True/False (RadioButton) -->
-						<RadioButton Content="{Binding Text}"
-									 GroupName="TrueFalseGroup"
-									 Tag="{Binding Id}"
-									 IsVisible="{Binding DataContext.IsTrueFalse, ElementName=Root}"
-									 IsChecked="{Binding DataContext.SelectedOptionId,
-                                         ElementName=Root,
-                                         Mode=TwoWay,
-                                         Converter={StaticResource EqualityConverter},
-                                         ConverterParameter={Binding Id}}" />
+							<!-- True/False -->
+							<RadioButton Content="{Binding Text}"
+                                         GroupName="TrueFalseGroup"
+                                         IsVisible="{Binding DataContext.IsTrueFalse, ElementName=Root}">
+								<RadioButton.IsChecked>
+									<MultiBinding Converter="{StaticResource IdEqualityMultiConverter}" Mode="TwoWay">
+										<Binding Path="DataContext.SelectedOptionId" ElementName="Root"/>
+										<Binding Path="Id"/>
+									</MultiBinding>
+								</RadioButton.IsChecked>
+							</RadioButton>
 
-					</StackPanel>
+						</StackPanel>
+					</Border>
 				</DataTemplate>
 			</ItemsControl.ItemTemplate>
 		</ItemsControl>
-
 
 		<!-- Explanation -->
 		<TextBlock Text="{Binding Explanation}"
@@ -62,11 +72,8 @@
 
 		<!-- Buttons -->
 		<StackPanel Orientation="Horizontal" Spacing="8">
-			<Button Content="Submit"
-                    Command="{Binding SubmitCommand}"/>
-
-			<Button Content="Next Question"
-                    Command="{Binding NextCommand}"/>
+			<Button Content="Submit" Command="{Binding SubmitCommand}" />
+			<Button Content="Next Question" Command="{Binding NextCommand}" />
 		</StackPanel>
 
 	</StackPanel>

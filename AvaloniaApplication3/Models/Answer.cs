@@ -1,9 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AvaloniaApplication3.Models
 {
-    public class Answer
+    public partial class Answer : ObservableObject
     {
         public int Id { get; set; }
 
@@ -19,6 +20,11 @@ namespace AvaloniaApplication3.Models
         public Question Question { get; set; } = null!;
 
         [NotMapped]
-        public bool IsSelected { get; set; } // Used at runtime for tracking selected state in multiple choice
+        [ObservableProperty]
+        private bool isSelected;
+
+        [NotMapped]
+        [ObservableProperty]
+        private bool? isUserCorrect;
     }
 }
