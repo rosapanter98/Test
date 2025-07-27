@@ -3,7 +3,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:AvaloniaApplication3.ViewModels"
-             xmlns:converters="clr-namespace:AvaloniaApplication3.Converters"
              x:Class="AvaloniaApplication3.Views.QuizRunnerView"
              x:DataType="vm:QuizRunnerViewModel"
              x:Name="Root"
@@ -11,62 +10,55 @@
              d:DesignWidth="800"
              d:DesignHeight="450">
 
-	<UserControl.Resources>
-		<converters:IdEqualityMultiConverter x:Key="IdEqualityMultiConverter" />
-		<converters:AnswerFeedbackConverter x:Key="AnswerFeedbackConverter" />
-	</UserControl.Resources>
-
 	<StackPanel Margin="20" Spacing="12">
 
 		<!-- Question text -->
-		<TextBlock Text="{Binding CurrentQuestion.Text}" FontSize="18" FontWeight="Bold" TextWrapping="Wrap" />
+		<TextBlock Text="{Binding CurrentQuestion.Text}"
+                   FontSize="18"
+                   FontWeight="Bold"
+                   TextWrapping="Wrap" />
 
 		<!-- Options -->
-		<ItemsControl ItemsSource="{Binding CurrentQuestion.Answers}">
+		<!-- SINGLE CHOICE -->
+		<ItemsControl ItemsSource="{Binding CurrentQuestion.Answers}"
+					  IsVisible="{Binding IsSingleChoice}">
 			<ItemsControl.ItemTemplate>
 				<DataTemplate>
-					<Border Padding="4" CornerRadius="4"
-                            Background="{Binding IsUserCorrect, Converter={StaticResource AnswerFeedbackConverter}}">
-						<StackPanel>
-
-							<!-- Single Choice -->
-							<RadioButton Content="{Binding Text}"
-                                         GroupName="OptionsGroup"
-                                         IsVisible="{Binding DataContext.IsSingleChoice, ElementName=Root}">
-								<RadioButton.IsChecked>
-									<MultiBinding Converter="{StaticResource IdEqualityMultiConverter}" Mode="TwoWay">
-										<Binding Path="DataContext.SelectedOptionId" ElementName="Root"/>
-										<Binding Path="Id"/>
-									</MultiBinding>
-								</RadioButton.IsChecked>
-							</RadioButton>
-
-							<!-- Multiple Choice -->
-							<CheckBox Content="{Binding Text}"
-                                      IsVisible="{Binding DataContext.IsMultipleChoice, ElementName=Root}"
-                                      IsChecked="{Binding IsSelected, Mode=TwoWay}" />
-
-							<!-- True/False -->
-							<RadioButton Content="{Binding Text}"
-                                         GroupName="TrueFalseGroup"
-                                         IsVisible="{Binding DataContext.IsTrueFalse, ElementName=Root}">
-								<RadioButton.IsChecked>
-									<MultiBinding Converter="{StaticResource IdEqualityMultiConverter}" Mode="TwoWay">
-										<Binding Path="DataContext.SelectedOptionId" ElementName="Root"/>
-										<Binding Path="Id"/>
-									</MultiBinding>
-								</RadioButton.IsChecked>
-							</RadioButton>
-
-						</StackPanel>
-					</Border>
+					<RadioButton Content="{Binding Text}"
+								 GroupName="SingleChoiceGroup"
+								 IsChecked="{Binding IsSelected, Mode=TwoWay}" />
 				</DataTemplate>
 			</ItemsControl.ItemTemplate>
 		</ItemsControl>
 
+		<!-- MULTIPLE CHOICE -->
+		<ItemsControl ItemsSource="{Binding CurrentQuestion.Answers}"
+					  IsVisible="{Binding IsMultipleChoice}">
+			<ItemsControl.ItemTemplate>
+				<DataTemplate>
+					<CheckBox Content="{Binding Text}"
+							  IsChecked="{Binding IsSelected, Mode=TwoWay}" />
+				</DataTemplate>
+			</ItemsControl.ItemTemplate>
+		</ItemsControl>
+
+		<!-- TRUE/FALSE -->
+		<ItemsControl ItemsSource="{Binding CurrentQuestion.Answers}"
+					  IsVisible="{Binding IsTrueFalse}">
+			<ItemsControl.ItemTemplate>
+				<DataTemplate>
+					<RadioButton Content="{Binding Text}"
+								 GroupName="TrueFalseGroup"
+								 IsChecked="{Binding IsSelected, Mode=TwoWay}" />
+				</DataTemplate>
+			</ItemsControl.ItemTemplate>
+		</ItemsControl>
+
+
+
 		<!-- Explanation -->
-		<TextBlock Text="{Binding Explanation}"
-                   Foreground="Green"
+		<TextBlock Text="{Binding FeedbackText}"
+                   Foreground="{Binding LastAnswerCorrect, Converter={StaticResource AnswerFeedbackConverter}}"
                    TextWrapping="Wrap"
                    IsVisible="{Binding ShowFeedback}" />
 

@@ -43,11 +43,23 @@ namespace AvaloniaApplication3.ViewModels
         {
             if (SelectedQuiz != null)
             {
-                var fullQuiz = await _quizService.GetFullQuizAsync(SelectedQuiz.Id); // ← FIXED
+                var fullQuiz = await _quizService.GetFullQuizAsync(SelectedQuiz.Id);
                 if (fullQuiz != null)
+                {
+                    Console.WriteLine($"[DEBUG] Quiz: {fullQuiz.Title}");
+                    Console.WriteLine($"[DEBUG] Questions loaded: {fullQuiz.Questions.Count}");
+
+                    foreach (var question in fullQuiz.Questions)
+                    {
+                        Console.WriteLine($"[DEBUG] Question {question.Id}: {question.Text}");
+                        Console.WriteLine($"[DEBUG] -> Answers loaded: {question.Answers.Count}");
+                    }
+
                     _onQuizSelected.Invoke(fullQuiz);
+                }
             }
         }
+
 
 
         partial void OnSelectedQuizChanged(Quiz? value)

@@ -28,12 +28,6 @@ namespace AvaloniaApplication3.ViewModels
         private bool quizCompleted;
 
         [ObservableProperty]
-        private List<int> selectedAnswerIds = new();
-
-        [ObservableProperty]
-        private int? selectedOptionId;
-
-        [ObservableProperty]
         private bool isSingleChoice;
 
         [ObservableProperty]
@@ -41,6 +35,9 @@ namespace AvaloniaApplication3.ViewModels
 
         [ObservableProperty]
         private bool isTrueFalse;
+
+        [ObservableProperty]
+        private bool lastAnswerCorrect;
 
         public int TotalQuestions => _quiz.Questions.Count;
         public int CurrentIndex => _currentIndex + 1;
@@ -72,8 +69,6 @@ namespace AvaloniaApplication3.ViewModels
                 throw new InvalidOperationException("Quiz has no questions.");
 
             CurrentQuestion = _questionList[_currentIndex];
-            SelectedAnswerIds = new();
-            SelectedOptionId = null;
             ShowFeedback = false;
             FeedbackText = null;
 
@@ -94,32 +89,16 @@ namespace AvaloniaApplication3.ViewModels
             NextCommand.NotifyCanExecuteChanged();
         }
 
-        partial void OnSelectedOptionIdChanged(int? value)
-        {
-            SubmitCommand.NotifyCanExecuteChanged();
-        }
-
-        public void NotifySelectionChanged()
-        {
-            SubmitCommand.NotifyCanExecuteChanged();
-        }
-
         private void Submit()
         {
-            HashSet<int> selectedIds;
+            Console.WriteLine($"[DEBUG] Answers count: {CurrentQuestion.Answers.Count()}");
+            foreach (var a in CurrentQuestion.Answers)
+                Console.WriteLine($"[DEBUG] Answer ID {a.Id} | IsSelected={a.IsSelected}");
 
-            if (IsMultipleChoice)
-            {
-                selectedIds = CurrentQuestion.Answers
-                    .Where(a => a.IsSelected)
-                    .Select(a => a.Id)
-                    .ToHashSet();
-            }
-            else
-            {
-                // Single choice or True/False uses SelectedOptionId
-                selectedIds = SelectedOptionId.HasValue ? new HashSet<int> { SelectedOptionId.Value } : new HashSet<int>();
-            }
+            var selectedIds = CurrentQuestion.Answers
+                .Where(a => a.IsSelected)
+                .Select(a => a.Id)
+                .ToHashSet();
 
             var correctIds = CurrentQuestion.Answers
                 .Where(a => a.IsCorrect)
@@ -130,14 +109,11 @@ namespace AvaloniaApplication3.ViewModels
             if (isCorrect)
                 _score++;
 
+            LastAnswerCorrect = isCorrect;
+
             foreach (var answer in CurrentQuestion.Answers)
             {
-                if (selectedIds.Contains(answer.Id))
-                    answer.IsUserCorrect = answer.IsCorrect;
-                else if (answer.IsCorrect)
-                    answer.IsUserCorrect = false;
-                else
-                    answer.IsUserCorrect = null;
+                answer.IsUserCorrect = selectedIds.Contains(answer.Id) ? answer.IsCorrect : null;
             }
 
             FeedbackText = isCorrect
@@ -146,7 +122,6 @@ namespace AvaloniaApplication3.ViewModels
 
             ShowFeedback = true;
         }
-
 
         private void Next()
         {
