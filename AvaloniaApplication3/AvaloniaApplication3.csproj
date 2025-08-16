@@ -39,6 +39,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Views\Admin\QuestionEditorView.axaml.cs">
+      <DependentUpon>QuestionEditorView.axaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\ToDoListView.axaml.cs">
       <DependentUpon>ToDoListView.axaml</DependentUpon>
     </Compile>

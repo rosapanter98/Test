@@ -1,0 +1,24 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:models="clr-namespace:AvaloniaApplication3.Models"
+             xmlns:vm="clr-namespace:AvaloniaApplication3.ViewModels.Admin"
+             x:Class="AvaloniaApplication3.Views.Admin.UserEditorView"
+             x:DataType="vm:UserEditorViewModel">
+
+	<Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto">
+		<TextBlock Text="Username:" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Margin="0,4"/>
+		<TextBox Text="{Binding User.Username}" Grid.Row="0" Grid.Column="1" Margin="0,4"/>
+
+		<TextBlock Text="Display Name:" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Margin="0,4"/>
+		<TextBox Text="{Binding User.DisplayName}" Grid.Row="1" Grid.Column="1" Margin="0,4"/>
+
+		<TextBlock Text="Email:" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Margin="0,4"/>
+		<TextBox Text="{Binding User.Email}" Grid.Row="2" Grid.Column="1" Margin="0,4"/>
+
+		<TextBlock Text="Role:" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" Margin="0,4"/>
+		<ComboBox ItemsSource="{Binding Roles}" SelectedItem="{Binding SelectedRole}" Grid.Row="3" Grid.Column="1" Margin="0,4"/>
+
+		<Button Content="Save" Command="{Binding SaveCommand}" Grid.Row="4" Grid.Column="1" Margin="0,10,0,0"/>
+		<TextBlock Text="{Binding SaveStatus}" FontSize="12" Foreground="Gray" Grid.Row="5" Grid.Column="1" Margin="0,4"/>
+	</Grid>
+</UserControl>

@@ -12,8 +12,9 @@
 
 	<Application.Resources>
 		<converters:NullToBoolConverter x:Key="NullToBoolConverter"/>
-	
 		<converters:AnswerFeedbackConverter x:Key="AnswerFeedbackConverter"/>
+		<converters:InverseBoolConverter x:Key="InverseBoolConverter"/>
+		<converters:RoleToBoolConverter x:Key="RoleToBoolConverter"/>
 	</Application.Resources>
   
     <Application.Styles>

@@ -37,6 +37,13 @@ namespace AvaloniaApplication3.ViewModels
             Quizzes = new ObservableCollection<Quiz>(quizList);
         }
 
+        public async Task ReloadAsync()
+        {
+            var quizzes = await _quizService.GetAllQuizzesAsync();
+            Quizzes = new ObservableCollection<Quiz>(quizzes);
+        }
+
+
         private bool CanStartQuiz() => SelectedQuiz != null;
 
         private async void StartQuiz()

@@ -1,6 +1,7 @@
 ﻿using AvaloniaApplication3.Models;
 using AvaloniaApplication3.Repositories;
 using AvaloniaApplication3.Services;
+using AvaloniaApplication3.ViewModels.Admin;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
@@ -20,10 +21,16 @@ namespace AvaloniaApplication3.ViewModels
         [ObservableProperty]
         private User? currentUser;
 
+        public bool CanAccessAdminPanel =>
+         IsLoggedIn && CurrentUser != null && CurrentUser.Role >= UserRole.Moderator;
+
+
+
         private ToDoListViewModel? _toDoList;
         private readonly ILoginService _loginService;
         private readonly IQuizService _quizService;
         private readonly QuizSelectionViewModel _quizSelectionViewModel;
+        private AdminPanelViewModel? _adminPanelViewModel;
 
         public MainWindowViewModel()
         {
@@ -57,6 +64,7 @@ namespace AvaloniaApplication3.ViewModels
             IsLoggedIn = false;
             DisplayUsername = null;
             CurrentUser = null;
+            _adminPanelViewModel = null;
         }
 
         private void OnLoginSuccess(User user)
@@ -67,6 +75,9 @@ namespace AvaloniaApplication3.ViewModels
 
             var todoRepo = new JsonToDoRepository();
             _toDoList = new ToDoListViewModel(user.Username, SwitchToItemView, todoRepo);
+
+            if (user.Role is UserRole.Admin or UserRole.Moderator)
+                _adminPanelViewModel = new AdminPanelViewModel(user);
 
             CurrentView = _toDoList;
             UpdateCommands();
@@ -113,11 +124,30 @@ namespace AvaloniaApplication3.ViewModels
             UpdateCommands();
         }
 
+        [RelayCommand(CanExecute = nameof(CanAccessAdminPanel))]
+        private void ShowAdminPanel()
+        {
+            if (_adminPanelViewModel != null)
+                CurrentView = _adminPanelViewModel;
+        }
+
         private void SwitchToItemView(ToDoItemViewModel item)
         {
             _toDoList?.PrepareItem(item, view => CurrentView = view);
             CurrentView = item;
         }
+
+        partial void OnCurrentUserChanged(User? value)
+        {
+            OnPropertyChanged(nameof(CanAccessAdminPanel));
+        }
+
+        partial void OnIsLoggedInChanged(bool value)
+        {
+            OnPropertyChanged(nameof(CanAccessAdminPanel));
+        }
+
+
 
         private void UpdateCommands()
         {
@@ -125,6 +155,7 @@ namespace AvaloniaApplication3.ViewModels
             GoHomeCommand.NotifyCanExecuteChanged();
             LogoutCommand.NotifyCanExecuteChanged();
             ShowQuizCommand.NotifyCanExecuteChanged();
+            ShowAdminPanelCommand.NotifyCanExecuteChanged();
         }
     }
 }

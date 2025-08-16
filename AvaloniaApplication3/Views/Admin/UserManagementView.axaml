@@ -1,0 +1,42 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:views="clr-namespace:AvaloniaApplication3.Views.Admin"
+             xmlns:vm="clr-namespace:AvaloniaApplication3.ViewModels.Admin"
+             x:Class="AvaloniaApplication3.Views.Admin.UserManagementView"
+             x:DataType="vm:UserManagementViewModel"
+             x:Name="Root">
+
+	<StackPanel Margin="20" Spacing="10">
+		<TextBlock Text="User Management" FontSize="20" FontWeight="Bold" />
+		<TextBlock Text="{Binding Status}" FontSize="12" Foreground="Gray" />
+		<Button Content="Refresh" Command="{Binding RefreshCommand}" HorizontalAlignment="Left" />
+
+		<ItemsControl ItemsSource="{Binding Users}">
+			<ItemsControl.ItemTemplate>
+				<DataTemplate>
+					<DockPanel Margin="0,4,0,0" LastChildFill="False">
+						<StackPanel>
+							<TextBlock Text="{Binding Username}" FontWeight="SemiBold"/>
+							<TextBlock Text="{Binding Role}" FontSize="12" Foreground="Gray"/>
+						</StackPanel>
+						<StackPanel Orientation="Horizontal" Margin="10,0,0,0">
+							<Button Content="Edit"
+                                    Command="{Binding DataContext.EditUserCommand, ElementName=Root}"
+                                    CommandParameter="{Binding}" />
+							<Button Content="Delete"
+                                    Command="{Binding DataContext.DeleteUserCommand, ElementName=Root}"
+                                    CommandParameter="{Binding}"
+                                    Margin="10,0,0,0"/>
+						</StackPanel>
+					</DockPanel>
+				</DataTemplate>
+			</ItemsControl.ItemTemplate>
+		</ItemsControl>
+
+		<ContentControl DataContext="{Binding SelectedUserEditor}"
+                        Margin="0,20,0,0"
+                        IsVisible="{Binding DataContext.SelectedUserEditor, ElementName=Root, Converter={StaticResource NullToBoolConverter}}">
+			<views:UserEditorView />
+		</ContentControl>
+	</StackPanel>
+</UserControl>

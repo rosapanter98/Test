@@ -1,5 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
-using AvaloniaApplication3.Models;
+﻿using AvaloniaApplication3.Models;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.IO;
 
 namespace AvaloniaApplication3
 {
@@ -13,7 +15,8 @@ namespace AvaloniaApplication3
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite("Data Source=app.db");
+            var path = Path.Combine(AppContext.BaseDirectory, "app.db");
+            optionsBuilder.UseSqlite($"Data Source={path}");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

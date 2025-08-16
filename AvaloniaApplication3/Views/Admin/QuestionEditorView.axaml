@@ -1,0 +1,44 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:AvaloniaApplication3.ViewModels.Admin"
+             xmlns:views="clr-namespace:AvaloniaApplication3.Views.Admin"
+             x:Class="AvaloniaApplication3.Views.Admin.QuestionEditorView"
+             x:DataType="vm:QuestionEditorViewModel">
+
+	<Border BorderBrush="LightGray" BorderThickness="1" CornerRadius="4" Padding="12" Margin="0,8,0,0">
+		<StackPanel Spacing="8">
+
+			<!-- Question Text -->
+			<StackPanel>
+				<TextBlock Text="Question Text" FontWeight="Bold" />
+				<TextBox Text="{Binding Text, Mode=TwoWay}" Watermark="Enter the question" />
+			</StackPanel>
+
+			<!-- Explanation -->
+			<StackPanel>
+				<TextBlock Text="Explanation" FontWeight="Bold" />
+				<TextBox Text="{Binding Explanation, Mode=TwoWay}" Watermark="Optional explanation" AcceptsReturn="True" />
+			</StackPanel>
+
+			<!-- Question Type -->
+			<StackPanel>
+				<TextBlock Text="Question Type" FontWeight="Bold" />
+				<ComboBox ItemsSource="{Binding QuestionTypeOptions}" SelectedItem="{Binding Type, Mode=TwoWay}" />
+			</StackPanel>
+
+			<!-- Answers -->
+			<StackPanel>
+				<TextBlock Text="Answers" FontWeight="Bold" Margin="0,6,0,0" />
+				<ItemsControl ItemsSource="{Binding Answers}">
+					<ItemsControl.ItemTemplate>
+						<DataTemplate>
+							<views:AnswerEditorView DataContext="{Binding}" />
+						</DataTemplate>
+					</ItemsControl.ItemTemplate>
+				</ItemsControl>
+				<Button Content="➕ Add Answer" Command="{Binding AddAnswerCommand}" Margin="0,4,0,0" />
+			</StackPanel>
+
+		</StackPanel>
+	</Border>
+</UserControl>

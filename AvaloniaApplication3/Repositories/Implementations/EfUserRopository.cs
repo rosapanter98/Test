@@ -20,6 +20,11 @@ namespace AvaloniaApplication3.Repositories
             return await _context.Users.FirstOrDefaultAsync(u => u.Username == username);
         }
 
+        public async Task<User?> GetUserByIdAsync(int id)
+        {
+            return await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+        }
+
         public async Task<IEnumerable<User>> GetAllUsersAsync()
         {
             return await _context.Users.ToListAsync();
@@ -31,6 +36,12 @@ namespace AvaloniaApplication3.Repositories
             await _context.SaveChangesAsync();
         }
 
+        public async Task UpdateUserAsync(User user)
+        {
+            _context.Users.Update(user);
+            await _context.SaveChangesAsync();
+        }
+
         public async Task DeleteUserAsync(string username)
         {
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Username == username);
@@ -39,12 +50,6 @@ namespace AvaloniaApplication3.Repositories
                 _context.Users.Remove(user);
                 await _context.SaveChangesAsync();
             }
-        }
-
-        public async Task UpdateUserAsync(User user)
-        {
-            _context.Users.Update(user);
-            await _context.SaveChangesAsync();
         }
     }
 }

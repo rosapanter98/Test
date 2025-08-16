@@ -1,0 +1,14 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:AvaloniaApplication3.ViewModels.Admin"
+             x:Class="AvaloniaApplication3.Views.Admin.AnswerEditorView"
+             x:DataType="vm:AnswerEditorViewModel">
+
+	<Border BorderBrush="LightGray" BorderThickness="1" CornerRadius="4" Padding="8" Margin="0,4,0,0">
+		<StackPanel Orientation="Horizontal" Spacing="10" VerticalAlignment="Center">
+			<CheckBox IsChecked="{Binding IsCorrect}" VerticalAlignment="Center" />
+			<TextBox Text="{Binding Text, Mode=TwoWay}" Width="300" Watermark="Answer text" />
+			<Button Content="✖" Command="{Binding RemoveSelfCommand}" Background="Red" Foreground="White" Width="28" Height="28" />
+		</StackPanel>
+	</Border>
+</UserControl>
