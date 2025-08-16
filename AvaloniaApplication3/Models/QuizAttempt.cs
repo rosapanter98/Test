@@ -1,6 +1,5 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+using System;
+using System.Collections.Generic;
 
 namespace AvaloniaApplication3.Models
 {
@@ -16,14 +15,15 @@ namespace AvaloniaApplication3.Models
 
         public TimeSpan? TimeTaken => CompletedAt.HasValue ? CompletedAt.Value - StartedAt : null;
 
-        // Foreign keys
+        // Foreign keys (for reporting/filtering)
         public int QuizId { get; set; }
         public int UserId { get; set; }
 
-        // Navigation
+        // Navigation to original (optional)
         public Quiz Quiz { get; set; } = null!;
         public User User { get; set; } = null!;
 
-
+        // Snapshot of all items in this attempt (immutable content)
+        public List<QuizAttemptItem> Items { get; set; } = new();
     }
 }

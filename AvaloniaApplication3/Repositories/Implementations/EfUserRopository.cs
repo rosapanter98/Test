@@ -1,4 +1,4 @@
-﻿using AvaloniaApplication3.Models;
+using AvaloniaApplication3.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;

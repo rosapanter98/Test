@@ -4,9 +4,9 @@ using Avalonia.Markup.Xaml;
 
 namespace AvaloniaApplication3.Views;
 
-public partial class ToDoItemView : UserControl
+public partial class AttemptsHistoryView : UserControl
 {
-    public ToDoItemView()
+    public AttemptsHistoryView()
     {
         InitializeComponent();
     }

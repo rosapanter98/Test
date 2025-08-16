@@ -18,38 +18,51 @@
                    FontWeight="Bold"
                    TextWrapping="Wrap" />
 
+		
+		
 		<!-- Options -->
-		<!-- SINGLE CHOICE -->
-		<ItemsControl ItemsSource="{Binding CurrentQuestion.Answers}"
-					  IsVisible="{Binding IsSingleChoice}">
+		<ItemsControl ItemsSource="{Binding CurrentAnswers}"
+              IsVisible="{Binding IsSingleChoice}">
 			<ItemsControl.ItemTemplate>
 				<DataTemplate>
-					<RadioButton Content="{Binding Text}"
-								 GroupName="SingleChoiceGroup"
-								 IsChecked="{Binding IsSelected, Mode=TwoWay}" />
+					<Border Padding="6" CornerRadius="4"
+							BorderThickness="{Binding DataContext.ShowFeedback, ElementName=Root, Converter={StaticResource BoolToThicknessConverter}}"
+							BorderBrush="{Binding IsCorrect, Converter={StaticResource CorrectAnswerBrushConverter}}">
+						<RadioButton Content="{Binding Text}"
+									 GroupName="SingleChoiceGroup"
+									 IsChecked="{Binding IsSelected, Mode=TwoWay}" />
+					</Border>
 				</DataTemplate>
 			</ItemsControl.ItemTemplate>
 		</ItemsControl>
 
 		<!-- MULTIPLE CHOICE -->
-		<ItemsControl ItemsSource="{Binding CurrentQuestion.Answers}"
+		<ItemsControl ItemsSource="{Binding CurrentAnswers}"
 					  IsVisible="{Binding IsMultipleChoice}">
 			<ItemsControl.ItemTemplate>
 				<DataTemplate>
-					<CheckBox Content="{Binding Text}"
-							  IsChecked="{Binding IsSelected, Mode=TwoWay}" />
+					<Border Padding="6" CornerRadius="4"
+							BorderThickness="{Binding DataContext.ShowFeedback, ElementName=Root, Converter={StaticResource BoolToThicknessConverter}}"
+							BorderBrush="{Binding IsCorrect, Converter={StaticResource CorrectAnswerBrushConverter}}">
+						<CheckBox Content="{Binding Text}"
+								  IsChecked="{Binding IsSelected, Mode=TwoWay}" />
+					</Border>
 				</DataTemplate>
 			</ItemsControl.ItemTemplate>
 		</ItemsControl>
 
 		<!-- TRUE/FALSE -->
-		<ItemsControl ItemsSource="{Binding CurrentQuestion.Answers}"
+		<ItemsControl ItemsSource="{Binding CurrentAnswers}"
 					  IsVisible="{Binding IsTrueFalse}">
 			<ItemsControl.ItemTemplate>
 				<DataTemplate>
-					<RadioButton Content="{Binding Text}"
-								 GroupName="TrueFalseGroup"
-								 IsChecked="{Binding IsSelected, Mode=TwoWay}" />
+					<Border Padding="6" CornerRadius="4"
+							BorderThickness="{Binding DataContext.ShowFeedback, ElementName=Root, Converter={StaticResource BoolToThicknessConverter}}"
+							BorderBrush="{Binding IsCorrect, Converter={StaticResource CorrectAnswerBrushConverter}}">
+						<RadioButton Content="{Binding Text}"
+									 GroupName="TrueFalseGroup"
+									 IsChecked="{Binding IsSelected, Mode=TwoWay}" />
+					</Border>
 				</DataTemplate>
 			</ItemsControl.ItemTemplate>
 		</ItemsControl>

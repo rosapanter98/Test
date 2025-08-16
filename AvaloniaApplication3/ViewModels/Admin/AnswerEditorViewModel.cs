@@ -1,54 +1,56 @@
-﻿using AvaloniaApplication3.Models;
+using System;
+using AvaloniaApplication3.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System;
 
 namespace AvaloniaApplication3.ViewModels.Admin
 {
-    using CommunityToolkit.Mvvm.ComponentModel;
-    using CommunityToolkit.Mvvm.Input;
-
     public partial class AnswerEditorViewModel : ViewModelBase
     {
-        // When Answer changes, also raise PC for Text and IsCorrect
+        // Model
         [ObservableProperty]
-        [NotifyPropertyChangedFor(nameof(Text))]
-        [NotifyPropertyChangedFor(nameof(IsCorrect))]
         private Answer answer;
 
+        // Bindable proxy properties (toolkit notifies automatically)
+        [ObservableProperty]
+        private string text = string.Empty;
+
+        [ObservableProperty]
+        private bool isCorrect;
+
+        // Callback for parent to remove this VM
         public Action<AnswerEditorViewModel>? RemoveRequested { get; set; }
 
         public AnswerEditorViewModel(Answer answer)
         {
-            this.answer = answer;
+            Answer = answer ?? throw new ArgumentNullException(nameof(answer));
+            // Initialize proxies from model
+            text = Answer.Text;
+            isCorrect = Answer.IsCorrect;
         }
 
-        // Generated IRelayCommand RemoveSelfCommand
+        // Keep proxies -> model
+        partial void OnTextChanged(string value)
+        {
+            if (Answer.Text != value)
+                Answer.Text = value;
+        }
+
+        partial void OnIsCorrectChanged(bool value)
+        {
+            if (Answer.IsCorrect != value)
+                Answer.IsCorrect = value;
+        }
+
+        // If the model instance is swapped, resync proxies
+        partial void OnAnswerChanged(Answer value)
+        {
+            Text = value?.Text ?? string.Empty;
+            IsCorrect = value?.IsCorrect ?? false;
+        }
+
+        // Command (generated: RemoveSelfCommand)
         [RelayCommand]
         private void RemoveSelf() => RemoveRequested?.Invoke(this);
-
-        // Proxy properties to a non-notifying model
-        public string Text
-        {
-            get => Answer.Text;
-            set
-            {
-                if (Answer.Text == value) return;
-                Answer.Text = value;
-                OnPropertyChanged(); // nameof(Text)
-            }
-        }
-
-        public bool IsCorrect
-        {
-            get => Answer.IsCorrect;
-            set
-            {
-                if (Answer.IsCorrect == value) return;
-                Answer.IsCorrect = value;
-                OnPropertyChanged(); // nameof(IsCorrect)
-            }
-        }
     }
-
 }

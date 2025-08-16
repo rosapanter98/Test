@@ -1,5 +1,4 @@
-﻿using AvaloniaApplication3.Models;
-using AvaloniaApplication3.Repositories;
+using AvaloniaApplication3.Models;
 using AvaloniaApplication3.Services;
 using AvaloniaApplication3.ViewModels.Admin;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -9,153 +8,97 @@ namespace AvaloniaApplication3.ViewModels
 {
     public partial class MainWindowViewModel : ViewModelBase
     {
-        [ObservableProperty]
-        private object? currentView;
+        [ObservableProperty] private object? currentView;
+        [ObservableProperty] private bool isLoggedIn;
+        [ObservableProperty] private string? displayUsername;
+        [ObservableProperty] private User? currentUser;
 
-        [ObservableProperty]
-        private bool isLoggedIn;
+        public bool CanAccessAdminPanel => IsLoggedIn && CurrentUser?.Role >= UserRole.Moderator;
 
-        [ObservableProperty]
-        private string? displayUsername;
-
-        [ObservableProperty]
-        private User? currentUser;
-
-        public bool CanAccessAdminPanel =>
-         IsLoggedIn && CurrentUser != null && CurrentUser.Role >= UserRole.Moderator;
-
-
-
-        private ToDoListViewModel? _toDoList;
+        private readonly ISessionService _session;
         private readonly ILoginService _loginService;
         private readonly IQuizService _quizService;
-        private readonly QuizSelectionViewModel _quizSelectionViewModel;
-        private AdminPanelViewModel? _adminPanelViewModel;
+        private readonly IQuizAttemptService _quizAttemptService;
 
-        public MainWindowViewModel()
+        private AdminPanelViewModel? _adminVm;
+        private QuizSessionViewModel? _quizSessionVm;
+
+        public MainWindowViewModel(
+            ISessionService session,
+            ILoginService loginService,
+            IQuizService quizService,
+            IQuizAttemptService quizAttemptService)
         {
-            var userRepo = new EfUserRepository(new AppDbContext());
-            _loginService = new LoginService(userRepo);
+            _session = session;
+            _loginService = loginService;
+            _quizService = quizService;
+            _quizAttemptService = quizAttemptService;
 
-            var quizRepo = new EfQuizRepository(new AppDbContext());
-            _quizService = new QuizService(quizRepo);
-
-            _quizSelectionViewModel = new QuizSelectionViewModel(_quizService, ShowQuizRunner);
+            _session.LoggedIn += OnLoggedIn;
+            _session.LoggedOut += OnLoggedOut;
 
             ShowLogin();
         }
 
-        [RelayCommand(CanExecute = nameof(NotLoggedIn))]
-        private void ShowRegister()
-        {
-            CurrentView = new RegisterViewModel(_loginService, OnRegisterSuccess, ShowLogin);
-        }
-
-        private void OnRegisterSuccess()
-        {
-            ShowLogin();
-        }
-
-        public bool NotLoggedIn => !IsLoggedIn;
-
+        [RelayCommand]
         private void ShowLogin()
         {
-            CurrentView = new LoginViewModel(_loginService, OnLoginSuccess);
+            CurrentView = new LoginViewModel(_loginService, _session.CompleteLogin);
             IsLoggedIn = false;
             DisplayUsername = null;
             CurrentUser = null;
-            _adminPanelViewModel = null;
+            _adminVm = null;
+            _quizSessionVm = null;
         }
 
-        private void OnLoginSuccess(User user)
+        [RelayCommand]
+        private void ShowRegister()
         {
-            CurrentUser = user;
-            IsLoggedIn = true;
-            DisplayUsername = $"Logged in as: {user.DisplayName} ({user.Username})";
+            CurrentView = new RegisterViewModel(
+                _loginService,
+                onRegisterSuccess: () => CurrentView = new LoginViewModel(_loginService, _session.CompleteLogin),
+                onBack: ShowLogin);
 
-            var todoRepo = new JsonToDoRepository();
-            _toDoList = new ToDoListViewModel(user.Username, SwitchToItemView, todoRepo);
-
-            if (user.Role is UserRole.Admin or UserRole.Moderator)
-                _adminPanelViewModel = new AdminPanelViewModel(user);
-
-            CurrentView = _toDoList;
-            UpdateCommands();
-        }
-
-        [RelayCommand(CanExecute = nameof(IsLoggedIn))]
-        private void ShowToDoList()
-        {
-            if (_toDoList is not null)
-                CurrentView = _toDoList;
-        }
-
-        [RelayCommand(CanExecute = nameof(IsLoggedIn))]
-        private void GoHome()
-        {
-            CurrentView = new MainPageViewModel();
         }
 
         [RelayCommand(CanExecute = nameof(IsLoggedIn))]
         private void ShowQuiz()
         {
-            CurrentView = _quizSelectionViewModel;
-        }
-
-        private void ShowQuizRunner(Quiz quiz)
-        {
-            CurrentView = new QuizRunnerViewModel(quiz, ShowQuizResults);
-        }
-
-        private void ShowQuizResults(string title, int score, int totalQuestions)
-        {
-            CurrentView = new QuizResultsViewModel(score, totalQuestions, title, () =>
-            {
-                CurrentView = _quizSelectionViewModel;
-            });
-        }
-
-        [RelayCommand(CanExecute = nameof(IsLoggedIn))]
-        private void Logout()
-        {
-            CurrentUser = null;
-            _toDoList = null;
-            ShowLogin();
-            UpdateCommands();
+            // Create (or reuse) the session root for quiz area
+            _quizSessionVm ??= new QuizSessionViewModel(CurrentUser!, _quizService, _quizAttemptService);
+            CurrentView = _quizSessionVm;
         }
 
         [RelayCommand(CanExecute = nameof(CanAccessAdminPanel))]
         private void ShowAdminPanel()
         {
-            if (_adminPanelViewModel != null)
-                CurrentView = _adminPanelViewModel;
+            if (_adminVm != null) CurrentView = _adminVm;
         }
 
-        private void SwitchToItemView(ToDoItemViewModel item)
-        {
-            _toDoList?.PrepareItem(item, view => CurrentView = view);
-            CurrentView = item;
-        }
+        [RelayCommand(CanExecute = nameof(IsLoggedIn))]
+        private void Logout() => _session.Logout();
 
-        partial void OnCurrentUserChanged(User? value)
+        private void OnLoggedIn(User user)
         {
+            CurrentUser = user;
+            IsLoggedIn = true;
+            DisplayUsername = $"Logged in as: {user.DisplayName} ({user.Username})";
+
+            if (user.Role is UserRole.Admin or UserRole.Moderator)
+                _adminVm = new AdminPanelViewModel(user);
+
+            // Optionally land on Quiz immediately; otherwise keep login and let user click "Quiz"
+            // ShowQuiz();
+
+            NotifyAllCanExecuteChanged();
             OnPropertyChanged(nameof(CanAccessAdminPanel));
         }
 
-        partial void OnIsLoggedInChanged(bool value)
+        private void OnLoggedOut()
         {
+            ShowLogin();
+            NotifyAllCanExecuteChanged();
             OnPropertyChanged(nameof(CanAccessAdminPanel));
-        }
-
-
-
-        private void UpdateCommands()
-        {
-            ShowToDoListCommand.NotifyCanExecuteChanged();
-            GoHomeCommand.NotifyCanExecuteChanged();
-            LogoutCommand.NotifyCanExecuteChanged();
-            ShowQuizCommand.NotifyCanExecuteChanged();
-            ShowAdminPanelCommand.NotifyCanExecuteChanged();
         }
     }
 }

@@ -26,12 +26,6 @@ namespace AvaloniaApplication3.Migrations
                     b.Property<bool>("IsCorrect")
                         .HasColumnType("INTEGER");
 
-                    b.Property<bool>("IsSelected")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<bool?>("IsUserCorrect")
-                        .HasColumnType("INTEGER");
-
                     b.Property<int>("QuestionId")
                         .HasColumnType("INTEGER");
 
@@ -83,6 +77,7 @@ namespace AvaloniaApplication3.Migrations
 
                     b.Property<string>("Title")
                         .IsRequired()
+                        .HasMaxLength(200)
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -118,9 +113,73 @@ namespace AvaloniaApplication3.Migrations
 
                     b.HasIndex("QuizId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId", "StartedAt");
 
                     b.ToTable("QuizAttempts");
+                });
+
+            modelBuilder.Entity("AvaloniaApplication3.Models.QuizAttemptItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsCorrect")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("OrderIndex")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("QuestionId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("QuestionText")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("QuestionType")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("QuizAttemptId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("Submitted")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("QuizAttemptId");
+
+                    b.ToTable("QuizAttemptItems");
+                });
+
+            modelBuilder.Entity("AvaloniaApplication3.Models.QuizAttemptItemAnswer", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("AnswerId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsCorrect")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsSelected")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("QuizAttemptItemId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("QuizAttemptItemId");
+
+                    b.ToTable("QuizAttemptItemAnswers");
                 });
 
             modelBuilder.Entity("AvaloniaApplication3.Models.User", b =>
@@ -152,9 +211,6 @@ namespace AvaloniaApplication3.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("Username")
-                        .IsUnique();
 
                     b.ToTable("Users");
                 });
@@ -200,6 +256,28 @@ namespace AvaloniaApplication3.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("AvaloniaApplication3.Models.QuizAttemptItem", b =>
+                {
+                    b.HasOne("AvaloniaApplication3.Models.QuizAttempt", "QuizAttempt")
+                        .WithMany("Items")
+                        .HasForeignKey("QuizAttemptId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("QuizAttempt");
+                });
+
+            modelBuilder.Entity("AvaloniaApplication3.Models.QuizAttemptItemAnswer", b =>
+                {
+                    b.HasOne("AvaloniaApplication3.Models.QuizAttemptItem", "QuizAttemptItem")
+                        .WithMany("Answers")
+                        .HasForeignKey("QuizAttemptItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("QuizAttemptItem");
+                });
+
             modelBuilder.Entity("AvaloniaApplication3.Models.Question", b =>
                 {
                     b.Navigation("Answers");
@@ -210,6 +288,16 @@ namespace AvaloniaApplication3.Migrations
                     b.Navigation("Attempts");
 
                     b.Navigation("Questions");
+                });
+
+            modelBuilder.Entity("AvaloniaApplication3.Models.QuizAttempt", b =>
+                {
+                    b.Navigation("Items");
+                });
+
+            modelBuilder.Entity("AvaloniaApplication3.Models.QuizAttemptItem", b =>
+                {
+                    b.Navigation("Answers");
                 });
 #pragma warning restore 612, 618
         }

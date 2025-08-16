@@ -16,8 +16,6 @@
 
 				<TextBlock Text="Quiz App" Foreground="White" FontWeight="Bold" FontSize="18" VerticalAlignment="Center" />
 
-				<Button Content="Home" Command="{Binding GoHomeCommand}" IsEnabled="{Binding IsLoggedIn}" />
-				<Button Content="ToDo" Command="{Binding ShowToDoListCommand}" IsEnabled="{Binding IsLoggedIn}" />
 				<Button Content="Quiz" Command="{Binding ShowQuizCommand}" IsEnabled="{Binding IsLoggedIn}" />
 				
 

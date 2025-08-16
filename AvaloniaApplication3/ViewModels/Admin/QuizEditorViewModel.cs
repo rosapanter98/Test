@@ -1,4 +1,4 @@
-﻿using AvaloniaApplication3.Models;
+using AvaloniaApplication3.Models;
 using AvaloniaApplication3.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -12,17 +12,11 @@ namespace AvaloniaApplication3.ViewModels.Admin
 {
     public partial class QuizEditorViewModel : ViewModelBase
     {
-        [ObservableProperty]
-        private Quiz quiz;
+        [ObservableProperty] private Quiz quiz;
 
-        [ObservableProperty]
-        private ObservableCollection<QuestionEditorViewModel> questions;
+        [ObservableProperty] private ObservableCollection<QuestionEditorViewModel> questions;
 
         private readonly IQuizService _quizService;
-
-        public IRelayCommand AddQuestionCommand { get; }
-        public IRelayCommand SaveQuizCommand { get; }
-        public IRelayCommand<QuestionEditorViewModel> RemoveQuestionCommand { get; }
 
         public delegate void QuizRemovedCallback(QuizEditorViewModel vm);
         public QuizRemovedCallback? RemoveRequested { get; set; }
@@ -32,22 +26,20 @@ namespace AvaloniaApplication3.ViewModels.Admin
             _quizService = quizService;
             Quiz = quiz;
 
-            if (quiz.Questions == null)
-                quiz.Questions = new List<Question>();
+            quiz.Questions ??= new List<Question>();
 
             Questions = new ObservableCollection<QuestionEditorViewModel>(
                 quiz.Questions.Select(q =>
                 {
-                    var questionViewModel = new QuestionEditorViewModel(q);
-                    questionViewModel.RemoveRequested = RemoveQuestion;
-                    return questionViewModel;
+                    var vm = new QuestionEditorViewModel(q);
+                    vm.RemoveRequested = RemoveQuestion;
+                    return vm;
                 }));
 
-            AddQuestionCommand = new RelayCommand(AddQuestion);
-            SaveQuizCommand = new AsyncRelayCommand(SaveQuizAsync);
-            RemoveQuestionCommand = new RelayCommand<QuestionEditorViewModel>(RemoveQuestion);
+
         }
 
+        [RelayCommand]
         private void AddQuestion()
         {
             var newQuestion = new Question
@@ -65,6 +57,7 @@ namespace AvaloniaApplication3.ViewModels.Admin
             Quiz.Questions.Add(newQuestion);
         }
 
+        [RelayCommand]
         public void RemoveQuestion(QuestionEditorViewModel? questionVm)
         {
             if (questionVm == null) return;
@@ -73,6 +66,7 @@ namespace AvaloniaApplication3.ViewModels.Admin
             Quiz.Questions.Remove(questionVm.Question);
         }
 
+        [RelayCommand]
         public async Task SaveQuizAsync()
         {
             await _quizService.UpdateQuizAsync(Quiz);

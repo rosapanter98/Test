@@ -1,64 +1,64 @@
-ï»¿using AvaloniaApplication3.Models;
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
+using System.Threading.Tasks;
+using AvaloniaApplication3.Models;
+using AvaloniaApplication3.Services;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 
 namespace AvaloniaApplication3.ViewModels
 {
     public partial class QuizRunnerViewModel : ViewModelBase
     {
+        private readonly User _user;
         private readonly Quiz _quiz;
+        private readonly IQuizAttemptService _attempts;
         private readonly Action<string, int, int> _onQuizCompleted;
+
         private readonly List<Question> _questionList;
+        private QuizAttempt _attempt = null!;
         private int _currentIndex = 0;
         private int _score = 0;
 
-        [ObservableProperty]
-        private Question currentQuestion = null!;
+        [ObservableProperty] private Question currentQuestion = null!;
+        [ObservableProperty] private bool showFeedback;
+        [ObservableProperty] private string? feedbackText;
+        [ObservableProperty] private bool quizCompleted;
+        [ObservableProperty] private bool isTrueFalse, isMultipleChoice, isSingleChoice;
+        [ObservableProperty] private bool? lastAnswerCorrect;
 
-        [ObservableProperty]
-        private bool showFeedback;
+        public ObservableCollection<AnswerOptionViewModel> CurrentAnswers { get; } = new();
 
-        [ObservableProperty]
-        private string? feedbackText;
-
-        [ObservableProperty]
-        private bool quizCompleted;
-
-        [ObservableProperty]
-        private bool isSingleChoice;
-
-        [ObservableProperty]
-        private bool isMultipleChoice;
-
-        [ObservableProperty]
-        private bool isTrueFalse;
-
-        [ObservableProperty]
-        private bool lastAnswerCorrect;
-
-        public int TotalQuestions => _quiz.Questions.Count;
+        public int TotalQuestions => _questionList.Count;
         public int CurrentIndex => _currentIndex + 1;
         public int Score => _score;
         public int TotalCorrect => _score;
         public string? Explanation => FeedbackText;
 
-        public bool CanSubmitAnswer => !ShowFeedback;
+        public bool CanSubmitAnswer => !ShowFeedback && CurrentAnswers.Any(a => a.IsSelected);
         public bool CanGoNext => ShowFeedback && !QuizCompleted;
 
-        public IRelayCommand SubmitCommand { get; }
-        public IRelayCommand NextCommand { get; }
-
-        public QuizRunnerViewModel(Quiz quiz, Action<string, int, int> onQuizCompleted)
+        public QuizRunnerViewModel(
+            User user,
+            Quiz quiz,
+            Action<string, int, int> onQuizCompleted,
+            IQuizAttemptService attempts)
         {
+            _user = user ?? throw new ArgumentNullException(nameof(user));
             _quiz = quiz ?? throw new ArgumentNullException(nameof(quiz));
+            _attempts = attempts ?? throw new ArgumentNullException(nameof(attempts));
             _onQuizCompleted = onQuizCompleted;
+
+            // NOTE: later you can randomize/take N here before starting the attempt
             _questionList = _quiz.Questions.ToList();
 
-            SubmitCommand = new RelayCommand(Submit, () => CanSubmitAnswer);
-            NextCommand = new RelayCommand(Next, () => CanGoNext);
+            // start persisted attempt (snapshot)
+            _attempt = _attempts
+                .StartAttemptAsync(_user, _quiz, _questionList)
+                .GetAwaiter().GetResult();
 
             LoadQuestion();
         }
@@ -69,11 +69,16 @@ namespace AvaloniaApplication3.ViewModels
                 throw new InvalidOperationException("Quiz has no questions.");
 
             CurrentQuestion = _questionList[_currentIndex];
+
             ShowFeedback = false;
             FeedbackText = null;
+            LastAnswerCorrect = null;
 
-            foreach (var answer in CurrentQuestion.Answers)
-                answer.IsSelected = false;
+            UnwireAnswerSelectionChanged();
+            CurrentAnswers.Clear();
+            foreach (var vm in QuizLogic.BuildAnswerVMs(CurrentQuestion))
+                CurrentAnswers.Add(vm);
+            WireAnswerSelectionChanged();
 
             IsSingleChoice = CurrentQuestion.Type == QuestionType.SingleChoice;
             IsMultipleChoice = CurrentQuestion.Type == QuestionType.MultipleChoice;
@@ -83,53 +88,66 @@ namespace AvaloniaApplication3.ViewModels
             NextCommand.NotifyCanExecuteChanged();
         }
 
+        private void WireAnswerSelectionChanged()
+        {
+            foreach (var vm in CurrentAnswers)
+                vm.PropertyChanged += Answer_PropertyChanged;
+        }
+
+        private void UnwireAnswerSelectionChanged()
+        {
+            foreach (var vm in CurrentAnswers)
+                vm.PropertyChanged -= Answer_PropertyChanged;
+        }
+
+        private void Answer_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(AnswerOptionViewModel.IsSelected))
+            {
+                if (IsSingleChoice || IsTrueFalse)
+                    QuizLogic.EnforceSingleChoice(CurrentAnswers, (AnswerOptionViewModel)sender!);
+
+                SubmitCommand.NotifyCanExecuteChanged();
+            }
+        }
+
         partial void OnShowFeedbackChanged(bool value)
         {
             SubmitCommand.NotifyCanExecuteChanged();
             NextCommand.NotifyCanExecuteChanged();
         }
 
-        private void Submit()
+        // Persist the current item’s selection, then show feedback
+        [RelayCommand(CanExecute = nameof(CanSubmitAnswer))]
+        private async Task Submit()
         {
-            Console.WriteLine($"[DEBUG] Answers count: {CurrentQuestion.Answers.Count()}");
-            foreach (var a in CurrentQuestion.Answers)
-                Console.WriteLine($"[DEBUG] Answer ID {a.Id} | IsSelected={a.IsSelected}");
+            var (isCorrect, selectedIds, _) = QuizLogic.Evaluate(CurrentAnswers);
 
-            var selectedIds = CurrentQuestion.Answers
-                .Where(a => a.IsSelected)
-                .Select(a => a.Id)
-                .ToHashSet();
+            // persist this item’s selection
+            var item = _attempt.Items[_currentIndex];
+            await _attempts.SubmitItemAsync(item.Id, selectedIds);
 
-            var correctIds = CurrentQuestion.Answers
-                .Where(a => a.IsCorrect)
-                .Select(a => a.Id)
-                .ToHashSet();
-
-            var isCorrect = selectedIds.SetEquals(correctIds);
-            if (isCorrect)
-                _score++;
-
+            if (isCorrect) _score++;
             LastAnswerCorrect = isCorrect;
 
-            foreach (var answer in CurrentQuestion.Answers)
-            {
-                answer.IsUserCorrect = selectedIds.Contains(answer.Id) ? answer.IsCorrect : null;
-            }
-
-            FeedbackText = isCorrect
-                ? "Correct!"
-                : $"Wrong. Correct answer(s): {string.Join(", ", CurrentQuestion.Answers.Where(a => a.IsCorrect).Select(a => a.Text))}";
-
+            QuizLogic.ApplyPerAnswerFeedback(CurrentAnswers);
+            FeedbackText = QuizLogic.BuildFeedbackText(CurrentQuestion, isCorrect);
             ShowFeedback = true;
         }
 
-        private void Next()
+        // Next question; on last, complete the attempt and invoke callback
+        [RelayCommand(CanExecute = nameof(CanGoNext))]
+        private async Task Next()
         {
             _currentIndex++;
             if (_currentIndex >= _questionList.Count)
             {
+                var completed = await _attempts.CompleteAttemptAsync(_attempt.Id);
                 QuizCompleted = true;
-                _onQuizCompleted.Invoke(_quiz.Title, _score, _quiz.Questions.Count);
+
+                // keep your existing signature for now
+                _onQuizCompleted.Invoke(_quiz.Title, _score, _questionList.Count);
+                // (Optionally pass completed.Id to results VM later if you want to reload)
             }
             else
             {

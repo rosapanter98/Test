@@ -1,8 +1,23 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="AvaloniaApplication3.Views.QuizSessionView">
-  Welcome to Avalonia!
+             xmlns:vm="clr-namespace:AvaloniaApplication3.ViewModels"
+             xmlns:views="clr-namespace:AvaloniaApplication3.Views"
+             x:Class="AvaloniaApplication3.Views.QuizSessionView"
+             x:DataType="vm:QuizSessionViewModel">
+
+	<Grid ColumnDefinitions="380,16,*" RowDefinitions="Auto,*" Margin="16">
+
+		<!-- Left: quiz selection -->
+		<TextBlock Grid.Column="0" Text="Quizzes" FontWeight="Bold"/>
+		<!-- Use your existing QuizSelectionView; bind its DataContext to the VM -->
+		<views:QuizSelectionView Grid.Row="1" Grid.Column="0" DataContext="{Binding Selection}"/>
+
+		<!-- Right: attempts history -->
+		<TextBlock Grid.Column="2" Text="Attempts" FontWeight="Bold"/>
+		<views:AttemptsHistoryView Grid.Row="1" Grid.Column="2" DataContext="{Binding History}"/>
+
+		<!-- Optional overlay area for runner/results on the right. Null content renders nothing. -->
+		<ContentControl Grid.RowSpan="2" Grid.Column="2" Content="{Binding CurrentRightPane}"/>
+
+	</Grid>
 </UserControl>

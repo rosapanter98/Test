@@ -1,4 +1,4 @@
-﻿using AvaloniaApplication3.Models;
+using AvaloniaApplication3.Models;
 using AvaloniaApplication3.Repositories;
 using AvaloniaApplication3.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
