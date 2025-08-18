@@ -26,6 +26,7 @@
                             IsVisible="{Binding IsLoggedIn, Converter={StaticResource InverseBoolConverter}}" />
 					<TextBlock Text="{Binding DisplayUsername}" Foreground="White" VerticalAlignment="Center" />
 					<Button Content="Logout" Command="{Binding LogoutCommand}" IsVisible="{Binding IsLoggedIn}" />
+				
 				</StackPanel>
 
 				<Button Content="Admin Panel"

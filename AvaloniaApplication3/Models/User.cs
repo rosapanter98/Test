@@ -1,4 +1,5 @@
-﻿using System;
+using AvaloniaApplication3.Models.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,12 +7,7 @@ using System.Threading.Tasks;
 
 namespace AvaloniaApplication3.Models
 {
-    public enum UserRole
-    {
-        Member = 0,
-        Moderator = 1,
-        Admin = 2
-    }
+    
 
     public class User
     {

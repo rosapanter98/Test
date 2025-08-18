@@ -1,4 +1,5 @@
-﻿using AvaloniaApplication3.Models;
+using AvaloniaApplication3.Models;
+using AvaloniaApplication3.Models.Enums;
 using AvaloniaApplication3.Repositories;
 using AvaloniaApplication3.Security;
 using System.Threading.Tasks;

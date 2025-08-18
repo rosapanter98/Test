@@ -17,9 +17,21 @@
 		<converters:RoleToBoolConverter x:Key="RoleToBoolConverter"/>
 		<converters:CorrectAnswerBrushConverter x:Key="CorrectAnswerBrushConverter"/>
 		<converters:BoolToThicknessConverter x:Key="BoolToThicknessConverter"/>
+		<converters:ElapsedConverter x:Key="ElapsedConverter"/>
+		<converters:AnswerOutlineConverter x:Key="AnswerOutlineConverter"/>
 	</Application.Resources>
-  
-    <Application.Styles>
+
+	<Application.Resources>
+		<converters:BoolToResultTextConverter x:Key="BoolToResultTextConverter"/>
+		<converters:BoolToResultBrushConverter x:Key="BoolToResultBrushConverter"/>
+		<converters:SelectedAnswerOutlineConverter x:Key="SelectedAnswerOutlineConverter"/>
+		<converters:AnswerMarkConverter x:Key="AnswerMarkConverter"/>
+		<converters:AnswerCorrectBrushConverter x:Key="AnswerCorrectBrushConverter"/>
+		<converters:SelectedMarkConverter x:Key="SelectedMarkConverter"/>
+	</Application.Resources>
+
+
+	<Application.Styles>
         <FluentTheme />
     </Application.Styles>
 </Application>

@@ -6,18 +6,12 @@
              x:DataType="vm:QuizSessionViewModel">
 
 	<Grid ColumnDefinitions="380,16,*" RowDefinitions="Auto,*" Margin="16">
-
-		<!-- Left: quiz selection -->
+		<!-- Left: selection -->
 		<TextBlock Grid.Column="0" Text="Quizzes" FontWeight="Bold"/>
-		<!-- Use your existing QuizSelectionView; bind its DataContext to the VM -->
 		<views:QuizSelectionView Grid.Row="1" Grid.Column="0" DataContext="{Binding Selection}"/>
 
-		<!-- Right: attempts history -->
+		<!-- Right: attempts -->
 		<TextBlock Grid.Column="2" Text="Attempts" FontWeight="Bold"/>
 		<views:AttemptsHistoryView Grid.Row="1" Grid.Column="2" DataContext="{Binding History}"/>
-
-		<!-- Optional overlay area for runner/results on the right. Null content renders nothing. -->
-		<ContentControl Grid.RowSpan="2" Grid.Column="2" Content="{Binding CurrentRightPane}"/>
-
 	</Grid>
 </UserControl>

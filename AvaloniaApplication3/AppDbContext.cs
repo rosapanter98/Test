@@ -72,6 +72,14 @@ namespace AvaloniaApplication3
             {
                 e.Property(x => x.Text).IsRequired();
             });
+
+            b.Entity<QuizAttempt>(e =>
+            {
+                e.Property(x => x.Status).IsRequired();
+                e.Property(x => x.CurrentIndex).HasDefaultValue(0);
+                e.HasIndex(x => new { x.UserId, x.QuizId, x.Status }); // quick lookup for resumes
+            });
+
         }
     }
 }

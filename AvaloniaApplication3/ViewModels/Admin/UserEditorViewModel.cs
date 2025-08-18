@@ -1,4 +1,5 @@
-﻿using AvaloniaApplication3.Models;
+using AvaloniaApplication3.Models;
+using AvaloniaApplication3.Models.Enums;
 using AvaloniaApplication3.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;

@@ -1,9 +1,11 @@
+using AvaloniaApplication3.Models;
+using AvaloniaApplication3.Models.Enums;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using AvaloniaApplication3.Models;
-using Microsoft.EntityFrameworkCore;
 
 namespace AvaloniaApplication3.Repositories
 {
@@ -56,6 +58,7 @@ namespace AvaloniaApplication3.Repositories
 
         public async Task<QuizAttempt?> GetAttemptAsync(int attemptId, bool includeItems, CancellationToken ct = default)
         {
+            Console.WriteLine($"[DB] Fetching at{attemptId}, includeItems={includeItems}");
             IQueryable<QuizAttempt> q = _context.QuizAttempts;
             if (includeItems)
                 q = q.Include(a => a.Items).ThenInclude(i => i.Answers);
@@ -71,5 +74,28 @@ namespace AvaloniaApplication3.Repositories
                 .OrderByDescending(a => a.CompletedAt ?? a.StartedAt)
                 .ToListAsync();
         }
+        public async Task DeleteAttemptAsync(int id, CancellationToken ct = default)
+        {
+            var entity = await _context.QuizAttempts.FindAsync(new object[] { id }, ct);
+            if (entity is null) return;                // already gone / wrong id
+            _context.QuizAttempts.Remove(entity);
+            await _context.SaveChangesAsync(ct);
+        }
+
+        public async Task<QuizAttempt?> GetInProgressAttemptAsync(int userId, int quizId)
+    => await _context.QuizAttempts
+        .Include(a => a.Items).ThenInclude(i => i.Answers)
+        .FirstOrDefaultAsync(a => a.UserId == userId && a.QuizId == quizId && a.Status == AttemptStatus.InProgress);
+
+        public async Task<QuizAttempt?> StartAttemptAsync(QuizAttempt attempt)
+        {
+            _context.QuizAttempts.Add(attempt);
+            await _context.SaveChangesAsync();
+            return attempt;
+        }
+
+        public Task SaveAsync() => _context.SaveChangesAsync();
+
+
     }
 }

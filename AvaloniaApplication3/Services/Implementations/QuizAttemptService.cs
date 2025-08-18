@@ -62,5 +62,10 @@ namespace AvaloniaApplication3.Services
 
         public Task<List<QuizAttempt>> GetAttemptsByUserAsync(int userId, CancellationToken ct = default)
             => _repo.GetAttemptsByUserIdAsync(userId, ct);
+
+        public Task DeleteAttemptAsync(int attemptId, CancellationToken ct = default)
+        => _repo.DeleteAttemptAsync(attemptId);
+
+
     }
 }

@@ -1,3 +1,4 @@
+using AvaloniaApplication3.Models.Enums;
 using System;
 using System.Collections.Generic;
 
@@ -14,6 +15,9 @@ namespace AvaloniaApplication3.Models
         public int CorrectAnswers { get; set; }
 
         public TimeSpan? TimeTaken => CompletedAt.HasValue ? CompletedAt.Value - StartedAt : null;
+
+        public int CurrentIndex { get; set; }          // 0-based index into Items
+        public AttemptStatus Status { get; set; } = AttemptStatus.InProgress;
 
         // Foreign keys (for reporting/filtering)
         public int QuizId { get; set; }

@@ -1,7 +1,8 @@
-﻿using System;
+using System;
 using System.Globalization;
 using Avalonia.Data.Converters;
 using AvaloniaApplication3.Models;
+using AvaloniaApplication3.Models.Enums;
 
 namespace AvaloniaApplication3.Converters
 {

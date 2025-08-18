@@ -1,4 +1,5 @@
 using AvaloniaApplication3.Models;
+using AvaloniaApplication3.Models.Enums;
 using AvaloniaApplication3.Services;
 using AvaloniaApplication3.ViewModels.Admin;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -19,6 +20,7 @@ namespace AvaloniaApplication3.ViewModels
         private readonly ILoginService _loginService;
         private readonly IQuizService _quizService;
         private readonly IQuizAttemptService _quizAttemptService;
+
 
         private AdminPanelViewModel? _adminVm;
         private QuizSessionViewModel? _quizSessionVm;
@@ -64,10 +66,28 @@ namespace AvaloniaApplication3.ViewModels
         [RelayCommand(CanExecute = nameof(IsLoggedIn))]
         private void ShowQuiz()
         {
-            // Create (or reuse) the session root for quiz area
-            _quizSessionVm ??= new QuizSessionViewModel(CurrentUser!, _quizService, _quizAttemptService);
+            _quizSessionVm ??= new QuizSessionViewModel(
+                CurrentUser!, _quizService, _quizAttemptService, StartQuizFromSession);
             CurrentView = _quizSessionVm;
         }
+
+        private void StartQuizFromSession(Quiz quiz)
+        {
+            CurrentView = new QuizRunnerViewModel(
+                CurrentUser!, quiz, OnQuizCompleted, _quizAttemptService);
+        }
+
+        private void OnQuizCompleted(string title, int score, int total)
+        {
+            CurrentView = new QuizResultsViewModel(
+                score, total, title,
+                onReturn: () =>
+                {
+                    ShowQuiz();
+                    _ = _quizSessionVm?.History.RefreshAsync();
+                });
+        }
+
 
         [RelayCommand(CanExecute = nameof(CanAccessAdminPanel))]
         private void ShowAdminPanel()
@@ -88,7 +108,7 @@ namespace AvaloniaApplication3.ViewModels
                 _adminVm = new AdminPanelViewModel(user);
 
             // Optionally land on Quiz immediately; otherwise keep login and let user click "Quiz"
-            // ShowQuiz();
+            ShowQuiz();
 
             NotifyAllCanExecuteChanged();
             OnPropertyChanged(nameof(CanAccessAdminPanel));

@@ -15,5 +15,9 @@ namespace AvaloniaApplication3.Repositories
 
         Task<QuizAttempt?> GetAttemptAsync(int attemptId, bool includeItems, CancellationToken ct = default);
         Task<List<QuizAttempt>> GetAttemptsByUserIdAsync(int userId, CancellationToken ct = default);
+        Task DeleteAttemptAsync(int id, CancellationToken ct = default);
+
+        Task<QuizAttempt?> GetInProgressAttemptAsync(int userId, int quizId);
+        Task SaveAsync();
     }
 }
