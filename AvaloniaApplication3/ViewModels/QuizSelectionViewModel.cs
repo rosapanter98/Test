@@ -1,11 +1,12 @@
-﻿using AvaloniaApplication3.Models;
+using Avalonia.Threading;
+using AvaloniaApplication3.Models;
 using AvaloniaApplication3.Services;
+using AvaloniaApplication3.Utility;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
-using System.Windows.Input;
 
 namespace AvaloniaApplication3.ViewModels
 {
@@ -15,64 +16,55 @@ namespace AvaloniaApplication3.ViewModels
         private readonly Action<Quiz> _onQuizSelected;
 
         [ObservableProperty]
-        private ObservableCollection<Quiz> _quizzes = new();
+        private ObservableCollection<Quiz> quizzes = new();
 
         [ObservableProperty]
-        private Quiz? _selectedQuiz;
-
-        public ICommand StartQuizCommand { get; }
+        private Quiz? selectedQuiz;
 
         public QuizSelectionViewModel(IQuizService quizService, Action<Quiz> onQuizSelected)
         {
             _quizService = quizService;
             _onQuizSelected = onQuizSelected;
 
-            StartQuizCommand = new RelayCommand(StartQuiz, CanStartQuiz);
-            LoadQuizzesAsync();
+            _ = LoadQuizzesAsync(); // fire-and-forget initial load
         }
 
-        private async void LoadQuizzesAsync()
+        [RelayCommand]
+        private async Task LoadQuizzesAsync()
         {
-            var quizList = await _quizService.GetAllQuizzesAsync();
-            Quizzes = new ObservableCollection<Quiz>(quizList);
-        }
+            var list = await _quizService.GetAllQuizzesAsync();
 
-        public async Task ReloadAsync()
-        {
-            var quizzes = await _quizService.GetAllQuizzesAsync();
-            Quizzes = new ObservableCollection<Quiz>(quizzes);
-        }
-
-
-        private bool CanStartQuiz() => SelectedQuiz != null;
-
-        private async void StartQuiz()
-        {
-            if (SelectedQuiz != null)
+            await Dispatcher.UIThread.InvokeAsync(() =>
             {
-                var fullQuiz = await _quizService.GetFullQuizAsync(SelectedQuiz.Id);
-                if (fullQuiz != null)
-                {
-                    Console.WriteLine($"[DEBUG] Quiz: {fullQuiz.Title}");
-                    Console.WriteLine($"[DEBUG] Questions loaded: {fullQuiz.Questions.Count}");
-
-                    foreach (var question in fullQuiz.Questions)
-                    {
-                        Console.WriteLine($"[DEBUG] Question {question.Id}: {question.Text}");
-                        Console.WriteLine($"[DEBUG] -> Answers loaded: {question.Answers.Count}");
-                    }
-
-                    _onQuizSelected.Invoke(fullQuiz);
-                }
-            }
+                Quizzes.Clear();
+                foreach (var q in list) Quizzes.Add(q);
+            });
         }
 
 
+        public Task ReloadAsync() => LoadQuizzesAsync();
+
+        private bool CanStartQuiz() => SelectedQuiz is not null;
+
+        
+        
+        [RelayCommand(CanExecute = nameof(CanStartQuiz))]
+        private async Task StartQuizAsync()
+        {
+            if (SelectedQuiz is null) return;
+
+            var fullQuiz = await _quizService.GetFullQuizAsync(SelectedQuiz.Id);
+            if (fullQuiz is null) return;
+
+            // optional debug
+            Console.WriteLine($"[DEBUG] Quiz: {fullQuiz.Title} (Questions: {fullQuiz.Questions.Count})");
+
+            _onQuizSelected(fullQuiz);
+        }
 
         partial void OnSelectedQuizChanged(Quiz? value)
         {
-            (StartQuizCommand as RelayCommand)?.NotifyCanExecuteChanged();
+            StartQuizCommand.NotifyCanExecuteChanged();
         }
-
     }
 }

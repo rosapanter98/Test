@@ -9,8 +9,8 @@ namespace AvaloniaApplication3.ViewModels.History
     {
         public int AttemptId { get; }
         public string QuizTitle { get; }
-        public DateTime StartedAt { get; }
-        public DateTime? CompletedAt { get; set; }
+        public DateTimeOffset StartedAt { get; }
+        public DateTimeOffset? CompletedAt { get; set; }
         public int CorrectAnswers { get; set; }
         public int TotalQuestions { get; }
 

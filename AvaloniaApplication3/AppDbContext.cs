@@ -1,4 +1,5 @@
 using AvaloniaApplication3.Models;
+using AvaloniaApplication3.Utility;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.IO;
@@ -17,6 +18,17 @@ namespace AvaloniaApplication3
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
         public AppDbContext() { }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+                Directory.CreateDirectory(Path.GetDirectoryName(DbConfig.GetDbPath())!);
+                // Use SQLite for simplicity; adjust as needed for your environment
+                optionsBuilder.UseSqlite(DbConfig.GetConnectionString());
+            }
+            Console.WriteLine($"Using database at: {DbConfig.GetDbPath()}");
+        }
 
         protected override void OnModelCreating(ModelBuilder b)
         {
@@ -37,6 +49,13 @@ namespace AvaloniaApplication3
                  .WithOne(x => x.Question)
                  .HasForeignKey(x => x.QuestionId)
                  .OnDelete(DeleteBehavior.Cascade);
+            });
+
+            b.Entity<User>(e =>
+            {
+                e.Property(u => u.Username).IsRequired().HasMaxLength(100);
+                e.HasIndex(u => u.Username).IsUnique();
+                e.Property(u => u.Username).UseCollation("NOCASE");
             });
 
             b.Entity<Answer>(e =>

@@ -1,10 +1,5 @@
-﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 
 namespace AvaloniaApplication3.Models
 {
@@ -12,13 +7,14 @@ namespace AvaloniaApplication3.Models
     {
         public int Id { get; set; }
 
-        [Required]
+        [Required, MaxLength(200)]
         public string Title { get; set; } = string.Empty;
 
+        [MaxLength(1000)]
         public string? Description { get; set; }
 
-        // Navigation
-        public ICollection<Question> Questions { get; set; } = new List<Question>();
-        public ICollection<QuizAttempt> Attempts { get; set; } = new List<QuizAttempt>();
+        // Nav
+        public List<Question> Questions { get; set; } = new();
+        public List<QuizAttempt> Attempts { get; set; } = new();
     }
 }

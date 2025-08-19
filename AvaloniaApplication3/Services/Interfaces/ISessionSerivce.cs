@@ -13,6 +13,7 @@ namespace AvaloniaApplication3.Services
         User? CurrentUser { get; }
 
         event Action<User> LoggedIn;
+
         event Action LoggedOut;
 
         // Typically called from LoginViewModel after credentials validated

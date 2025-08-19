@@ -8,26 +8,25 @@ namespace AvaloniaApplication3.Models
     {
         public int Id { get; set; }
 
-        public DateTime StartedAt { get; set; } = DateTime.UtcNow;
-        public DateTime? CompletedAt { get; set; }
+        public DateTimeOffset StartedAt { get; set; } = DateTimeOffset.UtcNow;
+        public DateTimeOffset? CompletedAt { get; set; }
 
         public int TotalQuestions { get; set; }
         public int CorrectAnswers { get; set; }
 
-        public TimeSpan? TimeTaken => CompletedAt.HasValue ? CompletedAt.Value - StartedAt : null;
+        public TimeSpan? TimeTaken =>
+            CompletedAt.HasValue ? CompletedAt.Value - StartedAt : null;
 
-        public int CurrentIndex { get; set; }          // 0-based index into Items
+        public int CurrentIndex { get; set; }
         public AttemptStatus Status { get; set; } = AttemptStatus.InProgress;
 
-        // Foreign keys (for reporting/filtering)
+        // FKs
         public int QuizId { get; set; }
         public int UserId { get; set; }
 
-        // Navigation to original (optional)
+        // Nav
         public Quiz Quiz { get; set; } = null!;
         public User User { get; set; } = null!;
-
-        // Snapshot of all items in this attempt (immutable content)
         public List<QuizAttemptItem> Items { get; set; } = new();
     }
 }

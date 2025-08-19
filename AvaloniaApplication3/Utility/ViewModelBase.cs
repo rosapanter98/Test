@@ -3,7 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using System.Linq;
 using System.Reflection;
 
-namespace AvaloniaApplication3.ViewModels
+namespace AvaloniaApplication3.Utility
 {
     public class ViewModelBase : ObservableObject
     {

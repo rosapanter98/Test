@@ -1,6 +1,5 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AvaloniaApplication3.Models
 {
@@ -15,18 +14,19 @@ namespace AvaloniaApplication3.Models
     {
         public int Id { get; set; }
 
-        [Required]
+        [Required, MaxLength(1000)]
         public string Text { get; set; } = string.Empty;
 
-        public string? Explanation { get; set; }  // Shown after answering
+        [MaxLength(2000)]
+        public string? Explanation { get; set; }
 
         public QuestionType Type { get; set; }
 
-        // Foreign key
+        // FK
         public int QuizId { get; set; }
 
-        // Navigation
+        // Nav
         public Quiz Quiz { get; set; } = null!;
-        public ICollection<Answer> Answers { get; set; } = new List<Answer>();
+        public List<Answer> Answers { get; set; } = new();
     }
 }

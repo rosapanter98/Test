@@ -1,7 +1,7 @@
 using AvaloniaApplication3.Models;
 using AvaloniaApplication3.Models.Enums;
 using AvaloniaApplication3.Repositories;
-using AvaloniaApplication3.Security;
+using AvaloniaApplication3.Utility;
 using System.Threading.Tasks;
 
 namespace AvaloniaApplication3.Services
@@ -29,21 +29,27 @@ namespace AvaloniaApplication3.Services
 
         public async Task<bool> RegisterAsync(string username, string password)
         {
-            var existing = await _userRepository.GetUserByUsernameAsync(username);
-            if (existing != null)
+            if (await _userRepository.UserExistsAsync(username))
                 return false;
 
-            var hash = PasswordHelper.HashPassword(password);
             var user = new User
             {
-                Username = username,
-                DisplayName = username,
-                PasswordHash = hash,
+                Username = username.Trim(),
+                DisplayName = username.Trim(),
+                Email = $"{username.Trim()}@local",
+                PasswordHash = BCrypt.Net.BCrypt.HashPassword(password),
                 Role = UserRole.Member
             };
-
-            await _userRepository.AddUserAsync(user);
-            return true;
+             try
+            {
+                await _userRepository.AddUserAsync(user);
+                return true;
+            }
+            catch
+            {
+                // In case of race, the unique index will throw; convert to false.
+                return false;
+            }
         }
     }
 }

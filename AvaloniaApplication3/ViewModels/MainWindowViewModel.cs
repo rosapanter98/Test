@@ -1,6 +1,9 @@
 using AvaloniaApplication3.Models;
 using AvaloniaApplication3.Models.Enums;
 using AvaloniaApplication3.Services;
+using AvaloniaApplication3.Services.Implementations;
+using AvaloniaApplication3.Services.Interfaces;
+using AvaloniaApplication3.Utility;
 using AvaloniaApplication3.ViewModels.Admin;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -20,6 +23,8 @@ namespace AvaloniaApplication3.ViewModels
         private readonly ILoginService _loginService;
         private readonly IQuizService _quizService;
         private readonly IQuizAttemptService _quizAttemptService;
+        private readonly IQuizImportService _quizImportService;
+        private readonly IUserService _userService;
 
 
         private AdminPanelViewModel? _adminVm;
@@ -29,12 +34,16 @@ namespace AvaloniaApplication3.ViewModels
             ISessionService session,
             ILoginService loginService,
             IQuizService quizService,
-            IQuizAttemptService quizAttemptService)
+            IQuizAttemptService quizAttemptService,
+            IQuizImportService quizImportService,
+            IUserService userService)
         {
             _session = session;
             _loginService = loginService;
             _quizService = quizService;
             _quizAttemptService = quizAttemptService;
+            _quizImportService = quizImportService;      // assign
+            _userService = userService;
 
             _session.LoggedIn += OnLoggedIn;
             _session.LoggedOut += OnLoggedOut;
@@ -105,11 +114,9 @@ namespace AvaloniaApplication3.ViewModels
             DisplayUsername = $"Logged in as: {user.DisplayName} ({user.Username})";
 
             if (user.Role is UserRole.Admin or UserRole.Moderator)
-                _adminVm = new AdminPanelViewModel(user);
+                _adminVm = new AdminPanelViewModel(user, _quizService, _quizImportService, _userService);
 
-            // Optionally land on Quiz immediately; otherwise keep login and let user click "Quiz"
             ShowQuiz();
-
             NotifyAllCanExecuteChanged();
             OnPropertyChanged(nameof(CanAccessAdminPanel));
         }

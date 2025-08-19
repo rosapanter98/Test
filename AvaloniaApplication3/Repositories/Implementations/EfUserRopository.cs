@@ -17,7 +17,8 @@ namespace AvaloniaApplication3.Repositories
 
         public async Task<User?> GetUserByUsernameAsync(string username)
         {
-            return await _context.Users.FirstOrDefaultAsync(u => u.Username == username);
+            return await _context.Users
+                .FirstOrDefaultAsync(u => EF.Functions.Collate(u.Username, "NOCASE") == username);
         }
 
         public async Task<User?> GetUserByIdAsync(int id)
@@ -28,6 +29,12 @@ namespace AvaloniaApplication3.Repositories
         public async Task<IEnumerable<User>> GetAllUsersAsync()
         {
             return await _context.Users.ToListAsync();
+        }
+
+        public async Task<bool> UserExistsAsync(string username)
+        {
+            return await _context.Users
+                .AnyAsync(u => EF.Functions.Collate(u.Username, "NOCASE") == username);
         }
 
         public async Task AddUserAsync(User user)

@@ -1,6 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
-using AvaloniaApplication3.ViewModels;
+using AvaloniaApplication3.Utility;
 using System;
 
 namespace AvaloniaApplication3

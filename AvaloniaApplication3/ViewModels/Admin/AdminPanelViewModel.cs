@@ -1,7 +1,9 @@
 using AvaloniaApplication3.Models;
 using AvaloniaApplication3.Models.Enums;
-using AvaloniaApplication3.Repositories;
 using AvaloniaApplication3.Services;
+using AvaloniaApplication3.Services.Interfaces;
+using AvaloniaApplication3.Utility;
+using AvaloniaApplication3.ViewModels.Admin;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System;
@@ -12,51 +14,58 @@ namespace AvaloniaApplication3.ViewModels.Admin
 {
     public partial class AdminPanelViewModel : ViewModelBase
     {
+        private readonly IQuizService _quizService;
+        private readonly IQuizImportService _quizImportService;
+        private readonly IUserService _userService;
+
         [ObservableProperty]
         private object? currentSection;
 
         [ObservableProperty]
         private string saveStatus = "No changes";
 
-        public IRelayCommand<string> ToggleSectionCommand { get; }
-        public IRelayCommand SaveCommand { get; }
-
         public List<string> SectionNames => new(_sections.Keys);
 
         private readonly Dictionary<string, Func<object>> _sections;
 
-        public AdminPanelViewModel(User currentUser)
+        public AdminPanelViewModel(
+            User currentUser,
+            IQuizService quizService,
+            IQuizImportService quizImportService,
+            IUserService userService)
         {
             if (currentUser.Role is not (UserRole.Admin or UserRole.Moderator))
                 throw new UnauthorizedAccessException("Access denied to Admin Panel.");
 
-            _sections = new Dictionary<string, Func<object>>
-                {
-                    { "Quiz Management", CreateQuizManagementViewModel },
-                    { "User Management", CreateUserManagementViewModel }
-                };
+            _quizService = quizService;
+            _quizImportService = quizImportService;
+            _userService = userService;
 
-            ToggleSectionCommand = new RelayCommand<string>(ToggleSection);
-            SaveCommand = new AsyncRelayCommand(SaveCurrentEditorAsync);
+            _sections = new Dictionary<string, Func<object>>
+            {
+                { "Quiz Management", CreateQuizManagementViewModel },
+                { "User Management", CreateUserManagementViewModel }
+            };
         }
 
-
-
+        [RelayCommand]
         private void ToggleSection(string? sectionName)
         {
-            if (string.IsNullOrEmpty(sectionName) || !_sections.TryGetValue(sectionName, out var createSection))
+            if (string.IsNullOrWhiteSpace(sectionName) || !_sections.TryGetValue(sectionName, out var factory))
                 return;
 
-            var next = createSection();
+            var next = factory();
             CurrentSection = CurrentSection?.GetType() == next.GetType() ? null : next;
         }
 
-        private async Task SaveCurrentEditorAsync()
+        [RelayCommand]
+        private async Task Save()
         {
-            if (CurrentSection is QuizManagementViewModel quizMgmt && quizMgmt.CurrentQuizEditor != null)
+            if (CurrentSection is QuizManagementViewModel quizMgmt &&
+                quizMgmt.SaveCommand is IAsyncRelayCommand saveCmd)
             {
                 SaveStatus = "Saving...";
-                await quizMgmt.CurrentQuizEditor.SaveQuizAsync();
+                await saveCmd.ExecuteAsync(null);
                 SaveStatus = "Saved";
             }
             else
@@ -66,15 +75,9 @@ namespace AvaloniaApplication3.ViewModels.Admin
         }
 
         private object CreateQuizManagementViewModel()
-        {
-            var quizService = new QuizService(new EfQuizRepository(new AppDbContext()));
-            return new QuizManagementViewModel(quizService);
-        }
+            => new QuizManagementViewModel(_quizService, _quizImportService);
 
         private object CreateUserManagementViewModel()
-        {
-            var userService = new UserService(new EfUserRepository(new AppDbContext()));
-            return new UserManagementViewModel(userService);
-        }
+            => new UserManagementViewModel(_userService);
     }
 }

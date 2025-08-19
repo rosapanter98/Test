@@ -1,5 +1,6 @@
 using AvaloniaApplication3.Models;
 using AvaloniaApplication3.Services;
+using AvaloniaApplication3.Utility;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
@@ -36,6 +37,7 @@ namespace AvaloniaApplication3.ViewModels
             _ = History.LoadAsync(_user.Id);
         }
 
+        [RelayCommand]
         private void StartQuiz(Quiz quiz) => _onStartQuiz(quiz);
 
         [RelayCommand]
