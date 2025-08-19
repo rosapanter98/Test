@@ -9,7 +9,7 @@
 	<StackPanel Margin="20" Spacing="10">
 		<TextBlock Text="User Management" FontSize="20" FontWeight="Bold" />
 		<TextBlock Text="{Binding Status}" FontSize="12" Foreground="Gray" />
-		<Button Content="Refresh" Command="{Binding RefreshCommand}" HorizontalAlignment="Left" />
+		<Button Content="Refresh" Command="{Binding LoadUsersCommand}" HorizontalAlignment="Left" />
 
 		<ItemsControl ItemsSource="{Binding Users}">
 			<ItemsControl.ItemTemplate>
@@ -21,7 +21,7 @@
 						</StackPanel>
 						<StackPanel Orientation="Horizontal" Margin="10,0,0,0">
 							<Button Content="Edit"
-                                    Command="{Binding DataContext.EditUserCommand, ElementName=Root}"
+                                    Command="{Binding DataContext.ToggleUserEditorCommand, ElementName=Root}"
                                     CommandParameter="{Binding}" />
 							<Button Content="Delete"
                                     Command="{Binding DataContext.DeleteUserCommand, ElementName=Root}"

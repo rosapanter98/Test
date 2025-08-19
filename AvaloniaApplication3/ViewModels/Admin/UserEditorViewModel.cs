@@ -25,15 +25,11 @@ namespace AvaloniaApplication3.ViewModels.Admin
 
         public IEnumerable<UserRole> Roles => Enum.GetValues<UserRole>();
 
-        public IRelayCommand SaveCommand { get; }
-
         public UserEditorViewModel(User user, IUserService userService)
         {
             User = user;
             _userService = userService;
             SelectedRole = User.Role;
-            SaveCommand = new AsyncRelayCommand(SaveAsync);
-
         }
 
         partial void OnSelectedRoleChanged(UserRole value)
@@ -42,7 +38,7 @@ namespace AvaloniaApplication3.ViewModels.Admin
                 User.Role = value;
         }
 
-
+        [RelayCommand]
         private async Task SaveAsync()
         {
             SaveStatus = "Saving...";

@@ -1,10 +1,9 @@
 using AvaloniaApplication3.Models;
-using AvaloniaApplication3.Utility;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.IO;
 
-namespace AvaloniaApplication3
+namespace AvaloniaApplication3.Utility
 {
     public class AppDbContext : DbContext
     {
@@ -24,7 +23,6 @@ namespace AvaloniaApplication3
             if (!optionsBuilder.IsConfigured)
             {
                 Directory.CreateDirectory(Path.GetDirectoryName(DbConfig.GetDbPath())!);
-                // Use SQLite for simplicity; adjust as needed for your environment
                 optionsBuilder.UseSqlite(DbConfig.GetConnectionString());
             }
             Console.WriteLine($"Using database at: {DbConfig.GetDbPath()}");
@@ -32,6 +30,13 @@ namespace AvaloniaApplication3
 
         protected override void OnModelCreating(ModelBuilder b)
         {
+            // --- User ---
+            b.Entity<User>(e =>
+            {
+                e.Property(u => u.Username).IsRequired().HasMaxLength(100).UseCollation("NOCASE");
+                e.HasIndex(u => u.Username).IsUnique();
+            });
+
             // --- Quiz/Question/Answer (basic) ---
             b.Entity<Quiz>(e =>
             {
@@ -51,13 +56,6 @@ namespace AvaloniaApplication3
                  .OnDelete(DeleteBehavior.Cascade);
             });
 
-            b.Entity<User>(e =>
-            {
-                e.Property(u => u.Username).IsRequired().HasMaxLength(100);
-                e.HasIndex(u => u.Username).IsUnique();
-                e.Property(u => u.Username).UseCollation("NOCASE");
-            });
-
             b.Entity<Answer>(e =>
             {
                 e.Property(x => x.Text).IsRequired();
@@ -66,9 +64,26 @@ namespace AvaloniaApplication3
             // --- Attempts snapshot model ---
             b.Entity<QuizAttempt>(e =>
             {
-                e.HasIndex(x => new { x.UserId, x.StartedAt });
+                // Store DateTimeOffset as UTC DateTime in SQLite (enables ORDER BY, etc.)
+                e.Property(x => x.StartedAt)
+                 .HasConversion(
+                     v => v.UtcDateTime,
+                     v => new DateTimeOffset(DateTime.SpecifyKind(v, DateTimeKind.Utc)));
+
+                e.Property(x => x.CompletedAt)
+                 .HasConversion(
+                     v => v.HasValue ? v.Value.UtcDateTime : (DateTime?)null,
+                     v => v.HasValue
+                          ? new DateTimeOffset(DateTime.SpecifyKind(v.Value, DateTimeKind.Utc))
+                          : null);
+
                 e.Property(x => x.QuizId).IsRequired();
                 e.Property(x => x.UserId).IsRequired();
+                e.Property(x => x.Status).IsRequired();
+                e.Property(x => x.CurrentIndex).HasDefaultValue(0);
+
+                e.HasIndex(x => new { x.UserId, x.StartedAt });
+                e.HasIndex(x => new { x.UserId, x.QuizId, x.Status }); // quick lookup for resumes
 
                 e.HasMany(x => x.Items)
                  .WithOne(x => x.QuizAttempt)
@@ -91,14 +106,6 @@ namespace AvaloniaApplication3
             {
                 e.Property(x => x.Text).IsRequired();
             });
-
-            b.Entity<QuizAttempt>(e =>
-            {
-                e.Property(x => x.Status).IsRequired();
-                e.Property(x => x.CurrentIndex).HasDefaultValue(0);
-                e.HasIndex(x => new { x.UserId, x.QuizId, x.Status }); // quick lookup for resumes
-            });
-
         }
     }
 }

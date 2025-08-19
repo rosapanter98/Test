@@ -10,7 +10,7 @@ using AvaloniaApplication3.Utility;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
-namespace AvaloniaApplication3.ViewModels
+namespace AvaloniaApplication3.ViewModels.Quizzes
 {
     public partial class QuizRunnerViewModel : ViewModelBase
     {
@@ -42,25 +42,22 @@ namespace AvaloniaApplication3.ViewModels
         public bool CanSubmitAnswer => !ShowFeedback && CurrentAnswers.Any(a => a.IsSelected);
         public bool CanGoNext => ShowFeedback && !QuizCompleted;
 
-        public QuizRunnerViewModel(
-            User user,
-            Quiz quiz,
-            Action<string, int, int> onQuizCompleted,
-            IQuizAttemptService attempts)
+        public QuizRunnerViewModel(User user, Quiz quiz, Action<string, int, int> onQuizCompleted, IQuizAttemptService attempts)
         {
             _user = user ?? throw new ArgumentNullException(nameof(user));
             _quiz = quiz ?? throw new ArgumentNullException(nameof(quiz));
             _attempts = attempts ?? throw new ArgumentNullException(nameof(attempts));
             _onQuizCompleted = onQuizCompleted;
 
-            // NOTE: later you can randomize/take N here before starting the attempt
             _questionList = _quiz.Questions.ToList();
 
-            // start persisted attempt (snapshot)
-            _attempt = _attempts
-                .StartAttemptAsync(_user, _quiz, _questionList)
-                .GetAwaiter().GetResult();
+            Init(); // async fire-and-forget
+        }
 
+        private async void Init()
+        {
+            // start persisted attempt (snapshot)
+            _attempt = await _attempts.StartAttemptAsync(_user, _quiz, _questionList);
             LoadQuestion();
         }
 
@@ -87,6 +84,10 @@ namespace AvaloniaApplication3.ViewModels
 
             SubmitCommand.NotifyCanExecuteChanged();
             NextCommand.NotifyCanExecuteChanged();
+
+            // computed props
+            OnPropertyChanged(nameof(CurrentIndex));
+            OnPropertyChanged(nameof(TotalQuestions));
         }
 
         private void WireAnswerSelectionChanged()
@@ -124,13 +125,17 @@ namespace AvaloniaApplication3.ViewModels
         {
             var (isCorrect, selectedIds, _) = QuizLogic.Evaluate(CurrentAnswers);
 
-            // persist this item’s selection
             var item = _attempt.Items[_currentIndex];
             await _attempts.SubmitItemAsync(item.Id, selectedIds);
 
-            if (isCorrect) _score++;
-            LastAnswerCorrect = isCorrect;
+            if (isCorrect)
+            {
+                _score++;
+                OnPropertyChanged(nameof(Score));
+                OnPropertyChanged(nameof(TotalCorrect));
+            }
 
+            LastAnswerCorrect = isCorrect;
             QuizLogic.ApplyPerAnswerFeedback(CurrentAnswers);
             FeedbackText = QuizLogic.BuildFeedbackText(CurrentQuestion, isCorrect);
             ShowFeedback = true;
@@ -141,14 +146,13 @@ namespace AvaloniaApplication3.ViewModels
         private async Task Next()
         {
             _currentIndex++;
+            OnPropertyChanged(nameof(CurrentIndex));
+
             if (_currentIndex >= _questionList.Count)
             {
-                var completed = await _attempts.CompleteAttemptAsync(_attempt.Id);
+                await _attempts.CompleteAttemptAsync(_attempt.Id);
                 QuizCompleted = true;
-
-                // keep your existing signature for now
-                _onQuizCompleted.Invoke(_quiz.Title, _score, _questionList.Count);
-                // (Optionally pass completed.Id to results VM later if you want to reload)
+                _onQuizCompleted(_quiz.Title, _score, _questionList.Count);
             }
             else
             {

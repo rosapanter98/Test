@@ -12,9 +12,6 @@ namespace AvaloniaApplication3.ViewModels.Admin
     public partial class QuestionEditorViewModel : ViewModelBase
     {
         [ObservableProperty]
-        [NotifyPropertyChangedFor(nameof(Text))]
-        [NotifyPropertyChangedFor(nameof(Explanation))]
-        [NotifyPropertyChangedFor(nameof(Type))]
         private Question question;
 
         [ObservableProperty]
@@ -27,9 +24,9 @@ namespace AvaloniaApplication3.ViewModels.Admin
 
         public QuestionEditorViewModel(Question question)
         {
-            Question = question;
-            if (Question.Answers == null)
-                Question.Answers = new List<Answer>();
+            Question = question ?? throw new ArgumentNullException(nameof(question));
+
+            Question.Answers ??= new List<Answer>();
 
             Answers = new ObservableCollection<AnswerEditorViewModel>(
                 Question.Answers.Select(a =>
@@ -40,7 +37,7 @@ namespace AvaloniaApplication3.ViewModels.Admin
                 }));
         }
 
-        // Proxy properties to the model without manual boilerplate
+        // Proxy properties to the model (with change notification)
         public string Text
         {
             get => Question.Text;
@@ -75,15 +72,17 @@ namespace AvaloniaApplication3.ViewModels.Admin
 
         private void RemoveAnswer(AnswerEditorViewModel vm)
         {
+            if (vm is null) return;
             Answers.Remove(vm);
             Question.Answers.Remove(vm.Answer);
         }
 
-        // Keep Answers in sync if Question is replaced
+        // Keep Answers in sync if the entire Question instance is replaced
         partial void OnQuestionChanged(Question value)
         {
-            if (value.Answers == null)
-                value.Answers = new List<Answer>();
+            if (value is null) return;
+
+            value.Answers ??= new List<Answer>();
 
             Answers = new ObservableCollection<AnswerEditorViewModel>(
                 value.Answers.Select(a =>

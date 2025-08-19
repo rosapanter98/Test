@@ -1,7 +1,7 @@
 using AvaloniaApplication3.Models;
 using AvaloniaApplication3.Services;
 using AvaloniaApplication3.Utility;
-using AvaloniaApplication3.ViewModels.History;
+using AvaloniaApplication3.ViewModels.Quizzes;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System;
@@ -10,7 +10,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace AvaloniaApplication3.ViewModels
+namespace AvaloniaApplication3.ViewModels.Quizzes
 {
     public partial class AttemptsHistoryViewModel : ViewModelBase
     {

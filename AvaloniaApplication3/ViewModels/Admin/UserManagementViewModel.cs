@@ -1,10 +1,10 @@
+using System.Collections.ObjectModel;
+using System.Threading.Tasks;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using AvaloniaApplication3.Models;
 using AvaloniaApplication3.Services;
 using AvaloniaApplication3.Utility;
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using System.Collections.ObjectModel;
-using System.Threading.Tasks;
 
 namespace AvaloniaApplication3.ViewModels.Admin
 {
@@ -21,26 +21,22 @@ namespace AvaloniaApplication3.ViewModels.Admin
         [ObservableProperty]
         private UserEditorViewModel? selectedUserEditor;
 
-
-        public IRelayCommand RefreshCommand { get; }
-        public IRelayCommand<User> DeleteUserCommand { get; }
-        public IRelayCommand<User> EditUserCommand { get; }
-
         public UserManagementViewModel(IUserService userService)
         {
             _userService = userService;
-            RefreshCommand = new AsyncRelayCommand(LoadUsersAsync);
-            DeleteUserCommand = new AsyncRelayCommand<User>(DeleteUserAsync);
-            EditUserCommand = new RelayCommand<User>(ToggleUserEditor);
-            _ = LoadUsersAsync();
+            _ = LoadUsersAsync(); // initial load
         }
 
+        // Generates: IAsyncRelayCommand LoadUsersAsyncCommand
+        [RelayCommand]
         private async Task LoadUsersAsync()
         {
             var all = await _userService.GetAllUsersAsync();
             Users = new ObservableCollection<User>(all);
         }
 
+        // Generates: IAsyncRelayCommand DeleteUserAsyncCommand
+        [RelayCommand]
         private async Task DeleteUserAsync(User? user)
         {
             if (user is null) return;
@@ -50,19 +46,16 @@ namespace AvaloniaApplication3.ViewModels.Admin
             Status = $"Deleted user {user.Username}";
         }
 
+        // Generates: IRelayCommand ToggleUserEditorCommand
+        [RelayCommand]
         private void ToggleUserEditor(User? user)
         {
-            if (user is null)
-                return;
+            if (user is null) return;
 
             if (SelectedUserEditor?.User == user)
-            {
                 SelectedUserEditor = null; // toggle off
-            }
             else
-            {
                 SelectedUserEditor = new UserEditorViewModel(user, _userService);
-            }
         }
     }
 }

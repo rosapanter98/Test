@@ -6,8 +6,6 @@ using AvaloniaApplication3.Models;
 using AvaloniaApplication3.Models.Enums;
 using AvaloniaApplication3.Repositories;
 using AvaloniaApplication3.Services;
-using AvaloniaApplication3.Services.Implementations;
-using AvaloniaApplication3.Services.Interfaces;
 using AvaloniaApplication3.Utility;
 using AvaloniaApplication3.ViewModels;
 using AvaloniaApplication3.Views;

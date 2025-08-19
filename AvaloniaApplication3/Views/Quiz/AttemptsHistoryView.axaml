@@ -1,9 +1,8 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:vm="clr-namespace:AvaloniaApplication3.ViewModels"
-             xmlns:h="clr-namespace:AvaloniaApplication3.ViewModels.History"
+             xmlns:vm="clr-namespace:AvaloniaApplication3.ViewModels.Quizzes"
              xmlns:m="clr-namespace:AvaloniaApplication3.Models"
-             x:Class="AvaloniaApplication3.Views.AttemptsHistoryView"
+             x:Class="AvaloniaApplication3.Views.Quizzes.AttemptsHistoryView"
              x:DataType="vm:AttemptsHistoryViewModel"
 			 x:Name="Root">
 
@@ -13,7 +12,7 @@
 		<ItemsControl Grid.Row="2" ItemsSource="{Binding VisibleItems}">
 			<ItemsControl.ItemTemplate>
 				<!-- Attempt row -->
-				<DataTemplate x:DataType="h:AttemptRowViewModel">
+				<DataTemplate x:DataType="vm:AttemptRowViewModel">
 					<Expander Margin="0,4,0,0" Expanded="OnExpanded">
 						<Expander.Header>
 							<Grid ColumnDefinitions="*,Auto" VerticalAlignment="Center">
@@ -43,7 +42,7 @@
 						<ItemsControl ItemsSource="{Binding Items}">
 							<ItemsControl.ItemTemplate>
 								<!-- Question -->
-								<DataTemplate x:DataType="h:AttemptItemRowViewModel">
+								<DataTemplate x:DataType="vm:AttemptItemRowViewModel">
 									<StackPanel Margin="0,8,0,0">
 										<TextBlock Text="{Binding QuestionText}" FontWeight="Bold" Margin="0,0,0,4"/>
 										<TextBlock Text="{Binding IsCorrect, Converter={StaticResource BoolToResultTextConverter}}"

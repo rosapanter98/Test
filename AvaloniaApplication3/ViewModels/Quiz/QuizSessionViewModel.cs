@@ -3,8 +3,10 @@ using AvaloniaApplication3.Services;
 using AvaloniaApplication3.Utility;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using System;
+using System.Threading.Tasks;
 
-namespace AvaloniaApplication3.ViewModels
+namespace AvaloniaApplication3.ViewModels.Quizzes
 {
     /// <summary>
     /// Hosts quiz selection (left) + attempts history (right).
@@ -15,7 +17,7 @@ namespace AvaloniaApplication3.ViewModels
         private readonly User _user;
         private readonly IQuizService _quizService;
         private readonly IQuizAttemptService _attempts;
-        private readonly System.Action<Quiz> _onStartQuiz;
+        private readonly Action<Quiz> _onStartQuiz;
 
         public QuizSelectionViewModel Selection { get; }
         public AttemptsHistoryViewModel History { get; }
@@ -24,7 +26,7 @@ namespace AvaloniaApplication3.ViewModels
             User user,
             IQuizService quizService,
             IQuizAttemptService attempts,
-            System.Action<Quiz> onStartQuiz)
+            Action<Quiz> onStartQuiz)
         {
             _user = user;
             _quizService = quizService;
@@ -33,9 +35,13 @@ namespace AvaloniaApplication3.ViewModels
 
             Selection = new QuizSelectionViewModel(_quizService, StartQuiz);
             History = new AttemptsHistoryViewModel(_attempts);
-
-            _ = History.LoadAsync(_user.Id);
-        }
+            _ = History.LoadAsync(_user.Id)
+             .ContinueWith(t =>
+             {
+                 Console.WriteLine($"[SESSION VM] History.LoadAsync completed. Status={t.Status}");
+                 if (t.Exception != null) Console.WriteLine(t.Exception);
+             }, TaskScheduler.Default);
+                }
 
         [RelayCommand]
         private void StartQuiz(Quiz quiz) => _onStartQuiz(quiz);

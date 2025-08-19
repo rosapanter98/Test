@@ -8,7 +8,8 @@ using System;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 
-namespace AvaloniaApplication3.ViewModels
+
+namespace AvaloniaApplication3.ViewModels.Quizzes
 {
     public partial class QuizSelectionViewModel : ViewModelBase
     {

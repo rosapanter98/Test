@@ -3,7 +3,7 @@ using AvaloniaApplication3.Utility;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System;
 
-namespace AvaloniaApplication3.ViewModels
+namespace AvaloniaApplication3.ViewModels.Quizzes
 {
     public partial class AnswerOptionViewModel : ViewModelBase
     {

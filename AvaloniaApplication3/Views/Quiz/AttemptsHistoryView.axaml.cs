@@ -2,9 +2,9 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using AvaloniaApplication3.Models;
 using AvaloniaApplication3.ViewModels;
-using AvaloniaApplication3.ViewModels.History;
+using AvaloniaApplication3.ViewModels.Quizzes;
 
-namespace AvaloniaApplication3.Views
+namespace AvaloniaApplication3.Views.Quizzes
 {
     public partial class AttemptsHistoryView : UserControl
     {

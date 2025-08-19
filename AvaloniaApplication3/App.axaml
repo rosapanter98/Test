@@ -3,12 +3,15 @@
              x:Class="AvaloniaApplication3.App"
              xmlns:local="using:AvaloniaApplication3"
              RequestedThemeVariant="Default"
-	         xmlns:converters="clr-namespace:AvaloniaApplication3.Converters">
+	         xmlns:converters="clr-namespace:AvaloniaApplication3.Converters"
+			 xmlns:util="clr-namespace:AvaloniaApplication3.Utility">
+	
 	<!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
 
-    <Application.DataTemplates>
-        <local:ViewLocator/>
-    </Application.DataTemplates>
+	<Application.DataTemplates>
+		<util:ViewLocator/>
+	</Application.DataTemplates>
+
 
 	<Application.Resources>
 		<converters:NullToBoolConverter x:Key="NullToBoolConverter"/>

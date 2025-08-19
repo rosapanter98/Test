@@ -1,8 +1,8 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:vm="clr-namespace:AvaloniaApplication3.ViewModels"
-             xmlns:views="clr-namespace:AvaloniaApplication3.Views"
-             x:Class="AvaloniaApplication3.Views.QuizSessionView"
+             xmlns:vm="clr-namespace:AvaloniaApplication3.ViewModels.Quizzes"
+             xmlns:views="clr-namespace:AvaloniaApplication3.Views.Quizzes"
+             x:Class="AvaloniaApplication3.Views.Quizzes.QuizSessionView"
              x:DataType="vm:QuizSessionViewModel">
 
 	<Grid ColumnDefinitions="380,16,*" RowDefinitions="Auto,*" Margin="16">

@@ -4,7 +4,7 @@ using AvaloniaApplication3.Utility;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
-namespace AvaloniaApplication3.ViewModels
+namespace AvaloniaApplication3.ViewModels.Quizzes
 {
     public partial class QuizResultsViewModel : ViewModelBase
     {

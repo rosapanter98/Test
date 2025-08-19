@@ -3,7 +3,7 @@ using System;
 using System.Collections.ObjectModel;
 using AvaloniaApplication3.Models;
 
-namespace AvaloniaApplication3.ViewModels.History
+namespace AvaloniaApplication3.ViewModels.Quizzes
 {
     public class AttemptRowViewModel
     {
