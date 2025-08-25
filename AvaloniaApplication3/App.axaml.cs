@@ -28,9 +28,15 @@ namespace AvaloniaApplication3
 
         public override void OnFrameworkInitializationCompleted()
         {
+
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
                 DisableAvaloniaDataAnnotationValidation();
+
+                desktop.MainWindow = new MainWindow();
+#if DEBUG
+                desktop.MainWindow.AttachDevTools(); // Focus app window, press F12
+#endif
 
                 var sc = new ServiceCollection();
 
