@@ -58,6 +58,7 @@ public partial class App : Application
         services.AddPooledDbContextFactory<StudyDbContext>(options => options.UseSqlite(connectionString));
         services.AddSingleton<QuestionBankPackageReader>();
         services.AddSingleton<QuestionBankMerger>();
+        services.AddSingleton<QuestionBankAuthoringKitWriter>();
         services.AddSingleton<QuestionBankImportService>();
         services.AddSingleton<DatabaseSeeder>();
         services.AddSingleton(new DatabaseBackupService(

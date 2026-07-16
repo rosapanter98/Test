@@ -139,6 +139,14 @@ public sealed class ActualWorkflowSnapshotTests
         var options = Assert.IsType<OptionsViewModel>(shell.CurrentPage);
         options.SelectedTheme = AppTheme.Light;
         Assert.Equal(ThemeVariant.Light, Application.Current.RequestedThemeVariant);
+        Dispatcher.UIThread.RunJobs();
+        var optionText = window.GetVisualDescendants()
+            .OfType<TextBlock>()
+            .Select(textBlock => textBlock.Text)
+            .OfType<string>()
+            .ToList();
+        Assert.Contains(optionText, text => text.Contains("formal JSON Schema", StringComparison.Ordinal));
+        Assert.Contains(optionText, text => text.Contains("Missing entries are not deleted", StringComparison.Ordinal));
         Capture(window, "20-options-minimum-light.png");
         await shell.ShowDashboardCommand.ExecuteAsync(null);
         Capture(window, "15-dashboard-minimum-light.png");

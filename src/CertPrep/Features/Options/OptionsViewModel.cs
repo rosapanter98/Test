@@ -14,7 +14,7 @@ public partial class OptionsViewModel(
     private AppTheme selectedTheme = appearanceService.CurrentTheme;
 
     [ObservableProperty]
-    private string? importStatus;
+    private string? questionBankStatus;
 
     partial void OnSelectedThemeChanged(AppTheme value) => appearanceService.SetTheme(value);
 
@@ -22,9 +22,9 @@ public partial class OptionsViewModel(
     {
         try
         {
-            ImportStatus = "Validating question bank…";
-            var result = await questionBankImportService.ImportSqliteAsync(path);
-            ImportStatus = result.Summary;
+            QuestionBankStatus = "Validating question bank…";
+            var result = await questionBankImportService.ImportAsync(path);
+            QuestionBankStatus = result.Summary;
         }
         catch (Exception exception) when (exception is
             QuestionBankValidationException or
@@ -32,7 +32,23 @@ public partial class OptionsViewModel(
             IOException or
             Microsoft.Data.Sqlite.SqliteException)
         {
-            ImportStatus = $"Import failed: {exception.Message}";
+            QuestionBankStatus = $"Import failed: {exception.Message}";
+        }
+    }
+
+    public async Task SaveAuthoringKitAsync(string path)
+    {
+        try
+        {
+            await questionBankImportService.SaveAuthoringKitAsync(path);
+            QuestionBankStatus = $"Authoring kit saved to {Path.GetFileName(path)}.";
+        }
+        catch (Exception exception) when (exception is
+            IOException or
+            UnauthorizedAccessException or
+            InvalidOperationException)
+        {
+            QuestionBankStatus = $"Could not save authoring kit: {exception.Message}";
         }
     }
 }

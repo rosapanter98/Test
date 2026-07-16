@@ -1,7 +1,12 @@
+using System.Text.Json.Serialization;
+
 namespace CertPrep.Features.ExamCatalog.Importing;
 
 public sealed class QuestionBankPackage
 {
+    [JsonPropertyName("$schema")]
+    public string? Schema { get; init; }
+
     public int SchemaVersion { get; init; }
     public List<QuestionBankExam> Exams { get; init; } = [];
 }

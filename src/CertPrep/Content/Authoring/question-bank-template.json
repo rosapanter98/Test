@@ -1,0 +1,55 @@
+{
+  "$schema": "./question-bank.schema.json",
+  "schemaVersion": 1,
+  "exams": [
+    {
+      "provider": "Microsoft",
+      "code": "EX-000",
+      "title": "Example certification",
+      "summary": "Replace this example with the certification covered by this bank.",
+      "contentVersion": "2026-01",
+      "objectives": [
+        {
+          "contentKey": "manage-example-resources",
+          "name": "Manage example resources",
+          "sortOrder": 0
+        }
+      ],
+      "questions": [
+        {
+          "contentKey": "example-scenario-001",
+          "objectiveKey": "manage-example-resources",
+          "prompt": "An administrator must meet the stated requirement. Which option should they choose?",
+          "kind": "SingleChoice",
+          "difficulty": "Foundation",
+          "explanation": "Explain why the correct answer satisfies the requirement and why the closest alternative does not.",
+          "sourceName": "Microsoft Learn page title",
+          "sourceUrl": "https://learn.microsoft.com/",
+          "isActive": true,
+          "choices": [
+            {
+              "text": "Correct option",
+              "isCorrect": true,
+              "sortOrder": 0
+            },
+            {
+              "text": "Plausible but incorrect option",
+              "isCorrect": false,
+              "sortOrder": 1
+            },
+            {
+              "text": "Another plausible option",
+              "isCorrect": false,
+              "sortOrder": 2
+            },
+            {
+              "text": "A final plausible option",
+              "isCorrect": false,
+              "sortOrder": 3
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

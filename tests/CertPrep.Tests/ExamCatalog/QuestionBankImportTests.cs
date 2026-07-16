@@ -1,3 +1,4 @@
+using System.IO.Compression;
 using CertPrep.Features.ExamCatalog;
 using CertPrep.Features.ExamCatalog.Importing;
 using CertPrep.Features.Practice;
@@ -11,6 +12,51 @@ namespace CertPrep.Tests.ExamCatalog;
 
 public sealed class QuestionBankImportTests
 {
+    [Fact]
+    public async Task Authoring_kit_contains_the_contract_and_an_importable_json_template()
+    {
+        var cancellationToken = TestContext.Current.CancellationToken;
+        var directory = Path.Combine(Path.GetTempPath(), "CertPrep.Tests", Guid.NewGuid().ToString("N"));
+        var kitPath = Path.Combine(directory, "authoring-kit.zip");
+        var extractedPath = Path.Combine(directory, "kit");
+        Directory.CreateDirectory(directory);
+
+        try
+        {
+            await new QuestionBankAuthoringKitWriter().WriteAsync(kitPath, cancellationToken);
+            ZipFile.ExtractToDirectory(kitPath, extractedPath);
+
+            Assert.True(File.Exists(Path.Combine(extractedPath, "README.md")));
+            Assert.True(File.Exists(Path.Combine(extractedPath, "question-bank.schema.json")));
+            var templatePath = Path.Combine(extractedPath, "question-bank-template.json");
+            Assert.True(File.Exists(templatePath));
+
+            await using var target = await TestDatabase.CreateAsync(
+                seed: false,
+                cancellationToken: cancellationToken);
+            var result = await target.CreateServices().Importer.ImportAsync(templatePath, cancellationToken);
+            Assert.Equal(1, result.ExamsAdded);
+            Assert.Equal(1, result.QuestionsAdded);
+
+            await using var context = target.ContextFactory.CreateDbContext();
+            var exam = await context.Exams
+                .Include(item => item.Objectives)
+                .Include(item => item.Questions)
+                .ThenInclude(item => item.Choices)
+                .SingleAsync(cancellationToken);
+            Assert.Equal("EX-000", exam.Code);
+            Assert.Single(exam.Objectives);
+            Assert.Equal(4, Assert.Single(exam.Questions).Choices.Count);
+        }
+        finally
+        {
+            if (Directory.Exists(directory))
+            {
+                Directory.Delete(directory, true);
+            }
+        }
+    }
+
     [Fact]
     public async Task Malformed_true_false_question_is_rejected()
     {
@@ -187,7 +233,7 @@ public sealed class QuestionBankImportTests
                 initialQuestionCount = await context.Questions.CountAsync(cancellationToken);
             }
             var services = target.CreateServices();
-            var first = await services.Importer.ImportSqliteAsync(sourcePath, cancellationToken);
+            var first = await services.Importer.ImportAsync(sourcePath, cancellationToken);
 
             Assert.Equal(0, first.ExamsAdded);
             Assert.Equal(1, first.ExamsUpdated);
@@ -208,7 +254,7 @@ public sealed class QuestionBankImportTests
                 Assert.Equal(0, await context.PracticeSessions.CountAsync(cancellationToken));
             }
 
-            var second = await services.Importer.ImportSqliteAsync(sourcePath, cancellationToken);
+            var second = await services.Importer.ImportAsync(sourcePath, cancellationToken);
             Assert.Equal(new QuestionBankMergeResult(0, 0, 0, 0), second);
         }
         finally
@@ -258,7 +304,7 @@ public sealed class QuestionBankImportTests
             }
             var services = target.CreateServices();
             await Assert.ThrowsAsync<QuestionBankValidationException>(
-                () => services.Importer.ImportSqliteAsync(sourcePath, cancellationToken));
+                () => services.Importer.ImportAsync(sourcePath, cancellationToken));
 
             await using var verificationContext = target.ContextFactory.CreateDbContext();
             Assert.Equal(initialExamCount, await verificationContext.Exams.CountAsync(cancellationToken));

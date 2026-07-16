@@ -4,23 +4,36 @@
              x:Class="CertPrep.Features.Options.Views.OptionsView"
              x:DataType="vm:OptionsViewModel">
   <ScrollViewer HorizontalScrollBarVisibility="Disabled">
-    <StackPanel Margin="26,22" Width="560" HorizontalAlignment="Left">
+    <StackPanel Margin="26,22" Width="650" HorizontalAlignment="Left" Spacing="14">
       <Border Classes="card">
-        <StackPanel Spacing="16">
-          <Grid ColumnDefinitions="170,*" ColumnSpacing="18">
-            <TextBlock Text="Theme" Classes="h3" VerticalAlignment="Center" />
-            <ComboBox Grid.Column="1"
-                      ItemsSource="{Binding ThemeOptions}"
-                      SelectedItem="{Binding SelectedTheme}"
-                      HorizontalAlignment="Stretch" />
-          </Grid>
+        <Grid ColumnDefinitions="170,*" ColumnSpacing="18">
+          <TextBlock Text="Theme" Classes="h3" VerticalAlignment="Center" />
+          <ComboBox Grid.Column="1"
+                    ItemsSource="{Binding ThemeOptions}"
+                    SelectedItem="{Binding SelectedTheme}"
+                    HorizontalAlignment="Stretch" />
+        </Grid>
+      </Border>
 
-          <Border Height="1" Background="{DynamicResource StrokeBrush}" />
+      <Border Classes="card">
+        <StackPanel Spacing="13">
+          <StackPanel Spacing="3">
+            <TextBlock Text="Question bank" Classes="h3" />
+            <TextBlock Text="Create a portable JSON bank from the authoring kit, then import it here. Existing CertPrep SQLite databases can also be imported."
+                       Classes="muted"
+                       TextWrapping="Wrap" />
+          </StackPanel>
 
-          <Grid ColumnDefinitions="*,Auto" ColumnSpacing="18">
-            <TextBlock Text="Question bank" Classes="h3" VerticalAlignment="Center" />
-            <Button Grid.Column="1"
-                    Classes="secondary"
+          <StackPanel Orientation="Horizontal" Spacing="8" HorizontalAlignment="Right">
+            <Button Classes="secondary"
+                    Click="SaveAuthoringKit"
+                    Padding="11,7">
+              <StackPanel Orientation="Horizontal" Spacing="7">
+                <PathIcon Width="14" Height="14" Data="{StaticResource Icon.Import}" />
+                <TextBlock Text="Save authoring kit" />
+              </StackPanel>
+            </Button>
+            <Button Classes="primary"
                     Click="ImportQuestionBank"
                     Padding="11,7">
               <StackPanel Orientation="Horizontal" Spacing="7">
@@ -28,12 +41,38 @@
                 <TextBlock Text="Import bank" />
               </StackPanel>
             </Button>
+          </StackPanel>
+
+          <Border Height="1" Background="{DynamicResource StrokeBrush}" />
+
+          <TextBlock Text="IMPORT CONTRACT" Classes="eyebrow" />
+
+          <Grid ColumnDefinitions="128,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto" ColumnSpacing="16" RowSpacing="9">
+            <TextBlock Text="Authoring kit" Classes="muted" />
+            <TextBlock Grid.Column="1" Text="Working JSON example, formal JSON Schema, and a field-by-field README." TextWrapping="Wrap" />
+
+            <TextBlock Grid.Row="1" Text="JSON structure" Classes="muted" />
+            <TextBlock Grid.Row="1" Grid.Column="1" Text="schemaVersion → exams → objectives + questions → choices" TextWrapping="Wrap" />
+
+            <TextBlock Grid.Row="2" Text="Accepted imports" Classes="muted" />
+            <TextBlock Grid.Row="2" Grid.Column="1" Text="Portable .json (recommended), or a compatible CertPrep .db, .sqlite, or .sqlite3 database." TextWrapping="Wrap" />
+
+            <TextBlock Grid.Row="3" Text="Answer rules" Classes="muted" />
+            <TextBlock Grid.Row="3" Grid.Column="1" Text="SingleChoice requires one correct answer; MultipleChoice requires at least two; TrueFalse requires exactly True then False."
+                       TextWrapping="Wrap" />
+
+            <TextBlock Grid.Row="4" Text="Stable identity" Classes="muted" />
+            <TextBlock Grid.Row="4" Grid.Column="1" Text="Exams match by Provider + Code. Objectives and questions match by case-insensitive ContentKey." TextWrapping="Wrap" />
+
+            <TextBlock Grid.Row="5" Text="Merge behavior" Classes="muted" />
+            <TextBlock Grid.Row="5" Grid.Column="1" Text="The complete bank is validated first. Matching content is updated and new content is added in one transaction. Missing entries are not deleted."
+                       TextWrapping="Wrap" />
           </Grid>
 
-          <TextBlock Text="{Binding ImportStatus}"
+          <TextBlock Text="{Binding QuestionBankStatus}"
                      Classes="muted"
                      TextWrapping="Wrap"
-                     IsVisible="{Binding ImportStatus, Converter={x:Static ObjectConverters.IsNotNull}}" />
+                     IsVisible="{Binding QuestionBankStatus, Converter={x:Static ObjectConverters.IsNotNull}}" />
         </StackPanel>
       </Border>
     </StackPanel>

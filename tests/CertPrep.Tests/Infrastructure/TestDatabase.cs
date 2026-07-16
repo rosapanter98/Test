@@ -84,7 +84,8 @@ public sealed class TestDatabase : IAsyncDisposable
         var importer = new QuestionBankImportService(
             ContextFactory,
             new QuestionBankPackageReader(),
-            new QuestionBankMerger());
+            new QuestionBankMerger(),
+            new QuestionBankAuthoringKitWriter());
 
         return new TestServices(
             catalog,

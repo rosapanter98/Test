@@ -36,23 +36,23 @@
           <SolidColorBrush x:Key="DangerSoftBrush" Color="#2F171A" />
         </ResourceDictionary>
         <ResourceDictionary x:Key="Light">
-          <SolidColorBrush x:Key="CanvasBrush" Color="#F4F2ED" />
-          <SolidColorBrush x:Key="SidebarBrush" Color="#ECE9E2" />
-          <SolidColorBrush x:Key="SurfaceBrush" Color="#FFFEFB" />
-          <SolidColorBrush x:Key="SurfaceRaisedBrush" Color="#F0EEE8" />
-          <SolidColorBrush x:Key="SurfaceSoftBrush" Color="#E7E4DC" />
-          <SolidColorBrush x:Key="StrokeBrush" Color="#D0CCC2" />
-          <SolidColorBrush x:Key="TextBrush" Color="#171717" />
-          <SolidColorBrush x:Key="TextMutedBrush" Color="#65635F" />
+          <SolidColorBrush x:Key="CanvasBrush" Color="#F6F7F9" />
+          <SolidColorBrush x:Key="SidebarBrush" Color="#EEF0F3" />
+          <SolidColorBrush x:Key="SurfaceBrush" Color="#FFFFFF" />
+          <SolidColorBrush x:Key="SurfaceRaisedBrush" Color="#F9FAFB" />
+          <SolidColorBrush x:Key="SurfaceSoftBrush" Color="#E9EDF2" />
+          <SolidColorBrush x:Key="StrokeBrush" Color="#D7DBE2" />
+          <SolidColorBrush x:Key="TextBrush" Color="#17191C" />
+          <SolidColorBrush x:Key="TextMutedBrush" Color="#606772" />
           <SolidColorBrush x:Key="AccentBrush" Color="#2764D8" />
           <SolidColorBrush x:Key="AccentStrongBrush" Color="#1E5ED2" />
-          <SolidColorBrush x:Key="AccentSoftBrush" Color="#E6ECF8" />
-          <SolidColorBrush x:Key="ChoiceHoverBrush" Color="#E2E9F4" />
-          <SolidColorBrush x:Key="ChoiceSelectedBrush" Color="#E9EDF4" />
+          <SolidColorBrush x:Key="AccentSoftBrush" Color="#E8F0FE" />
+          <SolidColorBrush x:Key="ChoiceHoverBrush" Color="#EEF4FD" />
+          <SolidColorBrush x:Key="ChoiceSelectedBrush" Color="#E4EDFA" />
           <SolidColorBrush x:Key="SuccessBrush" Color="#147A56" />
-          <SolidColorBrush x:Key="SuccessSoftBrush" Color="#DCEFE7" />
+          <SolidColorBrush x:Key="SuccessSoftBrush" Color="#E3F3EC" />
           <SolidColorBrush x:Key="DangerBrush" Color="#B33140" />
-          <SolidColorBrush x:Key="DangerSoftBrush" Color="#F8E2E5" />
+          <SolidColorBrush x:Key="DangerSoftBrush" Color="#FBE8EA" />
         </ResourceDictionary>
       </ResourceDictionary.ThemeDictionaries>
 

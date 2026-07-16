@@ -11,7 +11,8 @@ public sealed class QuestionBankPackageReader
     private static readonly JsonSerializerOptions JsonOptions = new()
     {
         PropertyNameCaseInsensitive = true,
-        Converters = { new JsonStringEnumConverter() }
+        UnmappedMemberHandling = JsonUnmappedMemberHandling.Disallow,
+        Converters = { new JsonStringEnumConverter(namingPolicy: null, allowIntegerValues: false) }
     };
 
     public async Task<QuestionBankPackage> ReadEmbeddedAsync(
@@ -44,6 +45,45 @@ public sealed class QuestionBankPackageReader
         }
 
         return package;
+    }
+
+    public Task<QuestionBankPackage> ReadFileAsync(
+        string path,
+        CancellationToken cancellationToken = default) =>
+        Path.GetExtension(path).ToLowerInvariant() switch
+        {
+            ".json" => ReadJsonAsync(path, cancellationToken),
+            ".db" or ".sqlite" or ".sqlite3" => ReadSqliteAsync(path, cancellationToken),
+            _ => throw new QuestionBankValidationException(
+                "Question banks must be a portable CertPrep .json file or a compatible CertPrep SQLite database.")
+        };
+
+    public async Task<QuestionBankPackage> ReadJsonAsync(
+        string path,
+        CancellationToken cancellationToken = default)
+    {
+        if (string.IsNullOrWhiteSpace(path))
+        {
+            throw new ArgumentException("A JSON question bank path is required.", nameof(path));
+        }
+
+        var fullPath = Path.GetFullPath(path);
+        if (!File.Exists(fullPath))
+        {
+            throw new FileNotFoundException("The JSON question bank was not found.", fullPath);
+        }
+
+        try
+        {
+            await using var stream = File.OpenRead(fullPath);
+            return await JsonSerializer.DeserializeAsync<QuestionBankPackage>(stream, JsonOptions, cancellationToken)
+                ?? throw new QuestionBankValidationException("The JSON question bank is empty.");
+        }
+        catch (JsonException exception)
+        {
+            throw new QuestionBankValidationException(
+                $"'{Path.GetFileName(fullPath)}' is not valid CertPrep JSON: {exception.Message}");
+        }
     }
 
     public async Task<QuestionBankPackage> ReadSqliteAsync(
