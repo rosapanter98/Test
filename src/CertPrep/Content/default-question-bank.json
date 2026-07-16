@@ -594,6 +594,62 @@
             { "text": "Azure Cost Management budgets", "isCorrect": false, "sortOrder": 4 },
             { "text": "Microsoft Defender for Cloud", "isCorrect": false, "sortOrder": 5 }
           ]
+        },
+        {
+          "contentKey": "tf-resource-group-cross-region",
+          "objectiveKey": "azure-architecture",
+          "prompt": "Resources in one Azure resource group can be deployed in different Azure regions.",
+          "kind": "TrueFalse",
+          "difficulty": "Foundation",
+          "explanation": "A resource group's location determines where its metadata is stored. Resources within that group can use different Azure regions.",
+          "sourceName": "Manage Azure resource groups",
+          "sourceUrl": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/manage-resource-groups-portal",
+          "choices": [
+            { "text": "True", "isCorrect": true, "sortOrder": 0 },
+            { "text": "False", "isCorrect": false, "sortOrder": 1 }
+          ]
+        },
+        {
+          "contentKey": "tf-lock-control-data-plane",
+          "objectiveKey": "azure-governance",
+          "prompt": "A management lock on an Azure Storage account can restrict control-plane operations without preventing data-plane deletion or modification of blobs.",
+          "kind": "TrueFalse",
+          "difficulty": "Advanced",
+          "explanation": "Management locks apply to Azure control-plane operations. They don't protect blob, queue, table, or file data when that data is changed through data-plane operations.",
+          "sourceName": "Lock Azure resources",
+          "sourceUrl": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/lock-resources",
+          "choices": [
+            { "text": "True", "isCorrect": true, "sortOrder": 0 },
+            { "text": "False", "isCorrect": false, "sortOrder": 1 }
+          ]
+        },
+        {
+          "contentKey": "tf-policy-does-not-grant-access",
+          "objectiveKey": "azure-governance",
+          "prompt": "Assigning Azure Policy to a scope grants users permission to deploy any resource that complies with the policy.",
+          "kind": "TrueFalse",
+          "difficulty": "Intermediate",
+          "explanation": "Azure Policy evaluates and governs resource compliance; it doesn't grant deployment permissions. Azure RBAC controls which actions a user can perform at a scope.",
+          "sourceName": "What is Azure Policy?",
+          "sourceUrl": "https://learn.microsoft.com/en-us/azure/governance/policy/overview",
+          "choices": [
+            { "text": "True", "isCorrect": false, "sortOrder": 0 },
+            { "text": "False", "isCorrect": true, "sortOrder": 1 }
+          ]
+        },
+        {
+          "contentKey": "tf-availability-set-datacenter-outage",
+          "objectiveKey": "azure-architecture",
+          "prompt": "An Azure availability set provides the same datacenter-level fault isolation as availability zones.",
+          "kind": "TrueFalse",
+          "difficulty": "Intermediate",
+          "explanation": "Availability sets distribute VMs across fault and update domains but can still share datacenter infrastructure. Availability zones provide stronger isolation across separate datacenters within a region.",
+          "sourceName": "Availability sets overview",
+          "sourceUrl": "https://learn.microsoft.com/en-us/azure/virtual-machines/availability-set-overview",
+          "choices": [
+            { "text": "True", "isCorrect": false, "sortOrder": 0 },
+            { "text": "False", "isCorrect": true, "sortOrder": 1 }
+          ]
         }
       ]
     },
@@ -1190,6 +1246,62 @@
             { "text": "Microsoft Purview Audit only", "isCorrect": false, "sortOrder": 2 },
             { "text": "Microsoft Purview eDiscovery only", "isCorrect": false, "sortOrder": 3 },
             { "text": "Microsoft Purview Compliance Manager", "isCorrect": false, "sortOrder": 4 }
+          ]
+        },
+        {
+          "contentKey": "tf-conditional-access-report-only",
+          "objectiveKey": "entra-capabilities",
+          "prompt": "A Conditional Access policy in report-only mode is evaluated during sign-in without enforcing its grant or session controls.",
+          "kind": "TrueFalse",
+          "difficulty": "Intermediate",
+          "explanation": "Report-only mode records how a policy would evaluate while leaving its grant and session controls unenforced. This lets administrators assess impact before enabling the policy.",
+          "sourceName": "Conditional Access report-only mode",
+          "sourceUrl": "https://learn.microsoft.com/en-us/entra/identity/conditional-access/concept-conditional-access-report-only",
+          "choices": [
+            { "text": "True", "isCorrect": true, "sortOrder": 0 },
+            { "text": "False", "isCorrect": false, "sortOrder": 1 }
+          ]
+        },
+        {
+          "contentKey": "tf-defender-cloud-multicloud",
+          "objectiveKey": "security-solutions",
+          "prompt": "Microsoft Defender for Cloud can assess and protect resources in Azure, other cloud providers, and on-premises environments.",
+          "kind": "TrueFalse",
+          "difficulty": "Foundation",
+          "explanation": "Defender for Cloud provides security posture and workload-protection capabilities across Azure, multicloud, and hybrid environments.",
+          "sourceName": "What is Microsoft Defender for Cloud?",
+          "sourceUrl": "https://learn.microsoft.com/en-us/azure/defender-for-cloud/defender-for-cloud-introduction",
+          "choices": [
+            { "text": "True", "isCorrect": true, "sortOrder": 0 },
+            { "text": "False", "isCorrect": false, "sortOrder": 1 }
+          ]
+        },
+        {
+          "contentKey": "tf-access-review-denial-timing",
+          "objectiveKey": "entra-capabilities",
+          "prompt": "When a reviewer records a Deny decision in a Microsoft Entra access review, the user is removed immediately.",
+          "kind": "TrueFalse",
+          "difficulty": "Intermediate",
+          "explanation": "A denial is recorded during the review, but removal doesn't occur immediately. Results must be applied after the review, either automatically when configured or manually by an administrator.",
+          "sourceName": "Review access to groups and applications",
+          "sourceUrl": "https://learn.microsoft.com/en-us/entra/id-governance/perform-access-review",
+          "choices": [
+            { "text": "True", "isCorrect": false, "sortOrder": 0 },
+            { "text": "False", "isCorrect": true, "sortOrder": 1 }
+          ]
+        },
+        {
+          "contentKey": "tf-dlp-label-not-required",
+          "objectiveKey": "compliance-solutions",
+          "prompt": "Microsoft Purview Data Loss Prevention requires an item to have a sensitivity label before it can detect sensitive information such as credit card numbers.",
+          "kind": "TrueFalse",
+          "difficulty": "Intermediate",
+          "explanation": "DLP can inspect content by using sensitive information types and other matching methods. A sensitivity label can be a policy condition, but it isn't required for detecting sensitive data.",
+          "sourceName": "Learn about data loss prevention",
+          "sourceUrl": "https://learn.microsoft.com/en-us/purview/dlp-learn-about-dlp",
+          "choices": [
+            { "text": "True", "isCorrect": false, "sortOrder": 0 },
+            { "text": "False", "isCorrect": true, "sortOrder": 1 }
           ]
         }
       ]

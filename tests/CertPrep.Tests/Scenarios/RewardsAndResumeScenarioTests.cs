@@ -46,8 +46,7 @@ public sealed class RewardsAndResumeScenarioTests
         await services.Practice.SaveDraftSelectionAsync(first.SessionItemId, [selectedChoiceId], cancellationToken);
 
         var restartedServices = database.CreateServices(randomSeed: 99);
-        var active = await restartedServices.Practice.GetActiveSessionAsync(cancellationToken);
-        Assert.NotNull(active);
+        var active = Assert.Single(await restartedServices.Practice.GetActiveSessionsAsync(cancellationToken));
         Assert.Equal(run.SessionId, active.SessionId);
 
         var resumed = await restartedServices.Practice.ResumeAsync(run.SessionId, cancellationToken);
@@ -102,7 +101,10 @@ public sealed class RewardsAndResumeScenarioTests
             failedQuestion.Choices.Select(choice => choice.SessionChoiceId),
             cancellationToken);
         var wrongId = failedQuestion.Choices.First(choice => !correctIds.Contains(choice.SessionChoiceId)).SessionChoiceId;
-        await services.Practice.SubmitAsync(failedQuestion.SessionItemId, [wrongId], cancellationToken);
+        var incorrectIds = correctIds.ToHashSet();
+        incorrectIds.Remove(incorrectIds.First());
+        incorrectIds.Add(wrongId);
+        await services.Practice.SubmitAsync(failedQuestion.SessionItemId, incorrectIds, cancellationToken);
         await services.Practice.CompleteAsync(failedRun.SessionId, cancellationToken);
 
         var readinessAfter = await services.Mastery.GetExamReadinessAsync(cancellationToken);
@@ -163,7 +165,10 @@ public sealed class RewardsAndResumeScenarioTests
             failedQuestion.Choices.Select(choice => choice.SessionChoiceId),
             cancellationToken);
         var wrong = failedQuestion.Choices.First(choice => !correctIds.Contains(choice.SessionChoiceId)).SessionChoiceId;
-        await services.Practice.SubmitAsync(failedQuestion.SessionItemId, [wrong], cancellationToken);
+        var incorrectIds = correctIds.ToHashSet();
+        incorrectIds.Remove(incorrectIds.First());
+        incorrectIds.Add(wrong);
+        await services.Practice.SubmitAsync(failedQuestion.SessionItemId, incorrectIds, cancellationToken);
         await services.Practice.CompleteAsync(initial.SessionId, cancellationToken);
 
         var sampledIds = new List<int>();

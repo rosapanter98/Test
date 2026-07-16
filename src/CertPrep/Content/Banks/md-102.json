@@ -985,6 +985,50 @@
         { "text": "Fresh Start", "isCorrect": false, "sortOrder": 2 },
         { "text": "Sync", "isCorrect": false, "sortOrder": 3 }
       ]
+    },
+    {
+      "contentKey": "md102-tf-comanagement-workload-authority", "objectiveKey": "prepare-device-infrastructure",
+      "prompt": "In a co-managed environment, the compliance policies workload can move to Intune while Configuration Manager continues to manage workloads that haven't moved.",
+      "kind": "TrueFalse", "difficulty": "Intermediate",
+      "explanation": "Co-management workloads can be moved individually, several at once, or together. Configuration Manager remains authoritative for workloads that haven't been switched to Intune.",
+      "sourceName": "Co-management workloads", "sourceUrl": "https://learn.microsoft.com/en-us/intune/configmgr/comanage/workloads",
+      "choices": [
+        { "text": "True", "isCorrect": true, "sortOrder": 0 },
+        { "text": "False", "isCorrect": false, "sortOrder": 1 }
+      ]
+    },
+    {
+      "contentKey": "md102-tf-autopilot-reset-membership", "objectiveKey": "manage-maintain-devices",
+      "prompt": "Windows Autopilot Reset can prepare a Microsoft Entra joined device for a new user while retaining its Microsoft Entra membership and Intune enrollment.",
+      "kind": "TrueFalse", "difficulty": "Foundation",
+      "explanation": "Autopilot Reset removes personal files, apps, and settings but preserves Microsoft Entra device membership and MDM enrollment. It doesn't support Microsoft Entra hybrid joined devices.",
+      "sourceName": "Windows Autopilot Reset", "sourceUrl": "https://learn.microsoft.com/en-us/autopilot/windows-autopilot-reset",
+      "choices": [
+        { "text": "True", "isCorrect": true, "sortOrder": 0 },
+        { "text": "False", "isCorrect": false, "sortOrder": 1 }
+      ]
+    },
+    {
+      "contentKey": "md102-tf-win32-dependency-assignment", "objectiveKey": "manage-applications",
+      "prompt": "An Intune Win32 dependency must be assigned to the same user or device group as the parent app before Intune can install it automatically.",
+      "kind": "TrueFalse", "difficulty": "Advanced",
+      "explanation": "A dependent Win32 app doesn't require its own assignment when automatic installation is enabled. Intune targets and installs it from the dependency relationship.",
+      "sourceName": "Add and assign Win32 apps", "sourceUrl": "https://learn.microsoft.com/en-us/intune/app-management/deployment/add-win32",
+      "choices": [
+        { "text": "True", "isCorrect": false, "sortOrder": 0 },
+        { "text": "False", "isCorrect": true, "sortOrder": 1 }
+      ]
+    },
+    {
+      "contentKey": "md102-tf-configuration-policy-conflict", "objectiveKey": "manage-maintain-devices",
+      "prompt": "When two Intune device configuration policies set the same setting to different values, the most recently created policy automatically wins.",
+      "kind": "TrueFalse", "difficulty": "Intermediate",
+      "explanation": "Conflicting device configuration settings are reported as a conflict in Intune and must be resolved manually. Creation time doesn't provide a general newest-policy-wins rule.",
+      "sourceName": "Intune policy and profile troubleshooting", "sourceUrl": "https://learn.microsoft.com/en-us/intune/device-configuration/troubleshoot-device-profiles",
+      "choices": [
+        { "text": "True", "isCorrect": false, "sortOrder": 0 },
+        { "text": "False", "isCorrect": true, "sortOrder": 1 }
+      ]
     }
   ]
 }

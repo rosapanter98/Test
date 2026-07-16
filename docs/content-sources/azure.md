@@ -7,15 +7,15 @@ Research date: 2026-07-16. Only Microsoft Learn and Microsoft product documentat
 - Certification: https://learn.microsoft.com/en-us/credentials/certifications/azure-administrator/
 - Official study guide: https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/az-104
 - Current skills version on the study guide: April 17, 2026
-- Bank coverage: 75 questions
+- Bank coverage: 79 questions
 
 | Official top-level objective | Published weight | Questions | Bank share |
 |---|---:|---:|---:|
-| Manage Azure identities and governance | 20–25% | 18 | 24% |
-| Implement and manage storage | 15–20% | 14 | 18.7% |
-| Deploy and manage Azure compute resources | 20–25% | 18 | 24% |
-| Implement and manage virtual networking | 15–20% | 14 | 18.7% |
-| Monitor and maintain Azure resources | 10–15% | 11 | 14.7% |
+| Manage Azure identities and governance | 20–25% | 19 | 24.1% |
+| Implement and manage storage | 15–20% | 15 | 19% |
+| Deploy and manage Azure compute resources | 20–25% | 19 | 24.1% |
+| Implement and manage virtual networking | 15–20% | 15 | 19% |
+| Monitor and maintain Azure resources | 10–15% | 11 | 13.9% |
 
 Status: active associate-level certification. Microsoft Learn states that associate certifications renew annually. No retirement notice was present on the certification or study-guide page on the research date.
 
@@ -27,15 +27,15 @@ Key official documentation used by the bank includes Azure RBAC, Azure Policy, m
 - Official study guide: https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/az-700
 - Skills version in effect on the research date: April 24, 2026
 - Scheduled English exam update: July 27, 2026
-- Bank coverage: 70 questions
+- Bank coverage: 74 questions
 
 | Official top-level objective | Published weight | Questions | Bank share |
 |---|---:|---:|---:|
-| Design and implement core networking infrastructure | 25–30% | 19 | 27.1% |
-| Design, implement, and manage connectivity services | 20–25% | 15 | 21.4% |
-| Design and implement application delivery services | 15–20% | 12 | 17.1% |
-| Design and implement private access to Azure services | 10–15% | 9 | 12.9% |
-| Design and implement Azure network security services | 15–20% | 15 | 21.4% |
+| Design and implement core networking infrastructure | 25–30% | 20 | 27% |
+| Design, implement, and manage connectivity services | 20–25% | 16 | 21.6% |
+| Design and implement application delivery services | 15–20% | 13 | 17.6% |
+| Design and implement private access to Azure services | 10–15% | 9 | 12.2% |
+| Design and implement Azure network security services | 15–20% | 16 | 21.6% |
 
 Status: active associate-level certification with annual renewal. The certification page announced an English exam update for July 27, 2026. Microsoft had already published the incoming study-guide wording when this research was performed. Its change log identifies only minor changes under IP addressing, network monitoring, and NSGs; the five top-level objectives and their weights remain unchanged. The draft therefore keeps the current top-level mapping and uses current GA product documentation, including virtual network flow logs rather than proposing new NSG flow-log deployments. Recheck the guide after July 27 before promoting this draft to a released bank.
 
@@ -43,7 +43,7 @@ Key official documentation used by the bank includes VNet IP addressing, subnet 
 
 ## Editorial audit — 2026-07-16
 
-All 145 Azure questions were reviewed against their specific current Microsoft Learn source and the applicable official study-guide objective: 75 AZ-104 questions and 70 AZ-700 questions. The original audit validated 115 unique source URLs. The 20 scenario additions were separately parsed, semantically reviewed, and their 20 direct sources returned HTTP 200; after source reuse is accounted for, the expanded Azure banks contain 128 unique `learn.microsoft.com` URLs.
+Before the True/False expansion, all 145 Azure questions were reviewed against their specific current Microsoft Learn source and the applicable official study-guide objective: 75 AZ-104 questions and 70 AZ-700 questions. The original audit validated 115 unique source URLs. The 20 scenario additions were separately parsed, semantically reviewed, and their 20 direct sources returned HTTP 200; after source reuse is accounted for, that checkpoint used 128 unique `learn.microsoft.com` URLs.
 
 Substantive corrections and checks included:
 
@@ -70,8 +70,12 @@ Ten application-focused scenarios were added to each Azure exam. Their content k
 
 ## Editorial rules applied
 
-- Four to six plausible choices from the same technical domain, with the count varied where the scenario supports additional credible alternatives.
+- True/False items use exactly two choices; other questions use four to six plausible choices from the same technical domain.
 - Single-choice questions have exactly one correct choice; multiple-choice questions state the expected number and have that number of correct choices.
 - Explanations identify the deciding behavior and distinguish the closest distractor where useful.
 - Scenarios favor MSP operations, delegated administration, governance, security, hybrid connectivity, and repeatable multi-customer network operations.
 - Questions are mapped only to the exact official top-level objectives, because that is the granularity supported by the current question-bank schema.
+
+## True/False expansion — 2026-07-16
+
+Added four source-backed True/False questions to each Azure associate exam. AZ-104 now has 79 questions and AZ-700 has 74, for 153 combined. Each bank has two `True` and two `False` keyed answers. The additions test stateful NSGs, managed-identity lifecycle, VM deallocation billing, private endpoints, route-table association, ExpressRoute encryption, Application Gateway v2, and Standard Load Balancer security. The complete Azure set now references 133 distinct Microsoft Learn URLs.

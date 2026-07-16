@@ -13,7 +13,7 @@ public partial class PracticeViewModel : ViewModelBase
     private readonly Func<PracticeResult, Task> _completed;
     private readonly Func<int, Task> _exit;
     private int _questionIndex;
-    private bool _changingSingleChoice;
+    private bool _changingExclusiveChoice;
     private bool _loadingQuestion;
     private Task _pendingDraftSave = Task.CompletedTask;
 
@@ -33,12 +33,6 @@ public partial class PracticeViewModel : ViewModelBase
 
     public ObservableCollection<ChoiceOptionViewModel> Choices { get; } = [];
     public string ExamCode => _run.ExamCode;
-    public string ExamTitle => _run.ExamTitle;
-    public string ModeLabel => _run.Purpose == PracticeSessionPurpose.Boss
-        ? "Boss Exam"
-        : _run.Mode == PracticeMode.Study
-            ? "Study mode"
-            : "Exam simulation";
     public string SubmitButtonText => _run.Mode == PracticeMode.Study ? "Check answer" : "Submit answer";
     public string QuestionPosition => $"Question {_questionIndex + 1} of {_run.Questions.Count}";
     public double ProgressValue => (_questionIndex + 1) * 100d / _run.Questions.Count;
@@ -146,9 +140,12 @@ public partial class PracticeViewModel : ViewModelBase
             ? $"{question.ExamCode}  •  {question.ObjectiveName}"
             : question.ObjectiveName;
         QuestionText = question.Prompt;
-        AnswerInstruction = question.Kind == QuestionKind.MultipleChoice
-            ? $"Select exactly {question.RequiredAnswerCount} answers."
-            : "Select exactly 1 answer.";
+        AnswerInstruction = question.Kind switch
+        {
+            QuestionKind.MultipleChoice => $"Select exactly {question.RequiredAnswerCount} answers.",
+            QuestionKind.TrueFalse => "Choose whether the statement is true or false.",
+            _ => "Select exactly 1 answer."
+        };
         ShowFeedback = false;
         FeedbackHeading = string.Empty;
         Explanation = string.Empty;
@@ -163,7 +160,7 @@ public partial class PracticeViewModel : ViewModelBase
                 choice.SessionChoiceId,
                 choice.Text,
                 choice.IsSelected,
-                question.Kind == QuestionKind.SingleChoice,
+                question.Kind is QuestionKind.SingleChoice or QuestionKind.TrueFalse,
                 OnChoiceChanged));
         }
         _loadingQuestion = false;
@@ -176,20 +173,20 @@ public partial class PracticeViewModel : ViewModelBase
 
     private void OnChoiceChanged(ChoiceOptionViewModel changed)
     {
-        if (_changingSingleChoice || _loadingQuestion)
+        if (_changingExclusiveChoice || _loadingQuestion)
         {
             return;
         }
 
         var question = _run.Questions[_questionIndex];
-        if (question.Kind == QuestionKind.SingleChoice && changed.IsSelected)
+        if (question.Kind is (QuestionKind.SingleChoice or QuestionKind.TrueFalse) && changed.IsSelected)
         {
-            _changingSingleChoice = true;
+            _changingExclusiveChoice = true;
             foreach (var choice in Choices.Where(choice => !ReferenceEquals(choice, changed)))
             {
                 choice.IsSelected = false;
             }
-            _changingSingleChoice = false;
+            _changingExclusiveChoice = false;
         }
 
         NotifyCommandState();

@@ -1,12 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net10.0</TargetFramework>
     <RootNamespace>CertPrep</RootNamespace>
     <AssemblyName>CertPrep</AssemblyName>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <LangVersion>latest</LangVersion>
     <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <ApplicationIcon>Assets\App\certprep.ico</ApplicationIcon>
@@ -27,6 +23,7 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.10" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.10" />
     <PackageReference Include="SQLitePCLRaw.lib.e_sqlite3" Version="2.1.12" />
+    <PackageReference Include="Velopack" Version="1.2.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -34,5 +31,17 @@
     <AvaloniaResource Include="Assets\Reactions\*.gif" />
     <EmbeddedResource Include="Content\default-question-bank.json" />
     <EmbeddedResource Include="Content\Banks\*.json" />
+    <None Include="..\..\LICENSE"
+          Link="LICENSE"
+          CopyToPublishDirectory="PreserveNewest" />
   </ItemGroup>
+
+  <Target Name="RemoveReleasePublishSymbols"
+          AfterTargets="Publish"
+          Condition="'$(Configuration)' == 'Release'">
+    <ItemGroup>
+      <ReleasePublishSymbols Include="$(PublishDir)**\*.pdb" />
+    </ItemGroup>
+    <Delete Files="@(ReleasePublishSymbols)" />
+  </Target>
 </Project>

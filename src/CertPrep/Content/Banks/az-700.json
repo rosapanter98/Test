@@ -936,6 +936,50 @@
         { "text": "A Priority parent profile with Weighted child profiles split by continent", "isCorrect": false, "sortOrder": 4 },
         { "text": "A Weighted parent profile with MultiValue child profiles split by continent", "isCorrect": false, "sortOrder": 5 }
       ]
+    },
+    {
+      "contentKey": "az700-tf-route-table-subnet-association", "objectiveKey": "core-networking",
+      "prompt": "In Azure, the same route table can be associated with multiple subnets, but each subnet can have at most one route table associated with it.",
+      "kind": "TrueFalse", "difficulty": "Foundation",
+      "explanation": "A route table can be associated with zero or more subnets. A specific subnet can have zero or one associated route table.",
+      "sourceName": "Azure virtual network traffic routing", "sourceUrl": "https://learn.microsoft.com/en-us/azure/virtual-network/virtual-networks-udr-overview",
+      "choices": [
+        { "text": "True", "isCorrect": true, "sortOrder": 0 },
+        { "text": "False", "isCorrect": false, "sortOrder": 1 }
+      ]
+    },
+    {
+      "contentKey": "az700-tf-expressroute-default-encryption", "objectiveKey": "connectivity-services",
+      "prompt": "Traffic over an Azure ExpressRoute connection is encrypted by default without configuring MACsec or IPsec.",
+      "kind": "TrueFalse", "difficulty": "Intermediate",
+      "explanation": "ExpressRoute traffic isn't encrypted by default. MACsec can protect supported ExpressRoute Direct links, while IPsec can provide end-to-end network-layer encryption.",
+      "sourceName": "Encryption for Azure ExpressRoute", "sourceUrl": "https://learn.microsoft.com/en-us/azure/expressroute/expressroute-about-encryption",
+      "choices": [
+        { "text": "True", "isCorrect": false, "sortOrder": 0 },
+        { "text": "False", "isCorrect": true, "sortOrder": 1 }
+      ]
+    },
+    {
+      "contentKey": "az700-tf-appgw-v2-autoscale-zones", "objectiveKey": "application-delivery",
+      "prompt": "An Application Gateway Standard_v2 deployment can use autoscaling and span multiple Availability Zones in a supported region.",
+      "kind": "TrueFalse", "difficulty": "Intermediate",
+      "explanation": "Application Gateway Standard_v2 supports autoscaling and can span multiple Availability Zones, reducing the need to size fixed instances or deploy a separate gateway in each zone.",
+      "sourceName": "Azure Application Gateway features", "sourceUrl": "https://learn.microsoft.com/en-us/azure/application-gateway/features",
+      "choices": [
+        { "text": "True", "isCorrect": true, "sortOrder": 0 },
+        { "text": "False", "isCorrect": false, "sortOrder": 1 }
+      ]
+    },
+    {
+      "contentKey": "az700-tf-standard-lb-nsg", "objectiveKey": "network-security",
+      "prompt": "After an inbound rule is configured on a Standard public Load Balancer, backend virtual machines accept the flow even when no network security group rule explicitly permits it.",
+      "kind": "TrueFalse", "difficulty": "Intermediate",
+      "explanation": "Standard Load Balancer is secure by default. An NSG on the backend subnet or network interface must explicitly permit the inbound traffic.",
+      "sourceName": "Secure Azure Load Balancer", "sourceUrl": "https://learn.microsoft.com/en-us/azure/load-balancer/secure-load-balancer",
+      "choices": [
+        { "text": "True", "isCorrect": false, "sortOrder": 0 },
+        { "text": "False", "isCorrect": true, "sortOrder": 1 }
+      ]
     }
   ]
 }

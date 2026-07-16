@@ -1179,6 +1179,50 @@
         { "text": "Microsoft Entra Connect cloud sync between the resource tenants", "isCorrect": false, "sortOrder": 2 },
         { "text": "An access package with no external-user provisioning process", "isCorrect": false, "sortOrder": 3 }
       ]
+    },
+    {
+      "contentKey": "sc300-tf-ca-after-first-factor", "objectiveKey": "authentication-access",
+      "prompt": "Microsoft Entra Conditional Access policies are enforced after first-factor authentication is completed.",
+      "kind": "TrueFalse", "difficulty": "Foundation",
+      "explanation": "Conditional Access is a policy engine, not the first authentication factor. It evaluates signals and enforces access decisions after first-factor authentication.",
+      "sourceName": "What is Conditional Access?", "sourceUrl": "https://learn.microsoft.com/en-us/entra/identity/conditional-access/overview",
+      "choices": [
+        { "text": "True", "isCorrect": true, "sortOrder": 0 },
+        { "text": "False", "isCorrect": false, "sortOrder": 1 }
+      ]
+    },
+    {
+      "contentKey": "sc300-tf-pim-eligible-continuous-access", "objectiveKey": "identity-governance",
+      "prompt": "A user with an eligible Microsoft Entra PIM role assignment continuously receives that role's permissions until the eligibility period expires.",
+      "kind": "TrueFalse", "difficulty": "Intermediate",
+      "explanation": "Eligibility permits the user to request activation. The privileged permissions are granted only while the role has an active assignment, not throughout the full eligibility period.",
+      "sourceName": "What is Privileged Identity Management?", "sourceUrl": "https://learn.microsoft.com/en-us/entra/id-governance/privileged-identity-management/pim-configure",
+      "choices": [
+        { "text": "True", "isCorrect": false, "sortOrder": 0 },
+        { "text": "False", "isCorrect": true, "sortOrder": 1 }
+      ]
+    },
+    {
+      "contentKey": "sc300-tf-app-proxy-inbound-firewall", "objectiveKey": "workload-identities",
+      "prompt": "Publishing an on-premises application through Microsoft Entra application proxy requires opening inbound firewall ports so the application proxy service can initiate connections to the private network connector.",
+      "kind": "TrueFalse", "difficulty": "Intermediate",
+      "explanation": "Application proxy communication originates from the private network connector and is outbound only. The design does not require inbound firewall openings for the connector.",
+      "sourceName": "Microsoft Entra application proxy", "sourceUrl": "https://learn.microsoft.com/en-us/entra/identity/app-proxy/overview-what-is-app-proxy",
+      "choices": [
+        { "text": "True", "isCorrect": false, "sortOrder": 0 },
+        { "text": "False", "isCorrect": true, "sortOrder": 1 }
+      ]
+    },
+    {
+      "contentKey": "sc300-tf-cross-tenant-not-migration", "objectiveKey": "manage-user-identities",
+      "prompt": "Cross-tenant synchronization is not a tenant-migration tool because synchronized users continue to authenticate against their source tenant.",
+      "kind": "TrueFalse", "difficulty": "Intermediate",
+      "explanation": "Cross-tenant synchronization provisions identities for collaboration in target tenants. The source identity remains authoritative for authentication, and the feature does not migrate the user's Microsoft 365 data.",
+      "sourceName": "Cross-tenant synchronization overview", "sourceUrl": "https://learn.microsoft.com/en-us/entra/identity/multi-tenant-organizations/cross-tenant-synchronization-overview",
+      "choices": [
+        { "text": "True", "isCorrect": true, "sortOrder": 0 },
+        { "text": "False", "isCorrect": false, "sortOrder": 1 }
+      ]
     }
   ]
 }

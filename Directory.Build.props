@@ -1,0 +1,22 @@
+<Project>
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>latest</LangVersion>
+
+    <Version>0.1.0</Version>
+    <Authors>Tore Andre Vinsrygg</Authors>
+    <Company>Tore Andre Vinsrygg</Company>
+    <Product>CertPrep</Product>
+    <AssemblyTitle>CertPrep</AssemblyTitle>
+    <Description>Local-first desktop practice for Microsoft certification exams.</Description>
+    <Copyright>Copyright © 2026 Tore Andre Vinsrygg</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <NeutralLanguage>en-US</NeutralLanguage>
+
+    <Deterministic>true</Deterministic>
+    <DebugSymbols Condition="'$(Configuration)' == 'Release'">false</DebugSymbols>
+    <DebugType Condition="'$(Configuration)' == 'Release'">None</DebugType>
+  </PropertyGroup>
+</Project>

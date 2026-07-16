@@ -15,7 +15,7 @@ Top-level objectives and weights:
 2. Respond to security incidents — 35–40%
 3. Perform threat hunting — 20–25%
 
-Question distribution in `sc-200.json`: 73 questions, weighted 31 / 26 / 16 (42.5% / 35.6% / 21.9%).
+Question distribution in `sc-200.json`: 77 questions, weighted 32 / 27 / 18 (41.6% / 35.1% / 23.4%).
 
 Primary official documentation families used:
 
@@ -44,7 +44,7 @@ Top-level objectives and weights:
 2. Implement data loss prevention and retention — 30–35%
 3. Manage risks, alerts, and activities — 30–35%
 
-Question distribution in `sc-401.json`: 71 questions, weighted 24 / 24 / 23 (33.8% / 33.8% / 32.4%).
+Question distribution in `sc-401.json`: 75 questions, weighted 26 / 25 / 24 (34.7% / 33.3% / 32%).
 
 Primary official documentation families used:
 
@@ -73,8 +73,8 @@ Substantive corrections:
 
 Validation results:
 
-- The banks now contain 144 questions: 73 SC-200 and 71 SC-401.
-- Choice counts intentionally vary. SC-200 contains 67 four-choice, 4 five-choice, and 2 six-choice questions. SC-401 contains 65 four-choice, 4 five-choice, and 2 six-choice questions.
+- Before the True/False expansion, the banks contained 144 questions: 73 SC-200 and 71 SC-401.
+- Current choice counts intentionally vary. SC-200 contains 4 two-choice, 67 four-choice, 4 five-choice, and 2 six-choice questions. SC-401 contains 4 two-choice, 65 four-choice, 4 five-choice, and 2 six-choice questions.
 - Every single-choice question has exactly one marked answer. Every multi-select prompt states the exact number to choose and marks that number of answers.
 - All question content keys are unique within each bank.
 - All 109 unique question source URLs returned HTTP 200 on 2026-07-16.
@@ -104,6 +104,10 @@ SC-401 additions cover:
 - Auto-label simulation review and eDiscovery preservation.
 
 The ordering questions deliberately reuse the same operational steps in different sequences. SC-200 has two new ordering scenarios; SC-401 has three. The new questions use four, five, and six choices, include explicit `Choose two` or `Choose three` wording for multi-selects, and explain why the closest alternative is wrong.
+
+## True/False expansion — 2026-07-16
+
+Added four source-backed True/False questions to SC-200 and SC-401, bringing the two security banks to 152 questions. Each exam has two `True` and two `False` keyed answers. The additions cover active Sentinel rules, Defender response restrictions, hunting behavior, sensitivity-label persistence, Exact Data Match privacy, retention-label publishing, and eDiscovery holds. The complete security set now references 124 distinct Microsoft Learn URLs.
 
 ## SC-500 status and recommendation
 

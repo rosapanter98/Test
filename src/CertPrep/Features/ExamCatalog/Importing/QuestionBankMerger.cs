@@ -44,10 +44,7 @@ public sealed class QuestionBankMerger
             foreach (var incomingObjective in incomingExam.Objectives.OrderBy(item => item.SortOrder))
             {
                 var objective = exam.Objectives.FirstOrDefault(existing =>
-                        string.Equals(existing.ContentKey, incomingObjective.ContentKey, StringComparison.OrdinalIgnoreCase))
-                    ?? exam.Objectives.FirstOrDefault(existing =>
-                        existing.ContentKey.StartsWith("legacy-objective-", StringComparison.Ordinal) &&
-                        string.Equals(existing.Name, incomingObjective.Name, StringComparison.OrdinalIgnoreCase));
+                    string.Equals(existing.ContentKey, incomingObjective.ContentKey, StringComparison.OrdinalIgnoreCase));
 
                 if (objective is null)
                 {
@@ -63,10 +60,7 @@ public sealed class QuestionBankMerger
             foreach (var incomingQuestion in incomingExam.Questions)
             {
                 var question = exam.Questions.FirstOrDefault(existing =>
-                        string.Equals(existing.ContentKey, incomingQuestion.ContentKey, StringComparison.OrdinalIgnoreCase))
-                    ?? exam.Questions.FirstOrDefault(existing =>
-                        existing.ContentKey.StartsWith("legacy-question-", StringComparison.Ordinal) &&
-                        string.Equals(existing.Prompt, incomingQuestion.Prompt, StringComparison.Ordinal));
+                    string.Equals(existing.ContentKey, incomingQuestion.ContentKey, StringComparison.OrdinalIgnoreCase));
                 var questionIsNew = question is null;
                 question ??= new Question { Exam = exam };
 
@@ -144,6 +138,16 @@ public sealed class QuestionBankMerger
                     $"Single-choice question '{question.ContentKey}' must have exactly one correct choice.");
                 Require(question.Kind != QuestionKind.MultipleChoice || question.Choices.Count(choice => choice.IsCorrect) >= 2,
                     $"Multiple-choice question '{question.ContentKey}' must have at least two correct choices.");
+                if (question.Kind == QuestionKind.TrueFalse)
+                {
+                    var orderedChoices = question.Choices.OrderBy(choice => choice.SortOrder).ToList();
+                    Require(orderedChoices.Count == 2,
+                        $"True/False question '{question.ContentKey}' must have exactly two choices.");
+                    Require(orderedChoices.Count(choice => choice.IsCorrect) == 1,
+                        $"True/False question '{question.ContentKey}' must have exactly one correct choice.");
+                    Require(orderedChoices[0].Text == "True" && orderedChoices[1].Text == "False",
+                        $"True/False question '{question.ContentKey}' must contain True then False.");
+                }
 
                 var choiceOrders = new HashSet<int>();
                 foreach (var choice in question.Choices)

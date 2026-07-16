@@ -11,7 +11,7 @@ Research snapshot: 2026-07-16. Only Microsoft Learn credential pages, study guid
   - Implement authentication and access management (25–30%)
   - Plan and implement workload identities (20–25%)
   - Plan and automate identity governance (20–25%)
-- Audited distribution: 73 questions — 17, 21, 17, and 18 respectively (23.3%, 28.8%, 23.3%, and 24.7%).
+- Current distribution: 77 questions — 18, 22, 18, and 19 respectively (23.4%, 28.6%, 23.4%, and 24.7%).
 - Credential status: active associate certification, with SC-300 as the required exam. Microsoft Learn lists a 12-month renewal frequency and no separate prerequisite certification.
 - Caveat: the current study guide's "Skills at a glance" gives authentication and access management a 25–30% weight, while the later section heading displays 20–25%. The bank follows the at-a-glance weight because it is the guide's explicit weighting summary.
 
@@ -24,7 +24,7 @@ Research snapshot: 2026-07-16. Only Microsoft Learn credential pages, study guid
   - Manage and maintain devices (30–35%)
   - Manage applications (15–20%)
   - Protect devices (15–20%)
-- Audited distribution for the objectives in force on 2026-07-16: 69 questions — 18, 23, 14, and 14 respectively (26.1%, 33.3%, 20.3%, and 20.3%).
+- Current distribution for the objectives in force on 2026-07-16: 73 questions — 19, 25, 15, and 14 respectively (26%, 34.2%, 20.5%, and 19.2%).
 - Credential status: active associate certification, with MD-102 as the required exam. Microsoft Learn lists a 12-month renewal frequency and no separate prerequisite certification.
 - Transition risk: Microsoft Learn says the English certification/exam objectives will update on 2026-07-24, and the official study guide already publishes the upcoming objective set. The new set changes the weights to Prepare infrastructure (20–25%), Manage and maintain devices (25–30%), Protect devices (15–20%), Manage and secure applications (15–20%), and a new Optimize endpoint operations by using automation, monitoring, and reporting area (10–15%). It also adds or expands agentic tools, automation with PowerShell and Microsoft Graph, multi-admin approval, Windows Autopatch and Hotpatch, App Control for Business, operational reporting, Endpoint Analytics, and proactive remediations. This bank intentionally remains mapped to the four objectives in force on the 2026-07-16 research date. It must be restructured and re-audited before being represented as aligned to English exams delivered on or after 2026-07-24; renaming the existing four objective headings is not sufficient.
 
@@ -37,7 +37,7 @@ Research snapshot: 2026-07-16. Only Microsoft Learn credential pages, study guid
   - Implement and manage Microsoft Entra identity and access (25–30%)
   - Manage security and threats by using Microsoft Defender XDR (30–35%)
   - Manage compliance by using Microsoft Purview (10–15%)
-- Audited distribution: 64 questions — 17, 17, 22, and 8 respectively (26.6%, 26.6%, 34.4%, and 12.5%).
+- Current distribution: 68 questions — 18, 18, 23, and 9 respectively (26.5%, 26.5%, 33.8%, and 13.2%).
 - Credential status: MS-102 is active and has no retirement date listed, but passing MS-102 alone does not award the Microsoft 365 Certified: Administrator Expert certification.
 - Prerequisite caveat: the current expert certification page requires MS-102 plus at least one active prerequisite certification from: Endpoint Administrator Associate, Teams Administrator Associate, Identity and Access Administrator Associate, or Information Security Administrator Associate. This list can change as credentials retire, so the live certification page is authoritative at scheduling time.
 - Weight-source caveat: Microsoft Learn rendered inconsistent MS-102 percentage summaries during the 2026-07-16 audit. The versioned official study guide's "Skills at a glance" and its detailed section headings consistently show 25–30%, 25–30%, 30–35%, and 10–15%; the bank follows that study guide because it is the detailed, dated objective contract used for question mapping. A nonversioned exam-page/search rendering showed 10–15%, 25–30%, 35–40%, and 15–20% while also describing the already-past 2026-04-28 update as future. Recheck both official pages when the study guide changes.
@@ -47,8 +47,8 @@ Research snapshot: 2026-07-16. Only Microsoft Learn credential pages, study guid
 
 - Every `objectiveKey` maps to an exact top-level objective from the applicable study guide.
 - Objective counts approximate the published percentage ranges; they are not claims about the live exam's exact question mix.
-- Every question has four to six same-domain choices, at least one correct choice, an explanation, and a direct `learn.microsoft.com` product-documentation source. The original questions retain four choices; the scenario expansion deliberately varies between four, five, and six.
-- `SingleChoice` questions have exactly one correct answer. `MultipleChoice` questions have an exact stated answer count of at least two, using wording such as `Choose two` or `Choose three`.
+- True/False questions have exactly two choices. Other questions have four to six same-domain choices, at least one correct choice, an explanation, and a direct `learn.microsoft.com` product-documentation source.
+- `SingleChoice` and `TrueFalse` questions have exactly one correct answer. `MultipleChoice` questions have an exact stated answer count of at least two, using wording such as `Choose two` or `Choose three`.
 - Question text is original and is not copied from Microsoft practice assessments.
 
 ## Editorial audit — 2026-07-16
@@ -65,11 +65,15 @@ Research snapshot: 2026-07-16. Only Microsoft Learn credential pages, study guid
 
 ## Scenario expansion audit — 2026-07-16
 
-- Added and semantically reviewed 24 operational scenario questions: eight each for SC-300, MD-102, and MS-102. The combined identity and endpoint set now contains 206 questions.
-- Each exam received the same new choice-count mix: two questions with four choices, three with five choices, and three with six choices. Whole-bank choice distributions are MD-102: 63/3/3, MS-102: 58/3/3, and SC-300: 67/3/3 for four/five/six choices.
+- Added and semantically reviewed 24 operational scenario questions: eight each for SC-300, MD-102, and MS-102. That checkpoint brought the combined identity and endpoint set to 206 questions before the True/False expansion.
+- Each exam received the same scenario choice-count mix: two questions with four choices, three with five choices, and three with six choices. Current whole-bank distributions for two/four/five/six choices are MD-102: 4/63/3/3, MS-102: 4/58/3/3, and SC-300: 4/67/3/3.
 - Added two ordered-deployment questions to MD-102, four to MS-102, and two to SC-300. Each ordering item reuses the same operational steps in plausible alternative orders so the answer depends on prerequisites and rollout sequence rather than vocabulary recognition.
 - Added explicitly counted multi-select scenarios: two in MD-102, three in MS-102, and three in SC-300. Every `Choose two` item has exactly two keyed answers, and every `Choose three` item has exactly three.
 - Scenario coverage emphasizes MSP operations: Autopilot pre-provisioning, Win32 packaging, Defender onboarding, app-based access, GDAP onboarding and role mapping, custom-domain cutover, Conditional Access rollout, DLP simulation, cross-tenant trust and synchronization, emergency access, PIM activation, and entitlement management.
 - Parsed all three JSON banks and checked every new key, objective reference, choice sort order, answer cardinality, and source scheme. All 24 new content keys and prompts are unique.
 - Revalidated the 24 distinct source URLs used by the new scenarios; all returned HTTP 200. Across the three complete banks, 180 distinct Microsoft Learn source URLs are now referenced.
 - The scenario expansion does not claim alignment with the upcoming fifth MD-102 skill area. Its eight additions remain mapped to the four-objective contract in force on the research date; the existing 2026-07-24 transition warning remains mandatory.
+
+## True/False expansion — 2026-07-16
+
+Added four source-backed True/False questions to SC-300, MD-102, and MS-102, bringing the combined set to 218 questions. Every exam has a balanced two-`True`, two-`False` answer key. The statements cover cross-tenant and privileged identity behavior, co-management and Intune deployment rules, administrative units, retention, Conditional Access, and Defender security settings management. The complete three-bank set now references 187 distinct Microsoft Learn URLs.

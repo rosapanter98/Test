@@ -11,10 +11,6 @@ public sealed class PracticeSessionService(
     TimeProvider timeProvider,
     Random random)
 {
-    public async Task<ActiveSessionSummary?> GetActiveSessionAsync(
-        CancellationToken cancellationToken = default)
-        => (await GetActiveSessionsAsync(cancellationToken)).FirstOrDefault();
-
     public async Task<IReadOnlyList<ActiveSessionSummary>> GetActiveSessionsAsync(
         CancellationToken cancellationToken = default)
     {

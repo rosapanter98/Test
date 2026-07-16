@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CertPrep.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(StudyDbContext))]
-    [Migration("20260716062809_MixedPracticeSessions")]
-    partial class MixedPracticeSessions
+    [Migration("20260716120359_InitialStudySchema")]
+    partial class InitialStudySchema
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -97,6 +97,12 @@ namespace CertPrep.Infrastructure.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("ContentKey")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
+
                     b.Property<int>("ExamId")
                         .HasColumnType("INTEGER");
 
@@ -110,8 +116,10 @@ namespace CertPrep.Infrastructure.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ExamId", "SortOrder")
+                    b.HasIndex("ExamId", "ContentKey")
                         .IsUnique();
+
+                    b.HasIndex("ExamId", "SortOrder");
 
                     b.ToTable("ExamObjectives");
                 });
@@ -121,6 +129,12 @@ namespace CertPrep.Infrastructure.Persistence.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("ContentKey")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.Property<string>("Difficulty")
                         .IsRequired()
@@ -163,9 +177,10 @@ namespace CertPrep.Infrastructure.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ExamId");
-
                     b.HasIndex("ExamObjectiveId");
+
+                    b.HasIndex("ExamId", "ContentKey")
+                        .IsUnique();
 
                     b.ToTable("Questions");
                 });
@@ -196,6 +211,11 @@ namespace CertPrep.Infrastructure.Persistence.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Mode")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Purpose")
                         .IsRequired()
                         .HasMaxLength(30)
                         .HasColumnType("TEXT");
@@ -290,6 +310,12 @@ namespace CertPrep.Infrastructure.Persistence.Migrations
                         .HasMaxLength(30)
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("ObjectiveContentKeySnapshot")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
+
                     b.Property<string>("ObjectiveName")
                         .IsRequired()
                         .HasMaxLength(200)
@@ -333,6 +359,63 @@ namespace CertPrep.Infrastructure.Persistence.Migrations
                         .IsUnique();
 
                     b.ToTable("PracticeSessionItems");
+                });
+
+            modelBuilder.Entity("CertPrep.Features.Rewards.RewardLedgerEntry", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Amount")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTimeOffset>("AwardedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(240)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ExamCode")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("IdempotencyKey")
+                        .IsRequired()
+                        .HasMaxLength(240)
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
+
+                    b.Property<string>("Kind")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ObjectiveContentKey")
+                        .HasMaxLength(100)
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
+
+                    b.Property<int>("PracticeSessionId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("PracticeSessionItemId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("RuleVersion")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IdempotencyKey")
+                        .IsUnique();
+
+                    b.HasIndex("PracticeSessionId", "RuleVersion");
+
+                    b.ToTable("RewardLedgerEntries");
                 });
 
             modelBuilder.Entity("CertPrep.Features.ExamCatalog.AnswerChoice", b =>
@@ -414,6 +497,17 @@ namespace CertPrep.Infrastructure.Persistence.Migrations
                     b.Navigation("PracticeSession");
 
                     b.Navigation("SourceExam");
+                });
+
+            modelBuilder.Entity("CertPrep.Features.Rewards.RewardLedgerEntry", b =>
+                {
+                    b.HasOne("CertPrep.Features.Practice.PracticeSession", "PracticeSession")
+                        .WithMany()
+                        .HasForeignKey("PracticeSessionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("PracticeSession");
                 });
 
             modelBuilder.Entity("CertPrep.Features.ExamCatalog.Exam", b =>

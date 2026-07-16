@@ -1185,6 +1185,62 @@
             { "text": "DeviceNetworkEvents", "isCorrect": false, "sortOrder": 2 },
             { "text": "EmailEvents", "isCorrect": false, "sortOrder": 3 }
           ]
+        },
+        {
+          "contentKey": "sc200-tf-template-needs-active-rule",
+          "objectiveKey": "manage-security-operations-environment",
+          "prompt": "A Microsoft Sentinel analytics rule template does not begin detecting threats until an active rule is created from the template.",
+          "kind": "TrueFalse",
+          "difficulty": "Foundation",
+          "explanation": "Templates provide predefined rule logic and settings. The template itself is not active; an analyst must create and enable an active analytics rule from it.",
+          "sourceName": "Create analytics rules from templates",
+          "sourceUrl": "https://learn.microsoft.com/en-us/azure/sentinel/create-analytics-rule-from-template",
+          "choices": [
+            { "text": "True", "isCorrect": true, "sortOrder": 0 },
+            { "text": "False", "isCorrect": false, "sortOrder": 1 }
+          ]
+        },
+        {
+          "contentKey": "sc200-tf-restrict-apps-microsoft-signed",
+          "objectiveKey": "respond-security-incidents",
+          "prompt": "The Defender for Endpoint Restrict app execution response action applies a code integrity policy that allows only files signed by a Microsoft-issued certificate to run on the device.",
+          "kind": "TrueFalse",
+          "difficulty": "Advanced",
+          "explanation": "Restrict app execution locks down the device with a code integrity policy that permits Microsoft-signed files. The restriction can later be removed from the device page.",
+          "sourceName": "Take response actions on a device",
+          "sourceUrl": "https://learn.microsoft.com/en-us/defender-endpoint/respond-machine-alerts",
+          "choices": [
+            { "text": "True", "isCorrect": true, "sortOrder": 0 },
+            { "text": "False", "isCorrect": false, "sortOrder": 1 }
+          ]
+        },
+        {
+          "contentKey": "sc200-tf-hunting-query-auto-incident",
+          "objectiveKey": "perform-threat-hunting",
+          "prompt": "Saving and running a Microsoft Sentinel hunting query automatically creates an incident whenever the query returns results.",
+          "kind": "TrueFalse",
+          "difficulty": "Intermediate",
+          "explanation": "Hunting queries support analyst-led investigation and do not automatically create incidents from every result. The analyst can explicitly create an analytics rule or incident from relevant findings.",
+          "sourceName": "Threat hunting in Microsoft Sentinel",
+          "sourceUrl": "https://learn.microsoft.com/en-us/azure/sentinel/hunting",
+          "choices": [
+            { "text": "True", "isCorrect": false, "sortOrder": 0 },
+            { "text": "False", "isCorrect": true, "sortOrder": 1 }
+          ]
+        },
+        {
+          "contentKey": "sc200-tf-advanced-hunting-endpoint-only",
+          "objectiveKey": "perform-threat-hunting",
+          "prompt": "Defender XDR advanced hunting can query only Microsoft Defender for Endpoint telemetry; data from other Defender products must be hunted in separate portals.",
+          "kind": "TrueFalse",
+          "difficulty": "Intermediate",
+          "explanation": "Advanced hunting exposes a broader dataset that can include Defender for Endpoint, Defender for Office 365, Defender for Cloud Apps, Defender for Identity, and connected Microsoft Sentinel data.",
+          "sourceName": "Advanced hunting in Microsoft Defender",
+          "sourceUrl": "https://learn.microsoft.com/en-us/defender-xdr/advanced-hunting-overview",
+          "choices": [
+            { "text": "True", "isCorrect": false, "sortOrder": 0 },
+            { "text": "False", "isCorrect": true, "sortOrder": 1 }
+          ]
         }
       ]
 }

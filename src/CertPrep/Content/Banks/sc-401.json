@@ -1153,6 +1153,62 @@
             { "text": "Create a DLP policy that blocks external sharing", "isCorrect": false, "sortOrder": 2 },
             { "text": "Export the current files and remove the employee from all retention policies", "isCorrect": false, "sortOrder": 3 }
           ]
+        },
+        {
+          "contentKey": "sc401-tf-label-persists-in-metadata",
+          "objectiveKey": "implement-information-protection",
+          "prompt": "A sensitivity label stored in a file or email's metadata remains with the content when the content is saved in another supported location.",
+          "kind": "TrueFalse",
+          "difficulty": "Foundation",
+          "explanation": "Sensitivity labels are persistent metadata. The label stays with supported files and emails and continues to provide the identity used for configured protection and policy enforcement.",
+          "sourceName": "Learn about sensitivity labels",
+          "sourceUrl": "https://learn.microsoft.com/en-us/purview/sensitivity-labels",
+          "choices": [
+            { "text": "True", "isCorrect": true, "sortOrder": 0 },
+            { "text": "False", "isCorrect": false, "sortOrder": 1 }
+          ]
+        },
+        {
+          "contentKey": "sc401-tf-edm-uploads-cleartext",
+          "objectiveKey": "implement-information-protection",
+          "prompt": "Exact Data Match classification uploads the source table's clear-text sensitive values to Microsoft so the service can compare them with scanned content.",
+          "kind": "TrueFalse",
+          "difficulty": "Advanced",
+          "explanation": "The sensitive values are hashed with a salt before upload. Only hashed values are uploaded, and matching is performed by comparing one-way cryptographic hashes.",
+          "sourceName": "Exact Data Match sensitive information types",
+          "sourceUrl": "https://learn.microsoft.com/en-us/purview/sit-learn-about-exact-data-match-based-sits",
+          "choices": [
+            { "text": "True", "isCorrect": false, "sortOrder": 0 },
+            { "text": "False", "isCorrect": true, "sortOrder": 1 }
+          ]
+        },
+        {
+          "contentKey": "sc401-tf-publishing-retention-auto-applies",
+          "objectiveKey": "implement-dlp-retention",
+          "prompt": "Publishing a retention label to a SharePoint or Exchange location automatically applies that label to every existing item in the selected location.",
+          "kind": "TrueFalse",
+          "difficulty": "Intermediate",
+          "explanation": "Publishing makes the retention label available in the selected locations. Applying it is a separate step performed manually, through a configured default label, or through an automatic labeling method.",
+          "sourceName": "Publish and apply retention labels",
+          "sourceUrl": "https://learn.microsoft.com/en-us/purview/create-apply-retention-labels",
+          "choices": [
+            { "text": "True", "isCorrect": false, "sortOrder": 0 },
+            { "text": "False", "isCorrect": true, "sortOrder": 1 }
+          ]
+        },
+        {
+          "contentKey": "sc401-tf-query-hold-unindexed-items",
+          "objectiveKey": "manage-risks-alerts-activities",
+          "prompt": "A query-based Microsoft Purview eDiscovery hold includes partially indexed and unindexed items from its selected content locations.",
+          "kind": "TrueFalse",
+          "difficulty": "Intermediate",
+          "explanation": "Query-based holds later clear indexed content that does not match the query, but Microsoft documents that partially indexed and unindexed items from the held locations remain included.",
+          "sourceName": "Create holds in eDiscovery",
+          "sourceUrl": "https://learn.microsoft.com/en-us/purview/edisc-hold-create",
+          "choices": [
+            { "text": "True", "isCorrect": true, "sortOrder": 0 },
+            { "text": "False", "isCorrect": false, "sortOrder": 1 }
+          ]
         }
       ]
 }

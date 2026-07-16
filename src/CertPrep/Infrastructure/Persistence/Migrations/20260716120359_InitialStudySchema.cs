@@ -36,6 +36,7 @@ namespace CertPrep.Infrastructure.Persistence.Migrations
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     ExamId = table.Column<int>(type: "INTEGER", nullable: false),
+                    ContentKey = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false, collation: "NOCASE"),
                     Name = table.Column<string>(type: "TEXT", maxLength: 200, nullable: false),
                     SortOrder = table.Column<int>(type: "INTEGER", nullable: false)
                 },
@@ -56,10 +57,12 @@ namespace CertPrep.Infrastructure.Persistence.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    ExamId = table.Column<int>(type: "INTEGER", nullable: false),
+                    ExamId = table.Column<int>(type: "INTEGER", nullable: true),
                     ExamCodeSnapshot = table.Column<string>(type: "TEXT", maxLength: 30, nullable: false),
                     ExamTitleSnapshot = table.Column<string>(type: "TEXT", maxLength: 200, nullable: false),
+                    Scope = table.Column<string>(type: "TEXT", maxLength: 30, nullable: false),
                     Mode = table.Column<string>(type: "TEXT", maxLength: 30, nullable: false),
+                    Purpose = table.Column<string>(type: "TEXT", maxLength: 30, nullable: false),
                     Status = table.Column<string>(type: "TEXT", maxLength: 30, nullable: false),
                     StartedAt = table.Column<DateTimeOffset>(type: "TEXT", nullable: false),
                     CompletedAt = table.Column<DateTimeOffset>(type: "TEXT", nullable: true),
@@ -84,6 +87,7 @@ namespace CertPrep.Infrastructure.Persistence.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     ExamId = table.Column<int>(type: "INTEGER", nullable: false),
                     ExamObjectiveId = table.Column<int>(type: "INTEGER", nullable: false),
+                    ContentKey = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false, collation: "NOCASE"),
                     Prompt = table.Column<string>(type: "TEXT", maxLength: 2000, nullable: false),
                     Kind = table.Column<string>(type: "TEXT", maxLength: 30, nullable: false),
                     Difficulty = table.Column<string>(type: "TEXT", maxLength: 30, nullable: false),
@@ -117,7 +121,11 @@ namespace CertPrep.Infrastructure.Persistence.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     PracticeSessionId = table.Column<int>(type: "INTEGER", nullable: false),
                     SourceQuestionId = table.Column<int>(type: "INTEGER", nullable: false),
+                    SourceExamId = table.Column<int>(type: "INTEGER", nullable: false),
+                    ExamCodeSnapshot = table.Column<string>(type: "TEXT", maxLength: 30, nullable: false),
+                    ExamTitleSnapshot = table.Column<string>(type: "TEXT", maxLength: 200, nullable: false),
                     OrderIndex = table.Column<int>(type: "INTEGER", nullable: false),
+                    ObjectiveContentKeySnapshot = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false, collation: "NOCASE"),
                     ObjectiveName = table.Column<string>(type: "TEXT", maxLength: 200, nullable: false),
                     Prompt = table.Column<string>(type: "TEXT", maxLength: 2000, nullable: false),
                     Kind = table.Column<string>(type: "TEXT", maxLength: 30, nullable: false),
@@ -132,7 +140,41 @@ namespace CertPrep.Infrastructure.Persistence.Migrations
                 {
                     table.PrimaryKey("PK_PracticeSessionItems", x => x.Id);
                     table.ForeignKey(
+                        name: "FK_PracticeSessionItems_Exams_SourceExamId",
+                        column: x => x.SourceExamId,
+                        principalTable: "Exams",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
                         name: "FK_PracticeSessionItems_PracticeSessions_PracticeSessionId",
+                        column: x => x.PracticeSessionId,
+                        principalTable: "PracticeSessions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "RewardLedgerEntries",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    PracticeSessionId = table.Column<int>(type: "INTEGER", nullable: false),
+                    PracticeSessionItemId = table.Column<int>(type: "INTEGER", nullable: true),
+                    ExamCode = table.Column<string>(type: "TEXT", maxLength: 30, nullable: false),
+                    ObjectiveContentKey = table.Column<string>(type: "TEXT", maxLength: 100, nullable: true, collation: "NOCASE"),
+                    Kind = table.Column<string>(type: "TEXT", maxLength: 30, nullable: false),
+                    IdempotencyKey = table.Column<string>(type: "TEXT", maxLength: 240, nullable: false, collation: "NOCASE"),
+                    RuleVersion = table.Column<int>(type: "INTEGER", nullable: false),
+                    Amount = table.Column<int>(type: "INTEGER", nullable: false),
+                    Description = table.Column<string>(type: "TEXT", maxLength: 240, nullable: false),
+                    AwardedAt = table.Column<DateTimeOffset>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RewardLedgerEntries", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_RewardLedgerEntries_PracticeSessions_PracticeSessionId",
                         column: x => x.PracticeSessionId,
                         principalTable: "PracticeSessions",
                         principalColumn: "Id",
@@ -192,10 +234,15 @@ namespace CertPrep.Infrastructure.Persistence.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_ExamObjectives_ExamId_ContentKey",
+                table: "ExamObjectives",
+                columns: new[] { "ExamId", "ContentKey" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ExamObjectives_ExamId_SortOrder",
                 table: "ExamObjectives",
-                columns: new[] { "ExamId", "SortOrder" },
-                unique: true);
+                columns: new[] { "ExamId", "SortOrder" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Exams_Provider_Code",
@@ -216,6 +263,11 @@ namespace CertPrep.Infrastructure.Persistence.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_PracticeSessionItems_SourceExamId",
+                table: "PracticeSessionItems",
+                column: "SourceExamId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PracticeSessions_ExamId",
                 table: "PracticeSessions",
                 column: "ExamId");
@@ -226,14 +278,26 @@ namespace CertPrep.Infrastructure.Persistence.Migrations
                 column: "StartedAt");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Questions_ExamId",
+                name: "IX_Questions_ExamId_ContentKey",
                 table: "Questions",
-                column: "ExamId");
+                columns: new[] { "ExamId", "ContentKey" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Questions_ExamObjectiveId",
                 table: "Questions",
                 column: "ExamObjectiveId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RewardLedgerEntries_IdempotencyKey",
+                table: "RewardLedgerEntries",
+                column: "IdempotencyKey",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RewardLedgerEntries_PracticeSessionId_RuleVersion",
+                table: "RewardLedgerEntries",
+                columns: new[] { "PracticeSessionId", "RuleVersion" });
         }
 
         /// <inheritdoc />
@@ -244,6 +308,9 @@ namespace CertPrep.Infrastructure.Persistence.Migrations
 
             migrationBuilder.DropTable(
                 name: "PracticeSessionChoices");
+
+            migrationBuilder.DropTable(
+                name: "RewardLedgerEntries");
 
             migrationBuilder.DropTable(
                 name: "Questions");

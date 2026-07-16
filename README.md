@@ -2,7 +2,9 @@
 
 CertPrep is a local-first desktop practice app for certification study. It provides short Study sessions with immediate answer checks and explanations, Exam Simulation without per-question feedback, mixed sessions across multiple exams, missed-question retry, resumable sessions, and objective-level mastery and readiness. The domain model is provider-neutral, so a Microsoft skills-measured area and a CCNA topic are both ordinary exam objectives.
 
-The embedded catalog contains 567 original questions across AZ-104, AZ-700, AZ-900, MD-102, MS-102, SC-200, SC-300, SC-401, and SC-900. The larger banks focus on Azure, Entra, endpoint, Microsoft 365, security operations, and information-protection administration. Questions follow the official Microsoft skills-measured areas and link to supporting Microsoft Learn documentation. They include operational scenarios, explicit multi-select answer counts, four-to-six-choice questions, and deployment or response-order exercises. They are not exam dumps and should not be treated as complete replacements for hands-on work or Microsoft Learn training.
+The embedded catalog contains 603 original questions across AZ-104, AZ-700, AZ-900, MD-102, MS-102, SC-200, SC-300, SC-401, and SC-900. The larger banks focus on Azure, Entra, endpoint, Microsoft 365, security operations, and information-protection administration. Questions follow the official Microsoft skills-measured areas and link to supporting Microsoft Learn documentation. They include operational scenarios, balanced True/False items, explicit multi-select answer counts, four-to-six-choice questions, and deployment or response-order exercises. They are not exam dumps and should not be treated as complete replacements for hands-on work or Microsoft Learn training.
+
+CertPrep is an independent project and is not affiliated with, endorsed by, or sponsored by Microsoft. Microsoft, Azure, Microsoft 365, Microsoft Entra, and related names are trademarks of Microsoft Corporation.
 
 ## Run it
 
@@ -70,10 +72,30 @@ dotnet build CertPrep.sln
 dotnet test CertPrep.sln --no-build
 ```
 
-The test suite applies and upgrades the real EF Core migrations in SQLite, validates pre-migration backups, verifies idempotent question-bank merging and reward reconciliation, closes and resumes sessions through fresh service graphs, checks generic mastery/readiness and Boss unlock rules, tests bounded weak-question sampling, exercises missed-question review/retry, drives the real Avalonia window by keyboard, and renders the full workflow plus minimum-size dark/light views into `artifacts/ui-snapshots/`.
+## Build the Windows installer
+
+The release pipeline targets .NET 10 and produces an unsigned, self-contained `win-x64` VeloPack installer. It runs the Release test suite, publishes one application executable plus its license with no PDB files, and packages the installer and update artifacts under `artifacts/releases/win`.
+
+```powershell
+.\tools\build-release.ps1
+```
+
+Pass another SemVer value when preparing a later release:
+
+```powershell
+.\tools\build-release.ps1 -Version 0.2.0
+```
+
+The application bootstrap calls VeloPack before Avalonia starts so install and update hooks can exit cleanly without initializing the UI. No update feed or code signing is configured yet.
+
+The test suite applies the real EF Core schema in SQLite, validates pre-migration backups, verifies idempotent question-bank merging and reward reconciliation, closes and resumes sessions through fresh service graphs, checks generic mastery/readiness and Boss unlock rules, tests bounded weak-question sampling, exercises missed-question review/retry, drives the real Avalonia window by keyboard, and renders the full workflow plus minimum-size dark/light views into `artifacts/ui-snapshots/`.
 
 The generated PNGs are inspection artifacts rather than committed visual baselines because font rasterization varies by operating system. See [the snapshot notes](docs/ui-snapshots.md).
 
 ## Deliberately not built yet
 
 Rotating contracts are intentionally deferred until the core XP/mastery loop has been used enough to tune its reward rate. The next useful content slice is authoring and portable package export, followed by fuller objective coverage and, if needed, scheduled review intervals. User accounts, an admin role system, and repository interfaces would add ceremony without solving a current need, so they are intentionally absent.
+
+## License
+
+The source code and original question-bank content are available under the [MIT License](LICENSE).

@@ -1,17 +1,52 @@
 using CertPrep.Features.ExamCatalog;
 using CertPrep.Features.Practice;
-using CertPrep.Infrastructure.Persistence;
 using CertPrep.Tests.Infrastructure;
-using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Xunit;
 
 namespace CertPrep.Tests.Scenarios;
 
 public sealed class PracticeScenarioTests
 {
+    [Fact]
+    public async Task True_false_questions_use_exclusive_radio_choices_and_a_specific_instruction()
+    {
+        var cancellationToken = TestContext.Current.CancellationToken;
+        await using var database = await TestDatabase.CreateAsync(cancellationToken: cancellationToken);
+        var services = database.CreateServices(randomSeed: 23);
+        var exam = (await services.Catalog.GetExamSummariesAsync(cancellationToken))
+            .Single(candidate => candidate.Code == "AZ-900");
+        var run = await services.Practice.StartAsync(
+            exam.Id,
+            PracticeMode.Study,
+            exam.QuestionCount,
+            cancellationToken);
+        var question = run.Questions.First(candidate => candidate.Kind == QuestionKind.TrueFalse);
+        Assert.Equal(new[] { "True", "False" }, question.Choices.Select(choice => choice.Text));
+        Assert.Equal(1, question.RequiredAnswerCount);
+
+        var viewModel = new PracticeViewModel(
+            run with { CurrentQuestionIndex = 0, Questions = [question] },
+            services.Practice,
+            _ => Task.CompletedTask,
+            _ => Task.CompletedTask);
+
+        Assert.Equal("Choose whether the statement is true or false.", viewModel.AnswerInstruction);
+        Assert.All(viewModel.Choices, choice =>
+        {
+            Assert.True(choice.UsesRadioIndicator);
+            Assert.False(choice.UsesCheckboxIndicator);
+        });
+
+        viewModel.Choices[0].IsSelected = true;
+        viewModel.Choices[1].IsSelected = true;
+
+        Assert.False(viewModel.Choices[0].IsSelected);
+        Assert.True(viewModel.Choices[1].IsSelected);
+        Assert.True(viewModel.CanSubmit);
+        await viewModel.FlushDraftAsync();
+    }
+
     [Fact]
     public async Task Multiple_choice_questions_expose_and_enforce_the_exact_required_answer_count()
     {
@@ -83,20 +118,20 @@ public sealed class PracticeScenarioTests
         Assert.Equal(
             new Dictionary<string, int>
             {
-                ["AZ-104"] = 75,
-                ["AZ-700"] = 70,
-                ["AZ-900"] = 36,
-                ["MD-102"] = 69,
-                ["MS-102"] = 64,
-                ["SC-200"] = 73,
-                ["SC-300"] = 73,
-                ["SC-401"] = 71,
-                ["SC-900"] = 36
+                ["AZ-104"] = 79,
+                ["AZ-700"] = 74,
+                ["AZ-900"] = 40,
+                ["MD-102"] = 73,
+                ["MS-102"] = 68,
+                ["SC-200"] = 77,
+                ["SC-300"] = 77,
+                ["SC-401"] = 75,
+                ["SC-900"] = 40
             },
             questionCounts);
         Assert.All(await context.Questions.Include(question => question.Choices).ToListAsync(cancellationToken), question =>
         {
-            Assert.True(question.Choices.Count >= 4);
+            Assert.True(question.Choices.Count >= 2);
             Assert.Contains(question.Choices, choice => choice.IsCorrect);
             Assert.Contains(question.Choices, choice => !choice.IsCorrect);
         });
@@ -120,7 +155,10 @@ public sealed class PracticeScenarioTests
 
             if (index == 0)
             {
-                selectedIds = [allIds.Except(correctIds).First()];
+                var incorrectIds = correctIds.ToHashSet();
+                incorrectIds.Remove(incorrectIds.First());
+                incorrectIds.Add(allIds.Except(correctIds).First());
+                selectedIds = incorrectIds;
             }
 
             var feedback = await services.Practice.SubmitAsync(question.SessionItemId, selectedIds, cancellationToken);
@@ -358,49 +396,4 @@ public sealed class PracticeScenarioTests
             summary => Assert.Equal(0, summary.CompletedSessions));
     }
 
-    [Fact]
-    public async Task Mixed_session_migration_backfills_existing_single_exam_history()
-    {
-        var cancellationToken = TestContext.Current.CancellationToken;
-        await using var connection = new SqliteConnection("Data Source=:memory:");
-        await connection.OpenAsync(cancellationToken);
-        var options = new DbContextOptionsBuilder<StudyDbContext>().UseSqlite(connection).Options;
-        await using var context = new StudyDbContext(options);
-        var migrator = context.GetService<IMigrator>();
-        await migrator.MigrateAsync("20260716053704_InitialStudySchema", cancellationToken);
-
-        await context.Database.ExecuteSqlRawAsync(
-            """
-            INSERT INTO Exams (Provider, Code, Title, Summary, ContentVersion, IsArchived)
-            VALUES ('Microsoft', 'TEST-100', 'Existing exam', 'Migration fixture', 'v1', 0);
-
-            INSERT INTO PracticeSessions
-                (ExamId, ExamCodeSnapshot, ExamTitleSnapshot, Mode, Status, StartedAt, CompletedAt, CurrentItemIndex)
-            VALUES
-                ((SELECT Id FROM Exams WHERE Code = 'TEST-100'), 'TEST-100', 'Existing exam', 'Study', 'Completed',
-                 '2026-07-15 10:00:00+00:00', '2026-07-15 10:01:00+00:00', 1);
-
-            INSERT INTO PracticeSessionItems
-                (PracticeSessionId, SourceQuestionId, OrderIndex, ObjectiveName, Prompt, Kind, Difficulty,
-                 Explanation, SourceName, SourceUrl, SubmittedAt, IsCorrect)
-            VALUES
-                ((SELECT Id FROM PracticeSessions), 99, 0, 'Existing objective', 'Existing prompt', 'SingleChoice',
-                 'Foundation', 'Existing explanation', 'Existing source', 'https://example.test',
-                 '2026-07-15 10:00:30+00:00', 1);
-            """,
-            cancellationToken);
-
-        await migrator.MigrateAsync(cancellationToken: cancellationToken);
-        context.ChangeTracker.Clear();
-        var migrated = await context.PracticeSessions
-            .AsNoTracking()
-            .Include(session => session.Items)
-            .SingleAsync(cancellationToken);
-
-        Assert.Equal(PracticeSessionScope.SingleExam, migrated.Scope);
-        var item = Assert.Single(migrated.Items);
-        Assert.Equal(migrated.ExamId, item.SourceExamId);
-        Assert.Equal("TEST-100", item.ExamCodeSnapshot);
-        Assert.Equal("Existing exam", item.ExamTitleSnapshot);
-    }
 }

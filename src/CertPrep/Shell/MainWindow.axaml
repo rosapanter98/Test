@@ -41,7 +41,7 @@
             </StackPanel>
           </Button>
           <Button Classes="nav"
-                  Tag="OptionsMenu"
+                  Tag="OptionsPage"
                   Command="{Binding ShowOptionsCommand}"
                   IsEnabled="{Binding IsNavigationEnabled}">
             <StackPanel Orientation="Horizontal" Spacing="10">

@@ -29,7 +29,8 @@ public sealed class ExamObjective
 public enum QuestionKind
 {
     SingleChoice,
-    MultipleChoice
+    MultipleChoice,
+    TrueFalse
 }
 
 public enum QuestionDifficulty

@@ -9,8 +9,10 @@ using Avalonia.Styling;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
 using CertPrep.Features.Dashboard;
+using CertPrep.Features.ExamCatalog;
 using CertPrep.Features.Options;
 using CertPrep.Features.Practice;
+using CertPrep.Features.Practice.Views;
 using CertPrep.Features.Results;
 using CertPrep.Shared;
 using CertPrep.Shell;
@@ -22,6 +24,47 @@ namespace CertPrep.Tests.Views;
 
 public sealed class ActualWorkflowSnapshotTests
 {
+    [AvaloniaFact]
+    public async Task True_false_question_renders_radio_choices_and_immediate_feedback()
+    {
+        await using var database = await TestDatabase.CreateAsync();
+        var services = database.CreateServices(randomSeed: 41);
+        services.Appearance.SetTheme(AppTheme.Dark);
+        var exam = (await services.Catalog.GetExamSummariesAsync())
+            .Single(candidate => candidate.Code == "AZ-900");
+        var run = await services.Practice.StartAsync(
+            exam.Id,
+            PracticeMode.Study,
+            exam.QuestionCount);
+        var question = run.Questions.First(candidate => candidate.Kind == QuestionKind.TrueFalse);
+        var practice = new PracticeViewModel(
+            run with { CurrentQuestionIndex = 0, Questions = [question] },
+            services.Practice,
+            _ => Task.CompletedTask,
+            _ => Task.CompletedTask);
+        var window = new Window
+        {
+            Content = new PracticeView { DataContext = practice },
+            Width = 1000,
+            Height = 650
+        };
+
+        window.Show();
+        Dispatcher.UIThread.RunJobs();
+        Assert.Equal(2, window.GetVisualDescendants().OfType<ToggleButton>()
+            .Count(choice => Equals(choice.Tag, "AnswerChoice")));
+        Assert.All(practice.Choices, choice => Assert.True(choice.UsesRadioIndicator));
+        CaptureFrame(window, "21-practice-true-false.png", expectBrandPixel: false);
+
+        var correctIds = await database.GetCorrectChoiceIdsAsync(practice.Choices.Select(choice => choice.Id));
+        practice.Choices.Single(choice => correctIds.Contains(choice.Id)).IsSelected = true;
+        await practice.SubmitCommand.ExecuteAsync(null);
+        Assert.True(practice.ShowFeedback);
+        Assert.True(practice.FeedbackIsCorrect);
+        CaptureFrame(window, "22-practice-true-false-feedback.png", expectBrandPixel: false);
+        window.Close();
+    }
+
     [AvaloniaFact]
     public async Task Saved_session_card_resumes_draft_selection_after_leaving_the_practice_view()
     {
@@ -64,8 +107,7 @@ public sealed class ActualWorkflowSnapshotTests
         await closed.Task.WaitAsync(TimeSpan.FromSeconds(5));
 
         var restartedServices = database.CreateServices(randomSeed: 8);
-        var active = await restartedServices.Practice.GetActiveSessionAsync();
-        Assert.NotNull(active);
+        var active = Assert.Single(await restartedServices.Practice.GetActiveSessionsAsync());
         var restoredAfterClose = await restartedServices.Practice.ResumeAsync(active.SessionId);
         Assert.NotNull(restoredAfterClose.Run);
         var restoredQuestion = restoredAfterClose.Run.Questions[restoredAfterClose.Run.CurrentQuestionIndex];
@@ -117,7 +159,7 @@ public sealed class ActualWorkflowSnapshotTests
         await setup.StartCommand.ExecuteAsync(null);
         var practice = Assert.IsType<PracticeViewModel>(shell.CurrentPage);
         var correctIds = await database.GetCorrectChoiceIdsAsync(practice.Choices.Select(choice => choice.Id));
-        practice.Choices.First(choice => !correctIds.Contains(choice.Id)).IsSelected = true;
+        SelectIncorrectAnswers(practice, correctIds);
         await practice.SubmitCommand.ExecuteAsync(null);
         Assert.True(practice.ShowFeedback);
         Assert.False(practice.FeedbackIsCorrect);
@@ -156,7 +198,7 @@ public sealed class ActualWorkflowSnapshotTests
 
         var optionsButton = window.GetVisualDescendants()
             .OfType<Button>()
-            .Single(button => Equals(button.Tag, "OptionsMenu"));
+            .Single(button => Equals(button.Tag, "OptionsPage"));
         optionsButton.Command!.Execute(null);
         Assert.IsType<OptionsViewModel>(shell.CurrentPage);
         window = Capture(window, "17-options-page.png");
@@ -267,7 +309,7 @@ public sealed class ActualWorkflowSnapshotTests
         window = Capture(window, "08-mixed-question.png");
 
         var firstCorrectIds = await database.GetCorrectChoiceIdsAsync(practice.Choices.Select(choice => choice.Id));
-        practice.Choices.First(choice => !firstCorrectIds.Contains(choice.Id)).IsSelected = true;
+        SelectIncorrectAnswers(practice, firstCorrectIds);
         await practice.SubmitCommand.ExecuteAsync(null);
         Assert.False(practice.ShowFeedback);
 
@@ -294,7 +336,6 @@ public sealed class ActualWorkflowSnapshotTests
 
         await results.RetryMissedCommand.ExecuteAsync(null);
         var retry = Assert.IsType<PracticeViewModel>(shell.CurrentPage);
-        Assert.Equal("Study mode", retry.ModeLabel);
         Assert.Equal("Question 1 of 1", retry.QuestionPosition);
         window = Capture(window, "11-retry-missed.png");
 
@@ -323,6 +364,12 @@ public sealed class ActualWorkflowSnapshotTests
     }
 
     private static MainWindow Capture(MainWindow window, string fileName)
+    {
+        CaptureFrame(window, fileName, expectBrandPixel: true);
+        return window;
+    }
+
+    private static void CaptureFrame(Window window, string fileName, bool expectBrandPixel)
     {
         var outputDirectory = Path.Combine(FindRepositoryRoot(), "artifacts", "ui-snapshots");
         Directory.CreateDirectory(outputDirectory);
@@ -353,11 +400,13 @@ public sealed class ActualWorkflowSnapshotTests
         Assert.True(file.Length > 10_000, $"Rendered frame was unexpectedly small: {file.Length} bytes.");
         using var renderedImage = SKBitmap.Decode(path);
         Assert.NotNull(renderedImage);
-        var brandPixel = renderedImage.GetPixel(40, 40);
-        Assert.True(
-            brandPixel.Blue >= 0xD0 && brandPixel.Green >= 0x60 && brandPixel.Red <= 0x60,
-            $"Expected the CertPrep icon's blue mark at (40, 40), but found {brandPixel}.");
-        return snapshotWindow;
+        if (expectBrandPixel)
+        {
+            var brandPixel = renderedImage.GetPixel(40, 40);
+            Assert.True(
+                brandPixel.Blue >= 0xD0 && brandPixel.Green >= 0x60 && brandPixel.Red <= 0x60,
+                $"Expected the CertPrep icon's blue mark at (40, 40), but found {brandPixel}.");
+        }
     }
 
     private static void InvalidateVisualTree(Control root)
@@ -387,6 +436,19 @@ public sealed class ActualWorkflowSnapshotTests
 
         scrollViewer.Offset = new Vector(0, scrollViewer.Extent.Height - scrollViewer.Viewport.Height);
         Dispatcher.UIThread.RunJobs();
+    }
+
+    private static void SelectIncorrectAnswers(
+        PracticeViewModel practice,
+        IReadOnlySet<int> correctIds)
+    {
+        var selectedIds = correctIds.ToHashSet();
+        selectedIds.Remove(selectedIds.First());
+        selectedIds.Add(practice.Choices.First(choice => !correctIds.Contains(choice.Id)).Id);
+        foreach (var choice in practice.Choices.Where(choice => selectedIds.Contains(choice.Id)))
+        {
+            choice.IsSelected = true;
+        }
     }
 
     private static string FindRepositoryRoot()

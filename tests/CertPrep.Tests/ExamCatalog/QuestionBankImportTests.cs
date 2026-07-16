@@ -12,6 +12,27 @@ namespace CertPrep.Tests.ExamCatalog;
 public sealed class QuestionBankImportTests
 {
     [Fact]
+    public async Task Malformed_true_false_question_is_rejected()
+    {
+        var package = await new QuestionBankPackageReader()
+            .ReadEmbeddedAsync(TestContext.Current.CancellationToken);
+        var question = package.Exams
+            .SelectMany(exam => exam.Questions)
+            .First(candidate => candidate.Kind == QuestionKind.TrueFalse);
+        question.Choices.Add(new QuestionBankChoice
+        {
+            Text = "Maybe",
+            IsCorrect = false,
+            SortOrder = 2
+        });
+
+        var exception = Assert.Throws<QuestionBankValidationException>(() =>
+            QuestionBankMerger.Validate(package));
+
+        Assert.Contains("exactly two choices", exception.Message, StringComparison.OrdinalIgnoreCase);
+    }
+
+    [Fact]
     public async Task Embedded_exam_banks_follow_the_content_quality_contract()
     {
         var cancellationToken = TestContext.Current.CancellationToken;
@@ -21,15 +42,15 @@ public sealed class QuestionBankImportTests
 
         var expectedCounts = new Dictionary<string, int>
         {
-            ["AZ-104"] = 75,
-            ["AZ-700"] = 70,
-            ["AZ-900"] = 36,
-            ["MD-102"] = 69,
-            ["MS-102"] = 64,
-            ["SC-200"] = 73,
-            ["SC-300"] = 73,
-            ["SC-401"] = 71,
-            ["SC-900"] = 36
+            ["AZ-104"] = 79,
+            ["AZ-700"] = 74,
+            ["AZ-900"] = 40,
+            ["MD-102"] = 73,
+            ["MS-102"] = 68,
+            ["SC-200"] = 77,
+            ["SC-300"] = 77,
+            ["SC-401"] = 75,
+            ["SC-900"] = 40
         };
 
         Assert.Equal(
@@ -44,7 +65,15 @@ public sealed class QuestionBankImportTests
             Assert.All(exam.Questions, question =>
             {
                 Assert.True(prompts.Add(question.Prompt), $"Duplicate prompt: {question.Prompt}");
-                Assert.InRange(question.Choices.Count, 4, 6);
+                if (question.Kind == QuestionKind.TrueFalse)
+                {
+                    Assert.Equal(new[] { "True", "False" }, question.Choices.OrderBy(choice => choice.SortOrder).Select(choice => choice.Text));
+                    Assert.Single(question.Choices, choice => choice.IsCorrect);
+                }
+                else
+                {
+                    Assert.InRange(question.Choices.Count, 4, 6);
+                }
                 Assert.Equal(
                     question.Choices.Count,
                     question.Choices.Select(choice => choice.Text).Distinct(StringComparer.OrdinalIgnoreCase).Count());
@@ -70,6 +99,11 @@ public sealed class QuestionBankImportTests
                         $"Multiple-choice question '{exam.Code}/{question.ContentKey}' does not state its answer count.");
                 }
             });
+
+            var trueFalseQuestions = exam.Questions.Where(question => question.Kind == QuestionKind.TrueFalse).ToList();
+            Assert.Equal(4, trueFalseQuestions.Count);
+            Assert.Equal(2, trueFalseQuestions.Count(question => question.Choices.Single(choice => choice.IsCorrect).Text == "True"));
+            Assert.Equal(2, trueFalseQuestions.Count(question => question.Choices.Single(choice => choice.IsCorrect).Text == "False"));
 
             var expectedScenarioCount = exam.Code switch
             {

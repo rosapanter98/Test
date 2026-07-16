@@ -172,10 +172,6 @@ public sealed class PracticeRepository(IDbContextFactory<StudyDbContext> context
         await context.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task<PracticeSession?> GetActiveSessionAsync(
-        CancellationToken cancellationToken = default)
-        => (await GetActiveSessionsAsync(cancellationToken)).FirstOrDefault();
-
     public async Task<IReadOnlyList<PracticeSession>> GetActiveSessionsAsync(
         CancellationToken cancellationToken = default)
     {

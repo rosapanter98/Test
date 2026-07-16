@@ -1001,6 +1001,50 @@
         { "text": "Enable a service endpoint for Microsoft.Network on both spoke subnets", "isCorrect": false, "sortOrder": 4 },
         { "text": "Rely on the peering system routes to provide transitive spoke-to-spoke routing through the hub", "isCorrect": false, "sortOrder": 5 }
       ]
+    },
+    {
+      "contentKey": "az104-tf-nsg-stateful", "objectiveKey": "implement-manage-networking",
+      "prompt": "When an NSG rule allows an outbound connection, a separate inbound rule isn't required solely for the response traffic.",
+      "kind": "TrueFalse", "difficulty": "Intermediate",
+      "explanation": "Network security groups are stateful. Azure tracks the allowed connection and permits its response traffic without requiring a matching rule in the opposite direction.",
+      "sourceName": "Azure network security groups overview", "sourceUrl": "https://learn.microsoft.com/en-us/azure/virtual-network/network-security-groups-overview",
+      "choices": [
+        { "text": "True", "isCorrect": true, "sortOrder": 0 },
+        { "text": "False", "isCorrect": false, "sortOrder": 1 }
+      ]
+    },
+    {
+      "contentKey": "az104-tf-user-assigned-identity-lifecycle", "objectiveKey": "manage-identities-governance",
+      "prompt": "One user-assigned managed identity can be associated with multiple Azure resources and remain after any one of those resources is deleted.",
+      "kind": "TrueFalse", "difficulty": "Intermediate",
+      "explanation": "A user-assigned managed identity is a standalone Azure resource. It can be shared by multiple resources and has a lifecycle independent of those resources.",
+      "sourceName": "Managed identities for Azure resources", "sourceUrl": "https://learn.microsoft.com/en-us/entra/identity/managed-identities-azure-resources/overview",
+      "choices": [
+        { "text": "True", "isCorrect": true, "sortOrder": 0 },
+        { "text": "False", "isCorrect": false, "sortOrder": 1 }
+      ]
+    },
+    {
+      "contentKey": "az104-tf-guest-shutdown-billing", "objectiveKey": "deploy-manage-compute",
+      "prompt": "Shutting down an Azure virtual machine from inside its guest operating system deallocates the VM and stops compute billing.",
+      "kind": "TrueFalse", "difficulty": "Intermediate",
+      "explanation": "A guest-initiated shutdown normally leaves the VM stopped but allocated, so compute billing continues. The VM must reach the deallocated state to release its host allocation.",
+      "sourceName": "Azure VM states and billing", "sourceUrl": "https://learn.microsoft.com/en-us/azure/virtual-machines/states-billing",
+      "choices": [
+        { "text": "True", "isCorrect": false, "sortOrder": 0 },
+        { "text": "False", "isCorrect": true, "sortOrder": 1 }
+      ]
+    },
+    {
+      "contentKey": "az104-tf-private-endpoint-public-access", "objectiveKey": "implement-manage-storage",
+      "prompt": "Creating an approved private endpoint automatically disables all public network access to the target Azure service.",
+      "kind": "TrueFalse", "difficulty": "Advanced",
+      "explanation": "A private endpoint provides a private IP path but doesn't necessarily restrict the service's public endpoint. Public access must be restricted separately with the target service's network controls.",
+      "sourceName": "What is a private endpoint?", "sourceUrl": "https://learn.microsoft.com/en-us/azure/private-link/private-endpoint-overview",
+      "choices": [
+        { "text": "True", "isCorrect": false, "sortOrder": 0 },
+        { "text": "False", "isCorrect": true, "sortOrder": 1 }
+      ]
     }
   ]
 }

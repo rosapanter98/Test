@@ -915,6 +915,50 @@
         { "text": "Add all technicians to the partner Admin Agents group", "isCorrect": false, "sortOrder": 2 },
         { "text": "Create permanent customer-local Global Administrator accounts for the identity team", "isCorrect": false, "sortOrder": 3 }
       ]
+    },
+    {
+      "contentKey": "ms102-tf-administrative-unit-group-members", "objectiveKey": "manage-m365-tenant",
+      "prompt": "Adding a Microsoft Entra group to an administrative unit brings the group object into the unit's management scope, but it doesn't automatically bring the group's users into that scope.",
+      "kind": "TrueFalse", "difficulty": "Intermediate",
+      "explanation": "The administrative unit scopes management of the group object and its membership. Individual users must also be direct administrative-unit members before scoped administrators can manage those users.",
+      "sourceName": "Administrative units in Microsoft Entra ID", "sourceUrl": "https://learn.microsoft.com/en-us/entra/identity/role-based-access-control/administrative-units",
+      "choices": [
+        { "text": "True", "isCorrect": true, "sortOrder": 0 },
+        { "text": "False", "isCorrect": false, "sortOrder": 1 }
+      ]
+    },
+    {
+      "contentKey": "ms102-tf-teams-retention-policy-label", "objectiveKey": "manage-purview-compliance",
+      "prompt": "Microsoft Teams chat messages can be retained with a Microsoft Purview retention policy, but retention labels aren't supported for Teams messages.",
+      "kind": "TrueFalse", "difficulty": "Intermediate",
+      "explanation": "Teams chats and channel messages are supported retention-policy locations. Teams messages don't support retention labels, which are intended for supported item-level content such as documents and email.",
+      "sourceName": "Retention policies and labels", "sourceUrl": "https://learn.microsoft.com/en-us/purview/retention",
+      "choices": [
+        { "text": "True", "isCorrect": true, "sortOrder": 0 },
+        { "text": "False", "isCorrect": false, "sortOrder": 1 }
+      ]
+    },
+    {
+      "contentKey": "ms102-tf-security-defaults-conditional-access", "objectiveKey": "manage-entra-identity-access",
+      "prompt": "A tenant can keep Security defaults enabled while replacing those protections with custom Conditional Access policies.",
+      "kind": "TrueFalse", "difficulty": "Intermediate",
+      "explanation": "Organizations that replace Security defaults with Conditional Access policies must disable Security defaults, then implement policies that maintain the required protections.",
+      "sourceName": "Security defaults for Microsoft Entra ID", "sourceUrl": "https://learn.microsoft.com/en-us/entra/fundamentals/security-defaults",
+      "choices": [
+        { "text": "True", "isCorrect": false, "sortOrder": 0 },
+        { "text": "False", "isCorrect": true, "sortOrder": 1 }
+      ]
+    },
+    {
+      "contentKey": "ms102-tf-mde-security-settings-intune-enrollment", "objectiveKey": "manage-defender-xdr",
+      "prompt": "Defender for Endpoint security settings management fully enrolls previously unmanaged devices into Intune, so they can receive every Intune configuration profile.",
+      "kind": "TrueFalse", "difficulty": "Advanced",
+      "explanation": "Security settings management lets supported devices receive selected Intune endpoint-security policies without full Intune enrollment. Unsupported Intune profiles and capabilities still require Intune enrollment.",
+      "sourceName": "Defender security settings management", "sourceUrl": "https://learn.microsoft.com/en-us/intune/device-security/microsoft-defender/security-settings-management",
+      "choices": [
+        { "text": "True", "isCorrect": false, "sortOrder": 0 },
+        { "text": "False", "isCorrect": true, "sortOrder": 1 }
+      ]
     }
   ]
 }

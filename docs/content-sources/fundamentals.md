@@ -8,13 +8,13 @@ Research date: 2026-07-16. Only official Microsoft Learn training, study guides,
 - Official study guide: <https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/az-900>
 - Skills version in effect on the research date: January 14, 2026
 - Scheduled English exam update: July 20, 2026
-- Bank coverage: 36 questions
+- Bank coverage: 40 questions
 
 | Official top-level objective | Published weight | Questions | Bank share |
 |---|---:|---:|---:|
-| Describe cloud concepts | 25–30% | 11 | 30.6% |
-| Describe Azure architecture and services | 35–40% | 14 | 38.9% |
-| Describe Azure management and governance | 30–35% | 11 | 30.6% |
+| Describe cloud concepts | 25–30% | 11 | 27.5% |
+| Describe Azure architecture and services | 35–40% | 16 | 40% |
+| Describe Azure management and governance | 30–35% | 13 | 32.5% |
 
 Status: active fundamentals certification. The live study guide already displays the July 20, 2026 English objective wording. Microsoft identifies minor changes under compute and networking services, deployment and management tools, and monitoring tools; the three top-level domains and their weights remain unchanged. The bank uses GA concepts shared by the January and July versions. Recheck localized exam guides because Microsoft states that localized updates can follow the English update by approximately eight weeks.
 
@@ -26,14 +26,14 @@ Primary official documentation used includes the Microsoft Learn AZ-900 training
 - Official study guide: <https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/sc-900>
 - Skills version in effect on the research date: November 7, 2025
 - Scheduled English exam update: July 28, 2026
-- Bank coverage: 36 questions
+- Bank coverage: 40 questions
 
 | Official top-level objective | Published weight | Questions | Bank share |
 |---|---:|---:|---:|
-| Describe the concepts of security, compliance, and identity | 10–15% | 5 | 13.9% |
-| Describe the capabilities of Microsoft Entra | 25–30% | 10 | 27.8% |
-| Describe the capabilities of Microsoft security solutions | 35–40% | 13 | 36.1% |
-| Describe the capabilities of Microsoft compliance solutions | 20–25% | 8 | 22.2% |
+| Describe the concepts of security, compliance, and identity | 10–15% | 5 | 12.5% |
+| Describe the capabilities of Microsoft Entra | 25–30% | 12 | 30% |
+| Describe the capabilities of Microsoft security solutions | 35–40% | 14 | 35% |
+| Describe the capabilities of Microsoft compliance solutions | 20–25% | 9 | 22.5% |
 
 Status: active fundamentals certification. The live study guide already displays the July 28, 2026 English objectives. The incoming guide adds agent ID to identity types, updates wording in several security topics, removes Microsoft Priva from the privacy subsection, and adds insider risk, eDiscovery, and audit coverage. This bank is based on the in-effect November 2025 objectives and favors topics shared with the incoming guide. It therefore covers Microsoft privacy principles rather than relying on the departing Priva objective or the not-yet-effective eDiscovery additions. Recheck the guide after July 28 before treating new topics as required coverage.
 
@@ -55,7 +55,7 @@ Substantive corrections and checks:
 
 ## Editorial rules applied
 
-- Four, five, or six plausible choices from the same technical domain, selected according to the scenario rather than padded to a fixed size.
+- True/False items use exactly two choices; other questions use four, five, or six plausible choices from the same technical domain.
 - Single-choice questions have exactly one correct choice. Multi-select prompts state the required answer count and mark exactly that number of choices.
 - Explanations state the deciding behavior and distinguish the nearest distractor where that improves clarity.
 - Questions stay at fundamentals depth while using realistic MSP administration and security framing where it fits the published scope.
@@ -81,4 +81,8 @@ SC-900 additions cover:
 - Selecting Microsoft Sentinel for a cross-domain SIEM and SOAR requirement.
 - Selecting Purview DLP for sensitive-data sharing across Microsoft 365.
 
-Each exam's additions include one multi-select that explicitly says `Choose two`. Each full fundamentals bank now contains 32 four-choice, 2 five-choice, and 2 six-choice questions.
+Each exam's additions include one multi-select that explicitly says `Choose two`. Each full fundamentals bank contains 4 two-choice True/False items, 32 four-choice questions, 2 five-choice questions, and 2 six-choice questions.
+
+## True/False expansion — 2026-07-16
+
+Added four source-backed True/False questions to each fundamentals exam, bringing the combined fundamentals catalog to 80 questions. Each exam has a balanced key of two `True` and two `False` answers. The eight items cover resource-group geography, management-lock scope, Azure Policy versus RBAC, availability isolation, Conditional Access report-only evaluation, Defender for Cloud reach, access-review result application, and Purview DLP detection. All use direct Microsoft Learn product documentation, with four source URLs new to the fundamentals source set.
