@@ -1,0 +1,1184 @@
+{
+  "provider": "Microsoft",
+  "code": "SC-300",
+  "title": "Microsoft Identity and Access Administrator",
+  "summary": "Identity lifecycle, secure access, workload identities, and governance for Microsoft Entra environments, with multi-tenant administration scenarios.",
+  "contentVersion": "Official objectives 2026-04-27; audited 2026.07",
+  "objectives": [
+    { "contentKey": "manage-user-identities", "name": "Implement and manage user identities", "sortOrder": 0 },
+    { "contentKey": "authentication-access", "name": "Implement authentication and access management", "sortOrder": 1 },
+    { "contentKey": "workload-identities", "name": "Plan and implement workload identities", "sortOrder": 2 },
+    { "contentKey": "identity-governance", "name": "Plan and automate identity governance", "sortOrder": 3 }
+  ],
+  "questions": [
+    {
+      "contentKey": "sc300-admin-unit-scope",
+      "objectiveKey": "manage-user-identities",
+      "prompt": "An MSP help-desk team must reset passwords only for users in one customer division, without receiving tenant-wide user permissions. What should you configure?",
+      "kind": "SingleChoice",
+      "difficulty": "Intermediate",
+      "explanation": "An administrative unit scopes a supported Microsoft Entra role assignment to the objects in that unit. A normal group does not scope an administrative role.",
+      "sourceName": "Administrative units in Microsoft Entra ID",
+      "sourceUrl": "https://learn.microsoft.com/en-us/entra/identity/role-based-access-control/administrative-units",
+      "choices": [
+        { "text": "An administrative unit containing the division users, with a scoped Helpdesk Administrator assignment", "isCorrect": true, "sortOrder": 0 },
+        { "text": "A security group containing the division users, with a tenant-wide Helpdesk Administrator assignment", "isCorrect": false, "sortOrder": 1 },
+        { "text": "A Microsoft 365 group containing the division users, with group ownership assigned to the MSP", "isCorrect": false, "sortOrder": 2 },
+        { "text": "A catalog containing the division users, with the MSP added as a catalog owner", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "sc300-dynamic-group-license",
+      "objectiveKey": "manage-user-identities",
+      "prompt": "A tenant must automatically license all enabled employees whose department is Support. Which design requires the least recurring administration?",
+      "kind": "SingleChoice",
+      "difficulty": "Intermediate",
+      "explanation": "A dynamic user group can evaluate user attributes automatically, and group-based licensing applies the selected licenses to current group members.",
+      "sourceName": "Group-based licensing in Microsoft Entra ID",
+      "sourceUrl": "https://learn.microsoft.com/en-us/entra/fundamentals/concept-group-based-licensing",
+      "choices": [
+        { "text": "Use a dynamic user group based on department and account status, then assign the license to the group", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Use an assigned security group and schedule an access review to add newly hired employees", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Use an administrative unit based on department and assign the license to the unit", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Use a dynamic device group based on device ownership and assign the user license to the group", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "sc300-security-attribute-delegation",
+      "objectiveKey": "manage-user-identities",
+      "prompt": "A provider needs to tag service accounts with a controlled CustomerCode value. Help-desk administrators must not be able to read or change the tag merely because they can manage users. Which feature best provides this separation?",
+      "kind": "SingleChoice",
+      "difficulty": "Advanced",
+      "explanation": "Custom security attributes use separate attribute-definition and assignment roles. Their values are not automatically exposed through ordinary user-management permissions.",
+      "sourceName": "Custom security attributes overview",
+      "sourceUrl": "https://learn.microsoft.com/en-us/entra/fundamentals/custom-security-attributes-overview",
+      "choices": [
+        { "text": "A custom security attribute set with dedicated attribute roles", "isCorrect": true, "sortOrder": 0 },
+        { "text": "A directory extension with the User Administrator role", "isCorrect": false, "sortOrder": 1 },
+        { "text": "A dynamic group rule with the Groups Administrator role", "isCorrect": false, "sortOrder": 2 },
+        { "text": "An administrative unit with the Directory Readers role", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "sc300-cross-tenant-inbound-trust",
+      "objectiveKey": "manage-user-identities",
+      "prompt": "Users from a trusted partner tenant already satisfy MFA on their home tenant. Your tenant should accept that MFA claim when they access your applications, while your tenant remains responsible for authorization. What should you configure?",
+      "kind": "SingleChoice",
+      "difficulty": "Advanced",
+      "explanation": "Inbound cross-tenant access trust settings can trust MFA claims from a specified external tenant. Resource-tenant Conditional Access and authorization still apply.",
+      "sourceName": "Cross-tenant access overview",
+      "sourceUrl": "https://learn.microsoft.com/en-us/entra/external-id/cross-tenant-access-overview",
+      "choices": [
+        { "text": "Inbound cross-tenant trust settings for multifactor authentication", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Outbound cross-tenant access settings that trust compliant devices", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Tenant restrictions that allow the partner tenant", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Cross-tenant synchronization with automatic redemption enabled", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "sc300-cross-tenant-sync-direction",
+      "objectiveKey": "manage-user-identities",
+      "prompt": "Customer A must provision selected internal users as B2B collaboration users in Customer B and remove access when those users leave the assigned source group. Where is the cross-tenant synchronization configuration created?",
+      "kind": "SingleChoice",
+      "difficulty": "Advanced",
+      "explanation": "Cross-tenant synchronization is configured in the source tenant. It uses the target tenant's cross-tenant access consent and provisions scoped users into the target tenant.",
+      "sourceName": "Configure cross-tenant synchronization",
+      "sourceUrl": "https://learn.microsoft.com/en-us/entra/identity/multi-tenant-organizations/cross-tenant-synchronization-configure",
+      "choices": [
+        { "text": "In Customer A, with Customer B configured as the target tenant", "isCorrect": true, "sortOrder": 0 },
+        { "text": "In Customer B, with Customer A configured as the target tenant", "isCorrect": false, "sortOrder": 1 },
+        { "text": "In both tenants, each configured as the other's target tenant", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Only in the Microsoft 365 admin center of Customer B", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "sc300-cloud-sync-agent",
+      "objectiveKey": "manage-user-identities",
+      "prompt": "A customer has several disconnected AD DS forests and wants a lightweight cloud-managed synchronization configuration with multiple agents for availability. Which synchronization technology best matches the requirement?",
+      "kind": "SingleChoice",
+      "difficulty": "Intermediate",
+      "explanation": "Microsoft Entra Cloud Sync uses lightweight provisioning agents and cloud-managed configuration. Multiple active agents can improve availability and support disconnected forests.",
+      "sourceName": "What is Microsoft Entra Cloud Sync?",
+      "sourceUrl": "https://learn.microsoft.com/en-us/entra/identity/hybrid/cloud-sync/what-is-cloud-sync",
+      "choices": [
+        { "text": "Microsoft Entra Cloud Sync", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Microsoft Entra Connect Sync staging mode", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Microsoft Entra cross-tenant synchronization", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Microsoft Entra Application Proxy", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "sc300-federation-migration-phs",
+      "objectiveKey": "manage-user-identities",
+      "prompt": "A customer is removing AD FS. They want cloud authentication that continues when on-premises authentication infrastructure is unavailable and supports leaked-credential detection for synchronized users. Which primary sign-in method should you recommend?",
+      "kind": "SingleChoice",
+      "difficulty": "Advanced",
+      "explanation": "Password hash synchronization supports cloud authentication without an on-premises authentication agent in the sign-in path and enables capabilities that depend on cloud password-hash data, such as leaked-credential detection.",
+      "sourceName": "Choose the right authentication method",
+      "sourceUrl": "https://learn.microsoft.com/en-us/entra/identity/hybrid/connect/choose-ad-authn",
+      "choices": [
+        { "text": "Password hash synchronization", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Pass-through authentication without password hash synchronization", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Federation with a second AD FS farm", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Seamless single sign-on as the authentication method", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "sc300-tap-passwordless-bootstrap",
+      "objectiveKey": "authentication-access",
+      "prompt": "A remote new starter has no registered authentication method. The user must securely register a passkey without receiving a permanent password from the help desk. What should an administrator issue?",
+      "kind": "SingleChoice",
+      "difficulty": "Intermediate",
+      "explanation": "A Temporary Access Pass is a time-limited credential that can bootstrap passwordless authentication method registration and device setup.",
+      "sourceName": "Temporary Access Pass",
+      "sourceUrl": "https://learn.microsoft.com/en-us/entra/identity/authentication/howto-authentication-temporary-access-pass",
+      "choices": [
+        { "text": "A time-limited Temporary Access Pass", "isCorrect": true, "sortOrder": 0 },
+        { "text": "A one-time bypass for multifactor authentication", "isCorrect": false, "sortOrder": 1 },
+        { "text": "A password reset registration campaign", "isCorrect": false, "sortOrder": 2 },
+        { "text": "A certificate-based authentication binding", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "sc300-auth-strength-phishing-resistant",
+      "objectiveKey": "authentication-access",
+      "prompt": "Only phishing-resistant authentication must be accepted for privileged portal access. Users may use FIDO2 security keys or certificate-based authentication. Which Conditional Access control should you select?",
+      "kind": "SingleChoice",
+      "difficulty": "Advanced",
+      "explanation": "Authentication strengths let Conditional Access require a defined set of method combinations. The built-in phishing-resistant strength includes supported phishing-resistant methods rather than accepting any MFA method.",
+      "sourceName": "Conditional Access authentication strengths",
+      "sourceUrl": "https://learn.microsoft.com/en-us/entra/identity/authentication/concept-authentication-strengths",
+      "choices": [
+        { "text": "Require the phishing-resistant MFA authentication strength", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Require multifactor authentication", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Require a compliant device", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Require an approved client app", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "sc300-ca-report-only",
+      "objectiveKey": "authentication-access",
+      "prompt": "An MSP is preparing a Conditional Access policy that would block legacy authentication in a customer tenant. The team needs evidence of likely impact before enforcement. Which policy state should be used first?",
+      "kind": "SingleChoice",
+      "difficulty": "Foundation",
+      "explanation": "Report-only mode evaluates a Conditional Access policy and records the result without enforcing its controls. Sign-in logs can then be reviewed for impact.",
+      "sourceName": "Conditional Access report-only mode",
+      "sourceUrl": "https://learn.microsoft.com/en-us/entra/identity/conditional-access/concept-conditional-access-report-only",
+      "choices": [
+        { "text": "Report-only", "isCorrect": true, "sortOrder": 0 },
+        { "text": "On with the What If tool enabled", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Off with sign-in diagnostics enabled", "isCorrect": false, "sortOrder": 2 },
+        { "text": "On with session controls omitted", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "sc300-ca-emergency-exclusion",
+      "objectiveKey": "authentication-access",
+      "prompt": "You are deploying a baseline Conditional Access policy to all users. Which accounts should normally be explicitly excluded to reduce tenant lockout risk?",
+      "kind": "SingleChoice",
+      "difficulty": "Intermediate",
+      "explanation": "Emergency access accounts should be excluded from Conditional Access policies so administrators retain a recovery path if normal authentication or policy configuration fails.",
+      "sourceName": "Manage emergency access accounts",
+      "sourceUrl": "https://learn.microsoft.com/en-us/entra/identity/role-based-access-control/security-emergency-access",
+      "choices": [
+        { "text": "Dedicated emergency access accounts", "isCorrect": true, "sortOrder": 0 },
+        { "text": "All accounts assigned eligible roles in PIM", "isCorrect": false, "sortOrder": 1 },
+        { "text": "All guest accounts from trusted tenants", "isCorrect": false, "sortOrder": 2 },
+        { "text": "All accounts synchronized from AD DS", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "sc300-user-risk-remediation",
+      "objectiveKey": "authentication-access",
+      "prompt": "A Conditional Access policy must let a user safely remediate a high user-risk detection without help-desk action. Which access control is appropriate?",
+      "kind": "SingleChoice",
+      "difficulty": "Advanced",
+      "explanation": "A user-risk policy can require a secure password change. Successful remediation changes the password and addresses the user-risk state; sign-in risk is normally remediated with MFA.",
+      "sourceName": "Remediate risks and unblock users",
+      "sourceUrl": "https://learn.microsoft.com/en-us/entra/id-protection/howto-identity-protection-remediate-unblock",
+      "choices": [
+        { "text": "Require a secure password change", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Require an approved client app", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Require terms of use", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Require a Microsoft Entra hybrid joined device", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "sc300-cae-revocation",
+      "objectiveKey": "authentication-access",
+      "prompt": "An administrator disables a compromised user and needs supported applications to react to the critical event without waiting for the normal access-token lifetime. Which capability addresses this?",
+      "kind": "SingleChoice",
+      "difficulty": "Advanced",
+      "explanation": "Continuous access evaluation allows supported resource providers and clients to respond quickly to critical events such as account disablement and session revocation.",
+      "sourceName": "Continuous access evaluation",
+      "sourceUrl": "https://learn.microsoft.com/en-us/entra/identity/conditional-access/concept-continuous-access-evaluation",
+      "choices": [
+        { "text": "Continuous access evaluation", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Sign-in frequency session control", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Persistent browser session control", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Token protection session control", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "sc300-global-secure-private-access",
+      "objectiveKey": "authentication-access",
+      "prompt": "Remote users need identity-aware access to a private on-premises TCP application without exposing it publicly or granting broad network access. Which Microsoft Entra capability best fits?",
+      "kind": "SingleChoice",
+      "difficulty": "Advanced",
+      "explanation": "Microsoft Entra Private Access, part of Global Secure Access, provides identity-centric access to private applications and resources using configured connectors and app segments.",
+      "sourceName": "What is Microsoft Entra Private Access?",
+      "sourceUrl": "https://learn.microsoft.com/en-us/entra/global-secure-access/concept-private-access",
+      "choices": [
+        { "text": "Microsoft Entra Private Access", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Microsoft Entra Internet Access for Microsoft 365", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Microsoft Entra Application Proxy with header-based authentication", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Microsoft Defender for Cloud Apps Cloud Discovery", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "sc300-password-protection-agents",
+      "objectiveKey": "authentication-access",
+      "prompt": "A hybrid customer wants the Microsoft global banned-password list and a tenant-specific banned list enforced when users change passwords on on-premises domain controllers. Which two components are required on-premises?",
+      "kind": "MultipleChoice",
+      "difficulty": "Advanced",
+      "explanation": "Microsoft Entra Password Protection for AD DS uses proxy services and DC agents. The proxy communicates with Microsoft Entra, while DC agents enforce policy on domain controllers.",
+      "sourceName": "Enforce Microsoft Entra Password Protection on-premises",
+      "sourceUrl": "https://learn.microsoft.com/en-us/entra/identity/authentication/concept-password-ban-bad-on-premises",
+      "choices": [
+        { "text": "Microsoft Entra Password Protection proxy service", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Microsoft Entra Password Protection DC agents", "isCorrect": true, "sortOrder": 1 },
+        { "text": "Microsoft Entra Connect Health agent for Sync", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Microsoft Entra Application Proxy connector", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "sc300-managed-identity-lifecycle",
+      "objectiveKey": "workload-identities",
+      "prompt": "Three Azure VMs must share one workload identity, and that identity must remain available if any VM is deleted. Which identity type should be used?",
+      "kind": "SingleChoice",
+      "difficulty": "Intermediate",
+      "explanation": "A user-assigned managed identity has an independent lifecycle and can be assigned to multiple Azure resources. A system-assigned identity is tied to one resource.",
+      "sourceName": "Managed identities for Azure resources",
+      "sourceUrl": "https://learn.microsoft.com/en-us/entra/identity/managed-identities-azure-resources/overview",
+      "choices": [
+        { "text": "A user-assigned managed identity", "isCorrect": true, "sortOrder": 0 },
+        { "text": "A system-assigned managed identity on the first VM", "isCorrect": false, "sortOrder": 1 },
+        { "text": "A service principal created from each VM", "isCorrect": false, "sortOrder": 2 },
+        { "text": "A synchronized service account with password hash synchronization", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "sc300-managed-identity-secretless",
+      "objectiveKey": "workload-identities",
+      "prompt": "An Azure Function needs to read secrets from Azure Key Vault. The solution must avoid storing application credentials and should remove the identity when the function is deleted. What should you configure?",
+      "kind": "SingleChoice",
+      "difficulty": "Intermediate",
+      "explanation": "A system-assigned managed identity is tied to the Azure resource lifecycle and obtains tokens without application-managed secrets. It can be granted the required Key Vault role.",
+      "sourceName": "Managed identities for Azure resources",
+      "sourceUrl": "https://learn.microsoft.com/en-us/entra/identity/managed-identities-azure-resources/overview",
+      "choices": [
+        { "text": "Enable a system-assigned managed identity on the function and grant it Key Vault access", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Register an application and store its client secret in the function settings", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Create a user-assigned identity and store its object ID as a function secret", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Create a managed service account in AD DS and synchronize it to Microsoft Entra ID", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "sc300-app-proxy-connectors",
+      "objectiveKey": "workload-identities",
+      "prompt": "An internal web application must be published through Microsoft Entra Application Proxy. The design must tolerate one connector server failing. What should you deploy?",
+      "kind": "SingleChoice",
+      "difficulty": "Intermediate",
+      "explanation": "Deploying at least two connectors in the same connector group provides resilience and load distribution for applications assigned to that group.",
+      "sourceName": "Application Proxy connectors and connector groups",
+      "sourceUrl": "https://learn.microsoft.com/en-us/entra/identity/app-proxy/application-proxy-connectors",
+      "choices": [
+        { "text": "At least two connectors in the same connector group", "isCorrect": true, "sortOrder": 0 },
+        { "text": "One connector in each of two unrelated connector groups", "isCorrect": false, "sortOrder": 1 },
+        { "text": "One connector and one Microsoft Entra Cloud Sync agent", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Two enterprise applications using the same external URL", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "sc300-admin-consent-workflow",
+      "objectiveKey": "workload-identities",
+      "prompt": "Users are blocked from granting consent to high-impact applications, but they need a governed way to request review by designated administrators. Which feature should you configure?",
+      "kind": "SingleChoice",
+      "difficulty": "Intermediate",
+      "explanation": "The admin consent workflow lets users submit consent requests for applications that require administrator approval and routes them to configured reviewers.",
+      "sourceName": "Admin consent workflow",
+      "sourceUrl": "https://learn.microsoft.com/en-us/entra/identity/enterprise-apps/configure-admin-consent-workflow",
+      "choices": [
+        { "text": "Admin consent workflow", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Application assignment required", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Entitlement management access package approval", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Privileged Identity Management approval", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "sc300-api-permission-context",
+      "objectiveKey": "workload-identities",
+      "prompt": "A daemon service runs without a signed-in user and must read directory data through Microsoft Graph. Which permission type is appropriate?",
+      "kind": "SingleChoice",
+      "difficulty": "Intermediate",
+      "explanation": "Application permissions are used by apps that call an API as themselves without a signed-in user. Delegated permissions act within a signed-in user's context.",
+      "sourceName": "Permissions and consent in Microsoft identity platform",
+      "sourceUrl": "https://learn.microsoft.com/en-us/entra/identity-platform/permissions-consent-overview",
+      "choices": [
+        { "text": "An application permission granted to the app registration", "isCorrect": true, "sortOrder": 0 },
+        { "text": "A delegated permission consented by any signed-in user", "isCorrect": false, "sortOrder": 1 },
+        { "text": "An app role assigned to the service's managed device", "isCorrect": false, "sortOrder": 2 },
+        { "text": "A Microsoft Entra directory role assigned to the API itself", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "sc300-app-role-assignment",
+      "objectiveKey": "workload-identities",
+      "prompt": "A SaaS application exposes Approver and Reader roles. The MSP wants access controlled through Microsoft Entra groups and the role claim emitted to the application. What should be assigned?",
+      "kind": "SingleChoice",
+      "difficulty": "Advanced",
+      "explanation": "App roles defined by the application can be assigned to users or groups on the enterprise application. Microsoft Entra includes the assigned roles in tokens for the application.",
+      "sourceName": "Add app roles to an application",
+      "sourceUrl": "https://learn.microsoft.com/en-us/entra/identity-platform/howto-add-app-roles-in-apps",
+      "choices": [
+        { "text": "Assign each Microsoft Entra group to the corresponding app role on the enterprise application", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Assign each group a Microsoft Entra directory role with the same display name", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Add each group to an administrative unit named for the application role", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Grant each group delegated API permissions on the app registration", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "sc300-mdca-download-control",
+      "objectiveKey": "workload-identities",
+      "prompt": "Users may access SharePoint Online from unmanaged devices, but downloads containing sensitive data must be blocked during the session. Which integrated control should you use?",
+      "kind": "SingleChoice",
+      "difficulty": "Advanced",
+      "explanation": "Conditional Access App Control routes supported sessions through Defender for Cloud Apps, where a session policy can inspect and control activities such as downloads.",
+      "sourceName": "Conditional Access App Control",
+      "sourceUrl": "https://learn.microsoft.com/en-us/defender-cloud-apps/proxy-intro-aad",
+      "choices": [
+        { "text": "Conditional Access App Control with a Defender for Cloud Apps session policy", "isCorrect": true, "sortOrder": 0 },
+        { "text": "A Defender for Cloud Apps activity policy without session proxying", "isCorrect": false, "sortOrder": 1 },
+        { "text": "A Conditional Access sign-in frequency session control", "isCorrect": false, "sortOrder": 2 },
+        { "text": "An entitlement management access package with a terms-of-use policy", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "sc300-access-package-connected-org",
+      "objectiveKey": "identity-governance",
+      "prompt": "A customer wants employees of a partner company to request a package containing a group, an application, and a SharePoint site. Requests must be limited to that partner's users. What should be added to the catalog policy?",
+      "kind": "SingleChoice",
+      "difficulty": "Advanced",
+      "explanation": "A connected organization represents an external directory or domain for entitlement management. An access package policy can restrict requests to users from that connected organization.",
+      "sourceName": "Connected organizations in entitlement management",
+      "sourceUrl": "https://learn.microsoft.com/en-us/entra/id-governance/entitlement-management-organization",
+      "choices": [
+        { "text": "A connected organization for the partner, referenced by the access package policy", "isCorrect": true, "sortOrder": 0 },
+        { "text": "An administrative unit for the partner, referenced by the catalog", "isCorrect": false, "sortOrder": 1 },
+        { "text": "A cross-tenant access default setting, referenced by the access review", "isCorrect": false, "sortOrder": 2 },
+        { "text": "A connector group for the partner, referenced by the enterprise application", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "sc300-access-package-guest-lifecycle",
+      "objectiveKey": "identity-governance",
+      "prompt": "External users should lose package resources when their assignment expires. If they have no other access package assignments, their guest accounts should later be removed automatically. Which feature controls this account cleanup?",
+      "kind": "SingleChoice",
+      "difficulty": "Advanced",
+      "explanation": "Entitlement management external-user lifecycle settings can block sign-in and remove external user accounts after the last access package assignment is lost, using a configured delay.",
+      "sourceName": "Manage external user lifecycle in entitlement management",
+      "sourceUrl": "https://learn.microsoft.com/en-us/entra/id-governance/entitlement-management-external-users",
+      "choices": [
+        { "text": "Entitlement management external-user lifecycle settings", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Cross-tenant synchronization accidental-deletion thresholds", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Conditional Access sign-in frequency", "isCorrect": false, "sortOrder": 2 },
+        { "text": "PIM assignment expiration for the Guest Inviter role", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "sc300-access-review-inactive-guests",
+      "objectiveKey": "identity-governance",
+      "prompt": "A customer must regularly verify guest membership across many Microsoft 365 groups and automatically remove access when reviewers do not respond. Which configuration best meets the requirement?",
+      "kind": "SingleChoice",
+      "difficulty": "Advanced",
+      "explanation": "A recurring access review can target guest users across groups and apply a configured result when reviewers do not respond. Auto-apply can remove denied access at completion.",
+      "sourceName": "Create an access review of groups and applications",
+      "sourceUrl": "https://learn.microsoft.com/en-us/entra/id-governance/create-access-review",
+      "choices": [
+        { "text": "A recurring access review scoped to guest users, with auto-apply and a deny-on-no-response fallback", "isCorrect": true, "sortOrder": 0 },
+        { "text": "A recurring PIM access review of eligible role assignments, with approval required", "isCorrect": false, "sortOrder": 1 },
+        { "text": "A recurring Conditional Access report-only evaluation, with session revocation", "isCorrect": false, "sortOrder": 2 },
+        { "text": "A recurring cross-tenant synchronization job, with automatic redemption disabled", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "sc300-pim-eligible-activation",
+      "objectiveKey": "identity-governance",
+      "prompt": "Support engineers should hold no standing Privileged Role Administrator access. When needed, they must provide justification, complete MFA, and obtain approval for a limited period. Which configuration should you use?",
+      "kind": "SingleChoice",
+      "difficulty": "Intermediate",
+      "explanation": "PIM eligible assignments provide just-in-time role activation. Role settings can require MFA, justification, approval, and limit activation duration.",
+      "sourceName": "Microsoft Entra roles in Privileged Identity Management",
+      "sourceUrl": "https://learn.microsoft.com/en-us/entra/id-governance/privileged-identity-management/pim-configure",
+      "choices": [
+        { "text": "An eligible PIM role assignment with activation approval, MFA, justification, and duration settings", "isCorrect": true, "sortOrder": 0 },
+        { "text": "An active time-bound role assignment with an access review and no activation settings", "isCorrect": false, "sortOrder": 1 },
+        { "text": "A scoped administrative-unit assignment with self-service password reset", "isCorrect": false, "sortOrder": 2 },
+        { "text": "An access package assignment containing the role and a recurring request policy", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "sc300-pim-for-groups",
+      "objectiveKey": "identity-governance",
+      "prompt": "Membership in a security group grants access to multiple sensitive applications. Members should activate group membership only when needed, subject to approval. What should you configure?",
+      "kind": "SingleChoice",
+      "difficulty": "Advanced",
+      "explanation": "PIM for Groups can make group membership or ownership eligible and enforce activation controls such as approval, MFA, and time limits.",
+      "sourceName": "Privileged Identity Management for Groups",
+      "sourceUrl": "https://learn.microsoft.com/en-us/entra/id-governance/privileged-identity-management/concept-pim-for-groups",
+      "choices": [
+        { "text": "PIM for Groups with eligible member assignments", "isCorrect": true, "sortOrder": 0 },
+        { "text": "PIM for Microsoft Entra roles with the group assigned as role eligible", "isCorrect": false, "sortOrder": 1 },
+        { "text": "An access review that automatically adds approved users to the group", "isCorrect": false, "sortOrder": 2 },
+        { "text": "A dynamic membership rule based on users' authentication strength", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "sc300-emergency-account-design",
+      "objectiveKey": "identity-governance",
+      "prompt": "Which two practices are appropriate when creating emergency access accounts for a Microsoft Entra tenant?",
+      "kind": "MultipleChoice",
+      "difficulty": "Intermediate",
+      "explanation": "Emergency accounts should avoid dependencies that could fail with normal administrative access. Microsoft recommends cloud-only emergency accounts and monitoring their sign-ins because usage should be exceptional.",
+      "sourceName": "Manage emergency access accounts",
+      "sourceUrl": "https://learn.microsoft.com/en-us/entra/identity/role-based-access-control/security-emergency-access",
+      "choices": [
+        { "text": "Use cloud-only accounts that do not depend on on-premises federation or synchronization", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Configure monitoring and alerts for any sign-in activity", "isCorrect": true, "sortOrder": 1 },
+        { "text": "Assign the accounts to the same authentication dependencies as daily administrators", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Use the accounts for scheduled administration so their credentials remain familiar", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "sc300-diagnostic-destinations",
+      "objectiveKey": "identity-governance",
+      "prompt": "An MSP wants centralized KQL investigation of Microsoft Entra sign-in logs and also needs to stream the same category of logs to a customer SIEM. Which two diagnostic destinations should be configured?",
+      "kind": "MultipleChoice",
+      "difficulty": "Advanced",
+      "explanation": "A Log Analytics workspace supports KQL analysis, while Azure Event Hubs provides event streaming to external systems. Microsoft Entra diagnostic settings can route selected log categories to both.",
+      "sourceName": "Configure Microsoft Entra diagnostic settings",
+      "sourceUrl": "https://learn.microsoft.com/en-us/entra/identity/monitoring-health/howto-configure-diagnostic-settings",
+      "choices": [
+        { "text": "A Log Analytics workspace", "isCorrect": true, "sortOrder": 0 },
+        { "text": "An Azure Event Hubs namespace", "isCorrect": true, "sortOrder": 1 },
+        { "text": "A Microsoft Entra access package catalog", "isCorrect": false, "sortOrder": 2 },
+        { "text": "A Microsoft Entra Application Proxy connector group", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "sc300-log-type-change",
+      "objectiveKey": "identity-governance",
+      "prompt": "An administrator needs to determine who changed a Conditional Access policy yesterday and which properties were modified. Which Microsoft Entra log should be examined first?",
+      "kind": "SingleChoice",
+      "difficulty": "Foundation",
+      "explanation": "Audit logs record changes to Microsoft Entra resources, including the actor, target resource, activity, status, and modified properties. Sign-in logs record authentication activity instead.",
+      "sourceName": "Microsoft Entra audit logs overview",
+      "sourceUrl": "https://learn.microsoft.com/en-us/entra/identity/monitoring-health/concept-audit-logs",
+      "choices": [
+        { "text": "Audit logs", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Interactive user sign-in logs", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Provisioning logs", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Risky workload identities", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "sc300-identity-secure-score",
+      "objectiveKey": "identity-governance",
+      "prompt": "A provider needs a tenant-level prioritized view of identity security improvements, with points that can be tracked over time. Which Microsoft Entra report should be used?",
+      "kind": "SingleChoice",
+      "difficulty": "Foundation",
+      "explanation": "Identity Secure Score measures alignment with Microsoft's identity security recommendations and provides improvement actions and score history.",
+      "sourceName": "What is Identity Secure Score?",
+      "sourceUrl": "https://learn.microsoft.com/en-us/entra/identity/monitoring-health/concept-identity-secure-score",
+      "choices": [
+        { "text": "Identity Secure Score", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Microsoft 365 Apps usage report", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Microsoft Entra provisioning insights", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Microsoft Defender for Cloud Apps Cloud Discovery score", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "sc300-effective-role-permissions",
+      "objectiveKey": "manage-user-identities",
+      "prompt": "An administrator receives a Microsoft Entra role through a role-assignable group and another role scoped to an administrative unit. Which two factors should be evaluated when determining whether the administrator can update a specific user?",
+      "kind": "MultipleChoice",
+      "difficulty": "Advanced",
+      "explanation": "Effective access depends on permissions from direct and group-based role assignments and on the scope of each assignment. A role at administrative-unit scope applies only to supported objects in that unit.",
+      "sourceName": "Understand Microsoft Entra roles",
+      "sourceUrl": "https://learn.microsoft.com/en-us/entra/identity/role-based-access-control/custom-overview",
+      "choices": [
+        { "text": "The permissions included in all applicable direct and group-based role assignments", "isCorrect": true, "sortOrder": 0 },
+        { "text": "The scope of each applicable role assignment", "isCorrect": true, "sortOrder": 1 },
+        { "text": "The user's license assignment source", "isCorrect": false, "sortOrder": 2 },
+        { "text": "The user's most recent authentication strength", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "sc300-external-collaboration-domain",
+      "objectiveKey": "manage-user-identities",
+      "prompt": "A tenant must allow B2B invitations to users from two approved partner domains but prevent invitations to other external domains. Which setting directly controls this?",
+      "kind": "SingleChoice",
+      "difficulty": "Intermediate",
+      "explanation": "External collaboration settings include collaboration restrictions that can allow invitations only to specified domains or deny invitations to specified domains.",
+      "sourceName": "Configure external collaboration settings",
+      "sourceUrl": "https://learn.microsoft.com/en-us/entra/external-id/external-collaboration-settings-configure",
+      "choices": [
+        { "text": "B2B collaboration restrictions configured as an allowlist of the partner domains", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Inbound cross-tenant access defaults configured to trust partner MFA", "isCorrect": false, "sortOrder": 1 },
+        { "text": "A Conditional Access named location containing partner DNS servers", "isCorrect": false, "sortOrder": 2 },
+        { "text": "An entitlement management catalog restricted to external sponsors", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "sc300-protected-action-auth-context",
+      "objectiveKey": "authentication-access",
+      "prompt": "Changing a high-impact tenant setting must trigger phishing-resistant authentication even when the administrator already has an active session. Which design should you implement?",
+      "kind": "SingleChoice",
+      "difficulty": "Advanced",
+      "explanation": "Protected actions associate supported permissions with a Conditional Access authentication context. A policy targeting that context can require an authentication strength when the protected operation is attempted.",
+      "sourceName": "Protected actions in Microsoft Entra ID",
+      "sourceUrl": "https://learn.microsoft.com/en-us/entra/identity/role-based-access-control/protected-actions-overview",
+      "choices": [
+        { "text": "Associate the action with an authentication context and target that context with Conditional Access", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Set sign-in frequency to Every time for every cloud application", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Make the administrator eligible for the role in PIM without changing activation settings", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Configure continuous access evaluation as disabled for the administrator", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "sc300-auth-registration-campaign",
+      "objectiveKey": "authentication-access",
+      "prompt": "A customer wants users who authenticate with older MFA methods to be prompted during sign-in to register Microsoft Authenticator, while excluding a pilot exception group. Which feature should be configured?",
+      "kind": "SingleChoice",
+      "difficulty": "Intermediate",
+      "explanation": "An authentication methods registration campaign prompts selected users to set up Microsoft Authenticator and supports included and excluded groups.",
+      "sourceName": "Authentication methods registration campaign",
+      "sourceUrl": "https://learn.microsoft.com/en-us/entra/identity/authentication/how-to-mfa-registration-campaign",
+      "choices": [
+        { "text": "An authentication methods registration campaign", "isCorrect": true, "sortOrder": 0 },
+        { "text": "A self-service password reset registration policy", "isCorrect": false, "sortOrder": 1 },
+        { "text": "A Conditional Access report-only policy", "isCorrect": false, "sortOrder": 2 },
+        { "text": "A Temporary Access Pass policy targeted to all users", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "sc300-ca-device-filter-negative",
+      "objectiveKey": "authentication-access",
+      "prompt": "A Conditional Access policy applies to all devices, but must exclude only company-managed emergency workstations identified by a stable device attribute. Group membership changes are too slow for the requirement. What should you use?",
+      "kind": "SingleChoice",
+      "difficulty": "Advanced",
+      "explanation": "A Conditional Access filter for devices evaluates supported device properties during policy processing and can include or exclude matching devices without relying on group membership evaluation.",
+      "sourceName": "Conditional Access filters for devices",
+      "sourceUrl": "https://learn.microsoft.com/en-us/entra/identity/conditional-access/concept-condition-filters-for-devices",
+      "choices": [
+        { "text": "An exclude filter for devices using the stable device attribute", "isCorrect": true, "sortOrder": 0 },
+        { "text": "An excluded dynamic device group evaluated during every token request", "isCorrect": false, "sortOrder": 1 },
+        { "text": "An excluded named location based on the device attribute", "isCorrect": false, "sortOrder": 2 },
+        { "text": "An authentication context assigned to the device object", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "sc300-consent-verified-publisher",
+      "objectiveKey": "workload-identities",
+      "prompt": "Users may consent only to low-impact delegated permissions from applications published by organizations Microsoft has verified. Which tenant setting should be configured?",
+      "kind": "SingleChoice",
+      "difficulty": "Advanced",
+      "explanation": "The user consent policy can restrict consent to selected low-impact permissions for apps from verified publishers, reducing risk while retaining limited self-service consent.",
+      "sourceName": "Configure user consent settings",
+      "sourceUrl": "https://learn.microsoft.com/en-us/entra/identity/enterprise-apps/configure-user-consent",
+      "choices": [
+        { "text": "Allow user consent for apps from verified publishers, for selected permissions", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Allow user consent for apps from any publisher, for all delegated permissions", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Disable user consent and assign the Application Administrator role to all users", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Enable admin consent workflow and automatically approve every verified publisher", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "sc300-app-proxy-preauth",
+      "objectiveKey": "workload-identities",
+      "prompt": "An on-premises web app is published through Application Proxy. The tenant wants Conditional Access evaluated before traffic reaches the connector. Which preauthentication method should be selected?",
+      "kind": "SingleChoice",
+      "difficulty": "Intermediate",
+      "explanation": "Microsoft Entra preauthentication requires users to authenticate with Microsoft Entra ID before Application Proxy forwards traffic, enabling Conditional Access enforcement.",
+      "sourceName": "Publish applications with Application Proxy",
+      "sourceUrl": "https://learn.microsoft.com/en-us/entra/identity/app-proxy/application-proxy-add-on-premises-application",
+      "choices": [
+        { "text": "Microsoft Entra ID preauthentication", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Passthrough preauthentication", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Header-based sign-on without Microsoft Entra preauthentication", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Integrated Windows authentication performed before Application Proxy", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "sc300-oauth-app-policy",
+      "objectiveKey": "workload-identities",
+      "prompt": "A security team wants Defender for Cloud Apps to alert when an OAuth app requests high-privilege access and to revoke a risky app's permissions after investigation. Which feature should be used?",
+      "kind": "SingleChoice",
+      "difficulty": "Advanced",
+      "explanation": "OAuth app policies in Defender for Cloud Apps evaluate OAuth app characteristics and permissions, generate alerts, and support governance actions such as revoking an app.",
+      "sourceName": "OAuth app policies in Defender for Cloud Apps",
+      "sourceUrl": "https://learn.microsoft.com/en-us/defender-cloud-apps/app-permission-policy",
+      "choices": [
+        { "text": "An OAuth app policy with the appropriate governance action", "isCorrect": true, "sortOrder": 0 },
+        { "text": "A Cloud Discovery anomaly policy with an endpoint isolation action", "isCorrect": false, "sortOrder": 1 },
+        { "text": "A Conditional Access session policy with a password reset action", "isCorrect": false, "sortOrder": 2 },
+        { "text": "An access package policy with automatic assignment", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "sc300-terms-of-use-access-package",
+      "objectiveKey": "identity-governance",
+      "prompt": "External contractors must accept the current acceptable-use agreement before receiving an access package assignment, and acceptance records must be reviewable. Which feature should be integrated into the policy?",
+      "kind": "SingleChoice",
+      "difficulty": "Intermediate",
+      "explanation": "Microsoft Entra terms of use can require acceptance and record acceptance history. Terms can be required through Conditional Access and used with entitlement management scenarios.",
+      "sourceName": "Microsoft Entra terms of use",
+      "sourceUrl": "https://learn.microsoft.com/en-us/entra/identity/conditional-access/terms-of-use",
+      "choices": [
+        { "text": "Microsoft Entra terms of use", "isCorrect": true, "sortOrder": 0 },
+        { "text": "An access review decision helper", "isCorrect": false, "sortOrder": 1 },
+        { "text": "A PIM activation justification", "isCorrect": false, "sortOrder": 2 },
+        { "text": "A custom security attribute assignment", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "sc300-b2b-direct-connect-shared-channel",
+      "objectiveKey": "manage-user-identities",
+      "prompt": "Two customer tenants want users to collaborate in Teams shared channels while each user remains represented by an identity in the home tenant rather than a B2B guest object in the resource tenant. Which External ID method fits?",
+      "kind": "SingleChoice",
+      "difficulty": "Advanced",
+      "explanation": "B2B direct connect enables reciprocal cross-tenant access to supported shared channels without creating ordinary B2B guest accounts. Both organizations configure cross-tenant access settings.",
+      "sourceName": "B2B direct connect overview",
+      "sourceUrl": "https://learn.microsoft.com/en-us/entra/external-id/b2b-direct-connect-overview",
+      "choices": [
+        { "text": "B2B collaboration with automatic redemption", "isCorrect": false, "sortOrder": 0 },
+        { "text": "B2B direct connect with reciprocal cross-tenant access settings", "isCorrect": true, "sortOrder": 1 },
+        { "text": "Cross-tenant synchronization in both directions", "isCorrect": false, "sortOrder": 2 },
+        { "text": "A multitenant organization with member synchronization disabled", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "sc300-device-registration-byod",
+      "objectiveKey": "manage-user-identities",
+      "prompt": "A consultant signs in to Microsoft 365 from a personally owned Windows laptop. The organization needs a device identity for Conditional Access, but the consultant must continue signing in to Windows with a personal account. Which device state is appropriate?",
+      "kind": "SingleChoice",
+      "difficulty": "Intermediate",
+      "explanation": "Microsoft Entra registration is designed for personally owned devices and adds an organizational device identity without changing the user's Windows sign-in to an organizational account.",
+      "sourceName": "Microsoft Entra device identity types",
+      "sourceUrl": "https://learn.microsoft.com/en-us/entra/identity/devices/concept-device-registration",
+      "choices": [
+        { "text": "Microsoft Entra hybrid joined", "isCorrect": false, "sortOrder": 0 },
+        { "text": "Microsoft Entra joined", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Microsoft Entra registered", "isCorrect": true, "sortOrder": 2 },
+        { "text": "AD DS registered through Seamless SSO", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "sc300-company-branding-signin",
+      "objectiveKey": "manage-user-identities",
+      "prompt": "An MSP must place a customer's logo, help-desk text, and privacy link on Microsoft Entra sign-in pages without changing any application. What should be configured?",
+      "kind": "SingleChoice",
+      "difficulty": "Foundation",
+      "explanation": "Microsoft Entra company branding customizes organization-specific sign-in experiences, including visual elements and support or privacy links. It does not require per-application changes.",
+      "sourceName": "Configure company branding",
+      "sourceUrl": "https://learn.microsoft.com/en-us/entra/fundamentals/how-to-customize-branding",
+      "choices": [
+        { "text": "A custom authentication context", "isCorrect": false, "sortOrder": 0 },
+        { "text": "An enterprise application home page", "isCorrect": false, "sortOrder": 1 },
+        { "text": "A terms-of-use document", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Microsoft Entra company branding", "isCorrect": true, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "sc300-guest-bulk-invite",
+      "objectiveKey": "manage-user-identities",
+      "prompt": "A customer must invite 400 partner users from a supplied list and retain a repeatable record of each invitation address and redirect URL. Which approach best fits the requirement?",
+      "kind": "SingleChoice",
+      "difficulty": "Intermediate",
+      "explanation": "Microsoft Entra bulk invitation accepts a CSV based on the downloadable template and creates B2B invitations in one operation. It is more appropriate than manual invitations or cross-tenant synchronization for a one-time supplied list.",
+      "sourceName": "Bulk invite B2B collaboration users",
+      "sourceUrl": "https://learn.microsoft.com/en-us/entra/external-id/tutorial-bulk-invite",
+      "choices": [
+        { "text": "Upload a completed bulk-invite CSV in Microsoft Entra ID", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Create a dynamic group whose rule contains the external email addresses", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Configure cross-tenant synchronization without consent in the target tenant", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Add the addresses to an administrative unit and enable self-service sign-up", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "sc300-license-usage-location",
+      "objectiveKey": "manage-user-identities",
+      "prompt": "Group-based licensing reports that a newly created cloud user cannot receive a Microsoft 365 license, although licenses remain available. The user's country is present, but Usage location is blank. What should be corrected?",
+      "kind": "SingleChoice",
+      "difficulty": "Foundation",
+      "explanation": "A user's Usage location determines which licensed services can legally be made available and must be set before a license can be assigned. The general country or region profile value is not a substitute.",
+      "sourceName": "Assign Microsoft 365 licenses to user accounts",
+      "sourceUrl": "https://learn.microsoft.com/en-us/microsoft-365/admin/manage/assign-licenses-to-users",
+      "choices": [
+        { "text": "Set the tenant's preferred data location", "isCorrect": false, "sortOrder": 0 },
+        { "text": "Set the user's Usage location, then reprocess the license assignment", "isCorrect": true, "sortOrder": 1 },
+        { "text": "Convert the licensing group to a Microsoft 365 group", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Add the user to an administrative unit in the same geography", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "sc300-connect-staging-cutover",
+      "objectiveKey": "manage-user-identities",
+      "prompt": "A customer wants a second Microsoft Entra Connect Sync server ready for controlled failover. It should import and synchronize data but must not export changes while the primary server is active. Which mode should be enabled on the second server?",
+      "kind": "SingleChoice",
+      "difficulty": "Advanced",
+      "explanation": "A Connect Sync server in staging mode performs imports and synchronization but suppresses exports and password synchronization. An administrator can compare results and deliberately switch the active server during failover.",
+      "sourceName": "Microsoft Entra Connect Sync operational tasks",
+      "sourceUrl": "https://learn.microsoft.com/en-us/entra/identity/hybrid/connect/how-to-connect-sync-staging-server",
+      "choices": [
+        { "text": "Pass-through authentication mode", "isCorrect": false, "sortOrder": 0 },
+        { "text": "Seamless SSO mode", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Staging mode", "isCorrect": true, "sortOrder": 2 },
+        { "text": "Soft-match quarantine mode", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "sc300-sspr-method-count",
+      "objectiveKey": "authentication-access",
+      "prompt": "A tenant requires ordinary users to prove identity with one registered method for self-service password reset, but administrators must use two methods. Which configuration supports this distinction?",
+      "kind": "SingleChoice",
+      "difficulty": "Intermediate",
+      "explanation": "SSPR authentication-method settings define the number of methods required for reset. Administrator accounts are subject to the stricter administrator reset policy and must use two authentication methods.",
+      "sourceName": "Self-service password reset policies",
+      "sourceUrl": "https://learn.microsoft.com/en-us/entra/identity/authentication/concept-sspr-policy",
+      "choices": [
+        { "text": "Set one method for SSPR; the administrator reset policy still requires two methods", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Create separate authentication strengths for users and administrators", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Set two methods for SSPR and exempt users through a named location", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Enable password writeback only for administrator accounts", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "sc300-whfb-cloud-kerberos-trust",
+      "objectiveKey": "authentication-access",
+      "prompt": "Hybrid-joined Windows users need passwordless Windows Hello for Business access to on-premises Kerberos resources. The customer wants the simplest supported deployment and does not require certificate authentication. Which trust model should be selected?",
+      "kind": "SingleChoice",
+      "difficulty": "Advanced",
+      "explanation": "Cloud Kerberos trust is the recommended simplified Windows Hello for Business trust model for hybrid environments when certificate authentication is not required. It avoids deploying user certificates for this scenario.",
+      "sourceName": "Windows Hello for Business cloud Kerberos trust",
+      "sourceUrl": "https://learn.microsoft.com/en-us/windows/security/identity-protection/hello-for-business/deploy/hybrid-cloud-kerberos-trust",
+      "choices": [
+        { "text": "Certificate trust with user authentication certificates", "isCorrect": false, "sortOrder": 0 },
+        { "text": "Key trust with AD FS as a registration authority", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Pass-through authentication with Seamless SSO", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Cloud Kerberos trust", "isCorrect": true, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "sc300-cba-certificate-binding",
+      "objectiveKey": "authentication-access",
+      "prompt": "A customer enables Microsoft Entra certificate-based authentication. Certificates contain a reliable certificate policy object identifier that should determine whether a certificate satisfies single-factor or multifactor authentication. What should be configured?",
+      "kind": "SingleChoice",
+      "difficulty": "Advanced",
+      "explanation": "The certificate-based authentication policy uses authentication binding rules to map certificate attributes, such as policy OIDs, to an authentication strength. Username bindings instead determine which user the certificate identifies.",
+      "sourceName": "Certificate-based authentication technical concepts",
+      "sourceUrl": "https://learn.microsoft.com/en-us/entra/identity/authentication/concept-certificate-based-authentication-technical-deep-dive",
+      "choices": [
+        { "text": "A username binding from Subject to userPrincipalName", "isCorrect": false, "sortOrder": 0 },
+        { "text": "An authentication binding rule for the certificate policy OID", "isCorrect": true, "sortOrder": 1 },
+        { "text": "A Conditional Access device filter for the issuing CA", "isCorrect": false, "sortOrder": 2 },
+        { "text": "A custom security attribute on the certificate authority", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "sc300-ca-what-if",
+      "objectiveKey": "authentication-access",
+      "prompt": "Before changing policy state, an administrator wants to simulate which Conditional Access policies would apply to one user accessing Exchange Online from a specific location and device platform. Which tool should be used?",
+      "kind": "SingleChoice",
+      "difficulty": "Foundation",
+      "explanation": "The Conditional Access What If tool evaluates a supplied sign-in scenario and reports policies that would apply, would not apply, or cannot be evaluated. It does not create an actual sign-in.",
+      "sourceName": "Conditional Access What If tool",
+      "sourceUrl": "https://learn.microsoft.com/en-us/entra/identity/conditional-access/troubleshoot-conditional-access-what-if",
+      "choices": [
+        { "text": "Sign-in diagnostic on an unrelated successful sign-in", "isCorrect": false, "sortOrder": 0 },
+        { "text": "Identity Secure Score", "isCorrect": false, "sortOrder": 1 },
+        { "text": "The Conditional Access What If tool", "isCorrect": true, "sortOrder": 2 },
+        { "text": "A provisioning-on-demand test", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "sc300-signin-frequency-session",
+      "objectiveKey": "authentication-access",
+      "prompt": "Administrators may keep browser sessions, but must be required to reauthenticate for a privileged cloud application every four hours. Which Conditional Access session control directly sets that interval?",
+      "kind": "SingleChoice",
+      "difficulty": "Intermediate",
+      "explanation": "The sign-in frequency session control defines how often a user must reauthenticate for targeted resources. Persistent browser controls affect whether a browser session survives closure, not the four-hour reauthentication interval.",
+      "sourceName": "Conditional Access session controls",
+      "sourceUrl": "https://learn.microsoft.com/en-us/entra/identity/conditional-access/concept-session-lifetime",
+      "choices": [
+        { "text": "Continuous access evaluation strict location enforcement", "isCorrect": false, "sortOrder": 0 },
+        { "text": "A persistent browser session set to Never persistent", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Token protection for sign-in sessions", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Sign-in frequency set to four hours", "isCorrect": true, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "sc300-confirm-user-compromised",
+      "objectiveKey": "authentication-access",
+      "prompt": "An investigation confirms that an account is compromised, but Microsoft Entra ID Protection currently shows the user risk as low. Which action records the finding and raises the user's risk state?",
+      "kind": "SingleChoice",
+      "difficulty": "Intermediate",
+      "explanation": "Confirm user compromised records the administrator's conclusion and moves the user risk to high. Dismiss user risk marks the user safe and is inappropriate when compromise is confirmed.",
+      "sourceName": "Remediate risks and unblock users",
+      "sourceUrl": "https://learn.microsoft.com/en-us/entra/id-protection/howto-identity-protection-remediate-unblock",
+      "choices": [
+        { "text": "Dismiss user risk", "isCorrect": false, "sortOrder": 0 },
+        { "text": "Confirm user compromised", "isCorrect": true, "sortOrder": 1 },
+        { "text": "Confirm sign-in safe", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Add the user to a trusted named location", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "sc300-gsa-internet-traffic-profile",
+      "objectiveKey": "authentication-access",
+      "prompt": "Remote endpoints must send general internet traffic, not only Microsoft 365 traffic, through Global Secure Access for web filtering and identity-aware policy. Which traffic-forwarding profile is required?",
+      "kind": "SingleChoice",
+      "difficulty": "Intermediate",
+      "explanation": "The Internet traffic forwarding profile acquires general internet traffic for Microsoft Entra Internet Access. The Microsoft 365 profile is limited to Microsoft 365 traffic, and Private Access handles private resources.",
+      "sourceName": "Global Secure Access traffic forwarding",
+      "sourceUrl": "https://learn.microsoft.com/en-us/entra/global-secure-access/concept-traffic-forwarding",
+      "choices": [
+        { "text": "Private access profile", "isCorrect": false, "sortOrder": 0 },
+        { "text": "Microsoft 365 traffic profile", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Internet traffic profile", "isCorrect": true, "sortOrder": 2 },
+        { "text": "Cross-tenant access profile", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "sc300-app-registration-service-principal",
+      "objectiveKey": "workload-identities",
+      "prompt": "A multitenant SaaS application's definition is registered in its publisher tenant. When a customer administrator grants consent in another tenant, which object is created there to represent that application instance?",
+      "kind": "SingleChoice",
+      "difficulty": "Intermediate",
+      "explanation": "An app registration creates an application object in the home tenant. Consent in another tenant creates a service principal, also shown as an enterprise application, that represents the local instance and assignments.",
+      "sourceName": "Application and service principal objects",
+      "sourceUrl": "https://learn.microsoft.com/en-us/entra/identity-platform/app-objects-and-service-principals",
+      "choices": [
+        { "text": "A managed identity tied to the customer tenant", "isCorrect": false, "sortOrder": 0 },
+        { "text": "A second application object owned by the customer", "isCorrect": false, "sortOrder": 1 },
+        { "text": "A service principal in the customer tenant", "isCorrect": true, "sortOrder": 2 },
+        { "text": "A cross-tenant synchronization configuration", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "sc300-workload-federated-credential",
+      "objectiveKey": "workload-identities",
+      "prompt": "A GitHub Actions workflow must authenticate as a Microsoft Entra application without storing a client secret in GitHub. Which configuration provides the required trust?",
+      "kind": "SingleChoice",
+      "difficulty": "Advanced",
+      "explanation": "A federated identity credential establishes trust between the application and tokens from an external OpenID Connect issuer such as GitHub. The workflow exchanges its token for a Microsoft identity platform token without a stored client secret.",
+      "sourceName": "Workload identity federation",
+      "sourceUrl": "https://learn.microsoft.com/en-us/entra/workload-id/workload-identity-federation",
+      "choices": [
+        { "text": "A federated identity credential matching the GitHub issuer, subject, and audience", "isCorrect": true, "sortOrder": 0 },
+        { "text": "A delegated permission with offline_access granted to the workflow", "isCorrect": false, "sortOrder": 1 },
+        { "text": "A user-assigned managed identity attached directly to the GitHub runner service", "isCorrect": false, "sortOrder": 2 },
+        { "text": "A certificate credential exported to a repository variable", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "sc300-scim-provisioning",
+      "objectiveKey": "workload-identities",
+      "prompt": "A SaaS application supports SCIM 2.0. Assigned users must be created, updated, and disabled automatically in the SaaS directory according to Microsoft Entra assignments. Which enterprise-application feature should be configured?",
+      "kind": "SingleChoice",
+      "difficulty": "Intermediate",
+      "explanation": "Automatic application provisioning uses SCIM to synchronize assigned identities and lifecycle changes to supported SaaS applications. SSO alone authenticates users but does not provision their accounts.",
+      "sourceName": "Automate user provisioning to SaaS applications",
+      "sourceUrl": "https://learn.microsoft.com/en-us/entra/identity/app-provisioning/user-provisioning",
+      "choices": [
+        { "text": "SAML single sign-on with just-in-time claims only", "isCorrect": false, "sortOrder": 0 },
+        { "text": "Application Proxy connector-based provisioning", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Cross-tenant synchronization to the SaaS vendor tenant", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Automatic provisioning with the application's SCIM endpoint and credentials", "isCorrect": true, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "sc300-app-proxy-kcd",
+      "objectiveKey": "workload-identities",
+      "prompt": "An on-premises web application uses Integrated Windows Authentication. Users should authenticate to Microsoft Entra ID externally and receive SSO to the application without entering the AD DS password again. Which Application Proxy SSO method fits?",
+      "kind": "SingleChoice",
+      "difficulty": "Advanced",
+      "explanation": "Application Proxy can use Kerberos constrained delegation for Integrated Windows Authentication. The connector obtains a Kerberos token on behalf of the user after Microsoft Entra preauthentication.",
+      "sourceName": "Kerberos constrained delegation for Application Proxy",
+      "sourceUrl": "https://learn.microsoft.com/en-us/entra/identity/app-proxy/how-to-configure-sso-with-kcd",
+      "choices": [
+        { "text": "Password-based SSO with credentials stored in the browser", "isCorrect": false, "sortOrder": 0 },
+        { "text": "Kerberos constrained delegation", "isCorrect": true, "sortOrder": 1 },
+        { "text": "Linked sign-on to the internal URL", "isCorrect": false, "sortOrder": 2 },
+        { "text": "SAML token translation performed by Cloud Sync", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "sc300-enterprise-app-assignment-required",
+      "objectiveKey": "workload-identities",
+      "prompt": "An enterprise application should allow sign-in only for users and groups explicitly assigned to it. The application itself does not enforce its own assignment list. Which property should be enabled?",
+      "kind": "SingleChoice",
+      "difficulty": "Foundation",
+      "explanation": "When Assignment required is enabled on an enterprise application, Microsoft Entra ID permits user sign-in only when the user or an applicable group is assigned. Consent and app-role definitions solve different problems.",
+      "sourceName": "Manage user and group assignment to an application",
+      "sourceUrl": "https://learn.microsoft.com/en-us/entra/identity/enterprise-apps/assign-user-or-group-access-portal",
+      "choices": [
+        { "text": "Visible to users", "isCorrect": false, "sortOrder": 0 },
+        { "text": "User assignment required", "isCorrect": true, "sortOrder": 1 },
+        { "text": "Enabled for users to sign in", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Admin consent requests enabled", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "sc300-risky-workload-policy",
+      "objectiveKey": "workload-identities",
+      "prompt": "Identity Protection detects high risk for a service principal used by an automated integration. The organization wants Conditional Access to stop that workload identity without attempting MFA. Which policy design is appropriate?",
+      "kind": "SingleChoice",
+      "difficulty": "Advanced",
+      "explanation": "Conditional Access for workload identities can target service principals and block access when service-principal risk is high. Workload identities cannot satisfy user grant controls such as MFA or compliant device.",
+      "sourceName": "Conditional Access for workload identities",
+      "sourceUrl": "https://learn.microsoft.com/en-us/entra/identity/conditional-access/workload-identity",
+      "choices": [
+        { "text": "A user-risk policy requiring secure password change", "isCorrect": false, "sortOrder": 0 },
+        { "text": "A workload-identity policy requiring phishing-resistant MFA", "isCorrect": false, "sortOrder": 1 },
+        { "text": "A workload-identity policy that blocks access at high service-principal risk", "isCorrect": true, "sortOrder": 2 },
+        { "text": "A sign-in-risk policy requiring a compliant device", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "sc300-lifecycle-workflow-hire-trigger",
+      "objectiveKey": "identity-governance",
+      "prompt": "New employees should automatically receive a Temporary Access Pass and a welcome email a few days before the employeeHireDate attribute. Which governance capability should orchestrate these time-based tasks?",
+      "kind": "SingleChoice",
+      "difficulty": "Intermediate",
+      "explanation": "Lifecycle Workflows automate joiner, mover, and leaver tasks based on identity attributes and time-based triggers. Built-in tasks include generating a Temporary Access Pass and sending email.",
+      "sourceName": "Lifecycle Workflows overview",
+      "sourceUrl": "https://learn.microsoft.com/en-us/entra/id-governance/what-are-lifecycle-workflows",
+      "choices": [
+        { "text": "A recurring access review of new employees", "isCorrect": false, "sortOrder": 0 },
+        { "text": "A Lifecycle Workflow using an employeeHireDate-based trigger", "isCorrect": true, "sortOrder": 1 },
+        { "text": "A dynamic group with a PIM activation rule", "isCorrect": false, "sortOrder": 2 },
+        { "text": "An access package with an automatic assignment policy only", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "sc300-access-package-policy-role",
+      "objectiveKey": "identity-governance",
+      "prompt": "A catalog already contains the correct group and application resources. The customer now needs different approval, expiration, and requestor rules for employees and partner users. Which entitlement-management object should be created for each population?",
+      "kind": "SingleChoice",
+      "difficulty": "Intermediate",
+      "explanation": "An access package assignment policy defines who can request or receive the package, approval behavior, assignment duration, and lifecycle rules. The catalog and resource roles define what access the package contains.",
+      "sourceName": "Access package assignment policies",
+      "sourceUrl": "https://learn.microsoft.com/en-us/entra/id-governance/entitlement-management-access-package-request-policy",
+      "choices": [
+        { "text": "A separate catalog for each population", "isCorrect": false, "sortOrder": 0 },
+        { "text": "A separate connected organization for every employee", "isCorrect": false, "sortOrder": 1 },
+        { "text": "A separate access package assignment policy for each population", "isCorrect": true, "sortOrder": 2 },
+        { "text": "A separate administrative unit for each approval stage", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "sc300-access-review-group-owner",
+      "objectiveKey": "identity-governance",
+      "prompt": "Each application access group has a different business owner. A quarterly review should route membership decisions to the owner of the group being reviewed without maintaining a central reviewer list. Who should be selected as reviewer?",
+      "kind": "SingleChoice",
+      "difficulty": "Intermediate",
+      "explanation": "Access reviews can use group owners as reviewers, which routes each group's decisions to its current owners. Selected users or users reviewing their own access would not meet the decentralized ownership requirement.",
+      "sourceName": "Create an access review of groups or applications",
+      "sourceUrl": "https://learn.microsoft.com/en-us/entra/id-governance/create-access-review",
+      "choices": [
+        { "text": "Members review their own access", "isCorrect": false, "sortOrder": 0 },
+        { "text": "The tenant's Global Readers", "isCorrect": false, "sortOrder": 1 },
+        { "text": "The access package catalog owners", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Group owners", "isCorrect": true, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "sc300-pim-azure-resource-role",
+      "objectiveKey": "identity-governance",
+      "prompt": "An engineer needs just-in-time Owner access to one Azure subscription, not an administrative role in Microsoft Entra ID. Which PIM area should the administrator manage?",
+      "kind": "SingleChoice",
+      "difficulty": "Foundation",
+      "explanation": "Owner is an Azure RBAC role. PIM for Azure resources manages eligible and active assignments at management-group, subscription, resource-group, or resource scope; PIM for Microsoft Entra roles manages directory roles.",
+      "sourceName": "PIM for Azure resource roles",
+      "sourceUrl": "https://learn.microsoft.com/en-us/entra/id-governance/privileged-identity-management/pim-getting-started",
+      "choices": [
+        { "text": "PIM for Groups at tenant scope", "isCorrect": false, "sortOrder": 0 },
+        { "text": "PIM for Azure resources at the subscription scope", "isCorrect": true, "sortOrder": 1 },
+        { "text": "PIM for Microsoft Entra roles at administrative-unit scope", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Entitlement management for connected organizations", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "sc300-access-package-separation-duties",
+      "objectiveKey": "identity-governance",
+      "prompt": "Users assigned the Accounts-Payable-Approver package must not receive the Accounts-Payable-Requester package. Which entitlement-management control should be configured on the requester package?",
+      "kind": "SingleChoice",
+      "difficulty": "Advanced",
+      "explanation": "Entitlement management separation-of-duties checks can mark another access package or group as incompatible. A request is then prevented when the user already has the conflicting access.",
+      "sourceName": "Configure separation of duties checks",
+      "sourceUrl": "https://learn.microsoft.com/en-us/entra/id-governance/entitlement-management-access-package-incompatible",
+      "choices": [
+        { "text": "A Conditional Access authentication context", "isCorrect": false, "sortOrder": 0 },
+        { "text": "An incompatible access package for separation of duties", "isCorrect": true, "sortOrder": 1 },
+        { "text": "A catalog resource role with hidden membership", "isCorrect": false, "sortOrder": 2 },
+        { "text": "An access review with recommendations disabled", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "sc300-lifecycle-custom-extension",
+      "objectiveKey": "identity-governance",
+      "prompt": "A leaver workflow must call an MSP-owned ticketing API after disabling a user's access. The required action is not a built-in Lifecycle Workflows task. What should be added?",
+      "kind": "SingleChoice",
+      "difficulty": "Advanced",
+      "explanation": "A Lifecycle Workflows custom task extension can invoke an Azure Logic Apps workflow, allowing the lifecycle workflow to integrate with an external system while retaining workflow execution history.",
+      "sourceName": "Lifecycle Workflows custom task extensions",
+      "sourceUrl": "https://learn.microsoft.com/en-us/entra/id-governance/lifecycle-workflow-extensibility",
+      "choices": [
+        { "text": "A custom task extension backed by Azure Logic Apps", "isCorrect": true, "sortOrder": 0 },
+        { "text": "A custom security attribute definition backed by Microsoft Graph", "isCorrect": false, "sortOrder": 1 },
+        { "text": "A Conditional Access custom control", "isCorrect": false, "sortOrder": 2 },
+        { "text": "A PIM alert routed directly to the ticketing API", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "sc300-scenario-order-access-package",
+      "objectiveKey": "identity-governance",
+      "prompt": "An MSP must let a customer's project contractors request access to an application and a SharePoint site with manager approval and automatic expiration. None of these resources is in entitlement management yet. Which build order is correct?",
+      "kind": "SingleChoice",
+      "difficulty": "Advanced",
+      "explanation": "Resources must first be available in a catalog. The access package can then be created with the required resource roles, followed by an assignment policy that defines requestors, approval, and expiration. Requests can be tested only after those dependent objects exist. Creating a policy before its package or adding resource roles before cataloging the resources reverses those dependencies.",
+      "sourceName": "Create and manage an entitlement management catalog", "sourceUrl": "https://learn.microsoft.com/en-us/entra/id-governance/entitlement-management-catalog-create",
+      "choices": [
+        { "text": "Create the catalog; add the application and site resources; create the access package with resource roles; add the approval and expiration policy; test a request", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Create the approval policy; create the access package; add resources to a catalog; add resource roles; test a request", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Add resource roles to an access package; create the catalog; add resources; create the policy; test a request", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Create the catalog; create the assignment policy; add resources; test a request; create the access package", "isCorrect": false, "sortOrder": 3 },
+        { "text": "Create the catalog; add resources; create the policy without a package; test a request; then add resource roles", "isCorrect": false, "sortOrder": 4 }
+      ]
+    },
+    {
+      "contentKey": "sc300-scenario-order-passkey-bootstrap",
+      "objectiveKey": "authentication-access",
+      "prompt": "A cloud-only customer is piloting passkeys for users who have no usable MFA method. Change control requires the passkey method to be enabled for the pilot before any bootstrap credential is issued. The identity team will then use a Temporary Access Pass. Which sequence is correct?",
+      "kind": "SingleChoice",
+      "difficulty": "Advanced",
+      "explanation": "The tenant must first enable and target the passkey authentication method. An authorized administrator can then issue a Temporary Access Pass, which the user uses for strong bootstrap authentication before registering the passkey in Security info. Testing passkey sign-in comes last. A user cannot register a method that is not enabled for them, and the passkey cannot be used before registration.",
+      "sourceName": "Register a passkey with Microsoft Entra ID", "sourceUrl": "https://learn.microsoft.com/en-us/entra/identity/authentication/how-to-register-passkey",
+      "choices": [
+        { "text": "Enable and target passkeys; issue a Temporary Access Pass; have the user authenticate with the pass; register the passkey; test passkey sign-in", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Issue a Temporary Access Pass; register the passkey; enable passkeys; authenticate with the pass; test sign-in", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Register the passkey; enable passkeys; issue a Temporary Access Pass; test sign-in; authenticate with the pass", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Enable passkeys; test passkey sign-in; issue a Temporary Access Pass; register the passkey; authenticate with the pass", "isCorrect": false, "sortOrder": 3 },
+        { "text": "Enable passkeys; issue a Temporary Access Pass; register the passkey before authenticating; test sign-in", "isCorrect": false, "sortOrder": 4 },
+        { "text": "Issue a Temporary Access Pass; enable passkeys after the user signs in; test sign-in; register the passkey", "isCorrect": false, "sortOrder": 5 }
+      ]
+    },
+    {
+      "contentKey": "sc300-scenario-cross-tenant-trust-claims",
+      "objectiveKey": "authentication-access",
+      "prompt": "A resource tenant's Conditional Access policies require MFA and a compliant device. A trusted partner already enforces both controls in its home tenant, and the resource tenant should accept those results for B2B users instead of requiring duplicate registration. Choose two inbound trust settings to enable for that partner.",
+      "kind": "MultipleChoice",
+      "difficulty": "Advanced",
+      "explanation": "Inbound cross-tenant access settings can trust the partner tenant's MFA claim and its compliant-device claim so those claims satisfy corresponding Conditional Access controls in the resource tenant. B2B direct connect and automatic redemption change collaboration or consent behavior, not whether MFA and device-compliance claims are trusted.",
+      "sourceName": "Cross-tenant access overview", "sourceUrl": "https://learn.microsoft.com/en-us/entra/external-id/cross-tenant-access-overview",
+      "choices": [
+        { "text": "Trust multifactor authentication from the partner's Microsoft Entra tenant", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Trust compliant-device claims from the partner's Microsoft Entra tenant", "isCorrect": true, "sortOrder": 1 },
+        { "text": "Enable B2B direct connect for every external application", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Trust Microsoft Entra hybrid join claims instead of compliant-device claims", "isCorrect": false, "sortOrder": 3 },
+        { "text": "Enable automatic redemption as a replacement for Conditional Access trust", "isCorrect": false, "sortOrder": 4 }
+      ]
+    },
+    {
+      "contentKey": "sc300-scenario-emergency-access-design",
+      "objectiveKey": "authentication-access",
+      "prompt": "A federated customer is redesigning emergency access so administrators can recover from an identity-provider outage or Conditional Access lockout. Choose three controls that Microsoft recommends for these accounts.",
+      "kind": "MultipleChoice",
+      "difficulty": "Advanced",
+      "explanation": "Microsoft recommends at least two cloud-only emergency accounts, permanent active Global Administrator assignment, and monitoring that alerts on their rare use. Synchronizing the accounts preserves the federation dependency, PIM eligibility can leave no active approver during an outage, and routine shared-mailbox use conflicts with emergency-only operation.",
+      "sourceName": "Manage emergency access accounts", "sourceUrl": "https://learn.microsoft.com/en-us/entra/identity/role-based-access-control/security-emergency-access",
+      "choices": [
+        { "text": "Maintain at least two cloud-only accounts using the tenant's onmicrosoft.com domain", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Keep the Global Administrator role permanently active rather than merely PIM-eligible", "isCorrect": true, "sortOrder": 1 },
+        { "text": "Alert on sign-in and audit activity involving the emergency accounts", "isCorrect": true, "sortOrder": 2 },
+        { "text": "Synchronize the accounts from on-premises Active Directory to centralize password policy", "isCorrect": false, "sortOrder": 3 },
+        { "text": "Make all emergency role assignments eligible and require approval from another eligible administrator", "isCorrect": false, "sortOrder": 4 },
+        { "text": "Use the accounts routinely as shared mailboxes so inactivity controls do not remove them", "isCorrect": false, "sortOrder": 5 }
+      ]
+    },
+    {
+      "contentKey": "sc300-scenario-restricted-admin-unit",
+      "objectiveKey": "manage-user-identities",
+      "prompt": "A customer has tenant-wide Helpdesk Administrators, but only a dedicated executive-support team may reset executive passwords or modify executive security groups. The restriction must apply even against normally authorized tenant-level administrators. What should contain the executive objects?",
+      "kind": "SingleChoice",
+      "difficulty": "Advanced",
+      "explanation": "A restricted management administrative unit protects supported member objects from modification by administrators outside the restricted unit, even if they hold relevant tenant-wide roles. A normal administrative unit scopes delegated permissions but does not impose this stronger protection, and a dynamic group does not create an administrative boundary.",
+      "sourceName": "Restricted management administrative units", "sourceUrl": "https://learn.microsoft.com/en-us/entra/identity/role-based-access-control/admin-units-restricted-management",
+      "choices": [
+        { "text": "A restricted management administrative unit", "isCorrect": true, "sortOrder": 0 },
+        { "text": "A standard administrative unit", "isCorrect": false, "sortOrder": 1 },
+        { "text": "A role-assignable security group only", "isCorrect": false, "sortOrder": 2 },
+        { "text": "A dynamic Microsoft 365 group", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "sc300-scenario-shared-workload-identity",
+      "objectiveKey": "workload-identities",
+      "prompt": "Several Azure virtual machines are rebuilt frequently but must keep the same least-privileged access to an Azure Storage account. The customer wants no application secret or certificate rotation. Which identity design best fits?",
+      "kind": "SingleChoice",
+      "difficulty": "Intermediate",
+      "explanation": "A user-assigned managed identity has an independent lifecycle, can be attached to multiple Azure resources, and obtains tokens without stored application credentials. A system-assigned identity is tied to one resource and is deleted with it; an app registration using a secret or certificate reintroduces credential lifecycle work.",
+      "sourceName": "Managed identities for Azure resources", "sourceUrl": "https://learn.microsoft.com/en-us/entra/identity/managed-identities-azure-resources/overview",
+      "choices": [
+        { "text": "One user-assigned managed identity attached to the virtual machines and granted the required storage role", "isCorrect": true, "sortOrder": 0 },
+        { "text": "A separate system-assigned managed identity whose object is copied to each rebuilt virtual machine", "isCorrect": false, "sortOrder": 1 },
+        { "text": "An application registration with a client secret stored in every virtual machine", "isCorrect": false, "sortOrder": 2 },
+        { "text": "A shared Microsoft Entra user account assigned the storage role", "isCorrect": false, "sortOrder": 3 },
+        { "text": "A certificate credential renewed manually for each virtual machine", "isCorrect": false, "sortOrder": 4 }
+      ]
+    },
+    {
+      "contentKey": "sc300-scenario-pim-activation-controls",
+      "objectiveKey": "identity-governance",
+      "prompt": "A customer's helpdesk leads already have an eligible Microsoft Entra role in PIM. Every activation must be approved by the service owner and must use the customer's phishing-resistant authentication strength. Choose two role-setting controls.",
+      "kind": "MultipleChoice",
+      "difficulty": "Advanced",
+      "explanation": "PIM role settings can require approval and name the approvers, and they can require a Conditional Access authentication context whose policy enforces a selected authentication strength. Notifications provide awareness but not approval, while changing the eligible assignment to permanent active removes the activation gate entirely.",
+      "sourceName": "Configure Microsoft Entra role settings in PIM", "sourceUrl": "https://learn.microsoft.com/en-us/entra/id-governance/privileged-identity-management/pim-how-to-change-default-settings",
+      "choices": [
+        { "text": "Require approval to activate and configure the service owner as an approver", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Require a Conditional Access authentication context that enforces the phishing-resistant authentication strength", "isCorrect": true, "sortOrder": 1 },
+        { "text": "Send an activation notification without requiring approval", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Convert the eligible assignment to permanently active", "isCorrect": false, "sortOrder": 3 },
+        { "text": "Require a Microsoft Entra hybrid joined device instead of the stated authentication strength", "isCorrect": false, "sortOrder": 4 },
+        { "text": "Assign the service owner the role being activated rather than the approver responsibility", "isCorrect": false, "sortOrder": 5 }
+      ]
+    },
+    {
+      "contentKey": "sc300-scenario-cross-tenant-user-lifecycle",
+      "objectiveKey": "manage-user-identities",
+      "prompt": "A holding company keeps employees in a central Microsoft Entra tenant and needs selected users automatically created, updated, and deprovisioned as external users in several resource tenants. Manual invitations must be avoided. Which capability should the MSP configure?",
+      "kind": "SingleChoice",
+      "difficulty": "Intermediate",
+      "explanation": "Cross-tenant synchronization provisions scoped users from a source tenant into target tenants and manages their lifecycle and mapped attributes. B2B invitations are suited to individual collaboration but do not provide the requested automatic provisioning lifecycle; entitlement management governs packages of access after identities are available.",
+      "sourceName": "Cross-tenant synchronization overview", "sourceUrl": "https://learn.microsoft.com/en-us/entra/identity/multi-tenant-organizations/cross-tenant-synchronization-overview",
+      "choices": [
+        { "text": "Microsoft Entra cross-tenant synchronization from the central source tenant", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Manual Microsoft Entra B2B invitation redemption for every employee", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Microsoft Entra Connect cloud sync between the resource tenants", "isCorrect": false, "sortOrder": 2 },
+        { "text": "An access package with no external-user provisioning process", "isCorrect": false, "sortOrder": 3 }
+      ]
+    }
+  ]
+}

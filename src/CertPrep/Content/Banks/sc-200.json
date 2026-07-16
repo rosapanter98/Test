@@ -1,0 +1,1190 @@
+{
+      "provider": "Microsoft",
+      "code": "SC-200",
+      "title": "Microsoft Security Operations Analyst",
+      "summary": "Practice triage, detection engineering, incident response, and threat hunting across Microsoft Defender XDR and Microsoft Sentinel.",
+      "contentVersion": "Official objectives 2026.04/2026.07; audited bank 2026.07",
+      "objectives": [
+        { "contentKey": "manage-security-operations-environment", "name": "Manage a security operations environment", "sortOrder": 0 },
+        { "contentKey": "respond-security-incidents", "name": "Respond to security incidents", "sortOrder": 1 },
+        { "contentKey": "perform-threat-hunting", "name": "Perform threat hunting", "sortOrder": 2 }
+      ],
+      "questions": [
+        {
+          "contentKey": "device-group-rank-overlap",
+          "objectiveKey": "manage-security-operations-environment",
+          "prompt": "An MSP creates two Microsoft Defender for Endpoint device groups. A server matches both groups. Which group determines the server's access scope and automation level?",
+          "kind": "SingleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "A device is assigned only to the highest-ranked matching device group. Put the narrower customer or critical-server rule above broader catch-all rules.",
+          "sourceName": "Create and manage device groups",
+          "sourceUrl": "https://learn.microsoft.com/en-us/defender-endpoint/machine-groups",
+          "choices": [
+            { "text": "The highest-ranked matching device group", "isCorrect": true, "sortOrder": 0 },
+            { "text": "The device group created most recently", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Both groups, with the least restrictive settings merged", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Both groups, with the most restrictive settings merged", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "semi-automation-remediation",
+          "objectiveKey": "manage-security-operations-environment",
+          "prompt": "A customer's Defender for Endpoint device group uses the automation level 'Semi - require approval for any remediation.' An automated investigation finds a malicious file. What should the analyst expect?",
+          "kind": "SingleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "At this semi-automation level, remediation actions remain pending until an authorized analyst approves or rejects them in Action center.",
+          "sourceName": "Review remediation actions following automated investigations",
+          "sourceUrl": "https://learn.microsoft.com/en-us/defender-endpoint/manage-auto-investigation",
+          "choices": [
+            { "text": "A remediation action is submitted for approval", "isCorrect": true, "sortOrder": 0 },
+            { "text": "The file is remediated automatically and cannot be undone", "isCorrect": false, "sortOrder": 1 },
+            { "text": "The investigation stops before assigning a verdict", "isCorrect": false, "sortOrder": 2 },
+            { "text": "The incident is automatically closed as resolved", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "automation-rule-or-playbook",
+          "objectiveKey": "manage-security-operations-environment",
+          "prompt": "A SOC wants every new high-severity Sentinel incident tagged, assigned to a queue, and then sent to a customer's ticketing API. Which configuration is most appropriate?",
+          "kind": "SingleChoice",
+          "difficulty": "Advanced",
+          "explanation": "An automation rule can tag and assign incidents directly and invoke a playbook. The playbook supplies the external-system integration and response logic.",
+          "sourceName": "Automation in Microsoft Sentinel",
+          "sourceUrl": "https://learn.microsoft.com/en-us/azure/sentinel/automation/automation",
+          "choices": [
+            { "text": "An automation rule that updates the incident and runs a playbook", "isCorrect": true, "sortOrder": 0 },
+            { "text": "A workbook that updates the incident and calls the ticketing API", "isCorrect": false, "sortOrder": 1 },
+            { "text": "A data collection rule that invokes an Azure Function", "isCorrect": false, "sortOrder": 2 },
+            { "text": "A watchlist that maps severities to ticket queues", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "sentinel-playbook-permission",
+          "objectiveKey": "manage-security-operations-environment",
+          "prompt": "A valid incident-trigger playbook does not appear as selectable in a Microsoft Sentinel automation rule. What is the most likely cause?",
+          "kind": "SingleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "Microsoft Sentinel needs explicit permission to run playbooks in the playbook resource group. Trigger compatibility also matters, but this playbook already uses the incident trigger.",
+          "sourceName": "Create and use Microsoft Sentinel automation rules",
+          "sourceUrl": "https://learn.microsoft.com/en-us/azure/sentinel/create-manage-use-automation-rules",
+          "choices": [
+            { "text": "Microsoft Sentinel lacks permission to the playbook's resource group", "isCorrect": true, "sortOrder": 0 },
+            { "text": "The playbook and workspace use different retention periods", "isCorrect": false, "sortOrder": 1 },
+            { "text": "The incident has not been assigned an owner", "isCorrect": false, "sortOrder": 2 },
+            { "text": "The playbook must first be attached to a workbook", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "windows-events-ama-dcr",
+          "objectiveKey": "manage-security-operations-environment",
+          "prompt": "You must collect only selected Windows Security event IDs from Azure and Arc-enabled servers into a Sentinel workspace. Which component defines the event selection and destination?",
+          "kind": "SingleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "Windows Security Events via AMA uses an Azure Monitor data collection rule to define which events are collected and where they are sent.",
+          "sourceName": "Windows Security Events via AMA connector",
+          "sourceUrl": "https://learn.microsoft.com/en-us/azure/sentinel/data-connectors/windows-security-events-via-ama",
+          "choices": [
+            { "text": "An Azure Monitor data collection rule", "isCorrect": true, "sortOrder": 0 },
+            { "text": "A Microsoft Sentinel analytics rule", "isCorrect": false, "sortOrder": 1 },
+            { "text": "A Defender for Endpoint device group", "isCorrect": false, "sortOrder": 2 },
+            { "text": "A Log Analytics query pack", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "windows-event-forwarding-source",
+          "objectiveKey": "manage-security-operations-environment",
+          "prompt": "A customer has many domain-joined servers that already forward selected Windows events to a Windows Event Collector. Which Sentinel design preserves that collection topology?",
+          "kind": "SingleChoice",
+          "difficulty": "Advanced",
+          "explanation": "Windows Event Forwarding centralizes events on a collector. The Azure Monitor Agent can collect the forwarded-events channel from that collector for Sentinel.",
+          "sourceName": "Windows Forwarded Events data connector",
+          "sourceUrl": "https://learn.microsoft.com/en-us/azure/sentinel/data-connectors/windows-forwarded-events",
+          "choices": [
+            { "text": "Install AMA on the collector and ingest the forwarded-events channel", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Install the Log Analytics gateway on every event source", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Convert the forwarded events to CEF on each source", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Use a Sentinel workbook to poll the collector", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "cef-device-ingestion",
+          "objectiveKey": "manage-security-operations-environment",
+          "prompt": "A customer's firewall emits Common Event Format messages to a Linux log forwarder. Which connector path should the MSP configure?",
+          "kind": "SingleChoice",
+          "difficulty": "Foundation",
+          "explanation": "For a device that produces CEF over Syslog, use the Common Event Format via AMA connector and a Linux forwarder configured for that flow.",
+          "sourceName": "Ingest Syslog and CEF messages to Microsoft Sentinel with AMA",
+          "sourceUrl": "https://learn.microsoft.com/en-us/azure/sentinel/connect-cef-syslog-ama",
+          "choices": [
+            { "text": "Common Event Format via AMA", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Windows Security Events via AMA", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Azure Activity", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Microsoft Defender XDR incidents", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "azure-activity-collection",
+          "objectiveKey": "manage-security-operations-environment",
+          "prompt": "An MSP must consistently onboard Azure Activity logs from all current and future subscriptions in a customer's management group. Which approach best supports scalable deployment?",
+          "kind": "SingleChoice",
+          "difficulty": "Advanced",
+          "explanation": "Azure Policy can deploy the required diagnostic settings across subscriptions and remediate noncompliant resources, avoiding one-by-one configuration.",
+          "sourceName": "Azure Activity data connector",
+          "sourceUrl": "https://learn.microsoft.com/en-us/azure/sentinel/data-connectors/azure-activity",
+          "choices": [
+            { "text": "Assign the relevant Azure Policy initiative at management-group scope", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Create one scheduled analytics rule for each subscription", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Add every subscription ID to a Sentinel watchlist", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Configure a Defender for Endpoint device group per subscription", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "custom-log-table",
+          "objectiveKey": "manage-security-operations-environment",
+          "prompt": "A proprietary customer application sends records that do not fit an existing Sentinel table schema. What should be created to store the ingested records?",
+          "kind": "SingleChoice",
+          "difficulty": "Foundation",
+          "explanation": "Custom log tables provide a schema and destination for data that does not map to a built-in table. Detection content can then query the custom table.",
+          "sourceName": "Microsoft Sentinel data connectors",
+          "sourceUrl": "https://learn.microsoft.com/en-us/azure/sentinel/connect-data-sources",
+          "choices": [
+            { "text": "A custom log table in the Log Analytics workspace", "isCorrect": true, "sortOrder": 0 },
+            { "text": "A custom entity type in an incident", "isCorrect": false, "sortOrder": 1 },
+            { "text": "A private workbook template", "isCorrect": false, "sortOrder": 2 },
+            { "text": "A Defender XDR device inventory filter", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "nrt-rule-selection",
+          "objectiveKey": "manage-security-operations-environment",
+          "prompt": "A detection must run as close as possible to ingestion time for a high-confidence authentication pattern. Which Sentinel analytics rule type is designed for this requirement?",
+          "kind": "SingleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "Near-real-time analytics rules run frequently with a narrow query window to reduce detection latency. They have stricter query constraints than scheduled rules.",
+          "sourceName": "Create near-real-time analytics rules in Microsoft Sentinel",
+          "sourceUrl": "https://learn.microsoft.com/en-us/azure/sentinel/create-nrt-rules",
+          "choices": [
+            { "text": "Near-real-time (NRT) analytics rule", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Fusion incident correlation rule", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Workbook refresh rule", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Threat intelligence indicator expiration rule", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "custom-detection-required-columns",
+          "objectiveKey": "manage-security-operations-environment",
+          "prompt": "A Defender XDR advanced hunting query returns suspicious devices, but the custom detection wizard rejects it. Which projected value is essential for establishing when each alert event occurred?",
+          "kind": "SingleChoice",
+          "difficulty": "Advanced",
+          "explanation": "A custom detection query must return Timestamp or TimeGenerated so the rule can establish event time and apply its configured lookback.",
+          "sourceName": "Create custom detection rules in Microsoft Defender XDR",
+          "sourceUrl": "https://learn.microsoft.com/en-us/defender-xdr/custom-detection-rules",
+          "choices": [
+            { "text": "Timestamp or TimeGenerated", "isCorrect": true, "sortOrder": 0 },
+            { "text": "ReportId only", "isCorrect": false, "sortOrder": 1 },
+            { "text": "IncidentId and AlertId", "isCorrect": false, "sortOrder": 2 },
+            { "text": "TenantId and SubscriptionId", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "custom-detection-purpose",
+          "objectiveKey": "manage-security-operations-environment",
+          "prompt": "Which two capabilities distinguish a Defender XDR custom detection from a saved advanced hunting query?",
+          "kind": "MultipleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "Custom detections evaluate hunting queries on a schedule or near real time, create alerts for matches, and can run configured response actions. A saved query alone does neither.",
+          "sourceName": "Custom detections overview",
+          "sourceUrl": "https://learn.microsoft.com/en-us/defender-xdr/custom-detections-overview",
+          "choices": [
+            { "text": "It can generate alerts from query matches", "isCorrect": true, "sortOrder": 0 },
+            { "text": "It can invoke configured response actions", "isCorrect": true, "sortOrder": 1 },
+            { "text": "It changes source-table retention automatically", "isCorrect": false, "sortOrder": 2 },
+            { "text": "It grants analysts access to otherwise restricted devices", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "mitre-coverage-gap",
+          "objectiveKey": "manage-security-operations-environment",
+          "prompt": "A customer asks whether current Sentinel detections cover common credential-access techniques. Which view should the analyst use to identify detection gaps by adversary tactic and technique?",
+          "kind": "SingleChoice",
+          "difficulty": "Foundation",
+          "explanation": "The MITRE ATT&CK coverage view maps active analytics rules to tactics and techniques, making uncovered techniques easier to identify.",
+          "sourceName": "Understand security coverage by the MITRE ATT&CK framework",
+          "sourceUrl": "https://learn.microsoft.com/en-us/azure/sentinel/mitre-coverage",
+          "choices": [
+            { "text": "MITRE ATT&CK coverage", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Data connector health", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Workspace usage report", "isCorrect": false, "sortOrder": 2 },
+            { "text": "UEBA entity behavior timeline", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "xdr-correlated-incident",
+          "objectiveKey": "respond-security-incidents",
+          "prompt": "Defender XDR correlates an identity alert, a malicious email alert, and an endpoint alert into one incident. What is the best initial triage approach?",
+          "kind": "SingleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "The incident provides the cross-domain attack story and affected entities. Start from the correlated incident, then pivot into product-specific evidence as needed.",
+          "sourceName": "Investigate incidents in Microsoft Defender XDR",
+          "sourceUrl": "https://learn.microsoft.com/en-us/defender-xdr/investigate-incidents",
+          "choices": [
+            { "text": "Review the incident attack story, alerts, evidence, and affected entities", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Close duplicate-looking alerts before reviewing their relationships", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Investigate only the highest-severity product alert", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Export all alerts and rebuild correlation in a workbook", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "attack-disruption-scope",
+          "objectiveKey": "respond-security-incidents",
+          "prompt": "During a high-confidence ransomware attack, Defender XDR automatically contains affected assets while the attack is in progress. Which capability performed this action?",
+          "kind": "SingleChoice",
+          "difficulty": "Foundation",
+          "explanation": "Automatic attack disruption uses correlated, high-confidence signals to contain an active attack, such as by isolating devices or disabling compromised accounts.",
+          "sourceName": "Automatic attack disruption in Microsoft Defender XDR",
+          "sourceUrl": "https://learn.microsoft.com/en-us/defender-xdr/automatic-attack-disruption",
+          "choices": [
+            { "text": "Automatic attack disruption", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Threat analytics", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Exposure management", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Safe Attachments dynamic delivery", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "office-email-remediation",
+          "objectiveKey": "respond-security-incidents",
+          "prompt": "A phishing message reached 40 customer mailboxes, and the URLs are now confirmed malicious. Which response best limits further exposure while preserving investigation context?",
+          "kind": "SingleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "Use Defender for Office 365 investigation and response to identify related messages and take message remediation actions, rather than treating each recipient independently.",
+          "sourceName": "Investigate and remediate malicious email",
+          "sourceUrl": "https://learn.microsoft.com/en-us/defender-office-365/threat-explorer-investigate-delivered-malicious-email",
+          "choices": [
+            { "text": "Investigate the email cluster and remediate the delivered messages", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Delete only the original sender object from Microsoft Entra ID", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Isolate every recipient device before validating message delivery", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Suppress the alert because the message has already been delivered", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "defender-cloud-alert-context",
+          "objectiveKey": "respond-security-incidents",
+          "prompt": "Defender for Cloud reports suspicious activity on an Azure virtual machine. Which two evidence sources should the analyst prioritize before choosing a remediation action?",
+          "kind": "MultipleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "The alert details and affected-resource context explain what was observed and which workload is involved. Related alerts and attack story help establish whether it is an isolated event or part of a broader incident.",
+          "sourceName": "Manage and respond to security alerts in Microsoft Defender for Cloud",
+          "sourceUrl": "https://learn.microsoft.com/en-us/azure/defender-for-cloud/managing-and-responding-alerts",
+          "choices": [
+            { "text": "The alert's evidence and affected-resource details", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Related alerts and the incident attack story", "isCorrect": true, "sortOrder": 1 },
+            { "text": "The workspace's monthly ingestion invoice", "isCorrect": false, "sortOrder": 2 },
+            { "text": "The subscription's resource-group naming convention", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "cloud-apps-anomaly-investigation",
+          "objectiveKey": "respond-security-incidents",
+          "prompt": "Defender for Cloud Apps raises an impossible-travel alert for a customer user. Which additional context most directly helps determine whether the alert reflects compromise?",
+          "kind": "SingleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "Review the user's activity, locations, devices, IP addresses, and related alerts. These signals help distinguish expected travel or known network behavior from compromised use.",
+          "sourceName": "Investigate anomaly detection alerts",
+          "sourceUrl": "https://learn.microsoft.com/en-us/defender-cloud-apps/anomaly-detection-policy",
+          "choices": [
+            { "text": "The user's recent locations, devices, IP addresses, and related activities", "isCorrect": true, "sortOrder": 0 },
+            { "text": "The sensitivity label priority assigned to the user's files", "isCorrect": false, "sortOrder": 1 },
+            { "text": "The retention tier of the CloudAppEvents table", "isCorrect": false, "sortOrder": 2 },
+            { "text": "The number of Sentinel workbooks in the tenant", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "entra-compromised-user-response",
+          "objectiveKey": "respond-security-incidents",
+          "prompt": "Investigation confirms that an active Microsoft Entra user session was stolen. Which two actions most directly contain the identity compromise?",
+          "kind": "MultipleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "Revoking sessions invalidates existing refresh tokens, and resetting the compromised credential prevents continued use of the known password. The full response should also address the attack source and risky authentication methods.",
+          "sourceName": "Remediate risks and unblock users",
+          "sourceUrl": "https://learn.microsoft.com/en-us/entra/id-protection/howto-identity-protection-remediate-unblock",
+          "choices": [
+            { "text": "Revoke the user's active sessions", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Reset the compromised credential", "isCorrect": true, "sortOrder": 1 },
+            { "text": "Remove the user from all sensitivity-label policies", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Increase the retention period of SigninLogs", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "defender-identity-lateral-movement",
+          "objectiveKey": "respond-security-incidents",
+          "prompt": "A Defender for Identity alert indicates suspected lateral movement using a privileged account. Which investigation pivot is most useful for understanding possible reach?",
+          "kind": "SingleChoice",
+          "difficulty": "Advanced",
+          "explanation": "The identity timeline and lateral movement paths expose related activities, source devices, and sensitive targets that the account may be able to reach.",
+          "sourceName": "Investigate lateral movement paths with Microsoft Defender for Identity",
+          "sourceUrl": "https://learn.microsoft.com/en-us/defender-for-identity/microsoft-365-security-center-mdi",
+          "choices": [
+            { "text": "Review the identity timeline and lateral movement paths to sensitive assets", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Compare the account against Sentinel workbook permissions", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Move the identity alert into a new Log Analytics table", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Change the customer's Azure Activity diagnostic settings", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "sentinel-incident-tasks",
+          "objectiveKey": "respond-security-incidents",
+          "prompt": "An MSP needs analysts in different shifts to follow the same customer-approved triage steps for incidents from one analytics rule. What should be attached to those incidents?",
+          "kind": "SingleChoice",
+          "difficulty": "Foundation",
+          "explanation": "Incident tasks provide a visible checklist for analysts. Automation rules can add standardized tasks when matching incidents are created or updated.",
+          "sourceName": "Use tasks to manage incident workflow in Microsoft Sentinel",
+          "sourceUrl": "https://learn.microsoft.com/en-us/azure/sentinel/incident-tasks",
+          "choices": [
+            { "text": "Incident tasks added by an automation rule", "isCorrect": true, "sortOrder": 0 },
+            { "text": "A data collection rule transformation", "isCorrect": false, "sortOrder": 1 },
+            { "text": "A workbook parameter saved per analyst", "isCorrect": false, "sortOrder": 2 },
+            { "text": "A threat intelligence indicator template", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "live-response-purpose",
+          "objectiveKey": "respond-security-incidents",
+          "prompt": "An analyst must inspect a running process and collect a suspicious file directly from an onboarded endpoint. Which Defender for Endpoint capability should be used?",
+          "kind": "SingleChoice",
+          "difficulty": "Foundation",
+          "explanation": "Live response provides a controlled remote shell with investigative commands and file collection capabilities on supported onboarded devices.",
+          "sourceName": "Investigate entities on devices using live response",
+          "sourceUrl": "https://learn.microsoft.com/en-us/defender-endpoint/live-response",
+          "choices": [
+            { "text": "Live response", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Advanced hunting guided mode", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Microsoft Sentinel notebook", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Defender vulnerability management baseline assessment", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "investigation-package-use",
+          "objectiveKey": "respond-security-incidents",
+          "prompt": "A customer forbids interactive endpoint sessions, but permits collection of endpoint state for offline forensic review. Which device action best fits?",
+          "kind": "SingleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "Collect investigation package gathers a defined set of endpoint forensic data for download and offline analysis without requiring an interactive live response session.",
+          "sourceName": "Collect investigation package from devices",
+          "sourceUrl": "https://learn.microsoft.com/en-us/defender-endpoint/respond-machine-alerts#collect-investigation-package-from-devices",
+          "choices": [
+            { "text": "Collect investigation package", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Initiate automated investigation", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Request expert investigation", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Run antivirus scan", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "purview-audit-or-ediscovery",
+          "objectiveKey": "respond-security-incidents",
+          "prompt": "After an account compromise, the analyst needs both the user's file-access activities and the contents of messages matching an incident keyword. Which two Purview capabilities meet these needs?",
+          "kind": "MultipleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "Audit searches recorded user and administrator activities. eDiscovery search locates content in Microsoft 365 data sources based on search criteria.",
+          "sourceName": "Audit and search activity in Microsoft Purview",
+          "sourceUrl": "https://learn.microsoft.com/en-us/training/paths/purview-audit-search/",
+          "choices": [
+            { "text": "Microsoft Purview Audit", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Microsoft Purview eDiscovery search", "isCorrect": true, "sortOrder": 1 },
+            { "text": "Data Explorer", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Compliance Manager improvement actions", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "incident-classification-effect",
+          "objectiveKey": "respond-security-incidents",
+          "prompt": "An analyst determines that a Sentinel incident was caused by an approved penetration test. How should the incident be closed to improve future reporting?",
+          "kind": "SingleChoice",
+          "difficulty": "Foundation",
+          "explanation": "Close it with an appropriate benign-positive classification and record the rationale. This distinguishes expected activity from a detection error or real compromise.",
+          "sourceName": "Investigate incidents in Microsoft Sentinel",
+          "sourceUrl": "https://learn.microsoft.com/en-us/azure/sentinel/investigate-incidents",
+          "choices": [
+            { "text": "Close as a benign positive and document the authorized test", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Close as a false positive because no compromise occurred", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Delete the incident so it does not affect metrics", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Suppress every alert from the affected data connector", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "advanced-hunting-process-table",
+          "objectiveKey": "perform-threat-hunting",
+          "prompt": "Which Defender XDR advanced hunting table is the best starting point for finding command lines used to start suspicious processes on endpoints?",
+          "kind": "SingleChoice",
+          "difficulty": "Foundation",
+          "explanation": "DeviceProcessEvents contains process creation and related endpoint process telemetry, including command-line and initiating-process fields.",
+          "sourceName": "DeviceProcessEvents table in the advanced hunting schema",
+          "sourceUrl": "https://learn.microsoft.com/en-us/defender-xdr/advanced-hunting-deviceprocessevents-table",
+          "choices": [
+            { "text": "DeviceProcessEvents", "isCorrect": true, "sortOrder": 0 },
+            { "text": "DeviceFileEvents", "isCorrect": false, "sortOrder": 1 },
+            { "text": "EmailEvents", "isCorrect": false, "sortOrder": 2 },
+            { "text": "IdentityLogonEvents", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "kql-summarize-failed-logons",
+          "objectiveKey": "perform-threat-hunting",
+          "prompt": "A hunting query must return accounts with more than 20 failed sign-ins in ten-minute windows. Which two KQL functions or operators are central to this calculation?",
+          "kind": "MultipleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "summarize performs the aggregation, while bin groups timestamps into fixed windows. A where filter can then keep groups above the threshold.",
+          "sourceName": "Kusto Query Language overview",
+          "sourceUrl": "https://learn.microsoft.com/en-us/kusto/query/?view=microsoft-fabric",
+          "choices": [
+            { "text": "summarize", "isCorrect": true, "sortOrder": 0 },
+            { "text": "bin", "isCorrect": true, "sortOrder": 1 },
+            { "text": "project-away", "isCorrect": false, "sortOrder": 2 },
+            { "text": "serialize", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "kql-join-endpoint-identity",
+          "objectiveKey": "perform-threat-hunting",
+          "prompt": "A hunt must correlate suspicious endpoint processes with identity logons by device identifier. Which KQL operator combines matching rows from the two tables?",
+          "kind": "SingleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "join combines rows from two tabular expressions using matching key columns. Choose the join kind deliberately to control unmatched and duplicate rows.",
+          "sourceName": "join operator",
+          "sourceUrl": "https://learn.microsoft.com/en-us/kusto/query/join-operator?view=microsoft-fabric",
+          "choices": [
+            { "text": "join", "isCorrect": true, "sortOrder": 0 },
+            { "text": "union", "isCorrect": false, "sortOrder": 1 },
+            { "text": "extend", "isCorrect": false, "sortOrder": 2 },
+            { "text": "mv-expand", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "threat-analytics-intelligence",
+          "objectiveKey": "perform-threat-hunting",
+          "prompt": "A customer asks whether a newly publicized threat actor is relevant to its environment. Which Defender XDR resource combines Microsoft research with detections and exposure information?",
+          "kind": "SingleChoice",
+          "difficulty": "Foundation",
+          "explanation": "Threat analytics reports provide Microsoft threat research, recommended mitigations, and available organizational impact or detection context.",
+          "sourceName": "Track and respond to emerging threats with threat analytics",
+          "sourceUrl": "https://learn.microsoft.com/en-us/defender-xdr/threat-analytics",
+          "choices": [
+            { "text": "Threat analytics", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Secure Score history", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Sentinel data connector health", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Endpoint security baseline", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "sentinel-hunting-bookmark",
+          "objectiveKey": "perform-threat-hunting",
+          "prompt": "A Sentinel hunting query returns one result that should be preserved, enriched, and linked to an investigation without turning every result into an alert. What should the analyst create?",
+          "kind": "SingleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "A bookmark preserves selected query results and their context. Bookmarks can be enriched with notes and entities and later added to an incident.",
+          "sourceName": "Keep track of data during hunting with Microsoft Sentinel",
+          "sourceUrl": "https://learn.microsoft.com/en-us/azure/sentinel/bookmarks",
+          "choices": [
+            { "text": "A bookmark for the selected result", "isCorrect": true, "sortOrder": 0 },
+            { "text": "A suppression rule for the hunting query", "isCorrect": false, "sortOrder": 1 },
+            { "text": "A new data collection endpoint", "isCorrect": false, "sortOrder": 2 },
+            { "text": "A workbook export of the entire table", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "graph-blast-radius",
+          "objectiveKey": "perform-threat-hunting",
+          "prompt": "An analyst has a compromised identity and needs to visualize connected devices, alerts, and other entities to estimate attack reach. Which investigation approach best matches this goal?",
+          "kind": "SingleChoice",
+          "difficulty": "Advanced",
+          "explanation": "A security graph presents relationships between entities and supports blast-radius analysis. It complements tabular KQL results when the investigation depends on multi-hop relationships.",
+          "sourceName": "Microsoft Sentinel graph overview",
+          "sourceUrl": "https://learn.microsoft.com/en-us/azure/sentinel/datalake/sentinel-graph-overview",
+          "choices": [
+            { "text": "Build or inspect an entity graph centered on the compromised identity", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Increase the query result limit and sort by ingestion time", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Move all related tables to the Analytics retention tier", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Create separate workbooks for each connected entity type", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "sentinel-responder-role",
+          "objectiveKey": "manage-security-operations-environment",
+          "prompt": "An MSP analyst must investigate, assign, and close Microsoft Sentinel incidents but must not change analytics rules or data connectors. Which built-in role is the closest fit?",
+          "kind": "SingleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "Microsoft Sentinel Responder includes incident-management capabilities without the broader content and configuration permissions of Microsoft Sentinel Contributor.",
+          "sourceName": "Roles and permissions in Microsoft Sentinel",
+          "sourceUrl": "https://learn.microsoft.com/en-us/azure/sentinel/roles",
+          "choices": [
+            { "text": "Microsoft Sentinel Responder", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Microsoft Sentinel Reader", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Microsoft Sentinel Contributor", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Logic App Contributor", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "alert-tuning-specificity",
+          "objectiveKey": "manage-security-operations-environment",
+          "prompt": "A Defender XDR alert is useful for servers but repeatedly fires on a known benign process on managed kiosks. What is the best tuning approach?",
+          "kind": "SingleChoice",
+          "difficulty": "Advanced",
+          "explanation": "Create a narrowly scoped suppression condition for the known benign kiosk pattern. Disabling the alert broadly would remove valid detection coverage on other devices.",
+          "sourceName": "Tune an alert in Microsoft Defender XDR",
+          "sourceUrl": "https://learn.microsoft.com/en-us/defender-xdr/investigate-alerts",
+          "choices": [
+            { "text": "Suppress only alerts matching the validated kiosk process and device scope", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Disable the detection for the entire tenant", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Lower every incident containing the alert to informational", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Delete kiosk telemetry before it reaches advanced hunting", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "asr-audit-before-block",
+          "objectiveKey": "manage-security-operations-environment",
+          "prompt": "A customer wants to deploy a new attack surface reduction rule but first needs to identify line-of-business applications that it could disrupt. Which initial rule mode is most appropriate?",
+          "kind": "SingleChoice",
+          "difficulty": "Foundation",
+          "explanation": "Audit mode records events without enforcing the block, allowing the SOC to measure impact and create justified exclusions before enforcement.",
+          "sourceName": "Test attack surface reduction rules",
+          "sourceUrl": "https://learn.microsoft.com/en-us/defender-endpoint/attack-surface-reduction-rules-deployment-test",
+          "choices": [
+            { "text": "Audit", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Block", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Disabled", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Warn", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "stix-taxii-indicators",
+          "objectiveKey": "manage-security-operations-environment",
+          "prompt": "A customer subscribes to an external threat intelligence platform that exposes a TAXII 2.1 collection. Which Sentinel connector should ingest its STIX indicators?",
+          "kind": "SingleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "The Threat Intelligence - TAXII connector retrieves STIX-formatted indicators from a compatible TAXII server for use in Sentinel analytics and hunting.",
+          "sourceName": "Connect Microsoft Sentinel to STIX/TAXII threat intelligence feeds",
+          "sourceUrl": "https://learn.microsoft.com/en-us/azure/sentinel/connect-threat-intelligence-taxii",
+          "choices": [
+            { "text": "Threat Intelligence - TAXII", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Common Event Format via AMA", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Microsoft Defender XDR incidents", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Azure Activity", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "device-isolation-connectivity",
+          "objectiveKey": "respond-security-incidents",
+          "prompt": "An analyst isolates a compromised device from the Defender portal. Which connectivity is intentionally retained?",
+          "kind": "SingleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "Device isolation restricts network access while retaining communication with the Defender for Endpoint service so monitoring and response remain possible.",
+          "sourceName": "Isolate devices from the network",
+          "sourceUrl": "https://learn.microsoft.com/en-us/defender-endpoint/respond-machine-alerts#isolate-devices-from-the-network",
+          "choices": [
+            { "text": "Connectivity to the Defender for Endpoint service", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Connectivity to all Microsoft 365 services", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Connectivity to domain controllers only", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Connectivity to every address in the local subnet", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "action-center-undo",
+          "objectiveKey": "respond-security-incidents",
+          "prompt": "Automated investigation quarantined a file that the customer later confirms is a required, safe business binary. Where should an authorized analyst review and undo the remediation?",
+          "kind": "SingleChoice",
+          "difficulty": "Foundation",
+          "explanation": "Action center records pending and completed remediation actions. Supported completed actions can be reviewed and undone from there.",
+          "sourceName": "Action center in Microsoft Defender XDR",
+          "sourceUrl": "https://learn.microsoft.com/en-us/defender-xdr/m365d-action-center",
+          "choices": [
+            { "text": "Action center", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Threat analytics", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Advanced hunting query history", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Sentinel data connector health", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "url-click-hunting-table",
+          "objectiveKey": "perform-threat-hunting",
+          "prompt": "Which Defender XDR advanced hunting table is the best starting point for determining whether users clicked URLs in messages handled by Safe Links?",
+          "kind": "SingleChoice",
+          "difficulty": "Foundation",
+          "explanation": "UrlClickEvents contains Safe Links click events from supported Microsoft 365 apps, including action and threat context for the clicked URL.",
+          "sourceName": "UrlClickEvents table in the advanced hunting schema",
+          "sourceUrl": "https://learn.microsoft.com/en-us/defender-xdr/advanced-hunting-urlclickevents-table",
+          "choices": [
+            { "text": "UrlClickEvents", "isCorrect": true, "sortOrder": 0 },
+            { "text": "EmailUrlInfo", "isCorrect": false, "sortOrder": 1 },
+            { "text": "EmailPostDeliveryEvents", "isCorrect": false, "sortOrder": 2 },
+            { "text": "DeviceNetworkEvents", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "kql-early-time-filter",
+          "objectiveKey": "perform-threat-hunting",
+          "prompt": "A multi-table advanced hunting query times out across a large customer environment. Which change is most likely to reduce scanned data without changing the investigation question?",
+          "kind": "SingleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "Apply selective time and other filters as early as practical, before joins and expensive transformations. This reduces the row set processed by later operators.",
+          "sourceName": "Advanced hunting query best practices",
+          "sourceUrl": "https://learn.microsoft.com/en-us/defender-xdr/advanced-hunting-best-practices",
+          "choices": [
+            { "text": "Filter each source table by the required time range before joining", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Sort every source table before applying filters", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Project every available column before joining", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Replace all equality comparisons with regular expressions", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "sentinel-notebook-use",
+          "objectiveKey": "perform-threat-hunting",
+          "prompt": "A threat hunter needs repeatable code that combines Sentinel query results with external enrichment, statistical analysis, and visualizations. Which tool best fits?",
+          "kind": "SingleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "Microsoft Sentinel notebooks support code-driven investigation, enrichment, analytics, and visualization for complex hunts that exceed a single KQL query or workbook interaction.",
+          "sourceName": "Jupyter notebooks and MSTICPy in Microsoft Sentinel",
+          "sourceUrl": "https://learn.microsoft.com/en-us/azure/sentinel/notebooks",
+          "choices": [
+            { "text": "A Microsoft Sentinel notebook", "isCorrect": true, "sortOrder": 0 },
+            { "text": "A Microsoft Sentinel automation rule", "isCorrect": false, "sortOrder": 1 },
+            { "text": "A Defender for Endpoint device group", "isCorrect": false, "sortOrder": 2 },
+            { "text": "A Log Analytics data collection rule", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "xdr-incident-email-notification",
+          "objectiveKey": "manage-security-operations-environment",
+          "prompt": "A customer's escalation team wants email only when a new Defender XDR incident is high severity. Which configuration should the MSP create?",
+          "kind": "SingleChoice",
+          "difficulty": "Foundation",
+          "explanation": "An incident email notification rule can filter new incidents by severity and recipient. Alert notification rules operate on individual alerts, not the correlated incident requirement in this scenario.",
+          "sourceName": "Get email notifications on incidents from Microsoft Defender XDR",
+          "sourceUrl": "https://learn.microsoft.com/en-us/defender-xdr/configure-email-notifications",
+          "choices": [
+            { "text": "An incident email notification rule filtered to high severity", "isCorrect": true, "sortOrder": 0 },
+            { "text": "An alert suppression rule filtered to high severity", "isCorrect": false, "sortOrder": 1 },
+            { "text": "A Sentinel workbook subscription filtered to incidents", "isCorrect": false, "sortOrder": 2 },
+            { "text": "A Defender for Endpoint device-group automation rule", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "mde-live-response-advanced-feature",
+          "objectiveKey": "manage-security-operations-environment",
+          "prompt": "Live response is licensed and the analyst has the required role, but the control is unavailable for all onboarded devices. Which tenant setting should be checked?",
+          "kind": "SingleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "Live response is enabled under Defender for Endpoint advanced features. Permissions control who can use it, but they do not replace the tenant-level feature setting.",
+          "sourceName": "Configure Microsoft Defender for Endpoint advanced features",
+          "sourceUrl": "https://learn.microsoft.com/en-us/defender-endpoint/advanced-features",
+          "choices": [
+            { "text": "The Live response advanced feature", "isCorrect": true, "sortOrder": 0 },
+            { "text": "The device discovery standard mode", "isCorrect": false, "sortOrder": 1 },
+            { "text": "The custom network indicators feature", "isCorrect": false, "sortOrder": 2 },
+            { "text": "The Microsoft Intune connection", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "mde-custom-data-collection-scope",
+          "objectiveKey": "manage-security-operations-environment",
+          "prompt": "An MSP needs additional endpoint telemetry only from tagged database servers, not every managed device. Which Defender for Endpoint capability is designed for targeted collection?",
+          "kind": "SingleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "Custom data collection rules collect selected telemetry from targeted device groups or device categories. A Sentinel DCR controls Azure Monitor ingestion and does not configure Defender endpoint collection.",
+          "sourceName": "Custom data collection in Microsoft Defender for Endpoint",
+          "sourceUrl": "https://learn.microsoft.com/en-us/defender-endpoint/custom-data-collection",
+          "choices": [
+            { "text": "A Defender for Endpoint custom data collection rule scoped to the tagged devices", "isCorrect": true, "sortOrder": 0 },
+            { "text": "A Sentinel data collection rule scoped to the Defender workspace", "isCorrect": false, "sortOrder": 1 },
+            { "text": "An advanced hunting saved query scoped by DeviceName", "isCorrect": false, "sortOrder": 2 },
+            { "text": "A device isolation exception scoped to database servers", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "sentinel-retention-tier-choice",
+          "objectiveKey": "manage-security-operations-environment",
+          "prompt": "A high-volume table is rarely queried, but its data must remain available for occasional long-range investigations at lower cost. Which Sentinel storage approach best fits?",
+          "kind": "SingleChoice",
+          "difficulty": "Advanced",
+          "explanation": "The data lake tier is intended for lower-cost, long-term retention and can be queried with data-lake capabilities. The Analytics tier is optimized for frequent, performant analytics and detection.",
+          "sourceName": "Manage data tiers and retention in Microsoft Sentinel",
+          "sourceUrl": "https://learn.microsoft.com/en-us/azure/sentinel/manage-data-overview",
+          "choices": [
+            { "text": "Retain the table in the data lake tier for long-range access", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Keep all data in the Analytics tier indefinitely", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Export the data to a workbook and delete the source table", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Convert the records into threat intelligence indicators", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "sentinel-workbook-visualization",
+          "objectiveKey": "manage-security-operations-environment",
+          "prompt": "A SOC lead needs an interactive dashboard that combines KQL results, parameters, charts, and customer-specific filters without generating alerts. What should be created?",
+          "kind": "SingleChoice",
+          "difficulty": "Foundation",
+          "explanation": "Microsoft Sentinel workbooks provide interactive visualization and parameterized reporting. Analytics rules generate detections, while hunting queries return results without the dashboard composition requested.",
+          "sourceName": "Visualize collected data by using Microsoft Sentinel workbooks",
+          "sourceUrl": "https://learn.microsoft.com/en-us/azure/sentinel/monitor-your-data",
+          "choices": [
+            { "text": "A Microsoft Sentinel workbook", "isCorrect": true, "sortOrder": 0 },
+            { "text": "A scheduled analytics rule", "isCorrect": false, "sortOrder": 1 },
+            { "text": "A threat intelligence watchlist", "isCorrect": false, "sortOrder": 2 },
+            { "text": "A Defender XDR custom detection", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "soc-optimization-recommendation",
+          "objectiveKey": "manage-security-operations-environment",
+          "prompt": "A customer has many enabled data connectors but weak detection coverage for important threats. Which Sentinel capability analyzes the environment and recommends coverage improvements?",
+          "kind": "SingleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "SOC optimization evaluates security content and usage to identify coverage gaps, data-value issues, and actionable improvements. MITRE coverage maps existing rules but is not the broader recommendation engine described.",
+          "sourceName": "Optimize your security operations with SOC optimization",
+          "sourceUrl": "https://learn.microsoft.com/en-us/azure/sentinel/soc-optimization/soc-optimization-access",
+          "choices": [
+            { "text": "SOC optimization recommendations", "isCorrect": true, "sortOrder": 0 },
+            { "text": "MITRE ATT&CK coverage only", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Data connector health monitoring", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Workbook usage metrics", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "sentinel-automation-contributor-role",
+          "objectiveKey": "manage-security-operations-environment",
+          "prompt": "A Sentinel automation rule must run a playbook in another resource group. Which role should be granted to the Sentinel service account on that playbook resource group?",
+          "kind": "SingleChoice",
+          "difficulty": "Advanced",
+          "explanation": "Microsoft Sentinel Automation Contributor grants Sentinel permission to run playbooks. Logic App Contributor is used by people who edit logic apps and is broader than the service permission required here.",
+          "sourceName": "Roles and permissions in Microsoft Sentinel",
+          "sourceUrl": "https://learn.microsoft.com/en-us/azure/sentinel/roles",
+          "choices": [
+            { "text": "Microsoft Sentinel Automation Contributor", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Microsoft Sentinel Responder", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Logic App Contributor", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Log Analytics Contributor", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "scheduled-rule-event-grouping",
+          "objectiveKey": "manage-security-operations-environment",
+          "prompt": "A scheduled Sentinel analytics rule returns ten independently actionable hosts in one run. The SOC wants one alert per result instead of one alert containing all results. Which setting should be changed?",
+          "kind": "SingleChoice",
+          "difficulty": "Advanced",
+          "explanation": "Event grouping controls whether all query results are grouped into one alert or each result triggers its own alert. Incident grouping is a separate later decision about combining alerts into incidents.",
+          "sourceName": "Create custom analytics rules to detect threats",
+          "sourceUrl": "https://learn.microsoft.com/en-us/azure/sentinel/detect-threats-custom",
+          "choices": [
+            { "text": "Configure event grouping to trigger an alert for each event", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Disable incident creation for the analytics rule", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Set alert grouping to reopen closed incidents", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Increase the query scheduling interval", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "sentinel-anomaly-tuning",
+          "objectiveKey": "manage-security-operations-environment",
+          "prompt": "A built-in Sentinel anomaly template is relevant, but its threshold is too sensitive for one customer's normal behavior. What should the analyst do?",
+          "kind": "SingleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "Create a duplicate of the anomaly template and tune its configurable parameters for the environment. The built-in template remains Microsoft-managed and cannot be edited directly.",
+          "sourceName": "Work with customizable anomalies in Microsoft Sentinel",
+          "sourceUrl": "https://learn.microsoft.com/en-us/azure/sentinel/work-with-anomaly-rules",
+          "choices": [
+            { "text": "Duplicate the anomaly template and tune the duplicate", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Edit the built-in anomaly template directly", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Suppress every incident produced by anomaly detection", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Convert the anomaly template into a data connector", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "custom-detection-lookback-alignment",
+          "objectiveKey": "manage-security-operations-environment",
+          "prompt": "A Defender XDR custom detection runs hourly. The query filters Timestamp to only the last ten minutes, causing expected events to be missed. What is the correct design principle?",
+          "kind": "SingleChoice",
+          "difficulty": "Advanced",
+          "explanation": "The query's time filter should align with the lookback associated with the selected rule frequency. A narrower query window can omit events that the scheduled evaluation expects to cover.",
+          "sourceName": "Create custom detection rules in Microsoft Defender XDR",
+          "sourceUrl": "https://learn.microsoft.com/en-us/defender-xdr/custom-detection-rules",
+          "choices": [
+            { "text": "Align the query time filter with the rule frequency's lookback period", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Remove Timestamp from the projected results", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Use ingestion time as the only entity identifier", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Change the rule to run only when an incident is created", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "device-timeline-investigation",
+          "objectiveKey": "respond-security-incidents",
+          "prompt": "An endpoint alert identifies a suspicious PowerShell process. The analyst needs the processes, network connections, and file activity around the alert time on that device. Which view is the best pivot?",
+          "kind": "SingleChoice",
+          "difficulty": "Foundation",
+          "explanation": "The device timeline presents chronological endpoint events and supports filtering around the alert window. The incident attack story is broader but does not replace detailed device telemetry.",
+          "sourceName": "Investigate devices in Microsoft Defender for Endpoint",
+          "sourceUrl": "https://learn.microsoft.com/en-us/defender-endpoint/investigate-machines",
+          "choices": [
+            { "text": "The device timeline", "isCorrect": true, "sortOrder": 0 },
+            { "text": "The incident email notification history", "isCorrect": false, "sortOrder": 1 },
+            { "text": "The device-group ranking page", "isCorrect": false, "sortOrder": 2 },
+            { "text": "The Sentinel workbook gallery", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "evidence-verdict-remediation",
+          "objectiveKey": "respond-security-incidents",
+          "prompt": "During a Defender XDR investigation, a file is confirmed malicious but the device that hosted it is still under investigation. Which action preserves that distinction?",
+          "kind": "SingleChoice",
+          "difficulty": "Advanced",
+          "explanation": "Apply a malicious verdict and remediation to the file evidence while continuing to investigate the device entity. Evidence verdicts should reflect the item assessed, not automatically classify every related entity.",
+          "sourceName": "Investigate incidents in Microsoft Defender XDR",
+          "sourceUrl": "https://learn.microsoft.com/en-us/defender-xdr/investigate-incidents",
+          "choices": [
+            { "text": "Mark the file evidence as malicious and remediate it while leaving the device investigation open", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Mark every incident entity as malicious because the file is malicious", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Resolve the incident before taking action on the file", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Suppress the source alert so the file verdict is not propagated", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "file-indicator-vs-quarantine",
+          "objectiveKey": "respond-security-incidents",
+          "prompt": "A malicious executable has been quarantined on one device, and the customer also wants Defender for Endpoint to block the same file hash if it appears elsewhere. What additional action is required?",
+          "kind": "SingleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "Quarantine remediates the observed file instance. A file indicator configured to block and remediate adds organization-wide hash-based prevention for future observations, subject to indicator prerequisites.",
+          "sourceName": "Create indicators for files",
+          "sourceUrl": "https://learn.microsoft.com/en-us/defender-endpoint/indicator-file",
+          "choices": [
+            { "text": "Create a file indicator for the hash with the Block and remediate action", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Add the hash to a Sentinel watchlist only", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Create an allow indicator and lower its priority", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Collect an investigation package from every device", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "cloud-apps-oauth-revoke",
+          "objectiveKey": "respond-security-incidents",
+          "prompt": "Investigation confirms that a malicious OAuth app has broad access to Microsoft 365 data. Which response most directly stops the app from continuing to use the granted permissions?",
+          "kind": "SingleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "Revoke the app's permissions in Defender for Cloud Apps or the identity platform. Disabling a user session or quarantining files does not remove the application's tenant consent grant.",
+          "sourceName": "Investigate risky OAuth apps",
+          "sourceUrl": "https://learn.microsoft.com/en-us/defender-cloud-apps/investigate-risky-oauth",
+          "choices": [
+            { "text": "Revoke the OAuth app's permissions", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Revoke only the reporting user's sign-in sessions", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Quarantine files previously accessed by the app", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Lower the severity of the Cloud Apps alert", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "threat-explorer-original-last-location",
+          "objectiveKey": "respond-security-incidents",
+          "prompt": "A message was initially delivered and later removed by zero-hour auto purge. Which two Threat Explorer fields distinguish where it first arrived from where it is now?",
+          "kind": "MultipleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "Select two. Original delivery location records the location before post-delivery actions; Last delivery location records the current location after actions such as ZAP or manual remediation.",
+          "sourceName": "Find and investigate malicious email that was delivered",
+          "sourceUrl": "https://learn.microsoft.com/en-us/defender-office-365/threat-explorer-investigate-delivered-malicious-email",
+          "choices": [
+            { "text": "Original delivery location", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Last delivery location", "isCorrect": true, "sortOrder": 1 },
+            { "text": "Primary override source", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Directionality", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "entra-risk-dismissal",
+          "objectiveKey": "respond-security-incidents",
+          "prompt": "A risky-user investigation proves that the detection was generated by an approved test and the identity was not compromised. Which Identity Protection action matches that conclusion?",
+          "kind": "SingleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "Dismiss user risk is appropriate when investigation establishes that the user is not compromised. Confirming the user compromised would raise risk and is the opposite conclusion.",
+          "sourceName": "Remediate risks and unblock users",
+          "sourceUrl": "https://learn.microsoft.com/en-us/entra/id-protection/howto-identity-protection-remediate-unblock",
+          "choices": [
+            { "text": "Dismiss the user's risk and document the validated test", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Confirm the user as compromised", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Delete the risky sign-in record", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Disable risk detection for every user", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "defender-cloud-resource-owner",
+          "objectiveKey": "respond-security-incidents",
+          "prompt": "A Defender for Cloud alert on an Azure SQL resource requires a configuration change outside the SOC team's access. Which incident-handling step best preserves accountability?",
+          "kind": "SingleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "Assign or route remediation to the responsible resource owner while retaining the alert evidence and tracking status. Dismissing the alert would hide an unresolved condition; changing SOC permissions is not required merely to coordinate response.",
+          "sourceName": "Manage and respond to security alerts in Microsoft Defender for Cloud",
+          "sourceUrl": "https://learn.microsoft.com/en-us/azure/defender-for-cloud/managing-and-responding-alerts",
+          "choices": [
+            { "text": "Route the remediation to the resource owner and track the alert until resolved", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Dismiss the alert because the SOC cannot change the database", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Grant the entire SOC Owner on the subscription", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Suppress all alerts for that Azure SQL resource type", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "sentinel-entity-mapping",
+          "objectiveKey": "respond-security-incidents",
+          "prompt": "A custom Sentinel analytics rule creates alerts, but incident investigators cannot pivot to the involved account and IP entity pages. What rule configuration is missing?",
+          "kind": "SingleChoice",
+          "difficulty": "Advanced",
+          "explanation": "Entity mapping binds query result columns to recognized entity types such as Account and IP. Without it, the values can remain plain alert details and do not support the same investigation pivots.",
+          "sourceName": "Map data fields to entities in Microsoft Sentinel",
+          "sourceUrl": "https://learn.microsoft.com/en-us/azure/sentinel/map-data-fields-to-entities",
+          "choices": [
+            { "text": "Entity mappings from query columns to Account and IP", "isCorrect": true, "sortOrder": 0 },
+            { "text": "A workbook parameter for account and IP", "isCorrect": false, "sortOrder": 1 },
+            { "text": "A watchlist containing all customer accounts", "isCorrect": false, "sortOrder": 2 },
+            { "text": "A longer analytics-rule suppression period", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "contain-compromised-user",
+          "objectiveKey": "respond-security-incidents",
+          "prompt": "Defender XDR confirms that a compromised identity is using SMB and RDP for lateral movement across onboarded Windows devices. Which action blocks this attack-related access on supported devices without disabling the Entra account?",
+          "kind": "SingleChoice",
+          "difficulty": "Advanced",
+          "explanation": "Contain user is enforced at the Defender for Endpoint layer. It blocks attack-related access paths such as SMB, RPC, and RDP on supported onboarded devices without disabling the identity in Microsoft Entra ID.",
+          "sourceName": "Take response actions on a device in Microsoft Defender for Endpoint",
+          "sourceUrl": "https://learn.microsoft.com/en-us/defender-endpoint/respond-machine-alerts",
+          "choices": [
+            { "text": "Contain the user in Microsoft Defender XDR", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Isolate only the user's most recent device", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Delete the Microsoft Entra account", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Suppress the identity alerts", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "graph-activity-log-investigation",
+          "objectiveKey": "respond-security-incidents",
+          "prompt": "An investigation must determine which application identity called a sensitive Microsoft Graph API, the request URI, and the response status. Which log source is designed for this?",
+          "kind": "SingleChoice",
+          "difficulty": "Advanced",
+          "explanation": "Microsoft Graph activity logs record HTTP requests made to Microsoft Graph, including application and request context. Entra sign-in logs authenticate access but do not provide the same per-Graph-request detail.",
+          "sourceName": "Microsoft Graph activity logs overview",
+          "sourceUrl": "https://learn.microsoft.com/en-us/graph/microsoft-graph-activity-logs-overview",
+          "choices": [
+            { "text": "Microsoft Graph activity logs", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Microsoft Entra sign-in logs only", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Microsoft Purview Data explorer", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Defender for Endpoint device timeline", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "network-connection-hunting-table",
+          "objectiveKey": "perform-threat-hunting",
+          "prompt": "Which Defender XDR advanced hunting table should an analyst query first for outbound endpoint connections to a suspicious remote IP address?",
+          "kind": "SingleChoice",
+          "difficulty": "Foundation",
+          "explanation": "DeviceNetworkEvents contains endpoint network connection and related network activity. DeviceProcessEvents can enrich the initiating process but is not the primary connection table.",
+          "sourceName": "DeviceNetworkEvents table in the advanced hunting schema",
+          "sourceUrl": "https://learn.microsoft.com/en-us/defender-xdr/advanced-hunting-devicenetworkevents-table",
+          "choices": [
+            { "text": "DeviceNetworkEvents", "isCorrect": true, "sortOrder": 0 },
+            { "text": "DeviceProcessEvents", "isCorrect": false, "sortOrder": 1 },
+            { "text": "CloudAppEvents", "isCorrect": false, "sortOrder": 2 },
+            { "text": "EmailUrlInfo", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "kql-has-vs-contains",
+          "objectiveKey": "perform-threat-hunting",
+          "prompt": "A KQL filter must match the complete indexed term 'powershell' in a command-line string and should avoid substring matches such as 'powershellhelper'. Which operator is preferable?",
+          "kind": "SingleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "has performs term-based matching and can use the term index, while contains performs substring matching. The complete-term requirement makes has both semantically correct and generally more efficient.",
+          "sourceName": "String operators in KQL",
+          "sourceUrl": "https://learn.microsoft.com/en-us/kusto/query/datatypes-string-operators?view=microsoft-fabric",
+          "choices": [
+            { "text": "has", "isCorrect": true, "sortOrder": 0 },
+            { "text": "contains", "isCorrect": false, "sortOrder": 1 },
+            { "text": "startswith", "isCorrect": false, "sortOrder": 2 },
+            { "text": "matches regex", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "kql-arg-max-latest",
+          "objectiveKey": "perform-threat-hunting",
+          "prompt": "A hunt returns many records per device. Which KQL aggregation returns the most recent record for each DeviceId while preserving columns from that record?",
+          "kind": "SingleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "arg_max selects the row that maximizes the chosen expression, such as Timestamp, and returns requested columns from that row for each summarize group.",
+          "sourceName": "arg_max aggregation function",
+          "sourceUrl": "https://learn.microsoft.com/en-us/kusto/query/arg-max-aggregation-function?view=microsoft-fabric",
+          "choices": [
+            { "text": "summarize arg_max(Timestamp, *) by DeviceId", "isCorrect": true, "sortOrder": 0 },
+            { "text": "summarize max(Timestamp) by DeviceId", "isCorrect": false, "sortOrder": 1 },
+            { "text": "top 1 by Timestamp desc", "isCorrect": false, "sortOrder": 2 },
+            { "text": "distinct DeviceId, Timestamp", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "sentinel-watchlist-query",
+          "objectiveKey": "perform-threat-hunting",
+          "prompt": "A Sentinel hunt must compare sign-in IP addresses with a maintained customer watchlist named HighRiskIPs. Which function loads that watchlist into the KQL query?",
+          "kind": "SingleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "_GetWatchlist('HighRiskIPs') returns the watchlist rows for joins or lookups. externaldata reads external files and does not reference a Sentinel watchlist by alias.",
+          "sourceName": "Use watchlists in Microsoft Sentinel",
+          "sourceUrl": "https://learn.microsoft.com/en-us/azure/sentinel/watchlists-queries",
+          "choices": [
+            { "text": "_GetWatchlist('HighRiskIPs')", "isCorrect": true, "sortOrder": 0 },
+            { "text": "externaldata('HighRiskIPs')", "isCorrect": false, "sortOrder": 1 },
+            { "text": "watchlist('HighRiskIPs')", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Get-SentinelWatchlist HighRiskIPs", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "sentinel-hunting-livestream",
+          "objectiveKey": "perform-threat-hunting",
+          "prompt": "During an active incident, an analyst wants a hunting query to run continuously and display new matching events as they arrive without first creating an alert rule. Which Sentinel feature fits?",
+          "kind": "SingleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "Livestream runs a hunting query interactively and surfaces matching events as they arrive. An NRT analytics rule is appropriate when the requirement is persistent alert generation.",
+          "sourceName": "Hunt for threats by using livestream in Microsoft Sentinel",
+          "sourceUrl": "https://learn.microsoft.com/en-us/azure/sentinel/livestream",
+          "choices": [
+            { "text": "A hunting livestream session", "isCorrect": true, "sortOrder": 0 },
+            { "text": "A near-real-time analytics rule", "isCorrect": false, "sortOrder": 1 },
+            { "text": "A workbook set to auto-refresh", "isCorrect": false, "sortOrder": 2 },
+            { "text": "A data collection rule transformation", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "mssp-scenario-lighthouse-workspace-design",
+          "objectiveKey": "manage-security-operations-environment",
+          "prompt": "An MSSP operates one SOC for four customers. Each customer requires its security data, retention charges, and Microsoft Sentinel workspace to remain in its own tenant. Analysts need delegated access from the MSSP tenant. Which design best meets the requirements?",
+          "kind": "SingleChoice",
+          "difficulty": "Advanced",
+          "explanation": "Deploying a workspace in each customer tenant preserves data isolation, residency, and customer-side charging. Azure Lighthouse delegates the required Sentinel roles to analysts in the managing tenant without copying all customer data into an MSSP workspace.",
+          "sourceName": "Manage Microsoft Sentinel workspaces at scale with Azure Lighthouse",
+          "sourceUrl": "https://learn.microsoft.com/en-us/azure/lighthouse/how-to/manage-sentinel-workspaces",
+          "choices": [
+            { "text": "Keep a Sentinel workspace in each customer tenant and delegate access through Azure Lighthouse", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Send every customer's logs to one Sentinel workspace in the MSSP tenant", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Move each customer's subscription into the MSSP tenant and use one workspace per subscription", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Keep customer workspaces separate and invite every analyst as a guest Global Administrator", "isCorrect": false, "sortOrder": 3 },
+            { "text": "Export incidents from each customer tenant to an MSSP workbook and investigate only the exports", "isCorrect": false, "sortOrder": 4 }
+          ]
+        },
+        {
+          "contentKey": "connector-scenario-health-monitoring",
+          "objectiveKey": "manage-security-operations-environment",
+          "prompt": "A customer's Microsoft Sentinel connector intermittently stops fetching data even though the workspace remains available. You need a queryable record of connector health changes and failures. Choose two actions.",
+          "kind": "MultipleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "Microsoft Sentinel health monitoring must first be enabled for the workspace. Connector fetch-status changes and failure details are then written to SentinelHealth. SentinelAudit records configuration changes, while AzureDiagnostics is used for the internal actions of Logic Apps playbooks.",
+          "sourceName": "Auditing and health monitoring in Microsoft Sentinel",
+          "sourceUrl": "https://learn.microsoft.com/en-us/azure/sentinel/health-audit",
+          "choices": [
+            { "text": "Enable Microsoft Sentinel health monitoring for the workspace", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Query the SentinelHealth table for the connector resource", "isCorrect": true, "sortOrder": 1 },
+            { "text": "Query only SentinelAudit for connector fetch failures", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Use AzureDiagnostics as the connector health table", "isCorrect": false, "sortOrder": 3 },
+            { "text": "Increase the analytics-rule lookback period", "isCorrect": false, "sortOrder": 4 },
+            { "text": "Create a workbook without enabling health monitoring", "isCorrect": false, "sortOrder": 5 }
+          ]
+        },
+        {
+          "contentKey": "playbook-scenario-order-activation",
+          "objectiveKey": "manage-security-operations-environment",
+          "prompt": "A tested incident-trigger playbook has valid connections but is not yet used by Microsoft Sentinel. Change control requires every action to be runnable by Sentinel before an automation rule references it. The SOC must automate new high-severity incidents and verify the result. Which order should the analyst use?",
+          "kind": "SingleChoice",
+          "difficulty": "Advanced",
+          "explanation": "Sentinel must first have permission to run playbooks in the playbook resource group. The analyst can then attach the playbook as an action in an automation rule and finally create or use a matching incident to verify that the rule launched the playbook.",
+          "sourceName": "Automate threat response with Microsoft Sentinel automation rules",
+          "sourceUrl": "https://learn.microsoft.com/en-us/azure/sentinel/automate-incident-handling-with-automation-rules",
+          "choices": [
+            { "text": "Grant Sentinel access to the playbook resource group → attach the playbook to an automation rule → test with a matching incident", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Attach the playbook to an automation rule → test with a matching incident → grant Sentinel access to the playbook resource group", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Test with a matching incident → grant Sentinel access to the playbook resource group → attach the playbook to an automation rule", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Grant Sentinel access to the playbook resource group → test with a matching incident → attach the playbook to an automation rule", "isCorrect": false, "sortOrder": 3 },
+            { "text": "Attach the playbook to an automation rule → grant Sentinel access to the playbook resource group → test with a matching incident", "isCorrect": false, "sortOrder": 4 }
+          ]
+        },
+        {
+          "contentKey": "asr-scenario-order-phased-rollout",
+          "objectiveKey": "manage-security-operations-environment",
+          "prompt": "An MSP is deploying Defender for Endpoint attack surface reduction rules to a customer with business-critical macros. Which rollout order best reduces disruption while progressing to enforcement?",
+          "kind": "SingleChoice",
+          "difficulty": "Advanced",
+          "explanation": "Microsoft recommends a methodical rollout: plan and select a controlled ring, use Audit mode, review reports and determine justified exclusions, move the validated rules to Block for the pilot, and only then broaden enforcement. Blocking broadly before observing business impact creates avoidable outages.",
+          "sourceName": "Deploy attack surface reduction rules",
+          "sourceUrl": "https://learn.microsoft.com/en-us/defender-endpoint/attack-surface-reduction-rules-deployment",
+          "choices": [
+            { "text": "Select a pilot ring → enable Audit → review reports and exclusions → enable Block for the pilot → expand deployment", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Enable Block tenant-wide → select a pilot ring → review reports and exclusions → switch the pilot to Audit → expand deployment", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Review reports and exclusions → enable Audit tenant-wide → select a pilot ring → expand deployment → enable Block", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Select a pilot ring → enable Block → review reports and exclusions → switch the pilot to Audit → expand deployment", "isCorrect": false, "sortOrder": 3 },
+            { "text": "Enable Audit tenant-wide → enable Block tenant-wide → review reports and exclusions → select a pilot ring → expand deployment", "isCorrect": false, "sortOrder": 4 },
+            { "text": "Select a pilot ring → review reports and exclusions without Audit data → expand deployment → enable Audit → enable Block", "isCorrect": false, "sortOrder": 5 }
+          ]
+        },
+        {
+          "contentKey": "ransomware-scenario-response-actions",
+          "objectiveKey": "respond-security-incidents",
+          "prompt": "A Defender for Endpoint alert confirms ransomware activity on one onboarded Windows device. The analyst must restrict network spread, preserve diagnostic evidence, and scan for remaining malware without removing the device from Defender management. Choose three actions.",
+          "kind": "MultipleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "Isolating the device restricts its network communication while retaining Defender connectivity. An investigation package preserves useful forensic data, and an antivirus scan checks for malware. Offboarding removes Defender management, while containing an unrelated user or suppressing the alert does not meet the stated device-response goals.",
+          "sourceName": "Take response actions on a device in Microsoft Defender for Endpoint",
+          "sourceUrl": "https://learn.microsoft.com/en-us/defender-endpoint/respond-machine-alerts",
+          "choices": [
+            { "text": "Isolate the device", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Collect an investigation package", "isCorrect": true, "sortOrder": 1 },
+            { "text": "Run an antivirus scan", "isCorrect": true, "sortOrder": 2 },
+            { "text": "Offboard the device from Defender for Endpoint", "isCorrect": false, "sortOrder": 3 },
+            { "text": "Contain an unrelated user account", "isCorrect": false, "sortOrder": 4 }
+          ]
+        },
+        {
+          "contentKey": "phishing-scenario-correlated-triage",
+          "objectiveKey": "respond-security-incidents",
+          "prompt": "A customer incident contains a malicious email alert, an identity alert for the recipient, and an endpoint alert from the recipient's laptop. The email alert has the highest severity. Where should the analyst begin?",
+          "kind": "SingleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "The Defender XDR incident correlates alerts and entities into an attack story across products. Starting with that incident preserves the relationships and blast-radius context; investigating only the highest-severity email alert can miss identity and endpoint evidence.",
+          "sourceName": "Investigate incidents in Microsoft Defender XDR",
+          "sourceUrl": "https://learn.microsoft.com/en-us/defender-xdr/investigate-incidents",
+          "choices": [
+            { "text": "Review the correlated incident attack story, evidence, and affected entities", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Investigate only the highest-severity email alert and close the other alerts", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Isolate every device in the tenant before reviewing the incident evidence", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Export each product alert and manually rebuild the timeline outside Defender XDR", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "mssp-scenario-cross-workspace-hunt",
+          "objectiveKey": "perform-threat-hunting",
+          "prompt": "An MSSP keeps Sentinel data in each customer's tenant but needs one hunting query to search the SecurityEvent table across selected customer workspaces. Choose two elements of the supported design.",
+          "kind": "MultipleChoice",
+          "difficulty": "Advanced",
+          "explanation": "Azure Lighthouse extends delegated management and cross-workspace operations across tenant boundaries. In KQL, workspace() references the selected workspaces and union combines their table results. Moving the data into one tenant or using workbooks as a data-ingestion mechanism is unnecessary.",
+          "sourceName": "Extend Microsoft Sentinel across workspaces and tenants",
+          "sourceUrl": "https://learn.microsoft.com/en-us/azure/sentinel/extend-sentinel-across-workspaces-tenants",
+          "choices": [
+            { "text": "Delegate access to the customer workspaces through Azure Lighthouse", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Use workspace() references with union in the hunting query", "isCorrect": true, "sortOrder": 1 },
+            { "text": "Move every customer workspace into the MSSP tenant", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Use a watchlist to copy the SecurityEvent table from each workspace", "isCorrect": false, "sortOrder": 3 },
+            { "text": "Use a workbook to ingest all customer events before querying", "isCorrect": false, "sortOrder": 4 }
+          ]
+        },
+        {
+          "contentKey": "oauth-scenario-cloudapp-hunt",
+          "objectiveKey": "perform-threat-hunting",
+          "prompt": "During a Defender XDR hunt, an analyst must review activities performed by a suspicious OAuth application in connected cloud apps, including the account and action involved. Which advanced hunting table should be queried first?",
+          "kind": "SingleChoice",
+          "difficulty": "Advanced",
+          "explanation": "CloudAppEvents contains events from connected cloud apps and includes application, account, action, and object context. DeviceProcessEvents and DeviceNetworkEvents focus on endpoint telemetry, while EmailEvents focuses on mail flow and message processing.",
+          "sourceName": "CloudAppEvents table in the advanced hunting schema",
+          "sourceUrl": "https://learn.microsoft.com/en-us/defender-xdr/advanced-hunting-cloudappevents-table",
+          "choices": [
+            { "text": "CloudAppEvents", "isCorrect": true, "sortOrder": 0 },
+            { "text": "DeviceProcessEvents", "isCorrect": false, "sortOrder": 1 },
+            { "text": "DeviceNetworkEvents", "isCorrect": false, "sortOrder": 2 },
+            { "text": "EmailEvents", "isCorrect": false, "sortOrder": 3 }
+          ]
+        }
+      ]
+}

@@ -1,0 +1,1158 @@
+{
+      "provider": "Microsoft",
+      "code": "SC-401",
+      "title": "Administering Information Security in Microsoft 365",
+      "summary": "Practice Microsoft Purview information protection, DLP, retention, insider risk, auditing, alert response, and protection for AI use.",
+      "contentVersion": "Official objectives 2026.04/2026.07; audited bank 2026.07",
+      "objectives": [
+        { "contentKey": "implement-information-protection", "name": "Implement information protection", "sortOrder": 0 },
+        { "contentKey": "implement-dlp-retention", "name": "Implement data loss prevention and retention", "sortOrder": 1 },
+        { "contentKey": "manage-risks-alerts-activities", "name": "Manage risks, alerts, and activities", "sortOrder": 2 }
+      ],
+      "questions": [
+        {
+          "contentKey": "custom-sensitive-info-type",
+          "objectiveKey": "implement-information-protection",
+          "prompt": "A customer identifier has a fixed prefix, nine digits, and must appear near the keyword 'Customer account.' Which Purview classification should an MSP create?",
+          "kind": "SingleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "A custom sensitive information type can combine a regular expression with supporting evidence, proximity, and confidence settings for a structured identifier.",
+          "sourceName": "Create a custom sensitive information type",
+          "sourceUrl": "https://learn.microsoft.com/en-us/purview/sit-create-a-custom-sensitive-information-type",
+          "choices": [
+            { "text": "A custom sensitive information type with a regex and supporting keyword", "isCorrect": true, "sortOrder": 0 },
+            { "text": "A document fingerprint generated from one completed form", "isCorrect": false, "sortOrder": 1 },
+            { "text": "A trainable classifier with only positive samples", "isCorrect": false, "sortOrder": 2 },
+            { "text": "A retention label event type", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "edm-customer-records",
+          "objectiveKey": "implement-information-protection",
+          "prompt": "A managed customer wants to detect only employee IDs that exist in its authoritative HR export, not every value matching the ID pattern. Which classifier best fits?",
+          "kind": "SingleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "Exact Data Match uses hashed values from a configured source table to identify exact records, which substantially reduces pattern-only false positives.",
+          "sourceName": "Exact Data Match based sensitive information types",
+          "sourceUrl": "https://learn.microsoft.com/en-us/purview/sit-learn-about-exact-data-match-based-sits",
+          "choices": [
+            { "text": "An Exact Data Match sensitive information type", "isCorrect": true, "sortOrder": 0 },
+            { "text": "A built-in credential sensitive information type", "isCorrect": false, "sortOrder": 1 },
+            { "text": "A document fingerprint sensitive information type", "isCorrect": false, "sortOrder": 2 },
+            { "text": "A trainable classifier for employee communications", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "document-fingerprint-form",
+          "objectiveKey": "implement-information-protection",
+          "prompt": "An organization uses a standard blank acquisition form, but users enter different values into it for each deal. Which classification method is designed to recognize completed versions of that form?",
+          "kind": "SingleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "Document fingerprinting converts a standard form into a sensitive information type that can recognize documents based on the original template's structure and wording.",
+          "sourceName": "Document fingerprinting",
+          "sourceUrl": "https://learn.microsoft.com/en-us/purview/document-fingerprinting",
+          "choices": [
+            { "text": "Document fingerprinting", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Exact Data Match", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Optical character recognition only", "isCorrect": false, "sortOrder": 2 },
+            { "text": "A retention event", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "trainable-classifier-samples",
+          "objectiveKey": "implement-information-protection",
+          "prompt": "You are training a custom classifier for project termination documents whose wording varies significantly. Which two sample sets are required?",
+          "kind": "MultipleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "A custom trainable classifier needs human-selected positive examples that belong to the category and negative examples that do not, followed by testing.",
+          "sourceName": "Get started with trainable classifiers",
+          "sourceUrl": "https://learn.microsoft.com/en-us/purview/trainable-classifiers-get-started-with",
+          "choices": [
+            { "text": "Items that belong to the category", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Items that do not belong to the category", "isCorrect": true, "sortOrder": 1 },
+            { "text": "A list of users permitted to apply the classifier", "isCorrect": false, "sortOrder": 2 },
+            { "text": "A CSV containing exact values to hash", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "ocr-images-sensitive-data",
+          "objectiveKey": "implement-information-protection",
+          "prompt": "Sensitive passport numbers are embedded in scanned image files and are missed by text-based classification. Which capability should be enabled for supported locations?",
+          "kind": "SingleChoice",
+          "difficulty": "Foundation",
+          "explanation": "Optical character recognition extracts text from supported image content so sensitive information types and classifiers can evaluate it.",
+          "sourceName": "Optical character recognition in Microsoft Purview",
+          "sourceUrl": "https://learn.microsoft.com/en-us/purview/ocr-learn-about",
+          "choices": [
+            { "text": "Microsoft Purview optical character recognition", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Endpoint DLP just-in-time protection", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Exact Data Match schema validation", "isCorrect": false, "sortOrder": 2 },
+            { "text": "SharePoint Preservation Hold Library indexing", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "content-vs-data-explorer",
+          "objectiveKey": "implement-information-protection",
+          "prompt": "An administrator needs to inspect the specific SharePoint items that matched a sensitive information type, not just aggregate counts. Which Purview view should be used?",
+          "kind": "SingleChoice",
+          "difficulty": "Foundation",
+          "explanation": "Content explorer drills into classified items, while Data explorer provides aggregate trends and activity across classified content.",
+          "sourceName": "Learn about Content explorer",
+          "sourceUrl": "https://learn.microsoft.com/en-us/purview/data-classification-content-explorer",
+          "choices": [
+            { "text": "Content explorer", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Data explorer", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Activity explorer", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Policy lookup", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "content-explorer-role-separation",
+          "objectiveKey": "implement-information-protection",
+          "prompt": "A compliance analyst can see classified-item counts but cannot preview item contents in Content explorer. Which permission is specifically required for content viewing?",
+          "kind": "SingleChoice",
+          "difficulty": "Advanced",
+          "explanation": "Content Explorer Content Viewer permits viewing item contents. List Viewer permits listing items and locations without granting content preview.",
+          "sourceName": "Permissions for Content explorer",
+          "sourceUrl": "https://learn.microsoft.com/en-us/purview/data-classification-content-explorer#permissions",
+          "choices": [
+            { "text": "Content Explorer Content Viewer", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Content Explorer List Viewer", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Data Classification Analytics Viewer", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Compliance Data Administrator", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "label-publishing-separation",
+          "objectiveKey": "implement-information-protection",
+          "prompt": "An MSP created a sensitivity label, but pilot users cannot select it in Office. What must be configured next?",
+          "kind": "SingleChoice",
+          "difficulty": "Foundation",
+          "explanation": "Creating a label defines its behavior. A sensitivity label policy publishes selected labels to chosen users and groups and configures user-facing policy settings.",
+          "sourceName": "Publish sensitivity labels by creating a label policy",
+          "sourceUrl": "https://learn.microsoft.com/en-us/purview/create-sensitivity-labels#publish-sensitivity-labels-by-creating-a-label-policy",
+          "choices": [
+            { "text": "Publish the label to the pilot users with a sensitivity label policy", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Add the users to an Endpoint DLP device group", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Create an auto-apply retention label policy", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Enable the label in Activity explorer", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "label-auto-priority",
+          "objectiveKey": "implement-information-protection",
+          "prompt": "A document matches two service-side auto-labeling policies for labels at different priorities. No label was applied manually. Which label normally wins?",
+          "kind": "SingleChoice",
+          "difficulty": "Advanced",
+          "explanation": "When multiple applicable labels are evaluated, the label with the higher priority is selected. Administrators should order labels from least to most sensitive deliberately.",
+          "sourceName": "Automatically apply a sensitivity label",
+          "sourceUrl": "https://learn.microsoft.com/en-us/purview/apply-sensitivity-label-automatically",
+          "choices": [
+            { "text": "The higher-priority sensitivity label", "isCorrect": true, "sortOrder": 0 },
+            { "text": "The label from the policy created first", "isCorrect": false, "sortOrder": 1 },
+            { "text": "The label with the shorter display name", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Both labels are applied to the item", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "container-label-effects",
+          "objectiveKey": "implement-information-protection",
+          "prompt": "A sensitivity label is applied to a Microsoft Teams-connected group. Which two settings can that container label govern?",
+          "kind": "MultipleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "Container labels can control privacy and external-user access settings for Teams, Microsoft 365 groups, and SharePoint sites. They do not automatically label every file stored inside the container.",
+          "sourceName": "Use sensitivity labels with Teams, groups, and sites",
+          "sourceUrl": "https://learn.microsoft.com/en-us/purview/sensitivity-labels-teams-groups-sites",
+          "choices": [
+            { "text": "The group's privacy setting", "isCorrect": true, "sortOrder": 0 },
+            { "text": "External-user access for the container", "isCorrect": true, "sortOrder": 1 },
+            { "text": "The retention duration of every channel message", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Automatic encryption of every existing file in the site", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "onprem-file-share-scanner",
+          "objectiveKey": "implement-information-protection",
+          "prompt": "A customer must discover and bulk-label files on on-premises Windows file shares without users opening each file. Which component should be deployed?",
+          "kind": "SingleChoice",
+          "difficulty": "Foundation",
+          "explanation": "The Microsoft Purview Information Protection scanner scans supported on-premises repositories and can discover, classify, and label files at scale.",
+          "sourceName": "Microsoft Purview Information Protection scanner",
+          "sourceUrl": "https://learn.microsoft.com/en-us/purview/deploy-scanner",
+          "choices": [
+            { "text": "Microsoft Purview Information Protection scanner", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Microsoft Defender for Cloud Apps app connector", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Microsoft Purview eDiscovery export tool", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Microsoft Entra application proxy connector", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "advanced-message-encryption",
+          "objectiveKey": "implement-information-protection",
+          "prompt": "A customer needs branded encrypted-message portals and the ability to expire access to encrypted messages sent to external recipients. Which capability is required?",
+          "kind": "SingleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "Microsoft Purview Advanced Message Encryption adds advanced controls such as custom branding, message expiration, and revocation for eligible encrypted email scenarios.",
+          "sourceName": "Advanced Message Encryption",
+          "sourceUrl": "https://learn.microsoft.com/en-us/purview/ome-advanced-message-encryption",
+          "choices": [
+            { "text": "Microsoft Purview Advanced Message Encryption", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Exchange Online journaling", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Defender for Office 365 Safe Links", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Microsoft Purview Audit Premium", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "dlp-location-scope",
+          "objectiveKey": "implement-dlp-retention",
+          "prompt": "A DLP rule must block external sharing of regulated files in SharePoint and OneDrive but must not affect Exchange email. What is the cleanest scope?",
+          "kind": "SingleChoice",
+          "difficulty": "Foundation",
+          "explanation": "Choose only the SharePoint and OneDrive policy locations. DLP policy locations determine which workloads evaluate the rules.",
+          "sourceName": "Learn about data loss prevention",
+          "sourceUrl": "https://learn.microsoft.com/en-us/purview/dlp-learn-about-dlp",
+          "choices": [
+            { "text": "Include SharePoint and OneDrive locations and exclude Exchange", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Include Exchange and rely on a file-type exception", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Use Endpoint DLP and exclude all onboarded devices", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Publish a sensitivity label only to SharePoint administrators", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "dlp-most-restrictive-rule",
+          "objectiveKey": "implement-dlp-retention",
+          "prompt": "A file matches one DLP rule that warns users and another that blocks access without override. Which outcome is enforced?",
+          "kind": "SingleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "When content matches multiple DLP rules, the most restrictive applicable action is enforced. Rule and policy priority resolve matches that have otherwise identical actions; blocking without override is more restrictive than a warning.",
+          "sourceName": "Data Loss Prevention policy reference",
+          "sourceUrl": "https://learn.microsoft.com/en-us/purview/dlp-policy-reference",
+          "choices": [
+            { "text": "Block access without override", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Warn the user because it is the less disruptive action", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Apply both actions and let the user choose", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Apply neither action because the rules conflict", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "dlp-simulation",
+          "objectiveKey": "implement-dlp-retention",
+          "prompt": "Before enforcing a new cross-customer DLP baseline, an MSP wants match data without blocking user actions. Which policy mode should be used first?",
+          "kind": "SingleChoice",
+          "difficulty": "Foundation",
+          "explanation": "Simulation mode evaluates policy matches and supports review before enforcement. Policy tips can optionally be shown during simulation.",
+          "sourceName": "Data Loss Prevention policy reference",
+          "sourceUrl": "https://learn.microsoft.com/en-us/purview/dlp-policy-reference",
+          "choices": [
+            { "text": "Run the policy in simulation mode", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Turn on the policy and suppress all alerts", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Leave the policy off and inspect Activity explorer", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Use a retention policy in test mode", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "endpoint-dlp-printer-group",
+          "objectiveKey": "implement-dlp-retention",
+          "prompt": "Sensitive legal documents must be blocked from printing except on an approved set of department printers. Which Endpoint DLP design fits?",
+          "kind": "SingleChoice",
+          "difficulty": "Advanced",
+          "explanation": "Create a reusable printer authorization group, block printing by default in the DLP rule, and configure a group-specific allow action for approved printers.",
+          "sourceName": "Manage printer access using authorization groups",
+          "sourceUrl": "https://learn.microsoft.com/en-us/purview/endpoint-dlp-create-policy-manage-printer-access",
+          "choices": [
+            { "text": "Block print by default and allow an Endpoint DLP printer group", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Exclude legal documents from DLP and audit all printers", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Publish a label policy only to printer administrators", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Use an adaptive retention scope for printer objects", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "endpoint-browser-extension",
+          "objectiveKey": "implement-dlp-retention",
+          "prompt": "Endpoint DLP must enforce upload restrictions when users use a supported non-Microsoft browser. What additional deployment might be required?",
+          "kind": "SingleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "For supported non-Microsoft browsers, deploy the Microsoft Purview browser extension so Endpoint DLP can evaluate and enforce applicable browser upload restrictions.",
+          "sourceName": "Get started with Endpoint DLP",
+          "sourceUrl": "https://learn.microsoft.com/en-us/purview/endpoint-dlp-getting-started",
+          "choices": [
+            { "text": "The Microsoft Purview browser extension", "isCorrect": true, "sortOrder": 0 },
+            { "text": "The Microsoft Purview Information Protection scanner", "isCorrect": false, "sortOrder": 1 },
+            { "text": "A Defender for Cloud Apps log collector", "isCorrect": false, "sortOrder": 2 },
+            { "text": "The Microsoft Entra private network connector", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "jit-protection-fallback",
+          "objectiveKey": "implement-dlp-retention",
+          "prompt": "A newly created sensitive file is copied to USB before Endpoint DLP classification finishes. Which feature can apply a temporary fallback action during that evaluation gap?",
+          "kind": "SingleChoice",
+          "difficulty": "Advanced",
+          "explanation": "Just-in-time protection can audit or block monitored egress activity while policy evaluation completes, reducing exposure during initial classification.",
+          "sourceName": "Learn about just-in-time protection",
+          "sourceUrl": "https://learn.microsoft.com/en-us/purview/endpoint-dlp-get-started-jit",
+          "choices": [
+            { "text": "Endpoint DLP just-in-time protection", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Retention policy lookup", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Defender for Cloud Apps session control", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Information Protection scanner discovery mode", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "adaptive-protection-risk",
+          "objectiveKey": "implement-dlp-retention",
+          "prompt": "A customer wants stricter Endpoint DLP actions only while a user's insider risk level is elevated. Which integration provides this dynamic behavior?",
+          "kind": "SingleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "Adaptive Protection connects Insider Risk Management risk levels to DLP conditions so restrictions can change as a user's assessed risk changes.",
+          "sourceName": "Adaptive Protection in data loss prevention",
+          "sourceUrl": "https://learn.microsoft.com/en-us/purview/dlp-adaptive-protection-learn",
+          "choices": [
+            { "text": "Adaptive Protection with the user's insider risk level as a DLP condition", "isCorrect": true, "sortOrder": 0 },
+            { "text": "An adaptive retention scope based on department", "isCorrect": false, "sortOrder": 1 },
+            { "text": "A priority sensitivity label published to risky users", "isCorrect": false, "sortOrder": 2 },
+            { "text": "An eDiscovery case hold linked to the user", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "defender-cloud-apps-file-policy",
+          "objectiveKey": "implement-dlp-retention",
+          "prompt": "An MSP must continuously find files in a connected cloud app that contain a Purview sensitive information type and are shared externally. Which control should be created?",
+          "kind": "SingleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "A Defender for Cloud Apps file policy can use Microsoft Purview DLP inspection and sharing filters to govern files in connected apps.",
+          "sourceName": "File policies in Microsoft Defender for Cloud Apps",
+          "sourceUrl": "https://learn.microsoft.com/en-us/defender-cloud-apps/data-protection-policies",
+          "choices": [
+            { "text": "A Defender for Cloud Apps file policy using DLP inspection", "isCorrect": true, "sortOrder": 0 },
+            { "text": "A Sentinel scheduled analytics rule against DeviceFileEvents", "isCorrect": false, "sortOrder": 1 },
+            { "text": "An Exchange transport rule with document fingerprinting", "isCorrect": false, "sortOrder": 2 },
+            { "text": "An adaptive retention policy scoped to guest users", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "retention-policy-vs-label",
+          "objectiveKey": "implement-dlp-retention",
+          "prompt": "All Exchange mailboxes must retain content for seven years with no item-level disposition workflow. Which control is simplest?",
+          "kind": "SingleChoice",
+          "difficulty": "Foundation",
+          "explanation": "A retention policy applies the same retention settings broadly at a workload location. Retention labels are better when settings must vary by item or require record and disposition behavior.",
+          "sourceName": "Learn about retention policies and retention labels",
+          "sourceUrl": "https://learn.microsoft.com/en-us/purview/retention",
+          "choices": [
+            { "text": "A retention policy for the Exchange location", "isCorrect": true, "sortOrder": 0 },
+            { "text": "A mandatory sensitivity label policy", "isCorrect": false, "sortOrder": 1 },
+            { "text": "A DLP policy that blocks mailbox deletion", "isCorrect": false, "sortOrder": 2 },
+            { "text": "A retention label published for users to apply manually", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "adaptive-retention-scope",
+          "objectiveKey": "implement-dlp-retention",
+          "prompt": "A retention policy should automatically include users whose Microsoft Entra department attribute is 'Legal' as staff join or leave that department. Which scope should be used?",
+          "kind": "SingleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "An adaptive policy scope uses a query against supported attributes and automatically updates membership, avoiding a manually maintained static include list.",
+          "sourceName": "Adaptive scopes for retention",
+          "sourceUrl": "https://learn.microsoft.com/en-us/purview/purview-adaptive-scopes",
+          "choices": [
+            { "text": "An adaptive policy scope based on the department attribute", "isCorrect": true, "sortOrder": 0 },
+            { "text": "A static scope with every current Legal user listed", "isCorrect": false, "sortOrder": 1 },
+            { "text": "A sensitivity label policy scoped to a dynamic group", "isCorrect": false, "sortOrder": 2 },
+            { "text": "An Endpoint DLP device group for Legal workstations", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "retention-conflict-principles",
+          "objectiveKey": "implement-dlp-retention",
+          "prompt": "An item is subject to one policy that retains it for five years and another that deletes it after three years. What happens at year three?",
+          "kind": "SingleChoice",
+          "difficulty": "Advanced",
+          "explanation": "Retention takes precedence over deletion, and the longest retention period wins. The item cannot be permanently deleted at year three while the five-year retention applies.",
+          "sourceName": "Principles of retention",
+          "sourceUrl": "https://learn.microsoft.com/en-us/purview/retention#the-principles-of-retention-or-what-takes-precedence",
+          "choices": [
+            { "text": "The item remains retained until the five-year requirement is met", "isCorrect": true, "sortOrder": 0 },
+            { "text": "The item is permanently deleted after three years", "isCorrect": false, "sortOrder": 1 },
+            { "text": "The two policies cancel each other and no action occurs", "isCorrect": false, "sortOrder": 2 },
+            { "text": "The item's owner chooses which policy applies", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "retention-recovery-sharepoint",
+          "objectiveKey": "implement-dlp-retention",
+          "prompt": "A user deletes a SharePoint document that is still subject to retention. Where is a preserved copy maintained for compliance?",
+          "kind": "SingleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "For SharePoint and OneDrive retention, preserved versions or deleted content are stored in the hidden Preservation Hold Library while retention applies.",
+          "sourceName": "Learn about retention for SharePoint and OneDrive",
+          "sourceUrl": "https://learn.microsoft.com/en-us/purview/retention-policies-sharepoint",
+          "choices": [
+            { "text": "The site's Preservation Hold Library", "isCorrect": true, "sortOrder": 0 },
+            { "text": "The user's Exchange Recoverable Items folder", "isCorrect": false, "sortOrder": 1 },
+            { "text": "The Microsoft Purview Content explorer cache", "isCorrect": false, "sortOrder": 2 },
+            { "text": "The tenant's eDiscovery export location", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "retention-auto-apply",
+          "objectiveKey": "implement-dlp-retention",
+          "prompt": "Contracts should receive a ten-year retention label automatically when a trainable classifier identifies them in SharePoint. What should be configured?",
+          "kind": "SingleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "An auto-apply retention label policy can apply a retention label based on supported conditions, including trainable classifier matches.",
+          "sourceName": "Automatically apply a retention label",
+          "sourceUrl": "https://learn.microsoft.com/en-us/purview/apply-retention-labels-automatically",
+          "choices": [
+            { "text": "An auto-apply retention label policy using the classifier condition", "isCorrect": true, "sortOrder": 0 },
+            { "text": "A sensitivity label publishing policy using mandatory labeling", "isCorrect": false, "sortOrder": 1 },
+            { "text": "A DLP rule that blocks deletion", "isCorrect": false, "sortOrder": 2 },
+            { "text": "An Insider Risk Management policy indicator", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "irm-policy-template",
+          "objectiveKey": "manage-risks-alerts-activities",
+          "prompt": "A customer wants to identify possible data theft by employees shortly before their recorded termination date. Which Insider Risk Management starting point is most appropriate?",
+          "kind": "SingleChoice",
+          "difficulty": "Foundation",
+          "explanation": "Use the data theft by departing users policy template and provide the required HR departure signal through a supported connector or indicator source.",
+          "sourceName": "Insider Risk Management policy templates",
+          "sourceUrl": "https://learn.microsoft.com/en-us/purview/insider-risk-management-policy-templates",
+          "choices": [
+            { "text": "The data theft by departing users policy template", "isCorrect": true, "sortOrder": 0 },
+            { "text": "The general data leaks policy template", "isCorrect": false, "sortOrder": 1 },
+            { "text": "A DLP policy using a retention-label condition", "isCorrect": false, "sortOrder": 2 },
+            { "text": "An audit retention policy for terminated accounts", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "irm-privacy-pseudonymization",
+          "objectiveKey": "manage-risks-alerts-activities",
+          "prompt": "By default, how does Insider Risk Management reduce unnecessary exposure of user identities during analysis?",
+          "kind": "SingleChoice",
+          "difficulty": "Foundation",
+          "explanation": "Insider Risk Management is privacy-oriented and pseudonymizes users by default. Authorized roles can reveal identities when policy and process require it.",
+          "sourceName": "Learn about Insider Risk Management",
+          "sourceUrl": "https://learn.microsoft.com/en-us/purview/insider-risk-management",
+          "choices": [
+            { "text": "It pseudonymizes user names for analysts by default", "isCorrect": true, "sortOrder": 0 },
+            { "text": "It deletes all user identifiers from source audit events", "isCorrect": false, "sortOrder": 1 },
+            { "text": "It stores identities only in the customer's on-premises directory", "isCorrect": false, "sortOrder": 2 },
+            { "text": "It replaces identities with sensitivity label IDs", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "irm-defender-integration",
+          "objectiveKey": "manage-risks-alerts-activities",
+          "prompt": "Which integration supplies endpoint security-violation signals for use in Insider Risk Management policies and investigations?",
+          "kind": "SingleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "Integration with Microsoft Defender for Endpoint contributes endpoint security-violation alerts and related signals that help assess potentially risky user activity.",
+          "sourceName": "Insider Risk Management settings",
+          "sourceUrl": "https://learn.microsoft.com/en-us/purview/insider-risk-management-settings",
+          "choices": [
+            { "text": "Microsoft Defender for Endpoint", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Microsoft Defender for Cloud Apps", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Microsoft Entra ID Protection", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Microsoft Sentinel UEBA", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "forensic-evidence-approval",
+          "objectiveKey": "manage-risks-alerts-activities",
+          "prompt": "An administrator adds a user to an Insider Risk Management forensic evidence policy. Why might no visual captures be collected?",
+          "kind": "SingleChoice",
+          "difficulty": "Advanced",
+          "explanation": "Forensic evidence is opt-in and uses dual authorization. A user must be separately requested and approved before capture begins; adding the user to a policy alone is insufficient.",
+          "sourceName": "Manage Insider Risk Management forensic evidence",
+          "sourceUrl": "https://learn.microsoft.com/en-us/purview/insider-risk-management-forensic-evidence-manage",
+          "choices": [
+            { "text": "The user has not received the required separate capture approval", "isCorrect": true, "sortOrder": 0 },
+            { "text": "The user has not manually applied a forensic evidence sensitivity label", "isCorrect": false, "sortOrder": 1 },
+            { "text": "The tenant's audit retention period is less than one year", "isCorrect": false, "sortOrder": 2 },
+            { "text": "The policy must first create a Defender XDR incident", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "irm-alert-to-case",
+          "objectiveKey": "manage-risks-alerts-activities",
+          "prompt": "An insider risk alert contains enough evidence to require coordinated investigation and documented actions. What should the analyst do next?",
+          "kind": "SingleChoice",
+          "difficulty": "Foundation",
+          "explanation": "Confirming an alert and creating a case provides the case-management workflow for deeper investigation, notes, collaborators, and response actions.",
+          "sourceName": "Manage Insider Risk Management alerts",
+          "sourceUrl": "https://learn.microsoft.com/en-us/purview/insider-risk-management-activities",
+          "choices": [
+            { "text": "Confirm the alert and create an Insider Risk Management case", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Convert the alert directly into a retention label", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Export the alert and delete it from the queue", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Create a new sensitive information type from the alert", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "audit-retention-policy",
+          "objectiveKey": "manage-risks-alerts-activities",
+          "prompt": "A regulated customer needs audit records for a specific set of licensed executives retained longer than the default audit period. What should be configured?",
+          "kind": "SingleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "An audit retention policy can target users, record types, and workloads and specify a longer retention duration, subject to licensing and supported limits.",
+          "sourceName": "Manage audit log retention policies",
+          "sourceUrl": "https://learn.microsoft.com/en-us/purview/audit-log-retention-policies",
+          "choices": [
+            { "text": "A Microsoft Purview audit retention policy scoped to those users", "isCorrect": true, "sortOrder": 0 },
+            { "text": "A retention label policy published to the executives", "isCorrect": false, "sortOrder": 1 },
+            { "text": "A DLP alert policy with a longer investigation window", "isCorrect": false, "sortOrder": 2 },
+            { "text": "An Insider Risk Management policy with historical detection enabled", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "activity-explorer-use",
+          "objectiveKey": "manage-risks-alerts-activities",
+          "prompt": "An MSP wants to review when users downgraded sensitivity labels and which endpoint activities matched DLP policies. Which view is designed for this activity analysis?",
+          "kind": "SingleChoice",
+          "difficulty": "Foundation",
+          "explanation": "Activity explorer exposes data-protection activities such as label changes and DLP-related events with filters for investigation and operational tuning.",
+          "sourceName": "Get started with Activity explorer",
+          "sourceUrl": "https://learn.microsoft.com/en-us/purview/data-classification-activity-explorer",
+          "choices": [
+            { "text": "Activity explorer", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Content explorer", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Data explorer", "isCorrect": false, "sortOrder": 2 },
+            { "text": "eDiscovery review set", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "dlp-alert-investigation",
+          "objectiveKey": "manage-risks-alerts-activities",
+          "prompt": "A high-severity DLP alert reports a large upload of sensitive files. Which two evidence areas should be reviewed before deciding whether to dismiss or escalate it?",
+          "kind": "MultipleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "Review the matched sensitive information, user and activity context, affected items, sequence of events, and related alerts. Severity alone is not enough to determine intent or impact.",
+          "sourceName": "Investigate data loss prevention alerts",
+          "sourceUrl": "https://learn.microsoft.com/en-us/purview/dlp-alerts-dashboard-get-started",
+          "choices": [
+            { "text": "The matched sensitive information and affected items", "isCorrect": true, "sortOrder": 0 },
+            { "text": "The user's activity context and related alerts", "isCorrect": true, "sortOrder": 1 },
+            { "text": "Only the DLP policy's creation date", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Only the user's Microsoft 365 license assignment", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "purview-alerts-defender-xdr",
+          "objectiveKey": "manage-risks-alerts-activities",
+          "prompt": "A SOC works primarily in Microsoft Defender XDR and needs Purview DLP and insider risk signals correlated with other security alerts. Which capability should it use?",
+          "kind": "SingleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "The Defender XDR alert and incident experience includes Microsoft Data Loss Prevention and Insider Risk Management sources so analysts can correlate and respond from a unified workflow.",
+          "sourceName": "Investigate alerts in Microsoft Defender XDR",
+          "sourceUrl": "https://learn.microsoft.com/en-us/defender-xdr/investigate-alerts",
+          "choices": [
+            { "text": "The unified Microsoft Defender XDR alert and incident experience", "isCorrect": true, "sortOrder": 0 },
+            { "text": "The Microsoft Purview DLP alerts dashboard", "isCorrect": false, "sortOrder": 1 },
+            { "text": "The Insider Risk Management Alerts dashboard", "isCorrect": false, "sortOrder": 2 },
+            { "text": "The Defender for Cloud Apps file-policy alerts queue", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "ediscovery-search-use",
+          "objectiveKey": "manage-risks-alerts-activities",
+          "prompt": "An investigation needs copies of Teams messages and Exchange email that contain a project codename and fall within a specific date range. Which Purview capability should be used?",
+          "kind": "SingleChoice",
+          "difficulty": "Foundation",
+          "explanation": "Microsoft Purview eDiscovery search can query supported Microsoft 365 data sources with keywords, dates, participants, and other conditions for investigation.",
+          "sourceName": "Search for content with Microsoft Purview eDiscovery",
+          "sourceUrl": "https://learn.microsoft.com/en-us/purview/ediscovery-search-for-content",
+          "choices": [
+            { "text": "Microsoft Purview eDiscovery search", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Activity explorer", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Data explorer", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Insider Risk Management analytics scan", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "dspm-ai-prerequisite",
+          "objectiveKey": "manage-risks-alerts-activities",
+          "prompt": "DSPM for AI must report Microsoft 365 Copilot activity, but no activity appears. Which prerequisite should be checked first?",
+          "kind": "SingleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "Microsoft 365 auditing must be enabled for relevant Microsoft 365 Copilot activity to appear in DSPM for AI activity insights.",
+          "sourceName": "Considerations for deploying DSPM for AI",
+          "sourceUrl": "https://learn.microsoft.com/en-us/purview/dspm-for-ai-considerations",
+          "choices": [
+            { "text": "Microsoft 365 auditing is enabled", "isCorrect": true, "sortOrder": 0 },
+            { "text": "The analyst is assigned a DSPM for AI viewing role", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Microsoft 365 Copilot is included in a DLP policy", "isCorrect": false, "sortOrder": 2 },
+            { "text": "A retention policy for Microsoft Copilot Experiences is active", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "dspm-ai-policy-goal",
+          "objectiveKey": "manage-risks-alerts-activities",
+          "prompt": "A customer wants visibility into sensitive information being shared with generative AI sites and controls to reduce that exposure. Which Purview solution is centered on this requirement?",
+          "kind": "SingleChoice",
+          "difficulty": "Foundation",
+          "explanation": "Data Security Posture Management for AI discovers AI use and data risks and helps deploy and monitor policies that protect sensitive data used with AI services.",
+          "sourceName": "Data Security Posture Management for AI",
+          "sourceUrl": "https://learn.microsoft.com/en-us/purview/ai-microsoft-purview",
+          "choices": [
+            { "text": "Data Security Posture Management for AI", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Microsoft Purview Records Management", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Microsoft Defender for Identity", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Microsoft Sentinel UEBA", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "insider-risk-notice-template",
+          "objectiveKey": "manage-risks-alerts-activities",
+          "prompt": "After an insider risk case is confirmed, policy requires a standardized reminder to the user before stronger action is considered. Which case workflow feature supports this?",
+          "kind": "SingleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "Insider Risk Management notice templates let authorized investigators send consistent, approved communications as part of case response workflow.",
+          "sourceName": "Insider Risk Management notices",
+          "sourceUrl": "https://learn.microsoft.com/en-us/purview/insider-risk-management-notices",
+          "choices": [
+            { "text": "An Insider Risk Management notice template", "isCorrect": true, "sortOrder": 0 },
+            { "text": "A DLP policy tip configured in simulation mode", "isCorrect": false, "sortOrder": 1 },
+            { "text": "An Advanced Message Encryption branding template", "isCorrect": false, "sortOrder": 2 },
+            { "text": "A Defender XDR incident notification rule", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "label-downgrade-justification",
+          "objectiveKey": "implement-information-protection",
+          "prompt": "A customer permits users to lower a sensitivity label, but requires them to record a reason. Where should the MSP configure this requirement?",
+          "kind": "SingleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "A sensitivity label publishing policy can require users to justify removing a label or lowering its classification. The setting governs the user action; it isn't configured in the label's visual markings.",
+          "sourceName": "Learn about sensitivity labels",
+          "sourceUrl": "https://learn.microsoft.com/en-us/purview/sensitivity-labels",
+          "choices": [
+            { "text": "In the sensitivity label publishing policy", "isCorrect": true, "sortOrder": 0 },
+            { "text": "In the label's header and footer settings", "isCorrect": false, "sortOrder": 1 },
+            { "text": "In a DLP rule's incident report settings", "isCorrect": false, "sortOrder": 2 },
+            { "text": "In the label's auto-labeling condition", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "label-admin-defined-encryption",
+          "objectiveKey": "implement-information-protection",
+          "prompt": "Documents labeled 'Customer Restricted' must always grant a specific project group co-author access, regardless of who applies the label. Which encryption design meets the requirement?",
+          "kind": "SingleChoice",
+          "difficulty": "Advanced",
+          "explanation": "Configure the sensitivity label's encryption with administrator-defined permissions for the project group. User-defined permissions would let each labeler choose recipients and wouldn't guarantee the required group access.",
+          "sourceName": "Restrict access to content by using sensitivity labels",
+          "sourceUrl": "https://learn.microsoft.com/en-us/purview/encryption-sensitivity-labels",
+          "choices": [
+            { "text": "Assign permissions now in the label and grant the project group Co-Author", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Let users assign permissions when they apply the label", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Publish the label only to members of the project group", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Configure the label as a container label for the project team", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "auto-label-simulation-review",
+          "objectiveKey": "implement-information-protection",
+          "prompt": "An MSP has created a service-side auto-labeling policy for SharePoint and OneDrive. It must review expected matches before labels are applied. What should it do next?",
+          "kind": "SingleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "Run the auto-labeling policy in simulation and review the matched items before turning it on. Simulation evaluates the configured conditions without applying the label to content.",
+          "sourceName": "Automatically apply a sensitivity label to Microsoft 365 data",
+          "sourceUrl": "https://learn.microsoft.com/en-us/purview/apply-sensitivity-label-automatically",
+          "choices": [
+            { "text": "Run the policy in simulation and review the results", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Publish the label as the default label for all users", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Enable Endpoint DLP audit mode for all devices", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Export Content explorer and manually label every match", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "mip-file-explorer-labeler",
+          "objectiveKey": "implement-information-protection",
+          "prompt": "Users must apply sensitivity labels to supported files directly from Windows File Explorer, including file types that aren't opened in Microsoft 365 Apps. Which component provides this capability?",
+          "kind": "SingleChoice",
+          "difficulty": "Foundation",
+          "explanation": "The Microsoft Purview Information Protection file labeler extends labeling to Windows File Explorer and a wider range of supported file types. Built-in Office labeling applies within supported Microsoft 365 apps.",
+          "sourceName": "Extend sensitivity labeling on Windows",
+          "sourceUrl": "https://learn.microsoft.com/en-us/purview/information-protection-client",
+          "choices": [
+            { "text": "The Microsoft Purview Information Protection file labeler", "isCorrect": true, "sortOrder": 0 },
+            { "text": "The Microsoft Purview Information Protection scanner service", "isCorrect": false, "sortOrder": 1 },
+            { "text": "The Endpoint DLP browser extension", "isCorrect": false, "sortOrder": 2 },
+            { "text": "The Microsoft Defender for Cloud Apps log collector", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "message-encryption-mail-flow-rule",
+          "objectiveKey": "implement-information-protection",
+          "prompt": "Outbound email containing a regulated sensitive information type must be encrypted automatically when sent outside the organization. Which Exchange configuration should the MSP create?",
+          "kind": "SingleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "A mail flow rule can match message conditions, such as a sensitive information type and an external recipient, and apply Microsoft Purview Message Encryption. A label policy alone doesn't evaluate this transport scenario unless a label is also applied by another mechanism.",
+          "sourceName": "Enable Microsoft Purview Message Encryption",
+          "sourceUrl": "https://learn.microsoft.com/en-us/purview/enable-message-encryption-and-decryption-in-office-365",
+          "choices": [
+            { "text": "A mail flow rule that applies Microsoft Purview Message Encryption", "isCorrect": true, "sortOrder": 0 },
+            { "text": "A retention policy scoped to Exchange Online", "isCorrect": false, "sortOrder": 1 },
+            { "text": "A Defender for Office 365 Safe Attachments policy", "isCorrect": false, "sortOrder": 2 },
+            { "text": "An Endpoint DLP rule for restricted cloud service domains", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "scanner-discovery-before-enforcement",
+          "objectiveKey": "implement-information-protection",
+          "prompt": "Before bulk-labeling an on-premises file share, an MSP wants the Information Protection scanner to inventory matches without changing files. Which scan configuration is appropriate?",
+          "kind": "SingleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "Run the scanner content scan job in discovery mode with enforcement turned off. The reports show detected conditions and proposed labeling so the MSP can tune the configuration before files are modified.",
+          "sourceName": "Learn about the Information Protection scanner",
+          "sourceUrl": "https://learn.microsoft.com/en-us/purview/deploy-scanner",
+          "choices": [
+            { "text": "Run the content scan job with Enforce set to Off", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Run the content scan job with Enforce set to On and relabel files", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Set every label to user-defined permissions before scanning", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Use Content explorer instead of configuring a scanner repository", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "power-bi-export-label-inheritance",
+          "objectiveKey": "implement-information-protection",
+          "prompt": "A labeled Power BI report is exported to a supported Excel file. What information-protection behavior should the administrator expect?",
+          "kind": "SingleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "For supported export paths, Power BI applies the report's sensitivity label and its protection to the exported file. The export doesn't become unlabeled merely because it leaves Power BI.",
+          "sourceName": "Sensitivity labels in Power BI",
+          "sourceUrl": "https://learn.microsoft.com/en-us/fabric/enterprise/powerbi/service-security-sensitivity-label-overview",
+          "choices": [
+            { "text": "The exported file inherits the report's sensitivity label and supported protection", "isCorrect": true, "sortOrder": 0 },
+            { "text": "The exported file always receives the tenant's default Office label", "isCorrect": false, "sortOrder": 1 },
+            { "text": "The label remains only as Power BI workspace metadata", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Export is allowed only after removing the report's label", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "cloud-apps-apply-label-governance",
+          "objectiveKey": "implement-information-protection",
+          "prompt": "A connected cloud app contains externally shared files that match a confidential-data expression. The MSP wants matching supported files labeled automatically. Which design fits?",
+          "kind": "SingleChoice",
+          "difficulty": "Advanced",
+          "explanation": "A Defender for Cloud Apps file policy can combine sharing and content-inspection filters with a governance action that applies a Microsoft Purview sensitivity label, when the connected app and file support that action.",
+          "sourceName": "File policies in Microsoft Defender for Cloud Apps",
+          "sourceUrl": "https://learn.microsoft.com/en-us/defender-cloud-apps/data-protection-policies",
+          "choices": [
+            { "text": "Create a Defender for Cloud Apps file policy with an apply-label governance action", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Create a Purview retention policy for the connected app", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Create a Defender XDR custom detection that changes file metadata", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Publish the sensitivity label only to the file owners", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "label-content-marking",
+          "objectiveKey": "implement-information-protection",
+          "prompt": "Every document labeled 'Internal' must display the classification at the top of each page, but encryption is not required. Which label setting should be configured?",
+          "kind": "SingleChoice",
+          "difficulty": "Foundation",
+          "explanation": "Sensitivity label content marking can add headers, footers, or watermarks independently of encryption. A header is the direct match for text required at the top of each page.",
+          "sourceName": "Learn about sensitivity labels",
+          "sourceUrl": "https://learn.microsoft.com/en-us/purview/sensitivity-labels",
+          "choices": [
+            { "text": "A header in the label's content marking settings", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Administrator-defined encryption permissions", "isCorrect": false, "sortOrder": 1 },
+            { "text": "A default retention label for the document library", "isCorrect": false, "sortOrder": 2 },
+            { "text": "An Endpoint DLP policy tip", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "endpoint-dlp-user-device-scope",
+          "objectiveKey": "implement-dlp-retention",
+          "prompt": "An Endpoint DLP policy includes a user but excludes the Windows device the user is working on. Will the policy enforce on that device?",
+          "kind": "SingleChoice",
+          "difficulty": "Advanced",
+          "explanation": "For Endpoint DLP device scoping, both the signed-in user and the device must be included. If either side is outside the policy scope, the policy isn't applied on that endpoint.",
+          "sourceName": "Data Loss Prevention policy reference",
+          "sourceUrl": "https://learn.microsoft.com/en-us/purview/dlp-policy-reference",
+          "choices": [
+            { "text": "No; both the user and device must be in scope", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Yes; user scope always overrides device exclusions", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Yes; device scope affects reporting but not enforcement", "isCorrect": false, "sortOrder": 2 },
+            { "text": "No; Endpoint DLP can target devices but never users", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "endpoint-dlp-restricted-app",
+          "objectiveKey": "implement-dlp-retention",
+          "prompt": "A legacy synchronization executable must be blocked from opening DLP-protected files, while other applications remain unaffected. Which configuration is required?",
+          "kind": "SingleChoice",
+          "difficulty": "Advanced",
+          "explanation": "Add the executable to the restricted apps list in Endpoint DLP settings, then configure the DLP rule's Access by restricted apps action to Block. Scoping a policy to a device group alone doesn't identify the process to restrict.",
+          "sourceName": "Data Loss Prevention policy reference",
+          "sourceUrl": "https://learn.microsoft.com/en-us/purview/dlp-policy-reference",
+          "choices": [
+            { "text": "Add the executable as a restricted app and block access by restricted apps in the rule", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Add the executable's publisher to a printer authorization group", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Exclude the executable from Defender Antivirus and block all file activities", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Create a retention label that marks files as regulatory records", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "dlp-block-with-justification",
+          "objectiveKey": "implement-dlp-retention",
+          "prompt": "Sensitive uploads should normally be stopped, but approved users must be able to continue after entering a business reason that investigators can review. Which DLP action fits?",
+          "kind": "SingleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "Block with override stops the activity by default but lets the user proceed through the policy tip after supplying the configured justification. Block without override cannot support the approved exception workflow.",
+          "sourceName": "Data Loss Prevention policy reference",
+          "sourceUrl": "https://learn.microsoft.com/en-us/purview/dlp-policy-reference",
+          "choices": [
+            { "text": "Block with override and require business justification", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Block without override and lower the alert severity", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Audit only and require a retention event", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Run in simulation mode with policy tips", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "endpoint-dlp-device-health-dashboard",
+          "objectiveKey": "implement-dlp-retention",
+          "prompt": "Several onboarded devices aren't enforcing a newly deployed Endpoint DLP policy. Which Purview view best shows onboarding, policy-sync, and feature-readiness problems?",
+          "kind": "SingleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "The device health reports dashboard centralizes Endpoint DLP onboarding status, policy update readiness, and feature readiness. Activity explorer shows events but isn't the primary readiness and sync troubleshooting view.",
+          "sourceName": "Monitor device health with the device health reports dashboard",
+          "sourceUrl": "https://learn.microsoft.com/en-us/purview/device-onboarding-health-reports-dashboard",
+          "choices": [
+            { "text": "The Endpoint DLP device health reports dashboard", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Content explorer", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Policy lookup in Records Management", "isCorrect": false, "sortOrder": 2 },
+            { "text": "The Defender for Cloud Apps app inventory", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "retention-disposition-review",
+          "objectiveKey": "implement-dlp-retention",
+          "prompt": "Expired contracts must be reviewed by the legal records team before permanent deletion. Which retention-label end-of-period action should be configured?",
+          "kind": "SingleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "Starting a disposition review routes expired labeled items to the configured reviewers before permanent deletion. Automatic deletion would bypass the required human decision.",
+          "sourceName": "Customize what happens at the end of the retention period",
+          "sourceUrl": "https://learn.microsoft.com/en-us/purview/retention-label-flow",
+          "choices": [
+            { "text": "Start a disposition review", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Permanently delete the item automatically", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Deactivate the sensitivity label", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Move the item to the Preservation Hold Library", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "retention-label-declare-record",
+          "objectiveKey": "implement-dlp-retention",
+          "prompt": "Users must declare selected SharePoint documents as records while applying the organization's retention schedule. Which control should be published to them?",
+          "kind": "SingleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "Configure a retention label to mark content as a record, then publish that label to the required locations and users. A sensitivity label classifies and protects content but doesn't declare it as a records-management record.",
+          "sourceName": "Declare records by using retention labels",
+          "sourceUrl": "https://learn.microsoft.com/en-us/purview/declare-records",
+          "choices": [
+            { "text": "A retention label configured to mark items as records", "isCorrect": true, "sortOrder": 0 },
+            { "text": "A sensitivity label configured with user-defined permissions", "isCorrect": false, "sortOrder": 1 },
+            { "text": "A DLP policy configured to block deletion", "isCorrect": false, "sortOrder": 2 },
+            { "text": "An adaptive policy scope configured for SharePoint", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "retention-policy-lookup-exact-site",
+          "objectiveKey": "implement-dlp-retention",
+          "prompt": "An MSP must determine which retention policies are assigned to one SharePoint site. What input should it use in Policy lookup?",
+          "kind": "SingleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "Policy lookup requires the site's exact URL. It doesn't accept wildcards or partial site names when resolving retention policy assignments.",
+          "sourceName": "Learn about retention policies and retention labels",
+          "sourceUrl": "https://learn.microsoft.com/en-us/purview/retention",
+          "choices": [
+            { "text": "The exact SharePoint site URL", "isCorrect": true, "sortOrder": 0 },
+            { "text": "A wildcard matching the site's managed path", "isCorrect": false, "sortOrder": 1 },
+            { "text": "The site's sensitivity label GUID", "isCorrect": false, "sortOrder": 2 },
+            { "text": "The name of the site's default document library", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "retention-auto-apply-overlap",
+          "objectiveKey": "implement-dlp-retention",
+          "prompt": "Two auto-apply retention-label policies can match the same documents, but the customer requires a predictable label. Which design change is necessary?",
+          "kind": "SingleChoice",
+          "difficulty": "Advanced",
+          "explanation": "An item can have only one retention label, and you can't set retention-label priorities to control which label wins when multiple auto-apply policies match. Refine the policy conditions or scopes so the same item doesn't satisfy both designs.",
+          "sourceName": "Learn about retention policies and retention labels",
+          "sourceUrl": "https://learn.microsoft.com/en-us/purview/retention",
+          "choices": [
+            { "text": "Make the policies' match conditions or scopes mutually exclusive", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Give the preferred retention label a higher label priority", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Apply both labels and use the longer retention period", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Publish both labels to users before running auto-apply", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "insider-risk-hr-connector",
+          "objectiveKey": "manage-risks-alerts-activities",
+          "prompt": "A departing-user insider risk policy must use authoritative resignation and termination dates from an on-premises HR system. Which integration should the MSP configure?",
+          "kind": "SingleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "The Microsoft 365 HR data connector imports supported HR records, typically from a scheduled CSV feed authenticated through an Entra application, so departure events can trigger the policy.",
+          "sourceName": "Set up a connector to import HR data",
+          "sourceUrl": "https://learn.microsoft.com/en-us/purview/import-hr-data",
+          "choices": [
+            { "text": "A Microsoft 365 HR data connector", "isCorrect": true, "sortOrder": 0 },
+            { "text": "A Defender for Cloud Apps app connector", "isCorrect": false, "sortOrder": 1 },
+            { "text": "A Microsoft Sentinel threat intelligence connector", "isCorrect": false, "sortOrder": 2 },
+            { "text": "An Endpoint DLP printer group", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "insider-risk-enable-global-indicators",
+          "objectiveKey": "manage-risks-alerts-activities",
+          "prompt": "A data-leaks policy wizard doesn't offer USB-copy or personal-cloud-upload indicators. What should the administrator check first?",
+          "kind": "SingleChoice",
+          "difficulty": "Advanced",
+          "explanation": "Insider Risk Management global policy indicators are disabled by default. An indicator must first be enabled in the solution's Policy indicators settings before it can be selected and scored in a policy.",
+          "sourceName": "Configure policy indicators in Insider Risk Management",
+          "sourceUrl": "https://learn.microsoft.com/en-us/purview/insider-risk-management-settings-policy-indicators",
+          "choices": [
+            { "text": "Whether the required indicators are enabled in global Policy indicators settings", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Whether the user has a sensitivity label publishing policy", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Whether Audit search has a one-year retention policy", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Whether the DLP policy is higher priority than the insider risk policy", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "insider-risk-triggering-event",
+          "objectiveKey": "manage-risks-alerts-activities",
+          "prompt": "A user is included in a departing-user insider risk policy, but the HR connector hasn't reported a departure date. How is the user evaluated?",
+          "kind": "SingleChoice",
+          "difficulty": "Advanced",
+          "explanation": "The departure date is the triggering event for this template. Until the connector reports that event, the policy doesn't activate the user for risk evaluation even though the user is included in scope.",
+          "sourceName": "Configure policy indicators in Insider Risk Management",
+          "sourceUrl": "https://learn.microsoft.com/en-us/purview/insider-risk-management-settings-policy-indicators",
+          "choices": [
+            { "text": "The policy doesn't evaluate the user until the triggering departure event occurs", "isCorrect": true, "sortOrder": 0 },
+            { "text": "The policy evaluates all activity immediately because the user is in scope", "isCorrect": false, "sortOrder": 1 },
+            { "text": "The policy treats the user's next DLP alert as a departure date", "isCorrect": false, "sortOrder": 2 },
+            { "text": "The policy creates a low-severity alert for the missing HR record", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "insider-risk-analytics-baseline",
+          "objectiveKey": "manage-risks-alerts-activities",
+          "prompt": "Before creating an Insider Risk Management policy, a customer wants an anonymized aggregate view of potential data-leak activity to choose an appropriate template and scope. What should it run?",
+          "kind": "SingleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "Insider risk analytics evaluates anonymized aggregate activity without requiring a configured insider risk policy. Its insights and recommendations can guide policy template, indicators, and scope decisions.",
+          "sourceName": "Create and manage Insider Risk Management policies",
+          "sourceUrl": "https://learn.microsoft.com/en-us/purview/insider-risk-management-policies",
+          "choices": [
+            { "text": "Insider risk analytics", "isCorrect": true, "sortOrder": 0 },
+            { "text": "A forensic evidence policy for all users", "isCorrect": false, "sortOrder": 1 },
+            { "text": "A DLP policy in enforcement mode", "isCorrect": false, "sortOrder": 2 },
+            { "text": "A Defender XDR custom detection", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "audit-search-activity-filter",
+          "objectiveKey": "manage-risks-alerts-activities",
+          "prompt": "An investigator needs all file-deletion audit events performed by one user during a known week. Which Audit search design is most precise?",
+          "kind": "SingleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "Filter by the user, the file-deletion activities, and the required date range. The keyword box searches indexed common-schema fields and isn't a substitute for the dedicated user and activity filters.",
+          "sourceName": "Search the audit log",
+          "sourceUrl": "https://learn.microsoft.com/en-us/purview/audit-search",
+          "choices": [
+            { "text": "Set the date range, user, and file-deletion activities as search filters", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Enter the user's display name and 'delete' only in Keyword Search", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Search Content explorer for unlabeled files owned by the user", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Create an audit retention policy for the user and wait for a result", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "cloud-apps-admin-quarantine",
+          "objectiveKey": "manage-risks-alerts-activities",
+          "prompt": "A Defender for Cloud Apps file policy finds a publicly shared file containing regulated data. The customer wants the file moved out of the user's folder and accessible only to administrators during investigation. Which governance action fits?",
+          "kind": "SingleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "Admin quarantine moves a supported file to the administrator quarantine location and leaves a placeholder for the user. Removing public sharing alone reduces exposure but doesn't meet the requirement to take administrative custody of the file.",
+          "sourceName": "Protect files with admin quarantine",
+          "sourceUrl": "https://learn.microsoft.com/en-us/defender-cloud-apps/use-case-admin-quarantine",
+          "choices": [
+            { "text": "Admin quarantine", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Remove public sharing", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Apply a sensitivity label without encryption", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Mark the file as a false positive", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "dspm-ai-content-capture",
+          "objectiveKey": "manage-risks-alerts-activities",
+          "prompt": "DSPM for AI shows that users visited a supported third-party generative AI app, but investigators can't review prompt and response text. Which configuration should they verify?",
+          "kind": "SingleChoice",
+          "difficulty": "Advanced",
+          "explanation": "For non-Copilot AI apps, prompt and response content requires an applicable collection policy with content capture selected. A visit event alone identifies use of the site but doesn't collect the interaction text.",
+          "sourceName": "Considerations for deploying DSPM for AI",
+          "sourceUrl": "https://learn.microsoft.com/en-us/purview/dspm-for-ai-considerations",
+          "choices": [
+            { "text": "An applicable collection policy has content capture enabled", "isCorrect": true, "sortOrder": 0 },
+            { "text": "The AI site is added to a retention adaptive scope", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Every user has Content Explorer Content Viewer", "isCorrect": false, "sortOrder": 2 },
+            { "text": "A sensitivity label is configured as the default for Teams meetings", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "communication-compliance-ai-interactions",
+          "objectiveKey": "manage-risks-alerts-activities",
+          "prompt": "A regulated customer must detect threatening language and confidential-data sharing in Microsoft 365 Copilot prompts and responses. Which Purview control is designed for this review workflow?",
+          "kind": "SingleChoice",
+          "difficulty": "Advanced",
+          "explanation": "A Communication Compliance policy can evaluate supported Copilot prompts and responses with classifiers, sensitive information types, and keywords, then provide privacy-aware review and remediation workflows.",
+          "sourceName": "Configure Communication Compliance for generative AI interactions",
+          "sourceUrl": "https://learn.microsoft.com/en-us/purview/communication-compliance-copilot",
+          "choices": [
+            { "text": "A Communication Compliance policy for generative AI interactions", "isCorrect": true, "sortOrder": 0 },
+            { "text": "A retention policy for Microsoft Copilot Experiences", "isCorrect": false, "sortOrder": 1 },
+            { "text": "A Defender for Endpoint attack surface reduction rule", "isCorrect": false, "sortOrder": 2 },
+            { "text": "A Content explorer filter for trainable classifiers", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "label-scenario-order-publishing",
+          "objectiveKey": "implement-information-protection",
+          "prompt": "A compliance team has approved protection settings for a new Confidential sensitivity label. The label does not yet exist, and a pilot group must be able to apply it in Office. Which implementation order is correct?",
+          "kind": "SingleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "The administrator first creates the label and configures its protection settings, then publishes it to the pilot users through a label policy. Only after policy distribution can those users select and apply the label in supported Office applications.",
+          "sourceName": "Create and configure sensitivity labels and their policies",
+          "sourceUrl": "https://learn.microsoft.com/en-us/purview/create-sensitivity-labels",
+          "choices": [
+            { "text": "Create and configure the label → publish it in a label policy → let pilot users apply it", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Publish a label policy → let pilot users apply the label → create and configure the label", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Let pilot users apply the label → create and configure the label → publish it in a label policy", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Create and configure the label → let pilot users apply it → publish it in a label policy", "isCorrect": false, "sortOrder": 3 },
+            { "text": "Publish a label policy → create and configure the label → let pilot users apply it", "isCorrect": false, "sortOrder": 4 }
+          ]
+        },
+        {
+          "contentKey": "dlp-scenario-order-simulation-rollout",
+          "objectiveKey": "implement-dlp-retention",
+          "prompt": "A new Purview DLP policy will block customer financial records from being shared externally. The organization wants evidence of likely matches and false positives before enforcement. Which rollout order is best?",
+          "kind": "SingleChoice",
+          "difficulty": "Advanced",
+          "explanation": "Build the policy for a controlled scope, run it in simulation, review the isolated simulation results, tune conditions and exceptions, and then enable enforcement before expanding. Simulation evaluates matches without enforcing the actions, so it should precede a blocking rollout.",
+          "sourceName": "Learn about data loss prevention simulation mode",
+          "sourceUrl": "https://learn.microsoft.com/en-us/purview/dlp-simulation-mode-learn",
+          "choices": [
+            { "text": "Configure a pilot scope → run simulation → review matches → tune conditions and exceptions → enable enforcement → expand scope", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Enable enforcement → configure a pilot scope → review matches → run simulation → tune conditions and exceptions → expand scope", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Configure a pilot scope → enable enforcement → expand scope → review matches → tune conditions and exceptions → run simulation", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Run simulation → expand scope → configure a pilot scope → enable enforcement → review matches → tune conditions and exceptions", "isCorrect": false, "sortOrder": 3 },
+            { "text": "Configure a pilot scope → review matches without running the policy → enable enforcement → run simulation → tune conditions → expand scope", "isCorrect": false, "sortOrder": 4 },
+            { "text": "Configure a pilot scope → run simulation → enable enforcement → expand scope → review matches → tune conditions and exceptions", "isCorrect": false, "sortOrder": 5 }
+          ]
+        },
+        {
+          "contentKey": "endpoint-dlp-scenario-deployment-components",
+          "objectiveKey": "implement-dlp-retention",
+          "prompt": "A customer must stop files containing passport numbers from being copied to USB drives, printed, or uploaded through unapproved browsers on managed Windows devices. Choose three required configuration areas.",
+          "kind": "MultipleChoice",
+          "difficulty": "Advanced",
+          "explanation": "Endpoint DLP requires devices to be onboarded into Purview, endpoint-wide settings such as browser and device groups to be configured, and a DLP policy scoped to Devices with the relevant conditions and activity restrictions. A label publishing policy, retention label, or Exchange mail flow rule cannot enforce all three endpoint activities.",
+          "sourceName": "Implement endpoint data loss prevention with Microsoft Purview",
+          "sourceUrl": "https://learn.microsoft.com/en-us/training/modules/purview-implement-endpoint-dlp/",
+          "choices": [
+            { "text": "Onboard the Windows devices into Microsoft Purview", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Configure Endpoint DLP settings for device and browser restrictions", "isCorrect": true, "sortOrder": 1 },
+            { "text": "Create a DLP policy scoped to Devices with the required activity actions", "isCorrect": true, "sortOrder": 2 },
+            { "text": "Publish a sensitivity label without creating a DLP policy", "isCorrect": false, "sortOrder": 3 },
+            { "text": "Apply a retention label to every managed device", "isCorrect": false, "sortOrder": 4 },
+            { "text": "Create only an Exchange Online mail flow rule", "isCorrect": false, "sortOrder": 5 }
+          ]
+        },
+        {
+          "contentKey": "encryption-scenario-external-partner-access",
+          "objectiveKey": "implement-information-protection",
+          "prompt": "A project team must apply one sensitivity label to encrypt documents, but the permitted employees and external partner addresses differ for every document and cannot be predetermined by the administrator. Access must not extend to everyone in either organization. Which label configuration best fits?",
+          "kind": "SingleChoice",
+          "difficulty": "Advanced",
+          "explanation": "User-defined permissions let the person applying the label specify the exact users, groups, or organizations for each document. Fixed administrator-defined permissions cannot follow per-document recipient changes; organization-wide access is broader, while content marking and retention do not provide access control.",
+          "sourceName": "Restrict access to content by using sensitivity labels to apply encryption",
+          "sourceUrl": "https://learn.microsoft.com/en-us/purview/encryption-sensitivity-labels",
+          "choices": [
+            { "text": "Configure the label for user-defined permissions and let the labeler specify the named recipients", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Configure administrator-defined permissions for a fixed list of current project members", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Configure administrator-defined permissions for everyone in both organizations", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Add a Confidential footer without enabling encryption", "isCorrect": false, "sortOrder": 3 },
+            { "text": "Publish a retention label to the project team", "isCorrect": false, "sortOrder": 4 }
+          ]
+        },
+        {
+          "contentKey": "retention-scenario-conflicting-policies",
+          "objectiveKey": "implement-dlp-retention",
+          "prompt": "A SharePoint document matches one retention policy that retains it for seven years and another policy that deletes it after three years. The document reaches its third anniversary. Choose two outcomes that follow the Purview retention principles.",
+          "kind": "MultipleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "Retention takes precedence over deletion, and the longest applicable retention period wins. The three-year deletion setting therefore cannot permanently delete the item while the seven-year retention requirement remains active; deletion is considered only after preservation requirements are satisfied.",
+          "sourceName": "Learn about retention policies and retention labels",
+          "sourceUrl": "https://learn.microsoft.com/en-us/purview/retention",
+          "choices": [
+            { "text": "The document remains preserved because the seven-year retention requirement still applies", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Permanent deletion is deferred until the applicable retention requirement is satisfied", "isCorrect": true, "sortOrder": 1 },
+            { "text": "The three-year deletion policy immediately overrides the retention policy", "isCorrect": false, "sortOrder": 2 },
+            { "text": "The two policies cancel each other and the user's normal deletion wins", "isCorrect": false, "sortOrder": 3 },
+            { "text": "The document is moved automatically into an eDiscovery review set", "isCorrect": false, "sortOrder": 4 }
+          ]
+        },
+        {
+          "contentKey": "insider-risk-scenario-order-investigation",
+          "objectiveKey": "manage-risks-alerts-activities",
+          "prompt": "An Insider Risk Management alert reports unusual downloads followed by copying files to removable media. The analyst must validate the activity, manage it as a case, take a documented action, and close the investigation. Which order is appropriate?",
+          "kind": "SingleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "The analyst first triages the alert and its risk factors, confirms it to create a case, investigates the case activity and timeline, takes an appropriate documented action such as a notice or escalation, and then resolves the case. Creating or closing a case before alert validation loses the intended workflow.",
+          "sourceName": "Investigate Insider Risk Management activities",
+          "sourceUrl": "https://learn.microsoft.com/en-us/purview/insider-risk-management-activities",
+          "choices": [
+            { "text": "Triage the alert → confirm it and create a case → investigate case activity → take a documented action → resolve the case", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Resolve the alert → create a case → investigate case activity → take a documented action → confirm the alert", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Create a case → resolve the case → triage the alert → investigate case activity → take a documented action", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Triage the alert → take a documented action → resolve the case → confirm it and create a case → investigate case activity", "isCorrect": false, "sortOrder": 3 },
+            { "text": "Confirm it and create a case → take a documented action → triage the alert → resolve the case → investigate case activity", "isCorrect": false, "sortOrder": 4 }
+          ]
+        },
+        {
+          "contentKey": "auto-label-scenario-simulation-review",
+          "objectiveKey": "implement-information-protection",
+          "prompt": "A service-side auto-labeling policy is in simulation and matches far more SharePoint files than expected. The administrator wants to avoid incorrect labels before enforcement. Choose two actions.",
+          "kind": "MultipleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "Simulation exposes matched items without applying labels. The administrator should review those items and refine the policy conditions or scope, then rerun simulation as needed. Turning on the policy immediately would apply the suspected overbroad configuration.",
+          "sourceName": "Automatically apply a sensitivity label to Microsoft 365 data",
+          "sourceUrl": "https://learn.microsoft.com/en-us/purview/apply-sensitivity-label-automatically",
+          "choices": [
+            { "text": "Review the matched items in the simulation results", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Refine the conditions or scope and rerun simulation", "isCorrect": true, "sortOrder": 1 },
+            { "text": "Turn on the policy immediately because simulation has already labeled the files", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Delete the sensitivity label and replace it with a retention policy", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "ediscovery-scenario-preserve-mailbox",
+          "objectiveKey": "manage-risks-alerts-activities",
+          "prompt": "Legal opens an investigation involving a departing employee. Relevant mailbox and OneDrive content must remain preserved even if the employee deletes items, while investigators prepare searches and review. Which Purview action directly establishes that preservation?",
+          "kind": "SingleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "An eDiscovery hold preserves content in the specified custodial and noncustodial data sources while the investigation proceeds. An audit search records activities but does not preserve content, and retention or DLP changes are not a substitute for a case-specific legal hold.",
+          "sourceName": "Create an eDiscovery hold",
+          "sourceUrl": "https://learn.microsoft.com/en-us/purview/ediscovery-create-holds",
+          "choices": [
+            { "text": "Place the employee's mailbox and OneDrive location on an eDiscovery hold", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Run an Audit search for deletion activities each day", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Create a DLP policy that blocks external sharing", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Export the current files and remove the employee from all retention policies", "isCorrect": false, "sortOrder": 3 }
+          ]
+        }
+      ]
+}

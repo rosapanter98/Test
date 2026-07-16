@@ -1,0 +1,68 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:CertPrep.Features.Progress"
+             x:Class="CertPrep.Features.Progress.Views.ProgressView"
+             x:DataType="vm:ProgressViewModel">
+  <ScrollViewer>
+    <StackPanel Margin="26,22,26,36" Spacing="18">
+      <Border Classes="card" Background="{DynamicResource AccentSoftBrush}">
+        <Grid ColumnDefinitions="*,Auto">
+          <StackPanel Spacing="7" MaxWidth="720">
+            <TextBlock Text="OBJECTIVE-LEVEL SIGNAL" Classes="eyebrow" />
+            <TextBlock Text="Know where the misses cluster." Classes="h1" />
+            <TextBlock Text="Accuracy is based on submitted answers, including abandoned sessions. Best score only uses completed sessions." Classes="muted" TextWrapping="Wrap" />
+          </StackPanel>
+          <Border Grid.Column="1" Width="68" Height="68" CornerRadius="8" Background="{DynamicResource SurfaceRaisedBrush}" Margin="24,0,0,0">
+            <PathIcon Width="30" Height="30" Data="{StaticResource Icon.Progress}" Foreground="{DynamicResource AccentBrush}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+          </Border>
+        </Grid>
+      </Border>
+
+      <TextBlock Text="{Binding ErrorMessage}" Foreground="{DynamicResource DangerBrush}" TextWrapping="Wrap" />
+
+      <ItemsControl ItemsSource="{Binding Exams}">
+        <ItemsControl.ItemTemplate>
+          <DataTemplate x:DataType="vm:ExamProgressViewModel">
+            <Border Classes="card" Margin="0,0,0,11">
+              <StackPanel Spacing="14">
+                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="20">
+                  <StackPanel Spacing="5">
+                    <TextBlock Text="{Binding ExamCode}" Classes="eyebrow" />
+                    <TextBlock Text="{Binding ExamTitle}" Classes="h2" TextWrapping="Wrap" />
+                    <TextBlock Text="{Binding ActivityText}" Classes="muted" FontSize="12" />
+                  </StackPanel>
+                  <StackPanel Grid.Column="1" HorizontalAlignment="Right" Spacing="2">
+                    <TextBlock Text="{Binding ReadinessText}" FontSize="27" FontWeight="Bold" HorizontalAlignment="Right" />
+                    <TextBlock Text="{Binding ReadinessStatus}" Foreground="{DynamicResource AccentBrush}" FontSize="11" HorizontalAlignment="Right" />
+                    <TextBlock Text="{Binding AccuracyText, StringFormat=Lifetime accuracy {0}}" Classes="muted" FontSize="11" HorizontalAlignment="Right" />
+                    <TextBlock Text="{Binding BestScoreText}" Classes="muted" FontSize="11" HorizontalAlignment="Right" />
+                  </StackPanel>
+                </Grid>
+
+                <Border Height="1" Background="{DynamicResource StrokeBrush}" />
+
+                <ItemsControl ItemsSource="{Binding Objectives}">
+                  <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="vm:ObjectiveProgressViewModel">
+                      <Grid ColumnDefinitions="*,150,160" ColumnSpacing="13" Margin="0,6">
+                        <StackPanel Spacing="2">
+                          <TextBlock Text="{Binding Name}" FontWeight="SemiBold" TextWrapping="Wrap" />
+                          <TextBlock Text="{Binding DetailText}" Classes="muted" FontSize="11" />
+                        </StackPanel>
+                        <ProgressBar Grid.Column="1" Minimum="0" Maximum="100" Value="{Binding ReadinessPercent}" VerticalAlignment="Center" />
+                        <StackPanel Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center">
+                          <TextBlock Text="{Binding ReadinessPercent, StringFormat={}{0}%}" HorizontalAlignment="Right" FontWeight="SemiBold" />
+                          <TextBlock Text="{Binding MasteryText}" Classes="muted" FontSize="10" HorizontalAlignment="Right" TextAlignment="Right" />
+                        </StackPanel>
+                      </Grid>
+                    </DataTemplate>
+                  </ItemsControl.ItemTemplate>
+                </ItemsControl>
+              </StackPanel>
+            </Border>
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>

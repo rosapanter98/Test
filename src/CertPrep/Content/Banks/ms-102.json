@@ -1,0 +1,920 @@
+{
+  "provider": "Microsoft",
+  "code": "MS-102",
+  "title": "Microsoft 365 Administrator",
+  "summary": "Microsoft 365 tenant administration, Microsoft Entra identity, Defender XDR security operations, and Microsoft Purview compliance.",
+  "contentVersion": "Official objectives 2026-04-28; audited 2026.07",
+  "objectives": [
+    { "contentKey": "manage-m365-tenant", "name": "Deploy and manage a Microsoft 365 tenant", "sortOrder": 0 },
+    { "contentKey": "manage-entra-identity-access", "name": "Implement and manage Microsoft Entra identity and access", "sortOrder": 1 },
+    { "contentKey": "manage-defender-xdr", "name": "Manage security and threats by using Microsoft Defender XDR", "sortOrder": 2 },
+    { "contentKey": "manage-purview-compliance", "name": "Manage compliance by using Microsoft Purview", "sortOrder": 3 }
+  ],
+  "questions": [
+    {
+      "contentKey": "ms102-domain-verification-record",
+      "objectiveKey": "manage-m365-tenant",
+      "prompt": "An MSP is adding a customer's existing DNS domain to Microsoft 365. The domain currently handles production email elsewhere, so mail flow must not change during ownership verification. Which DNS record should normally be added first?",
+      "kind": "SingleChoice", "difficulty": "Foundation",
+      "explanation": "A TXT record can verify domain ownership without changing mail routing. Changing the MX record redirects email and should be done only when the mail-flow migration is ready.",
+      "sourceName": "Add a custom domain to Microsoft 365", "sourceUrl": "https://learn.microsoft.com/en-us/microsoft-365/admin/setup/add-domain",
+      "choices": [
+        { "text": "The Microsoft-provided TXT verification record", "isCorrect": true, "sortOrder": 0 },
+        { "text": "The Microsoft 365 MX record", "isCorrect": false, "sortOrder": 1 },
+        { "text": "The Exchange Online Autodiscover CNAME record", "isCorrect": false, "sortOrder": 2 },
+        { "text": "The Microsoft 365 SPF TXT record", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "ms102-service-health-notifications",
+      "objectiveKey": "manage-m365-tenant",
+      "prompt": "Operations staff need notifications only for Exchange Online incidents affecting one customer tenant. Where should a tenant administrator configure this?",
+      "kind": "SingleChoice", "difficulty": "Foundation",
+      "explanation": "Service Health in the Microsoft 365 admin center provides tenant-specific advisories and incidents, and admins can customize email notification preferences by service and issue type.",
+      "sourceName": "Check Microsoft 365 service health", "sourceUrl": "https://learn.microsoft.com/en-us/microsoft-365/enterprise/view-service-health",
+      "choices": [
+        { "text": "Microsoft 365 admin center Service Health notification preferences", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Microsoft Entra Connect Health alert settings", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Microsoft Defender XDR alert notification rules", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Microsoft Purview DLP alert policies", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "ms102-network-connectivity-insights",
+      "objectiveKey": "manage-m365-tenant",
+      "prompt": "Users at one branch report poor Microsoft 365 performance. The MSP wants tenant-specific measurements and recommendations for that office's network path to Microsoft 365. Which capability should be reviewed?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "Microsoft 365 network connectivity provides location-level assessments, measurements, and recommendations for connectivity to Microsoft 365 services.",
+      "sourceName": "Network connectivity in the Microsoft 365 admin center", "sourceUrl": "https://learn.microsoft.com/en-us/microsoft-365/enterprise/office-365-network-mac-perf-overview?view=o365-worldwide",
+      "choices": [
+        { "text": "Network connectivity insights in the Microsoft 365 admin center", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Microsoft Entra Connect Health synchronization latency", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Defender for Cloud Apps Cloud Discovery traffic logs", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Microsoft 365 usage analytics in Power BI", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "ms102-backup-protection-policy",
+      "objectiveKey": "manage-m365-tenant",
+      "prompt": "A customer enables Microsoft 365 Backup for Exchange Online. Which configuration determines which mailboxes are protected?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "Microsoft 365 Backup uses protection policies for each supported workload. An Exchange protection policy defines the mailboxes included in backup protection.",
+      "sourceName": "Microsoft 365 Backup setup", "sourceUrl": "https://learn.microsoft.com/en-us/microsoft-365/backup/backup-setup",
+      "choices": [
+        { "text": "An Exchange protection policy in Microsoft 365 Backup", "isCorrect": true, "sortOrder": 0 },
+        { "text": "An Exchange retention policy in Microsoft Purview", "isCorrect": false, "sortOrder": 1 },
+        { "text": "A Defender for Office 365 preset security policy", "isCorrect": false, "sortOrder": 2 },
+        { "text": "A Microsoft 365 Apps servicing profile", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "ms102-group-license-errors",
+      "objectiveKey": "manage-m365-tenant",
+      "prompt": "A Microsoft 365 license is assigned to a group, but one member does not receive the service plans. Where should the administrator look for the user's inherited assignment error?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "Group-based licensing records assignment state and errors for individual users. Common causes include insufficient available licenses, conflicting service plans, or an invalid usage location.",
+      "sourceName": "Resolve group-based licensing problems", "sourceUrl": "https://learn.microsoft.com/en-us/entra/identity/users/licensing-groups-resolve-problems",
+      "choices": [
+        { "text": "The user's group-based license assignment state and error details", "isCorrect": true, "sortOrder": 0 },
+        { "text": "The group's Microsoft 365 expiration policy status", "isCorrect": false, "sortOrder": 1 },
+        { "text": "The user's Defender XDR identity timeline", "isCorrect": false, "sortOrder": 2 },
+        { "text": "The group's sensitivity label publication status", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "ms102-shared-mailbox-license",
+      "objectiveKey": "manage-m365-tenant",
+      "prompt": "A 25 GB shared mailbox is used by a support team. It does not use an archive and is not placed on hold. Which licensing statement is correct?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "A shared mailbox generally does not require its own license when it stays within the unlicensed shared-mailbox limits and does not use features that require licensing. Users accessing it still need appropriate licenses.",
+      "sourceName": "About shared mailboxes", "sourceUrl": "https://learn.microsoft.com/en-us/microsoft-365/admin/email/about-shared-mailboxes",
+      "choices": [
+        { "text": "The shared mailbox generally needs no separate license, but its users need licensed Exchange Online access", "isCorrect": true, "sortOrder": 0 },
+        { "text": "The shared mailbox always needs the same license as every delegated user", "isCorrect": false, "sortOrder": 1 },
+        { "text": "The shared mailbox needs a license only because more than one user accesses it", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Neither the shared mailbox nor its delegated users require Exchange Online licenses", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "ms102-admin-unit-delegation",
+      "objectiveKey": "manage-m365-tenant",
+      "prompt": "A regional service desk must manage user properties only for users in its own business unit. Which Microsoft Entra design provides scoped delegation?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "An administrative unit contains the regional objects, and a supported role assignment scoped to that unit limits the administrator's authority to those objects.",
+      "sourceName": "Administrative units in Microsoft Entra ID", "sourceUrl": "https://learn.microsoft.com/en-us/entra/identity/role-based-access-control/administrative-units",
+      "choices": [
+        { "text": "Place the users in an administrative unit and scope a supported role assignment to it", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Place the users in a Microsoft 365 group and make the service desk group owners", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Place the users in a dynamic group and assign User Administrator tenant-wide", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Place the users in an access package catalog and assign Catalog Owner", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "ms102-pim-role-standing-access",
+      "objectiveKey": "manage-m365-tenant",
+      "prompt": "MSP administrators need occasional Exchange Administrator access in a customer tenant. Approval, MFA, justification, and a two-hour limit are required. Which approach removes standing privileged access?",
+      "kind": "SingleChoice", "difficulty": "Advanced",
+      "explanation": "PIM eligible assignments allow just-in-time activation. Role settings can require approval, MFA, justification, and enforce a maximum activation duration.",
+      "sourceName": "Configure Microsoft Entra role settings in PIM", "sourceUrl": "https://learn.microsoft.com/en-us/entra/id-governance/privileged-identity-management/pim-how-to-change-default-settings",
+      "choices": [
+        { "text": "An eligible Exchange Administrator assignment in PIM with the required activation settings", "isCorrect": true, "sortOrder": 0 },
+        { "text": "An active Exchange Administrator assignment reviewed every quarter", "isCorrect": false, "sortOrder": 1 },
+        { "text": "A role-assignable group with permanent active membership", "isCorrect": false, "sortOrder": 2 },
+        { "text": "An administrative unit scoped Global Reader assignment", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "ms102-idfix-preparation",
+      "objectiveKey": "manage-entra-identity-access",
+      "prompt": "Before the first synchronization from AD DS to Microsoft Entra ID, an administrator needs to find duplicate and incorrectly formatted directory attributes that could cause synchronization errors. Which tool should be run?",
+      "kind": "SingleChoice", "difficulty": "Foundation",
+      "explanation": "IdFix scans on-premises Active Directory for common object and attribute problems that can prevent successful synchronization to Microsoft Entra ID.",
+      "sourceName": "IdFix directory synchronization error remediation tool", "sourceUrl": "https://learn.microsoft.com/en-us/office365/enterprise/prepare-directory-attributes-for-synch-with-idfix",
+      "choices": [
+        { "text": "IdFix", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Microsoft Entra Connect Health", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Microsoft Support and Recovery Assistant", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Microsoft 365 network connectivity test", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "ms102-cloud-sync-multi-agent",
+      "objectiveKey": "manage-entra-identity-access",
+      "prompt": "A customer has multiple disconnected AD DS forests and wants lightweight synchronization agents with cloud-managed configuration and active-agent availability. Which solution best matches?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "Microsoft Entra Cloud Sync uses lightweight provisioning agents, supports disconnected forests, and can use multiple active agents for availability.",
+      "sourceName": "What is Microsoft Entra Cloud Sync?", "sourceUrl": "https://learn.microsoft.com/en-us/entra/identity/hybrid/cloud-sync/what-is-cloud-sync",
+      "choices": [
+        { "text": "Microsoft Entra Cloud Sync", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Microsoft Entra Connect Sync with one active server per tenant", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Microsoft Entra cross-tenant synchronization", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Microsoft Entra Application Proxy", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "ms102-connect-health-monitoring",
+      "objectiveKey": "manage-entra-identity-access",
+      "prompt": "The operations team needs alerts and health information for Microsoft Entra Connect Sync servers and synchronization services. Which service should they use?",
+      "kind": "SingleChoice", "difficulty": "Foundation",
+      "explanation": "Microsoft Entra Connect Health provides monitoring and alerts for supported hybrid identity components, including Connect Sync.",
+      "sourceName": "Microsoft Entra Connect Health", "sourceUrl": "https://learn.microsoft.com/en-us/entra/identity/hybrid/connect/whatis-azure-ad-connect",
+      "choices": [
+        { "text": "Microsoft Entra Connect Health", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Microsoft 365 Service Health", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Microsoft Defender XDR system health", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Microsoft Purview Data Explorer", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "ms102-sspr-writeback",
+      "objectiveKey": "manage-entra-identity-access",
+      "prompt": "Synchronized users reset their passwords in Microsoft Entra self-service password reset. The new passwords must also be written to on-premises AD DS. What must be enabled?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "Password writeback sends supported cloud password changes and resets to on-premises AD DS through the configured hybrid synchronization service.",
+      "sourceName": "How self-service password reset writeback works", "sourceUrl": "https://learn.microsoft.com/en-us/entra/identity/authentication/concept-sspr-writeback",
+      "choices": [
+        { "text": "Password writeback", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Password hash synchronization", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Pass-through authentication", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Seamless single sign-on", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "ms102-password-protection-hybrid",
+      "objectiveKey": "manage-entra-identity-access",
+      "prompt": "The tenant-specific banned-password list must be enforced for password changes on on-premises domain controllers. Which two on-premises components are required?",
+      "kind": "MultipleChoice", "difficulty": "Advanced",
+      "explanation": "Microsoft Entra Password Protection for AD DS uses proxy services to retrieve policy and DC agents to validate password changes on domain controllers.",
+      "sourceName": "Microsoft Entra Password Protection for AD DS", "sourceUrl": "https://learn.microsoft.com/en-us/entra/identity/authentication/concept-password-ban-bad-on-premises",
+      "choices": [
+        { "text": "Microsoft Entra Password Protection proxy service", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Microsoft Entra Password Protection DC agents", "isCorrect": true, "sortOrder": 1 },
+        { "text": "Microsoft Entra Application Proxy connectors", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Microsoft Entra Connect Health agents for AD FS", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "ms102-ca-report-only",
+      "objectiveKey": "manage-entra-identity-access",
+      "prompt": "A policy requiring MFA for administrators must be evaluated against real sign-ins before enforcement. Which Conditional Access policy state records results without applying the grant control?",
+      "kind": "SingleChoice", "difficulty": "Foundation",
+      "explanation": "Report-only mode evaluates the policy during sign-ins and records what the result would have been, without enforcing the policy controls.",
+      "sourceName": "Conditional Access report-only mode", "sourceUrl": "https://learn.microsoft.com/en-us/entra/identity/conditional-access/concept-conditional-access-report-only",
+      "choices": [
+        { "text": "Report-only", "isCorrect": true, "sortOrder": 0 },
+        { "text": "On with an empty target resource list", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Off with sign-in logs enabled", "isCorrect": false, "sortOrder": 2 },
+        { "text": "On with session controls only", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "ms102-signin-risk-policy",
+      "objectiveKey": "manage-entra-identity-access",
+      "prompt": "A medium-or-higher sign-in risk should be remediated during authentication when the legitimate user can complete MFA. Which Conditional Access condition and control should be combined?",
+      "kind": "SingleChoice", "difficulty": "Advanced",
+      "explanation": "A sign-in risk condition can target risky authentication attempts, and requiring MFA allows the legitimate user to remediate the sign-in risk. User risk represents likely identity compromise and is handled differently.",
+      "sourceName": "Risk policies in Microsoft Entra ID Protection", "sourceUrl": "https://learn.microsoft.com/en-us/entra/id-protection/concept-identity-protection-policies",
+      "choices": [
+        { "text": "Sign-in risk of medium or high with the Require multifactor authentication control", "isCorrect": true, "sortOrder": 0 },
+        { "text": "User risk of medium or high with the Require compliant device control", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Insider risk of medium or high with the Require password change control", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Device risk of medium or high with the Require authentication strength control", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "ms102-emergency-account-exclusion",
+      "objectiveKey": "manage-entra-identity-access",
+      "prompt": "Which account type should normally be excluded from broad Conditional Access policies and separately monitored for every sign-in?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "Dedicated emergency access accounts provide a recovery path when normal authentication or policy dependencies fail. Their usage should be exceptional and generate alerts.",
+      "sourceName": "Manage emergency access accounts", "sourceUrl": "https://learn.microsoft.com/en-us/entra/identity/role-based-access-control/security-emergency-access",
+      "choices": [
+        { "text": "Cloud-only emergency access accounts", "isCorrect": true, "sortOrder": 0 },
+        { "text": "All eligible PIM administrator accounts", "isCorrect": false, "sortOrder": 1 },
+        { "text": "All synchronized service accounts", "isCorrect": false, "sortOrder": 2 },
+        { "text": "All external collaboration accounts", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "ms102-xdr-incident-correlation",
+      "objectiveKey": "manage-defender-xdr",
+      "prompt": "Alerts involving the same user, endpoint, and malicious email are generated by several Microsoft Defender products. Where should an analyst investigate the correlated attack as one case?",
+      "kind": "SingleChoice", "difficulty": "Foundation",
+      "explanation": "Microsoft Defender XDR correlates related alerts and evidence across products into incidents, providing a unified investigation and response view.",
+      "sourceName": "Incidents in Microsoft Defender XDR", "sourceUrl": "https://learn.microsoft.com/en-us/defender-xdr/incidents-overview",
+      "choices": [
+        { "text": "The Microsoft Defender XDR incident queue", "isCorrect": true, "sortOrder": 0 },
+        { "text": "The Microsoft 365 Service Health dashboard", "isCorrect": false, "sortOrder": 1 },
+        { "text": "The Microsoft Purview Activity explorer", "isCorrect": false, "sortOrder": 2 },
+        { "text": "The Microsoft Entra provisioning logs", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "ms102-advanced-hunting-kql",
+      "objectiveKey": "manage-defender-xdr",
+      "prompt": "An analyst must proactively search Defender XDR telemetry across endpoints, email, identities, and cloud applications with a reusable query. Which capability should be used?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "Advanced hunting provides a KQL-based query environment over Microsoft Defender XDR data and supports saving queries and creating custom detections when appropriate.",
+      "sourceName": "Advanced hunting overview", "sourceUrl": "https://learn.microsoft.com/en-us/defender-xdr/advanced-hunting-overview",
+      "choices": [
+        { "text": "Advanced hunting with Kusto Query Language", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Microsoft Purview Content search with Keyword Query Language", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Microsoft Entra sign-in diagnostics with Log Analytics disabled", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Microsoft 365 usage reports with Power BI filters", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "ms102-secure-score-action",
+      "objectiveKey": "manage-defender-xdr",
+      "prompt": "A security lead wants prioritized recommended actions and points that measure the organization's security posture across Microsoft 365. Which feature should be reviewed?",
+      "kind": "SingleChoice", "difficulty": "Foundation",
+      "explanation": "Microsoft Secure Score provides improvement actions and a score reflecting implemented security configurations and activities. It does not replace risk assessment or guarantee that a tenant is secure.",
+      "sourceName": "Microsoft Secure Score", "sourceUrl": "https://learn.microsoft.com/en-us/defender-xdr/microsoft-secure-score",
+      "choices": [
+        { "text": "Microsoft Secure Score", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Identity Secure Score only", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Exposure score for one device", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Microsoft 365 adoption score", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "ms102-safe-links-time-click",
+      "objectiveKey": "manage-defender-xdr",
+      "prompt": "A URL in an email was harmless at delivery but became malicious before the recipient selected it. Which Defender for Office 365 feature is designed to evaluate the link when selected?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "Safe Links rewrites or checks supported links and performs time-of-click URL evaluation, helping protect against links whose reputation changes after delivery.",
+      "sourceName": "Safe Links in Microsoft Defender for Office 365", "sourceUrl": "https://learn.microsoft.com/en-us/defender-office-365/safe-links-about",
+      "choices": [
+        { "text": "Safe Links time-of-click protection", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Safe Attachments dynamic delivery", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Anti-phishing mailbox intelligence", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Zero-hour auto purge only", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "ms102-safe-attachments-dynamic-delivery",
+      "objectiveKey": "manage-defender-xdr",
+      "prompt": "Email bodies should reach recipients promptly while attachments are being detonated. The attachment should become available only after scanning completes successfully. Which Safe Attachments action fits?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "Dynamic Delivery can deliver the message body while the attachment is scanned, then reattach a safe file after analysis completes.",
+      "sourceName": "Safe Attachments in Microsoft Defender for Office 365", "sourceUrl": "https://learn.microsoft.com/en-us/defender-office-365/safe-attachments-about",
+      "choices": [
+        { "text": "Dynamic Delivery", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Block", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Replace", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Monitor", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "ms102-impersonation-protection",
+      "objectiveKey": "manage-defender-xdr",
+      "prompt": "Attackers send messages from look-alike addresses that impersonate the customer's chief executive. Which Defender for Office 365 policy capability should be configured?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "Anti-phishing policies can protect specified users and domains from impersonation and use mailbox intelligence and spoof intelligence as additional signals.",
+      "sourceName": "Anti-phishing policies in Microsoft 365", "sourceUrl": "https://learn.microsoft.com/en-us/defender-office-365/anti-phishing-policies-about",
+      "choices": [
+        { "text": "User impersonation protection in an anti-phishing policy", "isCorrect": true, "sortOrder": 0 },
+        { "text": "URL detonation in a Safe Links policy", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Attachment detonation in a Safe Attachments policy", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Outbound spam limits in an anti-spam policy", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "ms102-attack-simulation-payload",
+      "objectiveKey": "manage-defender-xdr",
+      "prompt": "A customer wants a controlled credential-harvest simulation followed by targeted security training, without sending a real malicious campaign. Which feature should be used?",
+      "kind": "SingleChoice", "difficulty": "Foundation",
+      "explanation": "Attack Simulation Training provides Microsoft-managed simulation techniques, payloads, landing pages, user targeting, and training experiences within Defender for Office 365.",
+      "sourceName": "Attack Simulation Training", "sourceUrl": "https://learn.microsoft.com/en-us/defender-office-365/attack-simulation-training-get-started",
+      "choices": [
+        { "text": "Attack Simulation Training", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Advanced hunting custom detections", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Microsoft Purview Insider Risk Management analytics", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Microsoft Entra authentication registration campaign", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "ms102-restricted-user-remediation",
+      "objectiveKey": "manage-defender-xdr",
+      "prompt": "A mailbox exceeded outbound sending limits after compromise and now appears as a restricted entity. What should happen before the user is unblocked?",
+      "kind": "SingleChoice", "difficulty": "Advanced",
+      "explanation": "A restricted sender should be investigated and the compromise remediated first, including securing the account and removing malicious persistence. Unblocking without remediation permits continued abuse.",
+      "sourceName": "Remove blocked users from Restricted entities", "sourceUrl": "https://learn.microsoft.com/en-us/defender-office-365/outbound-spam-restore-restricted-users",
+      "choices": [
+        { "text": "Investigate and remediate the account compromise, then remove the user from Restricted entities", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Remove the user from Restricted entities, then wait for another outbound alert before investigating", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Delete the outbound spam policy, then restore it after the user signs in", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Add the user to the Tenant Allow/Block List to bypass outbound filtering", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "ms102-mde-intune-onboarding",
+      "objectiveKey": "manage-defender-xdr",
+      "prompt": "Managed Windows endpoints should be onboarded to Microsoft Defender for Endpoint at scale through Intune. Which Intune policy area is intended to deploy the onboarding configuration?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "After establishing the Defender for Endpoint connection, Intune endpoint detection and response policy can deploy onboarding settings to targeted supported devices.",
+      "sourceName": "Microsoft Defender for Endpoint with Intune", "sourceUrl": "https://learn.microsoft.com/en-us/intune/intune-service/protect/advanced-threat-protection-configure",
+      "choices": [
+        { "text": "Endpoint security endpoint detection and response policy", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Device compliance policy with machine risk disabled", "isCorrect": false, "sortOrder": 1 },
+        { "text": "App protection policy for Microsoft Defender", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Enrollment Status Page blocking app list", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "ms102-vulnerability-remediation",
+      "objectiveKey": "manage-defender-xdr",
+      "prompt": "Defender Vulnerability Management finds an outdated application on many Intune-managed devices. The security analyst wants to send a traceable remediation request to endpoint administrators. What should the analyst create?",
+      "kind": "SingleChoice", "difficulty": "Advanced",
+      "explanation": "A security recommendation can be submitted as a remediation request to Intune, allowing security and endpoint teams to track the activity and remediation status.",
+      "sourceName": "Request remediation for vulnerabilities", "sourceUrl": "https://learn.microsoft.com/en-us/defender-vulnerability-management/tvm-remediation",
+      "choices": [
+        { "text": "A remediation request from the security recommendation to Microsoft Intune", "isCorrect": true, "sortOrder": 0 },
+        { "text": "A Secure Score improvement action assigned directly to each device", "isCorrect": false, "sortOrder": 1 },
+        { "text": "A Cloud Discovery sanction action for the application", "isCorrect": false, "sortOrder": 2 },
+        { "text": "A Defender for Office 365 submission for the installer", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "ms102-cloud-discovery-logs",
+      "objectiveKey": "manage-defender-xdr",
+      "prompt": "An MSP wants to discover unsanctioned cloud applications used from a customer network by analyzing firewall or proxy traffic. Which Defender for Cloud Apps capability should be configured?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "Cloud Discovery analyzes traffic logs from supported network devices or integrated Defender for Endpoint signals to identify cloud app usage and associated risk.",
+      "sourceName": "Set up Cloud Discovery", "sourceUrl": "https://learn.microsoft.com/en-us/defender-cloud-apps/set-up-cloud-discovery",
+      "choices": [
+        { "text": "Cloud Discovery with a supported log collector or data source", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Conditional Access App Control without a connected application", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Microsoft Purview Audit with endpoint events disabled", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Microsoft Entra Application Proxy connector traffic reports", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "ms102-sensitive-info-regex",
+      "objectiveKey": "manage-purview-compliance",
+      "prompt": "A customer-specific account number follows a stable pattern and must be detected in DLP policies. The built-in sensitive information types do not match it. What should be created?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "A custom sensitive information type can combine a regular expression or keyword pattern with supporting evidence and confidence requirements for use in Purview policies.",
+      "sourceName": "Create a custom sensitive information type", "sourceUrl": "https://learn.microsoft.com/en-us/purview/sit-create-a-custom-sensitive-information-type",
+      "choices": [
+        { "text": "A custom sensitive information type using a regular expression and appropriate supporting evidence", "isCorrect": true, "sortOrder": 0 },
+        { "text": "A sensitivity label using a regular expression as its encryption key", "isCorrect": false, "sortOrder": 1 },
+        { "text": "A retention label using adaptive scope syntax", "isCorrect": false, "sortOrder": 2 },
+        { "text": "A trainable classifier containing only the account-number format", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "ms102-sensitivity-vs-retention",
+      "objectiveKey": "manage-purview-compliance",
+      "prompt": "Files marked Confidential must remain encrypted when emailed outside the organization. The requirement is about protection, not how long the files are kept. Which Purview control should be used?",
+      "kind": "SingleChoice", "difficulty": "Foundation",
+      "explanation": "Sensitivity labels classify and protect content and can apply encryption and usage rights. Retention labels govern preservation and deletion rather than access protection.",
+      "sourceName": "Learn about sensitivity labels", "sourceUrl": "https://learn.microsoft.com/en-us/purview/sensitivity-labels",
+      "choices": [
+        { "text": "A sensitivity label configured with encryption", "isCorrect": true, "sortOrder": 0 },
+        { "text": "A retention label configured to retain forever", "isCorrect": false, "sortOrder": 1 },
+        { "text": "A DLP policy configured only to audit", "isCorrect": false, "sortOrder": 2 },
+        { "text": "A records-management file plan descriptor", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "ms102-endpoint-dlp",
+      "objectiveKey": "manage-purview-compliance",
+      "prompt": "Users may work with sensitive documents on managed Windows devices, but copying those files to personal USB storage must be blocked. Which Purview capability directly controls this endpoint activity?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "Endpoint DLP extends Purview DLP controls to onboarded devices and can audit or restrict activities such as copying sensitive content to removable media.",
+      "sourceName": "Learn about Endpoint data loss prevention", "sourceUrl": "https://learn.microsoft.com/en-us/purview/endpoint-dlp-learn-about",
+      "choices": [
+        { "text": "Endpoint DLP with a rule restricting copy to removable USB devices", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Defender for Endpoint device control without a content condition", "isCorrect": false, "sortOrder": 1 },
+        { "text": "A sensitivity label policy that publishes a USB label", "isCorrect": false, "sortOrder": 2 },
+        { "text": "A retention policy for Windows device locations", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "ms102-content-activity-explorers",
+      "objectiveKey": "manage-purview-compliance",
+      "prompt": "A compliance administrator needs both an inventory of locations containing labeled content and a timeline of user labeling activities. Which two Purview tools should be used?",
+      "kind": "MultipleChoice", "difficulty": "Intermediate",
+      "explanation": "Content explorer shows an item-oriented view of classified or labeled content and its locations. Activity explorer shows events and user actions related to labels and data protection.",
+      "sourceName": "Get started with Content explorer", "sourceUrl": "https://learn.microsoft.com/en-us/purview/data-classification-content-explorer",
+      "choices": [
+        { "text": "Content explorer", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Activity explorer", "isCorrect": true, "sortOrder": 1 },
+        { "text": "Cloud Discovery", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Advanced hunting", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "ms102-cloud-update-rollout-waves",
+      "objectiveKey": "manage-m365-tenant",
+      "prompt": "An MSP wants Microsoft 365 Apps updates managed from the cloud, with a validation group receiving each update before the broad population and with deployment health visible centrally. Which capability should be configured?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "Cloud Update in the Microsoft 365 Apps admin center manages update deployment and health for supported channels. Rollout waves let administrators validate an update with an earlier group before broader deployment.",
+      "sourceName": "Overview of Cloud Update", "sourceUrl": "https://learn.microsoft.com/en-us/microsoft-365-apps/admin-center/cloud-update",
+      "choices": [
+        { "text": "Microsoft 365 Apps Cloud Update with staged rollout waves", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Microsoft 365 Service Health notification preferences", "isCorrect": false, "sortOrder": 1 },
+        { "text": "A Microsoft Purview retention policy with adaptive scopes", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Windows Autopilot pre-provisioning", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "ms102-adoption-score-segment",
+      "objectiveKey": "manage-m365-tenant",
+      "prompt": "A customer wants trend-based insight into how employees use collaboration and mobility capabilities, with recommendations intended to improve adoption rather than raw per-user audit events. Which Microsoft 365 report fits?",
+      "kind": "SingleChoice", "difficulty": "Foundation",
+      "explanation": "Microsoft Adoption Score provides aggregated people-experience and technology-experience insights, trends, and recommendations. Audit records and Defender incidents address security or investigation rather than adoption outcomes.",
+      "sourceName": "Microsoft Adoption Score", "sourceUrl": "https://learn.microsoft.com/en-us/microsoft-365/admin/adoption/adoption-score",
+      "choices": [
+        { "text": "Microsoft Purview Audit", "isCorrect": false, "sortOrder": 0 },
+        { "text": "Microsoft Secure Score", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Microsoft Adoption Score", "isCorrect": true, "sortOrder": 2 },
+        { "text": "Microsoft Entra provisioning insights", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "ms102-graph-powershell-bulk-users",
+      "objectiveKey": "manage-m365-tenant",
+      "prompt": "An MSP must create users from a controlled CSV in many customer tenants and record success or failure for each row. The legacy AzureAD and MSOnline modules must not be introduced. Which automation interface should be used?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "The Microsoft Graph PowerShell SDK provides supported cmdlets for Microsoft Entra and Microsoft 365 directory operations and can be scripted to process input and capture per-object results. The AzureAD and MSOnline modules are legacy.",
+      "sourceName": "Microsoft Graph PowerShell overview", "sourceUrl": "https://learn.microsoft.com/en-us/powershell/microsoftgraph/overview",
+      "choices": [
+        { "text": "Exchange Online PowerShell New-Mailbox for every cloud user", "isCorrect": false, "sortOrder": 0 },
+        { "text": "The Microsoft Graph PowerShell SDK with least-privilege scopes", "isCorrect": true, "sortOrder": 1 },
+        { "text": "The MSOnline module with tenant-wide Global Administrator", "isCorrect": false, "sortOrder": 2 },
+        { "text": "A Microsoft Purview content search import job", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "ms102-m365-group-collaboration",
+      "objectiveKey": "manage-m365-tenant",
+      "prompt": "A project team needs a shared mailbox and calendar plus membership-backed access to a SharePoint team site. Which group type should the administrator create?",
+      "kind": "SingleChoice", "difficulty": "Foundation",
+      "explanation": "A Microsoft 365 group provides a shared mailbox, calendar, SharePoint resources, and a common membership model for collaboration. A distribution list is mail-only, and a security group does not create the collaboration services.",
+      "sourceName": "Learn about Microsoft 365 Groups", "sourceUrl": "https://learn.microsoft.com/en-us/microsoft-365/admin/create-groups/office-365-groups",
+      "choices": [
+        { "text": "A mail-enabled security group", "isCorrect": false, "sortOrder": 0 },
+        { "text": "A distribution list with delivery management", "isCorrect": false, "sortOrder": 1 },
+        { "text": "A dynamic administrative unit", "isCorrect": false, "sortOrder": 2 },
+        { "text": "A Microsoft 365 group", "isCorrect": true, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "ms102-external-mail-contact",
+      "objectiveKey": "manage-m365-tenant",
+      "prompt": "Users need an external supplier's address to appear in the Exchange Online global address list. The supplier must not receive sign-in access or a mailbox in the tenant. What should be created?",
+      "kind": "SingleChoice", "difficulty": "Foundation",
+      "explanation": "A mail contact represents an external email address in the organization's address book without creating a sign-in identity or hosted mailbox. A guest user is used when the person needs resource access.",
+      "sourceName": "Manage mail contacts in Exchange Online", "sourceUrl": "https://learn.microsoft.com/en-us/exchange/recipients-in-exchange-online/manage-mail-contacts",
+      "choices": [
+        { "text": "A B2B guest user with Exchange Administrator", "isCorrect": false, "sortOrder": 0 },
+        { "text": "A mail contact", "isCorrect": true, "sortOrder": 1 },
+        { "text": "A shared mailbox forwarded to the supplier", "isCorrect": false, "sortOrder": 2 },
+        { "text": "A room mailbox hidden from address lists", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "ms102-purview-role-group",
+      "objectiveKey": "manage-m365-tenant",
+      "prompt": "A compliance analyst must investigate DLP alerts but must not edit DLP policies or receive broad Microsoft Entra directory permissions. Where should the least-privilege permissions be assigned?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "Microsoft Purview role groups combine role permissions for compliance tasks. Assigning the analyst to an appropriate built-in or custom Purview role group avoids granting a broad Microsoft Entra administrative role.",
+      "sourceName": "Permissions in Microsoft Purview", "sourceUrl": "https://learn.microsoft.com/en-us/purview/purview-compliance-portal-permissions",
+      "choices": [
+        { "text": "A Microsoft Entra Security Administrator assignment", "isCorrect": false, "sortOrder": 0 },
+        { "text": "A Microsoft Purview role group containing only the required investigation roles", "isCorrect": true, "sortOrder": 1 },
+        { "text": "A SharePoint site collection administrator assignment", "isCorrect": false, "sortOrder": 2 },
+        { "text": "An Exchange Online Organization Management assignment", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "ms102-gdap-least-privilege",
+      "objectiveKey": "manage-m365-tenant",
+      "prompt": "An indirect provider needs its support group to administer a customer's users for six months. The relationship must use selected Microsoft Entra roles, be time bound, and avoid tenant-wide standing Global Administrator access. What should the partner request?",
+      "kind": "SingleChoice", "difficulty": "Advanced",
+      "explanation": "Granular delegated admin privileges provide time-bound partner access based on selected Microsoft Entra roles and mapped partner security groups. DAP is broader and does not provide the same granular least-privilege model.",
+      "sourceName": "Granular delegated admin privileges", "sourceUrl": "https://learn.microsoft.com/en-us/partner-center/customers/gdap-introduction",
+      "choices": [
+        { "text": "A granular delegated admin privileges relationship with the required roles and duration", "isCorrect": true, "sortOrder": 0 },
+        { "text": "A delegated administrative privileges relationship assigning Admin Agents indefinitely", "isCorrect": false, "sortOrder": 1 },
+        { "text": "A B2B guest account permanently assigned Global Administrator", "isCorrect": false, "sortOrder": 2 },
+        { "text": "An Azure Lighthouse delegation at management-group scope", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "ms102-connect-staging-server",
+      "objectiveKey": "manage-entra-identity-access",
+      "prompt": "A second Microsoft Entra Connect Sync server should maintain current import and synchronization data but must not export while the primary server is healthy. Which configuration supports a controlled failover?",
+      "kind": "SingleChoice", "difficulty": "Advanced",
+      "explanation": "Staging mode allows Connect Sync to import and synchronize without exporting changes or performing password synchronization. An administrator deliberately changes staging state during a planned failover.",
+      "sourceName": "Microsoft Entra Connect Sync staging server", "sourceUrl": "https://learn.microsoft.com/en-us/entra/identity/hybrid/connect/how-to-connect-sync-staging-server",
+      "choices": [
+        { "text": "Enable staging mode on the secondary server", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Enable pass-through authentication on both servers and export from both", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Place the secondary server in an Application Proxy connector group", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Disable the scheduler on both servers", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "ms102-connect-deletion-threshold",
+      "objectiveKey": "manage-entra-identity-access",
+      "prompt": "A synchronization filtering mistake unexpectedly removes thousands of objects from scope. Which Microsoft Entra Connect Sync safeguard can stop the export before the cloud deletions are applied?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "Prevent accidental deletes stops an export when pending deletions exceed the configured threshold. It gives administrators time to investigate and correct filtering before explicitly allowing a legitimate large deletion.",
+      "sourceName": "Prevent accidental deletes", "sourceUrl": "https://learn.microsoft.com/en-us/entra/identity/hybrid/connect/how-to-connect-sync-feature-prevent-accidental-deletes",
+      "choices": [
+        { "text": "The duplicate attribute resiliency feature", "isCorrect": false, "sortOrder": 0 },
+        { "text": "The accidental-deletion threshold", "isCorrect": true, "sortOrder": 1 },
+        { "text": "Microsoft Entra Connect Health email notifications only", "isCorrect": false, "sortOrder": 2 },
+        { "text": "The soft-match hardening setting", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "ms102-auth-methods-migration",
+      "objectiveKey": "manage-entra-identity-access",
+      "prompt": "The tenant still uses legacy per-user MFA and SSPR method settings. Administrators want one converged policy for method enablement and a staged migration without immediately changing enforcement for all users. Which policy should they use?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "The Microsoft Entra authentication methods policy is the converged control for authentication method enablement. Migration states support evaluating and moving from legacy MFA and SSPR method policies in stages.",
+      "sourceName": "Migrate authentication methods policies", "sourceUrl": "https://learn.microsoft.com/en-us/entra/identity/authentication/how-to-authentication-methods-manage",
+      "choices": [
+        { "text": "Authentication methods policy with the appropriate migration state", "isCorrect": true, "sortOrder": 0 },
+        { "text": "A Conditional Access named location migration", "isCorrect": false, "sortOrder": 1 },
+        { "text": "A registration campaign with legacy policies left permanently authoritative", "isCorrect": false, "sortOrder": 2 },
+        { "text": "An app protection policy for Microsoft Authenticator", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "ms102-combined-registration",
+      "objectiveKey": "manage-entra-identity-access",
+      "prompt": "Users should register security information once and use the registered methods for both multifactor authentication and self-service password reset. Which experience should be enabled?",
+      "kind": "SingleChoice", "difficulty": "Foundation",
+      "explanation": "Combined security information registration gives users one registration experience for MFA and SSPR methods. The applicable authentication-method and SSPR policies still determine which methods each user can use.",
+      "sourceName": "Combined security information registration", "sourceUrl": "https://learn.microsoft.com/en-us/entra/identity/authentication/concept-registration-mfa-sspr-combined",
+      "choices": [
+        { "text": "Separate per-user MFA proof-up and SSPR registration portals", "isCorrect": false, "sortOrder": 0 },
+        { "text": "Password writeback through Cloud Sync", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Combined registration for MFA and SSPR", "isCorrect": true, "sortOrder": 2 },
+        { "text": "A Temporary Access Pass for every recurring sign-in", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "ms102-ca-named-location",
+      "objectiveKey": "manage-entra-identity-access",
+      "prompt": "A Conditional Access policy should distinguish sign-ins from the customer's fixed public office egress addresses from other locations. The addresses must be reusable across several policies. What should be created?",
+      "kind": "SingleChoice", "difficulty": "Foundation",
+      "explanation": "A named location can contain trusted or untrusted IP ranges or countries and can be reused as a Conditional Access location condition. It does not by itself grant access; each policy decides how to use it.",
+      "sourceName": "Conditional Access location condition", "sourceUrl": "https://learn.microsoft.com/en-us/entra/identity/conditional-access/concept-assignment-network",
+      "choices": [
+        { "text": "A device filter containing the office router addresses", "isCorrect": false, "sortOrder": 0 },
+        { "text": "An authentication context named for the office", "isCorrect": false, "sortOrder": 1 },
+        { "text": "A cross-tenant access trust for the office", "isCorrect": false, "sortOrder": 2 },
+        { "text": "An IP-based named location", "isCorrect": true, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "ms102-admin-auth-strength",
+      "objectiveKey": "manage-entra-identity-access",
+      "prompt": "Privileged portal access must accept passkeys and certificate-based authentication but reject SMS even when SMS would otherwise satisfy MFA. Which Conditional Access grant control should be configured?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "A Conditional Access authentication strength restricts the accepted authentication method combinations. The built-in phishing-resistant MFA strength excludes methods such as SMS while accepting supported passkeys and certificate-based authentication.",
+      "sourceName": "Conditional Access authentication strengths", "sourceUrl": "https://learn.microsoft.com/en-us/entra/identity/authentication/concept-authentication-strengths",
+      "choices": [
+        { "text": "Require multifactor authentication", "isCorrect": false, "sortOrder": 0 },
+        { "text": "Require phishing-resistant MFA authentication strength", "isCorrect": true, "sortOrder": 1 },
+        { "text": "Require a compliant device only", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Require an approved client app", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "ms102-confirm-compromised-user",
+      "objectiveKey": "manage-entra-identity-access",
+      "prompt": "An analyst has verified account takeover through evidence outside Identity Protection. The user currently has a low risk state. Which administrator action records the conclusion and raises the user risk?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "Confirm user compromised records the analyst's determination and sets user risk to high. Dismissing user risk or confirming a sign-in safe would incorrectly treat the activity as legitimate.",
+      "sourceName": "Remediate risks and unblock users", "sourceUrl": "https://learn.microsoft.com/en-us/entra/id-protection/howto-identity-protection-remediate-unblock",
+      "choices": [
+        { "text": "Confirm sign-in safe", "isCorrect": false, "sortOrder": 0 },
+        { "text": "Dismiss user risk", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Confirm user compromised", "isCorrect": true, "sortOrder": 2 },
+        { "text": "Mark the device compliant", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "ms102-preset-security-strict",
+      "objectiveKey": "manage-defender-xdr",
+      "prompt": "Executives require Microsoft's most aggressive recommended Defender for Office 365 baseline, while the broader organization remains on the less restrictive recommended baseline. Which policy design fits?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "Preset security policies provide Standard and Strict recommended protection profiles. Strict protection can target the executive group while Standard protection covers the broader population, with exclusions planned to avoid overlap issues.",
+      "sourceName": "Preset security policies", "sourceUrl": "https://learn.microsoft.com/en-us/defender-office-365/preset-security-policies",
+      "choices": [
+        { "text": "Target the executives with Strict preset security policy and the broader population with Standard", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Target executives with Standard and disable anti-phishing for everyone else", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Use only the Built-in protection preset because it is the strictest profile", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Create a Safe Links policy and assume it replaces all other threat policies", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "ms102-threat-explorer-remediation",
+      "objectiveKey": "manage-defender-xdr",
+      "prompt": "After confirming a phishing campaign, an analyst must find matching delivered messages across recipient mailboxes and initiate removal from the same investigation workflow. Which Defender for Office 365 capability should be used?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "Threat Explorer provides detailed email threat investigation, filtering, message selection, and remediation actions such as soft delete or hard delete, subject to permissions and action approval requirements.",
+      "sourceName": "Threat Explorer", "sourceUrl": "https://learn.microsoft.com/en-us/defender-office-365/threat-explorer-real-time-detections-about",
+      "choices": [
+        { "text": "Microsoft 365 Service Health", "isCorrect": false, "sortOrder": 0 },
+        { "text": "Microsoft Purview Content explorer", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Threat Explorer in Defender for Office 365", "isCorrect": true, "sortOrder": 2 },
+        { "text": "Cloud Discovery in Defender for Cloud Apps", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "ms102-air-pending-actions",
+      "objectiveKey": "manage-defender-xdr",
+      "prompt": "An automated investigation has completed and recommends removing a malicious file, but the tenant is configured to require approval before remediation. Where should an analyst approve or reject the action?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "Automated investigation and response places remediation actions that require review in Action center as pending actions. Authorized analysts can inspect evidence and approve or reject them there.",
+      "sourceName": "Action center", "sourceUrl": "https://learn.microsoft.com/en-us/defender-xdr/m365d-action-center",
+      "choices": [
+        { "text": "The Action center Pending tab", "isCorrect": true, "sortOrder": 0 },
+        { "text": "The Microsoft 365 admin center Message center", "isCorrect": false, "sortOrder": 1 },
+        { "text": "The Purview Data Explorer", "isCorrect": false, "sortOrder": 2 },
+        { "text": "The Entra admin consent request queue", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "ms102-custom-detection-rule",
+      "objectiveKey": "manage-defender-xdr",
+      "prompt": "A tested advanced-hunting query identifies suspicious behavior. Analysts want it evaluated automatically on a schedule and want matching results to create alerts with entity context. What should they create?",
+      "kind": "SingleChoice", "difficulty": "Advanced",
+      "explanation": "A custom detection rule runs a supported advanced-hunting query at a configured frequency and creates alerts or incidents from matches. Saving the query alone does not schedule detection.",
+      "sourceName": "Create custom detection rules", "sourceUrl": "https://learn.microsoft.com/en-us/defender-xdr/custom-detection-rules",
+      "choices": [
+        { "text": "A saved advanced-hunting query only", "isCorrect": false, "sortOrder": 0 },
+        { "text": "A Microsoft Purview alert policy", "isCorrect": false, "sortOrder": 1 },
+        { "text": "A Defender XDR custom detection rule based on the query", "isCorrect": true, "sortOrder": 2 },
+        { "text": "A Secure Score improvement action", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "ms102-mde-isolate-device",
+      "objectiveKey": "manage-defender-xdr",
+      "prompt": "A Windows endpoint is actively communicating with an attacker. Analysts must cut off normal network communication while preserving supported Defender for Endpoint communication for continued response. Which device action should they use?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "The Isolate device action restricts device network connectivity while maintaining Defender for Endpoint service communication needed for monitoring and response. Intune Retire removes management data but is not an active containment action.",
+      "sourceName": "Take response actions on a device", "sourceUrl": "https://learn.microsoft.com/en-us/defender-endpoint/respond-machine-alerts",
+      "choices": [
+        { "text": "Retire the device from Intune", "isCorrect": false, "sortOrder": 0 },
+        { "text": "Isolate the device in Defender for Endpoint", "isCorrect": true, "sortOrder": 1 },
+        { "text": "Disable the device object only in Microsoft Entra ID", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Revoke the primary user's sessions only", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "ms102-mdca-activity-policy",
+      "objectiveKey": "manage-defender-xdr",
+      "prompt": "A connected SaaS app should generate an alert when a user downloads an unusually large number of files in a short period, and the policy should optionally suspend the user after a match. Which Defender for Cloud Apps policy type fits?",
+      "kind": "SingleChoice", "difficulty": "Advanced",
+      "explanation": "An activity policy evaluates activities from connected apps using filters and repeated-activity thresholds and can trigger governance actions such as suspending a user where supported. A file policy evaluates files rather than activity volume.",
+      "sourceName": "Activity policies", "sourceUrl": "https://learn.microsoft.com/en-us/defender-cloud-apps/user-activity-policies",
+      "choices": [
+        { "text": "A file policy based only on sensitivity labels", "isCorrect": false, "sortOrder": 0 },
+        { "text": "A Cloud Discovery snapshot report", "isCorrect": false, "sortOrder": 1 },
+        { "text": "An activity policy with repeated-activity thresholds and a governance action", "isCorrect": true, "sortOrder": 2 },
+        { "text": "A Conditional Access sign-in frequency policy", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "ms102-threat-intelligence-search",
+      "objectiveKey": "manage-defender-xdr",
+      "prompt": "An incident contains a suspicious IP address. The analyst wants Microsoft Defender Threat Intelligence context about infrastructure, related indicators, and observed associations before deciding whether it belongs to a known campaign. Where should the indicator be investigated?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "Defender Threat Intelligence Intel Explorer and search experiences provide intelligence context for indicators such as IP addresses, domains, and URLs, including related infrastructure and observed associations.",
+      "sourceName": "Search and investigate with Defender Threat Intelligence", "sourceUrl": "https://learn.microsoft.com/en-us/defender/threat-intelligence/searching-and-pivoting",
+      "choices": [
+        { "text": "Microsoft 365 network connectivity insights", "isCorrect": false, "sortOrder": 0 },
+        { "text": "Defender Threat Intelligence indicator search or Intel Explorer", "isCorrect": true, "sortOrder": 1 },
+        { "text": "Microsoft Purview Content explorer", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Microsoft Entra Connect Health", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "ms102-live-response-script",
+      "objectiveKey": "manage-defender-xdr",
+      "prompt": "During an endpoint investigation, an authorized analyst must open a remote command session to collect a file and run an approved remediation script on an onboarded device. Which Defender for Endpoint capability provides this?",
+      "kind": "SingleChoice", "difficulty": "Advanced",
+      "explanation": "Live response provides a secured remote shell for authorized responders to investigate and remediate onboarded devices, including collecting files and running approved scripts according to role permissions and settings.",
+      "sourceName": "Investigate entities on devices using live response", "sourceUrl": "https://learn.microsoft.com/en-us/defender-endpoint/live-response",
+      "choices": [
+        { "text": "Intune device query", "isCorrect": false, "sortOrder": 0 },
+        { "text": "Defender for Endpoint live response", "isCorrect": true, "sortOrder": 1 },
+        { "text": "Microsoft Entra sign-in diagnostics", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Defender for Office 365 Threat Explorer", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "ms102-retention-conflict",
+      "objectiveKey": "manage-purview-compliance",
+      "prompt": "A SharePoint document is subject to one policy that retains it for seven years and another policy that would delete it after three years. No record label changes the behavior. What happens at year three?",
+      "kind": "SingleChoice", "difficulty": "Advanced",
+      "explanation": "When retention settings conflict, retention takes precedence over deletion. The document remains preserved until the longest applicable retention period is satisfied; deletion can occur only afterward according to the applicable configuration.",
+      "sourceName": "Principles of retention", "sourceUrl": "https://learn.microsoft.com/en-us/purview/retention",
+      "choices": [
+        { "text": "The document is permanently deleted because deletion actions always win", "isCorrect": false, "sortOrder": 0 },
+        { "text": "The policies cancel each other and the document follows the recycle-bin defaults", "isCorrect": false, "sortOrder": 1 },
+        { "text": "The document remains preserved because the seven-year retention requirement takes precedence", "isCorrect": true, "sortOrder": 2 },
+        { "text": "The three-year policy automatically converts the document into a regulatory record", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "ms102-dlp-override-justification",
+      "objectiveKey": "manage-purview-compliance",
+      "prompt": "A DLP rule should warn users before they email sensitive data externally. Authorized users may continue for a valid business reason, but they must enter a justification that compliance staff can review. Which rule behavior should be configured?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "A DLP policy tip can notify the user and allow an override with business justification. The override event and justification are available for auditing and investigation; audit-only mode would not require the interaction.",
+      "sourceName": "Send notifications and show policy tips for DLP", "sourceUrl": "https://learn.microsoft.com/en-us/purview/dlp-policy-reference",
+      "choices": [
+        { "text": "Audit the event silently without user notification", "isCorrect": false, "sortOrder": 0 },
+        { "text": "Block with a policy tip and allow override only with a business justification", "isCorrect": true, "sortOrder": 1 },
+        { "text": "Apply a retention label and allow users to delete it", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Encrypt the message with a sensitivity label and disable auditing", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "ms102-dlp-alert-investigation",
+      "objectiveKey": "manage-purview-compliance",
+      "prompt": "A high-severity DLP alert spans Exchange Online and endpoint events. The analyst needs the matched policy, affected content, user activity, and a place to assign and update investigation status. Which Purview workspace should be used first?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "The DLP Alerts dashboard provides alert and event details, affected entities and content context, assignment, and investigation workflow for DLP policy matches across supported locations.",
+      "sourceName": "Investigate DLP alerts", "sourceUrl": "https://learn.microsoft.com/en-us/purview/dlp-alerts-dashboard-get-started",
+      "choices": [
+        { "text": "Microsoft 365 Service Health", "isCorrect": false, "sortOrder": 0 },
+        { "text": "Microsoft Entra risky users", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Defender for Cloud Apps Cloud Discovery", "isCorrect": false, "sortOrder": 2 },
+        { "text": "The Microsoft Purview DLP Alerts dashboard", "isCorrect": true, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "ms102-scenario-order-custom-domain",
+      "objectiveKey": "manage-m365-tenant",
+      "prompt": "An MSP is adding a customer's existing email domain to Microsoft 365. The registrar does not support Domain Connect, and production mail must not be redirected before Microsoft 365 proves ownership. Which sequence is correct?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "The administrator first adds the domain in the Microsoft 365 admin center, publishes the provided ownership-verification record, and verifies ownership. Service DNS records such as MX and CNAME records are added only after verification, and the completed configuration is then validated. Publishing the production MX record before ownership verification can cause an avoidable mail-flow cutover.",
+      "sourceName": "Add a custom domain to Microsoft 365", "sourceUrl": "https://learn.microsoft.com/en-us/microsoft-365/admin/setup/add-domain?view=o365-worldwide",
+      "choices": [
+        { "text": "Add the domain in Microsoft 365; publish the verification record; verify ownership; publish the required service DNS records; validate domain setup", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Publish the Microsoft 365 MX record; add the domain; verify ownership; publish the verification record; validate domain setup", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Add the domain; publish all service DNS records; validate mail flow; publish the verification record; verify ownership", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Publish the verification record; publish the MX record; add the domain; validate setup; verify ownership", "isCorrect": false, "sortOrder": 3 },
+        { "text": "Add the domain; verify ownership before publishing any verification record; publish service records; validate setup", "isCorrect": false, "sortOrder": 4 }
+      ]
+    },
+    {
+      "contentKey": "ms102-scenario-order-gdap-onboarding",
+      "objectiveKey": "manage-m365-tenant",
+      "prompt": "An MSP is onboarding a new CSP customer with time-bound, least-privileged delegated administration. Technicians must use their partner identities through a dedicated security group. Which sequence correctly establishes GDAP access?",
+      "kind": "SingleChoice", "difficulty": "Advanced",
+      "explanation": "The partner prepares a security group and membership, requests a GDAP relationship containing the required roles and duration, and sends the customer the approval link. Only after customer approval can the partner map the approved roles to that security group and verify active access. Assigning groups before approval or placing technicians in broad Admin Agents access bypasses the intended least-privilege design.",
+      "sourceName": "Obtain granular admin permissions for a customer", "sourceUrl": "https://learn.microsoft.com/en-us/partner-center/customers/gdap-obtain-admin-permissions-to-manage-customer",
+      "choices": [
+        { "text": "Create the partner security group and add technicians; request the GDAP roles and duration; obtain customer approval; assign approved roles to the group; verify active access", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Request GDAP; assign roles to the group; create the group; obtain customer approval; add technicians; verify access", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Create the group; obtain customer approval without a role request; add technicians; request roles; verify access", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Create customer-local technician accounts; request GDAP; obtain approval; create the partner group; assign roles", "isCorrect": false, "sortOrder": 3 },
+        { "text": "Add technicians to Admin Agents; assign customer Global Administrator; request GDAP; obtain approval; create the scoped group", "isCorrect": false, "sortOrder": 4 },
+        { "text": "Create the group and add technicians; request GDAP; assign approved roles before customer approval; obtain approval; verify access", "isCorrect": false, "sortOrder": 5 }
+      ]
+    },
+    {
+      "contentKey": "ms102-scenario-email-authentication-controls",
+      "objectiveKey": "manage-defender-xdr",
+      "prompt": "A customer sends mail from its Microsoft 365 custom domain and from an approved third-party service. The MSP wants recipients to validate authorized sending sources, message signatures, and alignment with the visible From domain. Choose three email-authentication technologies to configure together.",
+      "kind": "MultipleChoice", "difficulty": "Intermediate",
+      "explanation": "SPF identifies authorized sources for the envelope sender, DKIM signs messages, and DMARC evaluates SPF or DKIM alignment with the visible From domain and defines failure handling. ARC can preserve authentication results through trusted intermediaries but does not replace the domain owner's SPF, DKIM, and DMARC deployment; Safe Links and anti-malware policies address different threats.",
+      "sourceName": "Email authentication in Microsoft 365", "sourceUrl": "https://learn.microsoft.com/en-us/defender-office-365/email-authentication-about",
+      "choices": [
+        { "text": "SPF", "isCorrect": true, "sortOrder": 0 },
+        { "text": "DKIM", "isCorrect": true, "sortOrder": 1 },
+        { "text": "DMARC", "isCorrect": true, "sortOrder": 2 },
+        { "text": "Authenticated Received Chain as a replacement for DMARC", "isCorrect": false, "sortOrder": 3 },
+        { "text": "Safe Links time-of-click protection", "isCorrect": false, "sortOrder": 4 },
+        { "text": "A malware filter policy", "isCorrect": false, "sortOrder": 5 }
+      ]
+    },
+    {
+      "contentKey": "ms102-scenario-preset-protection-scopes",
+      "objectiveKey": "manage-defender-xdr",
+      "prompt": "A customer wants Microsoft-recommended Defender for Office 365 settings. Executives can tolerate tighter filtering, while all remaining users need the normal recommended baseline. Choose two assignments that meet the requirement with minimal custom-policy maintenance.",
+      "kind": "MultipleChoice", "difficulty": "Intermediate",
+      "explanation": "The Strict preset security policy is intended for selected high-value or high-risk users who can accept more aggressive protection, while Standard provides the recommended baseline for other users. Custom anti-phishing and Safe Attachments policies would add maintenance and can introduce precedence complexity without satisfying the request for preset recommendations.",
+      "sourceName": "Preset security policies", "sourceUrl": "https://learn.microsoft.com/en-us/defender-office-365/preset-security-policies",
+      "choices": [
+        { "text": "Assign the Strict preset security policy to the executive group", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Assign the Standard preset security policy to the remaining users", "isCorrect": true, "sortOrder": 1 },
+        { "text": "Assign the Strict preset policy to every user and use a transport rule to relax it", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Disable preset security policies and reproduce every recommendation with custom policies", "isCorrect": false, "sortOrder": 3 },
+        { "text": "Assign Standard to executives and Built-in protection only to everyone else", "isCorrect": false, "sortOrder": 4 }
+      ]
+    },
+    {
+      "contentKey": "ms102-scenario-order-conditional-access-rollout",
+      "objectiveKey": "manage-entra-identity-access",
+      "prompt": "An MSP must introduce a tenant-wide Conditional Access policy requiring MFA while minimizing lockout and disruption. Which rollout order follows Microsoft guidance?",
+      "kind": "SingleChoice", "difficulty": "Advanced",
+      "explanation": "Emergency access exclusions and authentication readiness are prerequisites. Microsoft recommends piloting new policies in report-only mode, reviewing sign-in impact, and only then enabling enforcement for the wider population. Enabling tenant-wide first or adding emergency exclusions afterward creates a preventable lockout risk.",
+      "sourceName": "Plan a Conditional Access deployment", "sourceUrl": "https://learn.microsoft.com/en-us/entra/identity/conditional-access/plan-conditional-access",
+      "choices": [
+        { "text": "Verify emergency access exclusions and user authentication readiness; target a pilot in report-only mode; review sign-in results; expand and enable enforcement", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Enable enforcement tenant-wide; review failures; add emergency exclusions; reduce scope to a pilot", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Target a pilot in report-only mode; enable tenant-wide enforcement; then register authentication methods and exclude emergency accounts", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Exclude emergency accounts; enable tenant-wide enforcement; review sign-in results; then create a pilot group", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "ms102-scenario-isolate-compromised-device",
+      "objectiveKey": "manage-defender-xdr",
+      "prompt": "Defender XDR correlates credential theft with malware execution on one onboarded Windows laptop. The SOC must immediately stop that device from communicating with other corporate systems while retaining its connection to Defender for investigation. Which response action should be taken first on the device?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "Isolate device restricts network communication while preserving connectivity to Microsoft Defender for continued investigation and response. Starting live response or collecting a package can help investigate but does not provide the required containment; suppressing an alert changes visibility rather than device communication.",
+      "sourceName": "Device entity response actions in Defender XDR", "sourceUrl": "https://learn.microsoft.com/en-us/defender-xdr/entity-page-device",
+      "choices": [
+        { "text": "Isolate device", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Initiate a live response session without isolation", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Collect an investigation package", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Suppress the device's alerts", "isCorrect": false, "sortOrder": 3 },
+        { "text": "Offboard the device from Defender for Endpoint", "isCorrect": false, "sortOrder": 4 },
+        { "text": "Exclude the detected file indicator globally", "isCorrect": false, "sortOrder": 5 }
+      ]
+    },
+    {
+      "contentKey": "ms102-scenario-order-dlp-deployment",
+      "objectiveKey": "manage-purview-compliance",
+      "prompt": "A new Purview DLP policy will block external sharing of regulated identifiers across SharePoint and OneDrive. The customer requires evidence of likely impact and tuning before user activity is blocked. Which deployment sequence is correct?",
+      "kind": "SingleChoice", "difficulty": "Advanced",
+      "explanation": "The policy should be scoped and configured first, then run in simulation mode. Administrators review matched items and simulation alerts, tune conditions or exceptions, and only then enable enforcement. Turning on blocking before simulation violates the stated change-control requirement, while reviewing production alerts cannot substitute for pre-enforcement evidence.",
+      "sourceName": "Data loss prevention simulation mode", "sourceUrl": "https://learn.microsoft.com/en-us/purview/dlp-simulation-mode-learn",
+      "choices": [
+        { "text": "Configure the scoped policy; run it in simulation mode; review matches and alerts; tune conditions and exceptions; enable enforcement", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Enable enforcement; review blocked events; switch to simulation; tune exceptions; re-enable enforcement", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Configure the policy; tune exceptions without results; enable enforcement; run simulation; review matches", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Run simulation before defining locations; enable enforcement; configure rules; review alerts; tune conditions", "isCorrect": false, "sortOrder": 3 },
+        { "text": "Configure the policy; enable enforcement for all users; review matches; tune; then limit the location scope", "isCorrect": false, "sortOrder": 4 }
+      ]
+    },
+    {
+      "contentKey": "ms102-scenario-gdap-least-privilege-assignment",
+      "objectiveKey": "manage-entra-identity-access",
+      "prompt": "A customer's approved GDAP relationship contains User Administrator and Service Support Administrator. Only the MSP identity team should receive User Administrator, and technicians must not get broader standing roles. Choose two partner-side actions.",
+      "kind": "MultipleChoice", "difficulty": "Advanced",
+      "explanation": "GDAP maps customer-approved Microsoft Entra roles to security groups in the partner tenant, so the MSP should use a dedicated group and add only the identity team members to it. Admin Agents or customer-local accounts would broaden or duplicate access, and a partner security group cannot receive roles outside the customer-approved relationship.",
+      "sourceName": "Grant GDAP roles to security groups", "sourceUrl": "https://learn.microsoft.com/en-us/partner-center/customers/gdap-assign-microsoft-entra-roles",
+      "choices": [
+        { "text": "Map User Administrator to a dedicated partner security group in the active GDAP relationship", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Add only the MSP identity team members to that dedicated security group", "isCorrect": true, "sortOrder": 1 },
+        { "text": "Add all technicians to the partner Admin Agents group", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Create permanent customer-local Global Administrator accounts for the identity team", "isCorrect": false, "sortOrder": 3 }
+      ]
+    }
+  ]
+}

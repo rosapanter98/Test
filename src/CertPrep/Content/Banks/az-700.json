@@ -1,0 +1,941 @@
+{
+  "provider": "Microsoft",
+  "code": "AZ-700",
+  "title": "Designing and Implementing Microsoft Azure Networking Solutions",
+  "summary": "Practice designing, implementing, securing, and operating Azure networks for customer and MSP-managed environments.",
+  "contentVersion": "2026.07 (current 2026-04-24 domains; 2026-07-27 update reviewed)",
+  "objectives": [
+    { "contentKey": "core-networking", "name": "Design and implement core networking infrastructure", "sortOrder": 0 },
+    { "contentKey": "connectivity-services", "name": "Design, implement, and manage connectivity services", "sortOrder": 1 },
+    { "contentKey": "application-delivery", "name": "Design and implement application delivery services", "sortOrder": 2 },
+    { "contentKey": "private-access", "name": "Design and implement private access to Azure services", "sortOrder": 3 },
+    { "contentKey": "network-security", "name": "Design and implement Azure network security services", "sortOrder": 4 }
+  ],
+  "questions": [
+    {
+      "contentKey": "az700-subnet-reserved-addresses", "objectiveKey": "core-networking",
+      "prompt": "A subnet must support 27 network interfaces. What is the smallest IPv4 subnet prefix that provides enough usable Azure addresses?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "Azure reserves five IP addresses in every subnet. A /27 contains 32 addresses and provides 27 usable addresses; a /28 provides only 11 usable addresses.",
+      "sourceName": "Azure virtual network FAQ", "sourceUrl": "https://learn.microsoft.com/en-us/azure/virtual-network/virtual-networks-faq",
+      "choices": [
+        { "text": "/27", "isCorrect": true, "sortOrder": 0 },
+        { "text": "/28", "isCorrect": false, "sortOrder": 1 },
+        { "text": "/29", "isCorrect": false, "sortOrder": 2 },
+        { "text": "/30", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az700-peering-overlap", "objectiveKey": "core-networking",
+      "prompt": "An MSP tries to peer two customer VNets that both use 10.20.0.0/16. What must be done before conventional VNet peering can be created?",
+      "kind": "SingleChoice", "difficulty": "Foundation",
+      "explanation": "Peered VNet address spaces cannot overlap. At least one VNet must be readdressed, or the design must use another supported connectivity approach that handles overlapping addresses.",
+      "sourceName": "Create virtual network peering", "sourceUrl": "https://learn.microsoft.com/en-us/azure/virtual-network/virtual-network-manage-peering",
+      "choices": [
+        { "text": "Change at least one VNet to a nonoverlapping address space", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Enable forwarded traffic on both peerings", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Configure gateway transit on both VNets", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Add identical route tables to both VNets", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az700-private-dns-registration-link", "objectiveKey": "core-networking",
+      "prompt": "A private DNS zone is linked to three VNets. In which linking configuration can Azure automatically register VM records?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "A VNet can have registration enabled for only one private DNS zone, although it can have resolution links to multiple zones. One zone can accept registration links from multiple VNets.",
+      "sourceName": "Private DNS virtual network links", "sourceUrl": "https://learn.microsoft.com/en-us/azure/dns/private-dns-virtual-network-links",
+      "choices": [
+        { "text": "Enable auto-registration on each desired VNet link to this zone", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Enable auto-registration on the zone without creating VNet links", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Delegate the private zone from an Azure public DNS zone", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Create a registration link from each subnet rather than each VNet", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az700-dns-private-resolver-onprem", "objectiveKey": "core-networking",
+      "prompt": "On-premises DNS servers must resolve Azure private DNS zone names without deploying DNS proxy VMs. Which two Azure components are required?",
+      "kind": "MultipleChoice", "difficulty": "Advanced",
+      "explanation": "Azure DNS Private Resolver uses an inbound endpoint to receive DNS queries from on-premises networks. The resolver VNet must be linked to the private DNS zone so Azure can answer those queries.",
+      "sourceName": "Azure DNS Private Resolver", "sourceUrl": "https://learn.microsoft.com/en-us/azure/dns/dns-private-resolver-overview",
+      "choices": [
+        { "text": "A DNS Private Resolver inbound endpoint reachable from on-premises", "isCorrect": true, "sortOrder": 0 },
+        { "text": "A virtual network link between the private zone and resolver VNet", "isCorrect": true, "sortOrder": 1 },
+        { "text": "A public DNS delegation to the inbound endpoint", "isCorrect": false, "sortOrder": 2 },
+        { "text": "A route table whose next hop is Azure DNS at 168.63.129.16", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az700-hub-spoke-nva-udr", "objectiveKey": "core-networking",
+      "prompt": "Spoke traffic must traverse an NVA in a peered hub before reaching another spoke. Which two configurations are central to the design?",
+      "kind": "MultipleChoice", "difficulty": "Advanced",
+      "explanation": "Use UDRs on spoke subnets with the NVA private IP as a virtual-appliance next hop, and allow forwarded traffic on the relevant peerings. Peering alone is non-transitive.",
+      "sourceName": "Azure virtual network peering service chaining", "sourceUrl": "https://learn.microsoft.com/en-us/azure/virtual-network/virtual-network-peering-overview",
+      "choices": [
+        { "text": "User-defined routes that use the NVA private IP as next hop", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Allow forwarded traffic on the applicable peering links", "isCorrect": true, "sortOrder": 1 },
+        { "text": "Use remote gateways on both spokes", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Enable auto-registration on a shared private DNS zone", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az700-nat-gateway-outbound", "objectiveKey": "core-networking",
+      "prompt": "All VMs in a subnet need scalable outbound internet connectivity through a fixed set of public IPs, without inbound connectivity. What should be associated with the subnet?",
+      "kind": "SingleChoice", "difficulty": "Foundation",
+      "explanation": "Azure NAT Gateway provides explicit, scalable outbound SNAT for a subnet using configured public IP addresses or prefixes. It does not accept unsolicited inbound connections.",
+      "sourceName": "Azure NAT Gateway", "sourceUrl": "https://learn.microsoft.com/en-us/azure/nat-gateway/nat-overview",
+      "choices": [
+        { "text": "Azure NAT Gateway with a public IP prefix", "isCorrect": true, "sortOrder": 0 },
+        { "text": "A Standard Load Balancer outbound rule whose backend pool must list every VM", "isCorrect": false, "sortOrder": 1 },
+        { "text": "An instance-level public IP on every VM", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Default outbound access with no explicit public IP resource", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az700-next-hop-diagnostic", "objectiveKey": "core-networking",
+      "prompt": "A VM should route 10.50.0.0/16 through an NVA, but traffic follows an unexpected path. Which Network Watcher diagnostic directly reports the selected next-hop type and IP?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "Network Watcher Next hop evaluates effective routing for a source NIC and destination IP, returning the next-hop type and, where applicable, its address.",
+      "sourceName": "Next hop overview", "sourceUrl": "https://learn.microsoft.com/en-us/azure/network-watcher/next-hop-overview",
+      "choices": [
+        { "text": "Next hop", "isCorrect": true, "sortOrder": 0 },
+        { "text": "IP flow verify", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Connection monitor", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Packet capture", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az700-ip-flow-verify", "objectiveKey": "core-networking",
+      "prompt": "A new TCP connection to a VM is denied. The operator needs to identify the NSG or security-admin rule responsible. Which diagnostic is the fastest first check?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "IP flow verify evaluates a five-tuple against effective NSG and Virtual Network Manager security admin rules, reporting whether traffic is allowed or denied and the responsible rule.",
+      "sourceName": "IP flow verify overview", "sourceUrl": "https://learn.microsoft.com/en-us/azure/network-watcher/ip-flow-verify-overview",
+      "choices": [
+        { "text": "IP flow verify", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Next hop", "isCorrect": false, "sortOrder": 1 },
+        { "text": "VPN troubleshoot", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Topology", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az700-connection-monitor-hybrid", "objectiveKey": "core-networking",
+      "prompt": "An MSP needs continuous latency and reachability measurements from Azure VMs to customer on-premises endpoints, with alertable Azure Monitor metrics. What should it deploy?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "Connection Monitor continuously tests reachability and latency between Azure and hybrid endpoints and exposes metrics and logs through Azure Monitor.",
+      "sourceName": "Connection Monitor overview", "sourceUrl": "https://learn.microsoft.com/en-us/azure/network-watcher/connection-monitor-overview",
+      "choices": [
+        { "text": "Azure Network Watcher Connection Monitor", "isCorrect": true, "sortOrder": 0 },
+        { "text": "A one-time Network Watcher connection troubleshoot operation", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Azure DNS Private Resolver outbound rules", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Virtual network flow logs without a monitoring test", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az700-public-ip-prefix", "objectiveKey": "core-networking",
+      "prompt": "A customer must allowlist a contiguous range before an MSP deploys several Azure public-facing resources. Which resource reserves that Azure-provided range as one unit?",
+      "kind": "SingleChoice", "difficulty": "Foundation",
+      "explanation": "A public IP prefix reserves a contiguous block of Azure public IP addresses. Individual public IP resources can then be created from that prefix while the allowlisted range remains predictable.",
+      "sourceName": "Public IP address prefix", "sourceUrl": "https://learn.microsoft.com/en-us/azure/virtual-network/ip-services/public-ip-address-prefix",
+      "choices": [
+        { "text": "A public IP prefix", "isCorrect": true, "sortOrder": 0 },
+        { "text": "An IP Group", "isCorrect": false, "sortOrder": 1 },
+        { "text": "A custom route table", "isCorrect": false, "sortOrder": 2 },
+        { "text": "An application security group", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az700-subnet-delegation", "objectiveKey": "core-networking",
+      "prompt": "Azure SQL Managed Instance must create service-managed resources in a subnet. Which subnet configuration grants the service the required permissions?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "Subnet delegation grants an Azure service explicit permissions to create service-specific resources in the subnet. For SQL Managed Instance, delegate the subnet to Microsoft.Sql/managedInstances.",
+      "sourceName": "Add or remove subnet delegation", "sourceUrl": "https://learn.microsoft.com/en-us/azure/virtual-network/manage-subnet-delegation",
+      "choices": [
+        { "text": "Delegate the subnet to Microsoft.Sql/managedInstances", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Enable a Microsoft.Sql service endpoint on the subnet", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Create a private endpoint for the subnet resource", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Associate an NSG that allows the VirtualNetwork service tag", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az700-custom-ip-prefix-byoip", "objectiveKey": "core-networking",
+      "prompt": "A customer owns a public IPv4 range that already has an established reputation and appears in partner allowlists. The customer wants Microsoft to advertise this same range from Azure. Which resource should be onboarded?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "A custom IP address prefix is a customer-owned public range brought to Azure through validation, provisioning, and commissioning. A normal public IP prefix reserves Azure-owned addresses instead.",
+      "sourceName": "Custom IP address prefix", "sourceUrl": "https://learn.microsoft.com/en-us/azure/virtual-network/ip-services/custom-ip-address-prefix",
+      "choices": [
+        { "text": "A custom IP address prefix", "isCorrect": true, "sortOrder": 0 },
+        { "text": "An Azure-provided public IP prefix", "isCorrect": false, "sortOrder": 1 },
+        { "text": "An IP Group in Azure Firewall", "isCorrect": false, "sortOrder": 2 },
+        { "text": "A custom IPv4 address space on a VNet", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az700-forced-tunnel-spoke-udr", "objectiveKey": "core-networking",
+      "prompt": "Internet-bound traffic from a spoke subnet must pass through an NVA at 10.0.0.4 in the hub instead of using Azure's Internet system route. Which route should be applied to the spoke subnet?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "A user-defined 0.0.0.0/0 route with Virtual appliance as the next-hop type overrides the default Internet system route and sends matching traffic to the NVA. The peering must also permit forwarded traffic for the complete design.",
+      "sourceName": "Virtual network traffic routing", "sourceUrl": "https://learn.microsoft.com/en-us/azure/virtual-network/virtual-networks-udr-overview",
+      "choices": [
+        { "text": "0.0.0.0/0 with next-hop type Virtual appliance and next-hop address 10.0.0.4", "isCorrect": true, "sortOrder": 0 },
+        { "text": "0.0.0.0/0 with next-hop type Internet and next-hop address 10.0.0.4", "isCorrect": false, "sortOrder": 1 },
+        { "text": "10.0.0.4/32 with next-hop type VNet peering", "isCorrect": false, "sortOrder": 2 },
+        { "text": "The spoke address space with next-hop type None", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az700-route-server-bgp-exchange", "objectiveKey": "core-networking",
+      "prompt": "An MSP operates BGP-capable NVAs whose advertised routes change frequently. Which Azure service exchanges those routes with the Azure software-defined network without requiring the MSP to maintain matching UDRs?",
+      "kind": "SingleChoice", "difficulty": "Advanced",
+      "explanation": "Azure Route Server uses BGP to exchange routes between NVAs and the Azure network. It distributes learned routes dynamically; it is not a traffic-inspection appliance.",
+      "sourceName": "Azure Route Server overview", "sourceUrl": "https://learn.microsoft.com/en-us/azure/route-server/overview",
+      "choices": [
+        { "text": "Azure Route Server", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Azure VPN Gateway with BGP enabled but no Route Server peering", "isCorrect": false, "sortOrder": 1 },
+        { "text": "An Azure Virtual Network Manager routing configuration that deploys static UDRs", "isCorrect": false, "sortOrder": 2 },
+        { "text": "A route table maintained by an automation runbook", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az700-vnet-manager-dynamic-spokes", "objectiveKey": "core-networking",
+      "prompt": "New VNets tagged Environment=Managed must automatically join an MSP network set and receive hub-and-spoke connectivity. Which two Azure Virtual Network Manager elements should be used?",
+      "kind": "MultipleChoice", "difficulty": "Advanced",
+      "explanation": "A dynamic network-group membership policy can add VNets based on Azure Policy conditions such as tags. A hub-and-spoke connectivity configuration targets that network group and creates or maintains the intended connectivity after deployment.",
+      "sourceName": "Azure Virtual Network Manager network groups", "sourceUrl": "https://learn.microsoft.com/en-us/azure/virtual-network-manager/concept-network-groups",
+      "choices": [
+        { "text": "A network group with dynamic membership based on the tag", "isCorrect": true, "sortOrder": 0 },
+        { "text": "A hub-and-spoke connectivity configuration that targets the network group", "isCorrect": true, "sortOrder": 1 },
+        { "text": "A private DNS zone with auto-registration enabled", "isCorrect": false, "sortOrder": 2 },
+        { "text": "A route filter attached to every VNet", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az700-ddos-plan-multisubscription", "objectiveKey": "core-networking",
+      "prompt": "An MSP manages internet-facing VNets in several subscriptions and Azure regions under one customer tenant. Which design provides enhanced network-layer DDoS protection without creating one plan per VNet?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "One DDoS Network Protection plan can be linked to VNets across regions and subscriptions in the same Microsoft Entra tenant. The linked VNets' protected public IP resources receive adaptive L3/L4 protection and telemetry.",
+      "sourceName": "Manage DDoS Network Protection", "sourceUrl": "https://learn.microsoft.com/en-us/azure/ddos-protection/manage-ddos-protection",
+      "choices": [
+        { "text": "Link the VNets to one DDoS Network Protection plan in the tenant", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Create a separate DDoS Network Protection plan in every VNet", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Enable WAF detection mode on each public IP address", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Associate one NSG with the DDoS plan and all VNets", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az700-route-server-subnet", "objectiveKey": "core-networking",
+      "prompt": "Which two subnet requirements apply when deploying Azure Route Server?",
+      "kind": "MultipleChoice", "difficulty": "Intermediate",
+      "explanation": "Route Server requires a dedicated subnet named RouteServerSubnet with a minimum /26 prefix. NSGs and UDRs aren't supported on that service subnet.",
+      "sourceName": "Secure Azure Route Server", "sourceUrl": "https://learn.microsoft.com/en-us/azure/route-server/secure-route-server",
+      "choices": [
+        { "text": "Name the dedicated subnet RouteServerSubnet", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Use a /26 or larger subnet", "isCorrect": true, "sortOrder": 1 },
+        { "text": "Associate an NSG that permits TCP 179", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Associate a UDR that sends control traffic to the NVA", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+
+    {
+      "contentKey": "az700-s2s-local-network-gateway", "objectiveKey": "connectivity-services",
+      "prompt": "When configuring an Azure site-to-site VPN, which resource represents the on-premises VPN device address and on-premises network prefixes?",
+      "kind": "SingleChoice", "difficulty": "Foundation",
+      "explanation": "The local network gateway represents the on-premises site in Azure, including the VPN device's public IP or FQDN and address prefixes reachable through it.",
+      "sourceName": "Create a site-to-site VPN connection", "sourceUrl": "https://learn.microsoft.com/en-us/azure/vpn-gateway/tutorial-site-to-site-portal",
+      "choices": [
+        { "text": "Local network gateway", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Virtual network gateway connection", "isCorrect": false, "sortOrder": 1 },
+        { "text": "NAT Gateway", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Azure Route Server", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az700-route-based-vpn", "objectiveKey": "connectivity-services",
+      "prompt": "A customer requires active-active Azure VPN gateways, BGP, and connections to multiple on-premises sites. Which VPN type should be selected?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "Route-based VPN gateways support BGP, active-active configurations, and multi-site connections. Policy-based gateways are limited to narrower legacy scenarios.",
+      "sourceName": "About VPN Gateway configuration settings", "sourceUrl": "https://learn.microsoft.com/en-us/azure/vpn-gateway/vpn-gateway-about-vpn-gateway-settings",
+      "choices": [
+        { "text": "Route-based VPN", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Policy-based VPN", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Basic ExpressRoute private peering", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Point-to-site VPN with certificate authentication", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az700-p2s-entra-openvpn", "objectiveKey": "connectivity-services",
+      "prompt": "A point-to-site VPN must authenticate remote users directly with Microsoft Entra ID. Which tunnel type is required?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "Microsoft Entra ID authentication for Azure VPN Gateway point-to-site connections is supported with the OpenVPN protocol, not IKEv2 or SSTP authentication flows.",
+      "sourceName": "Configure Microsoft Entra ID authentication for P2S", "sourceUrl": "https://learn.microsoft.com/en-us/azure/vpn-gateway/openvpn-azure-ad-tenant",
+      "choices": [
+        { "text": "OpenVPN", "isCorrect": true, "sortOrder": 0 },
+        { "text": "IKEv2 only", "isCorrect": false, "sortOrder": 1 },
+        { "text": "SSTP only", "isCorrect": false, "sortOrder": 2 },
+        { "text": "GRE", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az700-expressroute-private-peering", "objectiveKey": "connectivity-services",
+      "prompt": "An ExpressRoute circuit must connect an on-premises network to Azure VM private IP addresses in VNets. Which peering is required?",
+      "kind": "SingleChoice", "difficulty": "Foundation",
+      "explanation": "Azure private peering exchanges routes for Azure VNet private address spaces. Microsoft peering is for supported Microsoft public service prefixes.",
+      "sourceName": "ExpressRoute circuits and peering", "sourceUrl": "https://learn.microsoft.com/en-us/azure/expressroute/expressroute-circuit-peerings",
+      "choices": [
+        { "text": "Azure private peering", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Microsoft peering", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Azure public peering", "isCorrect": false, "sortOrder": 2 },
+        { "text": "VNet peering", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az700-expressroute-global-reach", "objectiveKey": "connectivity-services",
+      "prompt": "Two customer datacenters are connected to separate ExpressRoute circuits and must exchange traffic over Microsoft's backbone. Which feature is designed for this?",
+      "kind": "SingleChoice", "difficulty": "Advanced",
+      "explanation": "ExpressRoute Global Reach links ExpressRoute circuits so on-premises networks connected through them can communicate across Microsoft's global network.",
+      "sourceName": "ExpressRoute Global Reach", "sourceUrl": "https://learn.microsoft.com/en-us/azure/expressroute/expressroute-global-reach",
+      "choices": [
+        { "text": "ExpressRoute Global Reach", "isCorrect": true, "sortOrder": 0 },
+        { "text": "ExpressRoute FastPath", "isCorrect": false, "sortOrder": 1 },
+        { "text": "ExpressRoute Direct", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Global VNet peering", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az700-expressroute-fastpath", "objectiveKey": "connectivity-services",
+      "prompt": "A high-throughput ExpressRoute design should send on-premises traffic directly to VNet virtual machines, bypassing the ExpressRoute gateway in the data path where supported. Which option provides this?",
+      "kind": "SingleChoice", "difficulty": "Advanced",
+      "explanation": "ExpressRoute FastPath improves data-path performance by sending traffic directly between the circuit and VNet resources while the gateway remains involved in route exchange.",
+      "sourceName": "ExpressRoute FastPath", "sourceUrl": "https://learn.microsoft.com/en-us/azure/expressroute/about-fastpath",
+      "choices": [
+        { "text": "ExpressRoute FastPath", "isCorrect": true, "sortOrder": 0 },
+        { "text": "ExpressRoute Global Reach", "isCorrect": false, "sortOrder": 1 },
+        { "text": "ExpressRoute Microsoft peering", "isCorrect": false, "sortOrder": 2 },
+        { "text": "VPN Gateway active-active mode", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az700-virtual-wan-standard", "objectiveKey": "connectivity-services",
+      "prompt": "An MSP plans a Virtual WAN hub with site-to-site VPN, ExpressRoute, and transitive branch connectivity. Which Virtual WAN type is required?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "Standard Virtual WAN supports hubs with VPN, ExpressRoute, user VPN, and transitive connectivity. Basic is limited to site-to-site VPN functionality without the full hub feature set.",
+      "sourceName": "Azure Virtual WAN overview", "sourceUrl": "https://learn.microsoft.com/en-us/azure/virtual-wan/virtual-wan-about",
+      "choices": [
+        { "text": "Standard Virtual WAN", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Basic Virtual WAN", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Basic VPN Gateway in a customer VNet", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Azure Route Server without a virtual hub", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az700-vwan-route-tables", "objectiveKey": "connectivity-services",
+      "prompt": "In Azure Virtual WAN, what controls which branch and VNet connection prefixes are propagated to and learned from logical routing domains?",
+      "kind": "SingleChoice", "difficulty": "Advanced",
+      "explanation": "Virtual hub route-table association selects the table used to route a connection's traffic, while propagation determines which route tables learn that connection's routes.",
+      "sourceName": "Virtual hub routing", "sourceUrl": "https://learn.microsoft.com/en-us/azure/virtual-wan/about-virtual-hub-routing",
+      "choices": [
+        { "text": "Route-table associations and propagations on hub connections", "isCorrect": true, "sortOrder": 0 },
+        { "text": "NSG associations and service tags on GatewaySubnet", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Private DNS links and forwarding rulesets", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Load-balancer rules and health probes in the hub", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az700-vpn-active-active-tunnels", "objectiveKey": "connectivity-services",
+      "prompt": "An Azure VPN gateway is changed from active-standby to active-active. Which statement describes the required site-to-site tunnel design?",
+      "kind": "SingleChoice", "difficulty": "Advanced",
+      "explanation": "In active-active mode, each Azure gateway instance has a unique public IP address and establishes a tunnel that is part of the same connection. The on-premises device must accept or establish a tunnel to each Azure public IP.",
+      "sourceName": "Highly available VPN Gateway connectivity", "sourceUrl": "https://learn.microsoft.com/en-us/azure/vpn-gateway/vpn-gateway-highlyavailable",
+      "choices": [
+        { "text": "Configure the on-premises device with two tunnels, one to each Azure gateway public IP", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Configure one tunnel because both Azure instances share one public IP", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Create two local network gateways with the same on-premises public IP for one device", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Replace the site-to-site connection with two point-to-site profiles", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az700-vpn-custom-ipsec-complete-policy", "objectiveKey": "connectivity-services",
+      "prompt": "A security baseline requires a custom IPsec/IKE policy on an Azure VPN connection. The administrator wants to specify only the IKE encryption algorithm and leave every other value at its default. What should the administrator do?",
+      "kind": "SingleChoice", "difficulty": "Advanced",
+      "explanation": "Azure VPN Gateway doesn't accept a partial custom IPsec/IKE policy. Define the complete policy combination and configure compatible parameters on the on-premises VPN device.",
+      "sourceName": "Azure VPN Gateway FAQ", "sourceUrl": "https://learn.microsoft.com/en-us/azure/vpn-gateway/vpn-gateway-vpn-faq",
+      "choices": [
+        { "text": "Define every required IKE and IPsec parameter in one custom policy and match the peer configuration", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Specify only IKE encryption; Azure inherits all omitted values from the default policy", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Create one policy per algorithm and attach all policies to the same connection", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Configure the algorithm only on the local network gateway resource", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az700-p2s-radius-onprem-reachability", "objectiveKey": "connectivity-services",
+      "prompt": "A point-to-site VPN uses RADIUS authentication against a server in the customer's datacenter. What additional connectivity is required for authentication requests to succeed?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "VPN Gateway forwards authentication messages to the configured RADIUS server. When that server is on-premises, the Azure VNet needs site-to-site connectivity that lets the gateway reach it.",
+      "sourceName": "Configure P2S RADIUS authentication", "sourceUrl": "https://learn.microsoft.com/en-us/azure/vpn-gateway/point-to-site-how-to-radius-ps",
+      "choices": [
+        { "text": "A site-to-site connection that makes the on-premises RADIUS server reachable from the VPN gateway", "isCorrect": true, "sortOrder": 0 },
+        { "text": "A private endpoint created for the on-premises RADIUS server", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Microsoft peering on an ExpressRoute circuit with a route filter", "isCorrect": false, "sortOrder": 2 },
+        { "text": "A public DNS zone delegated to GatewaySubnet", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az700-expressroute-bfd", "objectiveKey": "connectivity-services",
+      "prompt": "An ExpressRoute circuit relies on default BGP timers, and link failures can take minutes to detect. Which feature provides low-overhead, subsecond link-failure detection?",
+      "kind": "SingleChoice", "difficulty": "Advanced",
+      "explanation": "Bidirectional Forwarding Detection provides subsecond link-failure detection. Azure enables it on new MSEE peering interfaces; the customer configures BFD on both primary and secondary edge devices for the peering.",
+      "sourceName": "Configure BFD over ExpressRoute", "sourceUrl": "https://learn.microsoft.com/en-us/azure/expressroute/expressroute-bfd",
+      "choices": [
+        { "text": "Bidirectional Forwarding Detection (BFD)", "isCorrect": true, "sortOrder": 0 },
+        { "text": "ExpressRoute Global Reach", "isCorrect": false, "sortOrder": 1 },
+        { "text": "ExpressRoute FastPath", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Azure Traffic Manager fast interval probing", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az700-expressroute-premium-global", "objectiveKey": "connectivity-services",
+      "prompt": "A VNet in Europe must link to an ExpressRoute circuit whose peering location is in a different geopolitical region. Which circuit capability is required?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "ExpressRoute Standard provides connectivity within its geopolitical area. The Premium add-on provides global connectivity, allowing a VNet in one geopolitical region to link to a circuit in another.",
+      "sourceName": "ExpressRoute FAQ", "sourceUrl": "https://learn.microsoft.com/en-us/azure/expressroute/expressroute-faqs",
+      "choices": [
+        { "text": "ExpressRoute Premium", "isCorrect": true, "sortOrder": 0 },
+        { "text": "ExpressRoute Local", "isCorrect": false, "sortOrder": 1 },
+        { "text": "ExpressRoute FastPath without Premium", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Microsoft peering instead of private peering", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az700-vwan-managed-nva", "objectiveKey": "connectivity-services",
+      "prompt": "An MSP wants a supported third-party SD-WAN appliance deployed directly inside an Azure Virtual WAN hub. How is this appliance delivered?",
+      "kind": "SingleChoice", "difficulty": "Advanced",
+      "explanation": "Supported Virtual WAN hub NVAs are purpose-built partner offers published in Azure Marketplace and deployed as managed applications. An arbitrary NVA VM isn't manually placed into the Microsoft-managed virtual hub.",
+      "sourceName": "NVAs in a Virtual WAN hub", "sourceUrl": "https://learn.microsoft.com/en-us/azure/virtual-wan/about-nva-hub",
+      "choices": [
+        { "text": "Deploy the supported partner offer from Azure Marketplace as a managed application", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Create an ordinary NVA virtual machine in the hidden hub VNet", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Import the NVA image into the Virtual WAN route table", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Attach the NVA to the hub by using a private endpoint", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+
+    {
+      "contentKey": "az700-l4-vs-l7", "objectiveKey": "application-delivery",
+      "prompt": "A regional service must distribute arbitrary TCP and UDP flows across VM backends. No HTTP inspection is needed. Which service is the best fit?",
+      "kind": "SingleChoice", "difficulty": "Foundation",
+      "explanation": "Azure Load Balancer is a Layer 4 service for TCP and UDP traffic. Application Gateway and Front Door operate at Layer 7 for HTTP(S) application delivery.",
+      "sourceName": "What is Azure Load Balancer?", "sourceUrl": "https://learn.microsoft.com/en-us/azure/load-balancer/load-balancer-overview",
+      "choices": [
+        { "text": "Azure Load Balancer", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Azure Application Gateway", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Azure Front Door", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Azure Traffic Manager", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az700-traffic-manager-dns", "objectiveKey": "application-delivery",
+      "prompt": "A customer needs DNS-based distribution between public endpoints in Azure and another cloud, using endpoint health and geographic routing. Which service should be used?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "Traffic Manager is a DNS-based global traffic load balancer and can route to public endpoints inside or outside Azure using routing methods and health probes.",
+      "sourceName": "Azure Traffic Manager overview", "sourceUrl": "https://learn.microsoft.com/en-us/azure/traffic-manager/traffic-manager-overview",
+      "choices": [
+        { "text": "Azure Traffic Manager", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Cross-region Azure Load Balancer", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Internal Azure Application Gateway", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Azure NAT Gateway", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az700-appgw-path-routing", "objectiveKey": "application-delivery",
+      "prompt": "Requests to /images must reach one backend pool and requests to /api must reach another within the same region. Which feature should be configured?",
+      "kind": "SingleChoice", "difficulty": "Foundation",
+      "explanation": "Application Gateway path-based routing rules select backend pools based on URL paths. Azure Load Balancer cannot inspect HTTP paths.",
+      "sourceName": "Application Gateway URL path routing", "sourceUrl": "https://learn.microsoft.com/en-us/azure/application-gateway/url-route-overview",
+      "choices": [
+        { "text": "An Application Gateway path-based routing rule", "isCorrect": true, "sortOrder": 0 },
+        { "text": "A Load Balancer outbound rule", "isCorrect": false, "sortOrder": 1 },
+        { "text": "A Traffic Manager weighted endpoint", "isCorrect": false, "sortOrder": 2 },
+        { "text": "A NAT Gateway subnet association", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az700-appgw-custom-probe-host", "objectiveKey": "application-delivery",
+      "prompt": "Application Gateway marks a multi-site backend unhealthy because its default probe sends the wrong host name. What should be configured?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "A custom health probe can specify the host, path, protocol, interval, timeout, and acceptable status codes expected by the backend application.",
+      "sourceName": "Application Gateway health probes", "sourceUrl": "https://learn.microsoft.com/en-us/azure/application-gateway/application-gateway-probe-overview",
+      "choices": [
+        { "text": "A custom probe with the backend's expected host name", "isCorrect": true, "sortOrder": 0 },
+        { "text": "A rewrite rule that changes the client source IP", "isCorrect": false, "sortOrder": 1 },
+        { "text": "A listener with no associated routing rule", "isCorrect": false, "sortOrder": 2 },
+        { "text": "An inbound NAT rule for the backend port", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az700-frontdoor-global-acceleration", "objectiveKey": "application-delivery",
+      "prompt": "A global HTTP application needs anycast entry points, edge TLS termination, health-based origin routing, and web acceleration. Which service should be selected?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "Azure Front Door is a global Layer 7 service that uses Microsoft's edge network for HTTP(S) acceleration, routing, TLS, health probing, and optional WAF protection.",
+      "sourceName": "Azure Front Door overview", "sourceUrl": "https://learn.microsoft.com/en-us/azure/frontdoor/front-door-overview",
+      "choices": [
+        { "text": "Azure Front Door", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Cross-region Azure Load Balancer", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Azure Traffic Manager alone", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Regional Azure Application Gateway", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az700-frontdoor-private-origin", "objectiveKey": "application-delivery",
+      "prompt": "An Azure Front Door Premium profile must reach an App Service origin without exposing the origin publicly. Which feature should be configured?",
+      "kind": "SingleChoice", "difficulty": "Advanced",
+      "explanation": "Front Door Premium can connect to supported origins through Azure Private Link. The origin approves the private endpoint connection and can disable ordinary public access.",
+      "sourceName": "Secure origins with Private Link", "sourceUrl": "https://learn.microsoft.com/en-us/azure/frontdoor/private-link",
+      "choices": [
+        { "text": "Azure Private Link for the Front Door origin", "isCorrect": true, "sortOrder": 0 },
+        { "text": "A service endpoint from the Front Door edge network", "isCorrect": false, "sortOrder": 1 },
+        { "text": "A VNet peering from the Front Door profile", "isCorrect": false, "sortOrder": 2 },
+        { "text": "A Traffic Manager nested profile", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az700-gateway-load-balancer-chain", "objectiveKey": "application-delivery",
+      "prompt": "Inbound and outbound flows for an application behind a Standard public Load Balancer must traverse a scalable pool of third-party NVAs with flow symmetry and no UDR maintenance. What should be chained to the application frontend?",
+      "kind": "SingleChoice", "difficulty": "Advanced",
+      "explanation": "Gateway Load Balancer transparently inserts NVAs into the data path, maintains flow symmetry, and is referenced by a supported Standard public frontend or public NIC IP configuration. It isn't configured as a UDR next hop.",
+      "sourceName": "Gateway Load Balancer", "sourceUrl": "https://learn.microsoft.com/en-us/azure/load-balancer/gateway-overview",
+      "choices": [
+        { "text": "A Gateway Load Balancer frontend", "isCorrect": true, "sortOrder": 0 },
+        { "text": "An internal Load Balancer outbound rule", "isCorrect": false, "sortOrder": 1 },
+        { "text": "A Traffic Manager nested profile", "isCorrect": false, "sortOrder": 2 },
+        { "text": "An Application Gateway redirect rule", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az700-global-load-balancer-backends", "objectiveKey": "application-delivery",
+      "prompt": "A non-HTTP TCP service needs one static anycast IP and health-based distribution to existing Standard public Load Balancers in multiple Azure regions. Which design fits?",
+      "kind": "SingleChoice", "difficulty": "Advanced",
+      "explanation": "A global Load Balancer provides a static anycast frontend and distributes Layer 4 traffic to regional Standard public Load Balancers. It preserves the client IP and removes an unhealthy regional load balancer from rotation.",
+      "sourceName": "Global Load Balancer", "sourceUrl": "https://learn.microsoft.com/en-us/azure/load-balancer/cross-region-overview",
+      "choices": [
+        { "text": "A global Load Balancer whose backend pool contains the regional Load Balancer frontends", "isCorrect": true, "sortOrder": 0 },
+        { "text": "An internal regional Load Balancer whose backend pool contains Traffic Manager profiles", "isCorrect": false, "sortOrder": 1 },
+        { "text": "An Application Gateway with backend pools in every region", "isCorrect": false, "sortOrder": 2 },
+        { "text": "A NAT Gateway associated with each regional frontend subnet", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az700-appgw-multisite-listener", "objectiveKey": "application-delivery",
+      "prompt": "contoso.com and fabrikam.com resolve to the same Application Gateway frontend, but each hostname must select a different backend pool. What should be configured for request acceptance?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "Multi-site listeners distinguish requests by host name when multiple sites share an Application Gateway frontend. Each listener is then bound to a routing rule and its intended backend settings.",
+      "sourceName": "Application Gateway components", "sourceUrl": "https://learn.microsoft.com/en-us/azure/application-gateway/application-gateway-components",
+      "choices": [
+        { "text": "Multi-site listeners for the two hostnames", "isCorrect": true, "sortOrder": 0 },
+        { "text": "One basic listener with two health probes", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Two Load Balancer inbound NAT rules", "isCorrect": false, "sortOrder": 2 },
+        { "text": "A Traffic Manager geographic profile for each hostname", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az700-frontdoor-edge-cache", "objectiveKey": "application-delivery",
+      "prompt": "A global application repeatedly serves the same cacheable static assets. The goal is to reduce origin requests and deliver the assets from Microsoft edge locations. Which Front Door setting is central to the design?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "Enable caching on the applicable Front Door route so eligible responses can be stored and served from edge points of presence. Query-string behavior and cache-duration rules can then tune how variants are cached.",
+      "sourceName": "Azure Front Door caching", "sourceUrl": "https://learn.microsoft.com/en-us/azure/frontdoor/front-door-caching",
+      "choices": [
+        { "text": "Enable caching on the Front Door route", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Enable session persistence on every origin", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Enable Private Link on the endpoint only", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Add a Traffic Manager performance profile behind the route", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+
+    {
+      "contentKey": "az700-private-endpoint-private-ip", "objectiveKey": "private-access",
+      "prompt": "What is created in a consumer VNet when an Azure private endpoint is deployed for a storage service?",
+      "kind": "SingleChoice", "difficulty": "Foundation",
+      "explanation": "A private endpoint creates a network interface with a private IP address in the selected subnet. Clients use that address to reach the specific service subresource over Private Link.",
+      "sourceName": "Private endpoint overview", "sourceUrl": "https://learn.microsoft.com/en-us/azure/private-link/private-endpoint-overview",
+      "choices": [
+        { "text": "A network interface with a private IP for the service subresource", "isCorrect": true, "sortOrder": 0 },
+        { "text": "A public IP mapped to the service through subnet NAT", "isCorrect": false, "sortOrder": 1 },
+        { "text": "A delegated subnet that hosts the storage service itself", "isCorrect": false, "sortOrder": 2 },
+        { "text": "A VNet gateway connection to the service provider network", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az700-private-endpoint-dns", "objectiveKey": "private-access",
+      "prompt": "A storage private endpoint is connected, but clients still resolve the storage name to its public address. What should be corrected?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "Private endpoint clients need DNS to resolve the normal service FQDN through its privatelink alias to the private endpoint IP, commonly by linking the recommended private DNS zone to the VNet.",
+      "sourceName": "Private endpoint DNS configuration", "sourceUrl": "https://learn.microsoft.com/en-us/azure/private-link/private-endpoint-dns",
+      "choices": [
+        { "text": "Link the appropriate privatelink private DNS zone containing the endpoint record", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Create a public reverse lookup zone for the endpoint IP", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Enable auto-registration on the storage account's public DNS zone", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Add the storage public IP as a custom DNS server on the VNet", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az700-service-endpoint-behavior", "objectiveKey": "private-access",
+      "prompt": "Which statement correctly distinguishes a virtual network service endpoint from a private endpoint?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "A service endpoint extends VNet and subnet identity to a supported service while clients use the service's public endpoint; the service firewall can then authorize that identity. A private endpoint instead places a private IP for the service in the VNet.",
+      "sourceName": "Virtual network service endpoints", "sourceUrl": "https://learn.microsoft.com/en-us/azure/virtual-network/virtual-network-service-endpoints-overview",
+      "choices": [
+        { "text": "A service endpoint keeps the public service endpoint and lets its firewall authorize selected VNet and subnet identities; it does not create a private IP", "isCorrect": true, "sortOrder": 0 },
+        { "text": "A service endpoint creates a network interface in the subnet for each service instance", "isCorrect": false, "sortOrder": 1 },
+        { "text": "A private endpoint requires the service's public endpoint to remain enabled", "isCorrect": false, "sortOrder": 2 },
+        { "text": "A private endpoint advertises the entire VNet address space to the service by BGP", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az700-service-endpoint-policy", "objectiveKey": "private-access",
+      "prompt": "A subnet uses Microsoft.Storage service endpoints but must prevent data exfiltration to unapproved storage accounts. What should be associated with the subnet?",
+      "kind": "SingleChoice", "difficulty": "Advanced",
+      "explanation": "A service endpoint policy filters virtual network traffic over service endpoints to explicitly allowed Azure service resources, such as designated storage accounts.",
+      "sourceName": "Service endpoint policies", "sourceUrl": "https://learn.microsoft.com/en-us/azure/virtual-network/virtual-network-service-endpoint-policies-overview",
+      "choices": [
+        { "text": "A virtual network service endpoint policy", "isCorrect": true, "sortOrder": 0 },
+        { "text": "An application security group containing the storage accounts", "isCorrect": false, "sortOrder": 1 },
+        { "text": "A private DNS zone scoped to approved accounts", "isCorrect": false, "sortOrder": 2 },
+        { "text": "A NAT Gateway using an approved public IP prefix", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az700-private-link-service-standard-lb", "objectiveKey": "private-access",
+      "prompt": "An MSP wants customers to reach an MSP-hosted TCP service through private endpoints in their own VNets. What must front the provider service before an Azure Private Link service can reference it?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "A Private Link service exposes a provider-owned service that runs behind an Azure Standard Load Balancer. The Private Link service references one of that load balancer's frontend IP configurations.",
+      "sourceName": "Azure Private Link service", "sourceUrl": "https://learn.microsoft.com/en-us/azure/private-link/private-link-service-overview",
+      "choices": [
+        { "text": "A Standard Load Balancer frontend", "isCorrect": true, "sortOrder": 0 },
+        { "text": "A Basic Load Balancer frontend", "isCorrect": false, "sortOrder": 1 },
+        { "text": "An Azure Front Door endpoint", "isCorrect": false, "sortOrder": 2 },
+        { "text": "A NAT Gateway public IP prefix", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az700-private-link-visibility-approval", "objectiveKey": "private-access",
+      "prompt": "A consumer subscription is included in a Private Link service's visibility list but not its auto-approval list. What happens when the consumer requests a connection?",
+      "kind": "SingleChoice", "difficulty": "Advanced",
+      "explanation": "Visibility lets the consumer discover and request the service; it doesn't approve access. Because the subscription isn't in auto-approval, the request remains pending until the service provider approves it.",
+      "sourceName": "Azure Private Link service", "sourceUrl": "https://learn.microsoft.com/en-us/azure/private-link/private-link-service-overview",
+      "choices": [
+        { "text": "The connection is pending until the service provider approves it", "isCorrect": true, "sortOrder": 0 },
+        { "text": "The connection is approved automatically because visibility implies approval", "isCorrect": false, "sortOrder": 1 },
+        { "text": "The request is rejected because only RBAC can grant visibility", "isCorrect": false, "sortOrder": 2 },
+        { "text": "The private endpoint connects but can send only outbound traffic", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az700-private-endpoint-network-policies", "objectiveKey": "private-access",
+      "prompt": "An NSG must filter traffic destined for private endpoints in a subnet, but its rules currently have no effect on those endpoints. What should be changed?",
+      "kind": "SingleChoice", "difficulty": "Advanced",
+      "explanation": "Private endpoint network policies are disabled on a subnet by default. Enable NSG network-policy support, or both NSG and route-table support, on the private endpoint subnet so those policies apply to its endpoints.",
+      "sourceName": "Manage private endpoint network policies", "sourceUrl": "https://learn.microsoft.com/en-us/azure/private-link/disable-private-endpoint-network-policy",
+      "choices": [
+        { "text": "Enable network security group policies for private endpoints on the subnet", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Enable service endpoint policies for Microsoft.Network", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Move the NSG from the subnet to the private endpoint's managed NIC", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Enable auto-registration on the linked private DNS zone", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+
+    {
+      "contentKey": "az700-nsg-stateful", "objectiveKey": "network-security",
+      "prompt": "An NSG permits an outbound TCP connection from a VM to an update server. Must a separate inbound rule permit the return packets for that established flow?",
+      "kind": "SingleChoice", "difficulty": "Foundation",
+      "explanation": "NSGs are stateful. Return traffic for an allowed flow is automatically permitted, so a mirrored rule for response traffic is not required.",
+      "sourceName": "Network security groups", "sourceUrl": "https://learn.microsoft.com/en-us/azure/virtual-network/network-security-groups-overview",
+      "choices": [
+        { "text": "No, NSGs automatically allow return traffic for the established flow", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Yes, every outbound allow rule requires a matching inbound allow rule", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Yes, unless the subnet also has a NAT Gateway", "isCorrect": false, "sortOrder": 2 },
+        { "text": "No, but only when the VM and update server share an ASG", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az700-asg-nsg-rules", "objectiveKey": "network-security",
+      "prompt": "An MSP wants NSG rules to refer to groups of web and database NICs rather than maintaining IP address lists. What should it use?",
+      "kind": "SingleChoice", "difficulty": "Foundation",
+      "explanation": "Application security groups provide logical groupings of VM network interfaces that can be used as NSG rule sources and destinations.",
+      "sourceName": "Application security groups", "sourceUrl": "https://learn.microsoft.com/en-us/azure/virtual-network/application-security-groups",
+      "choices": [
+        { "text": "Application security groups", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Azure Firewall IP Groups", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Network Manager connectivity groups", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Private DNS virtual network links", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az700-vnet-flow-logs", "objectiveKey": "network-security",
+      "prompt": "An MSP is designing new flow logging in 2026 and needs traffic-flow records for an entire VNet. Which logging type should it deploy?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "Virtual network flow logs record IP flows for a VNet. New NSG flow logs can no longer be created after June 30, 2025, so new designs should use VNet flow logs.",
+      "sourceName": "Virtual network flow logs", "sourceUrl": "https://learn.microsoft.com/en-us/azure/network-watcher/vnet-flow-logs-overview",
+      "choices": [
+        { "text": "Virtual network flow logs", "isCorrect": true, "sortOrder": 0 },
+        { "text": "New NSG flow logs on every subnet NSG", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Application Gateway access logs", "isCorrect": false, "sortOrder": 2 },
+        { "text": "ExpressRoute route-table logs", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az700-firewall-rule-order", "objectiveKey": "network-security",
+      "prompt": "Azure Firewall has a DNAT rule and a network rule that could both match the same new flow. Which rule type is processed first?",
+      "kind": "SingleChoice", "difficulty": "Advanced",
+      "explanation": "Within the applicable policy hierarchy and priority, Azure Firewall processes DNAT rules before network rules, and network rules before application rules. Once a match is found, processing stops.",
+      "sourceName": "Azure Firewall rule processing logic", "sourceUrl": "https://learn.microsoft.com/en-us/azure/firewall/rule-processing",
+      "choices": [
+        { "text": "DNAT rule", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Network rule", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Application rule", "isCorrect": false, "sortOrder": 2 },
+        { "text": "The rule created most recently", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az700-firewall-premium-tls", "objectiveKey": "network-security",
+      "prompt": "A customer requires outbound HTTPS inspection so threats can be detected inside encrypted sessions. Which Azure Firewall capability and SKU are required?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "Azure Firewall Premium supports TLS inspection and IDPS for encrypted traffic. Standard provides core firewall features but not Premium TLS inspection.",
+      "sourceName": "Azure Firewall Premium features", "sourceUrl": "https://learn.microsoft.com/en-us/azure/firewall/premium-features",
+      "choices": [
+        { "text": "TLS inspection on Azure Firewall Premium", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Threat intelligence alert mode on Azure Firewall Standard", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Web categories on Azure Firewall Basic", "isCorrect": false, "sortOrder": 2 },
+        { "text": "DNAT rules on Azure Firewall Standard", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az700-waf-detection-prevention", "objectiveKey": "network-security",
+      "prompt": "A WAF policy should log malicious-looking requests for tuning but must not block them yet. Which mode should be used?",
+      "kind": "SingleChoice", "difficulty": "Foundation",
+      "explanation": "Detection mode evaluates and logs rule matches without blocking requests. Prevention mode takes the configured blocking action for matching requests.",
+      "sourceName": "WAF modes", "sourceUrl": "https://learn.microsoft.com/en-us/azure/web-application-firewall/ag/ag-overview",
+      "choices": [
+        { "text": "Detection mode", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Prevention mode", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Prevention mode with managed-rule exclusions for every current match", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Prevention mode with only diagnostic logging enabled", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az700-firewall-manager-secured-hub", "objectiveKey": "network-security",
+      "prompt": "An MSP needs centrally managed Azure Firewall policies applied to multiple Virtual WAN hubs across regions. Which service is designed for this operating model?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "Azure Firewall Manager centrally manages firewall policies and can deploy Azure Firewall in Virtual WAN secured virtual hubs across regions and subscriptions.",
+      "sourceName": "Azure Firewall Manager", "sourceUrl": "https://learn.microsoft.com/en-us/azure/firewall-manager/overview",
+      "choices": [
+        { "text": "Azure Firewall Manager", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Azure Firewall Policy without Firewall Manager", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Azure Virtual WAN routing intent without a managed firewall service", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Azure Virtual Network Manager security admin configuration", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az700-nsg-subnet-nic-order", "objectiveKey": "network-security",
+      "prompt": "A VM has an NSG on its subnet and another NSG on its NIC. The subnet NSG allows a new inbound HTTPS flow, but the NIC NSG denies it. What is the result?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "For inbound traffic, Azure evaluates the subnet NSG and then the NIC NSG. A new flow must be allowed by both layers, so the NIC denial blocks it even though the subnet NSG allows it.",
+      "sourceName": "How NSGs filter network traffic", "sourceUrl": "https://learn.microsoft.com/en-us/azure/virtual-network/network-security-group-how-it-works",
+      "choices": [
+        { "text": "The flow is denied because both NSG layers must allow it", "isCorrect": true, "sortOrder": 0 },
+        { "text": "The flow is allowed because the subnet NSG is evaluated first", "isCorrect": false, "sortOrder": 1 },
+        { "text": "The flow is allowed because an Allow rule overrides a Deny rule across NSGs", "isCorrect": false, "sortOrder": 2 },
+        { "text": "The flow is load-balanced between the two NSG decisions", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az700-security-admin-always-allow", "objectiveKey": "network-security",
+      "prompt": "A central network team must guarantee that health-probe traffic reaches workloads even if an application team later creates a conflicting NSG deny rule. Which security admin rule action should the central team use?",
+      "kind": "SingleChoice", "difficulty": "Advanced",
+      "explanation": "An Azure Virtual Network Manager Always Allow security admin rule terminates evaluation and sends the matching traffic to the resource without further NSG evaluation. A normal Allow action still permits NSGs to evaluate and deny the flow.",
+      "sourceName": "Security admin rules", "sourceUrl": "https://learn.microsoft.com/en-us/azure/virtual-network-manager/concept-security-admins",
+      "choices": [
+        { "text": "Always Allow", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Allow", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Deny", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Audit", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az700-firewall-fqdn-network-dns-proxy", "objectiveKey": "network-security",
+      "prompt": "Azure Firewall network rules use destination FQDNs for a non-HTTP TCP protocol. Which two DNS configurations are required for consistent rule matching?",
+      "kind": "MultipleChoice", "difficulty": "Advanced",
+      "explanation": "FQDN filtering in network rules requires Azure Firewall DNS proxy. Clients should use the firewall's private IP as their DNS server so the client and firewall observe consistent DNS answers.",
+      "sourceName": "Azure Firewall DNS settings", "sourceUrl": "https://learn.microsoft.com/en-us/azure/firewall/dns-settings",
+      "choices": [
+        { "text": "Enable DNS proxy on Azure Firewall", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Configure client VNets to use the firewall's private IP as their DNS server", "isCorrect": true, "sortOrder": 1 },
+        { "text": "Enable auto-registration on a public DNS zone", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Create PTR records for every destination FQDN", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az700-waf-custom-rule-termination", "objectiveKey": "network-security",
+      "prompt": "An Application Gateway WAF v2 policy is in prevention mode. A custom rule with priority 10 matches a request and takes the Allow action. A managed rule would otherwise block the same request. What happens?",
+      "kind": "SingleChoice", "difficulty": "Advanced",
+      "explanation": "WAF evaluates custom rules before managed rules. When a matching custom rule takes an Allow or Block action, enforcement stops, so the managed rule doesn't block this request even though parallel processing can still produce a log event.",
+      "sourceName": "Application Gateway WAF custom rules", "sourceUrl": "https://learn.microsoft.com/en-us/azure/web-application-firewall/ag/custom-waf-rules-overview",
+      "choices": [
+        { "text": "The request is allowed and no later managed-rule action is enforced", "isCorrect": true, "sortOrder": 0 },
+        { "text": "The managed rule blocks the request because managed rules always override custom rules", "isCorrect": false, "sortOrder": 1 },
+        { "text": "The request is allowed only when the WAF is in detection mode", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Both actions run and the lower numeric managed-rule ID wins", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az700-firewall-parent-policy-priority", "objectiveKey": "network-security",
+      "prompt": "A child Azure Firewall Policy has a network rule collection group at priority 100. Its parent policy has a potentially matching network rule collection group at priority 500. Which policy level is evaluated first?",
+      "kind": "SingleChoice", "difficulty": "Advanced",
+      "explanation": "Inherited parent-policy rule collection groups always take precedence over child-policy groups, regardless of their numeric priorities. Priority then orders groups and collections within the applicable policy level and rule type.",
+      "sourceName": "Azure Firewall rule processing", "sourceUrl": "https://learn.microsoft.com/en-us/azure/firewall/rule-processing",
+      "choices": [
+        { "text": "The parent policy group", "isCorrect": true, "sortOrder": 0 },
+        { "text": "The child policy group because priority 100 is lower", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Both groups in parallel, with Deny always winning", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Whichever policy was associated with the firewall most recently", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az700-scenario-order-cross-tenant-private-link-service", "objectiveKey": "private-access",
+      "prompt": "An MSP will publish a TCP service to a customer's VNet through Azure Private Link. The provider and consumer are in different tenants, the connection isn't auto-approved, and the provider service isn't deployed yet. Which workflow establishes the connection?",
+      "kind": "SingleChoice", "difficulty": "Advanced",
+      "explanation": "A Private Link service references a Standard Load Balancer frontend. After creation, the provider shares its alias or resource URI so the consumer can request a private endpoint. Because the subscription isn't auto-approved, that request remains pending until the provider approves it. Approval can't precede the request, and the consumer can't target a service alias that doesn't exist.",
+      "sourceName": "What is Azure Private Link service?", "sourceUrl": "https://learn.microsoft.com/en-us/azure/private-link/private-link-service-overview",
+      "choices": [
+        { "text": "Deploy the service behind a Standard Load Balancer -> create the Private Link service -> share its alias -> create the consumer private endpoint -> approve the connection", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Create the Private Link service -> deploy the service behind a Standard Load Balancer -> share its alias -> approve the connection -> create the consumer private endpoint", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Share the alias -> create the consumer private endpoint -> deploy the Standard Load Balancer -> create the Private Link service -> approve the connection", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Deploy the service behind a Standard Load Balancer -> share the alias -> create the Private Link service -> create the consumer private endpoint -> approve the connection", "isCorrect": false, "sortOrder": 3 },
+        { "text": "Deploy the service behind a Standard Load Balancer -> create the consumer private endpoint -> create the Private Link service -> share its alias -> approve the connection", "isCorrect": false, "sortOrder": 4 },
+        { "text": "Deploy the service behind a Standard Load Balancer -> create the Private Link service -> share its alias -> approve the connection -> create the consumer private endpoint", "isCorrect": false, "sortOrder": 5 }
+      ]
+    },
+    {
+      "contentKey": "az700-scenario-order-dns-forwarding-ruleset", "objectiveKey": "core-networking",
+      "prompt": "An MSP uses separate ARM deployments to let spoke VNets resolve an on-premises namespace through Azure DNS Private Resolver. The resolver VNet and delegated outbound subnet already exist. Which dependency order should the deployments follow?",
+      "kind": "SingleChoice", "difficulty": "Advanced",
+      "explanation": "Create the resolver before its child outbound endpoint. The forwarding ruleset then references that outbound endpoint, after which its forwarding rule and spoke VNet link can be created and resolution tested. Reversing these dependencies leaves a child resource or reference without its required parent or target.",
+      "sourceName": "Create an Azure DNS Private Resolver using the Azure portal", "sourceUrl": "https://learn.microsoft.com/en-us/azure/dns/dns-private-resolver-get-started-portal",
+      "choices": [
+        { "text": "Create the resolver -> create its outbound endpoint -> create a ruleset referencing the endpoint -> add the forwarding rule -> link the spoke VNet to the ruleset", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Create the ruleset -> create the resolver -> add the forwarding rule -> create the outbound endpoint -> link the spoke VNet to the ruleset", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Create the resolver -> create the ruleset -> link the spoke VNet -> create the outbound endpoint -> add the forwarding rule", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Create the outbound endpoint -> create the resolver -> create the ruleset -> link the spoke VNet -> add the forwarding rule", "isCorrect": false, "sortOrder": 3 },
+        { "text": "Link the spoke VNet to the ruleset -> create the resolver -> create the outbound endpoint -> create the ruleset -> add the forwarding rule", "isCorrect": false, "sortOrder": 4 }
+      ]
+    },
+    {
+      "contentKey": "az700-scenario-hybrid-private-dns-inbound", "objectiveKey": "core-networking",
+      "prompt": "On-premises clients connected by ExpressRoute must resolve records in an Azure private DNS zone. The zone is already linked to the VNet that hosts Azure DNS Private Resolver. Choose two additional configurations required for the on-premises-to-Azure query path.",
+      "kind": "MultipleChoice", "difficulty": "Advanced",
+      "explanation": "An inbound endpoint gives systems outside the VNet a reachable private IP through which Azure DNS can resolve zones linked to the resolver VNet. The on-premises DNS server must conditionally forward the Azure private namespace to that inbound IP. An outbound endpoint and forwarding ruleset serve the opposite path—from Azure toward other DNS servers.",
+      "sourceName": "Azure DNS Private Resolver endpoints and rulesets", "sourceUrl": "https://learn.microsoft.com/en-us/azure/dns/private-resolver-endpoints-rulesets",
+      "choices": [
+        { "text": "Create an inbound endpoint on a dedicated subnet in the resolver VNet", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Configure an on-premises conditional forwarder for the private zone to the inbound endpoint IP", "isCorrect": true, "sortOrder": 1 },
+        { "text": "Create an outbound endpoint and send the on-premises conditional forwarder to it", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Forward the on-premises queries directly to 168.63.129.16", "isCorrect": false, "sortOrder": 3 },
+        { "text": "Enable autoregistration on the private-zone VNet link", "isCorrect": false, "sortOrder": 4 }
+      ]
+    },
+    {
+      "contentKey": "az700-scenario-private-endpoint-firewall-route", "objectiveKey": "private-access",
+      "prompt": "A private endpoint at 10.10.5.4 is in a VNet with address space 10.10.0.0/16. A subnet route table sends 0.0.0.0/0 to an NVA, but clients still reach the private endpoint directly. The requirement is to inspect that endpoint traffic at the NVA. What should the architect do?",
+      "kind": "SingleChoice", "difficulty": "Advanced",
+      "explanation": "Enable route-table network policies for the private-endpoint subnet and add a route at least as specific as the VNet prefix—using 10.10.5.4/32 is unambiguous—to the NVA. The private endpoint's /32 route wins over 0.0.0.0/0 by longest-prefix match, so changing only the default route or an NSG doesn't insert the NVA.",
+      "sourceName": "Manage network policies for private endpoints", "sourceUrl": "https://learn.microsoft.com/en-us/azure/private-link/disable-private-endpoint-network-policy",
+      "choices": [
+        { "text": "Enable route-table network policies for the private-endpoint subnet and add 10.10.5.4/32 with the NVA as next hop", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Keep network policies disabled and change 0.0.0.0/0 to use the NVA as next hop", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Enable only NSG network policies and add an outbound allow rule for the NVA", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Add a less-specific 10.0.0.0/8 route to the NVA without changing subnet network policies", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az700-scenario-security-admin-delegated-deny", "objectiveKey": "network-security",
+      "prompt": "A central team wants to permit TCP 443 from a shared scanner across managed VNets, but application owners must remain able to deny that traffic in their own NSGs when a workload is exceptionally sensitive. Which security admin action preserves that delegation?",
+      "kind": "SingleChoice", "difficulty": "Advanced",
+      "explanation": "A security admin Allow rule permits the traffic to continue to NSG evaluation, where an application owner can still deny it. Always Allow terminates evaluation and bypasses conflicting NSG denies; Deny also terminates evaluation but blocks the scanner. This is a deliberate difference between centralized baseline permission and centrally mandated permission.",
+      "sourceName": "Security admin rules in Azure Virtual Network Manager", "sourceUrl": "https://learn.microsoft.com/en-us/azure/virtual-network-manager/concept-security-admins",
+      "choices": [
+        { "text": "Allow", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Always Allow", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Deny", "isCorrect": false, "sortOrder": 2 },
+        { "text": "An NSG default rule", "isCorrect": false, "sortOrder": 3 },
+        { "text": "A connectivity configuration", "isCorrect": false, "sortOrder": 4 },
+        { "text": "A routing intent policy", "isCorrect": false, "sortOrder": 5 }
+      ]
+    },
+    {
+      "contentKey": "az700-scenario-ddos-central-plan-rbac", "objectiveKey": "network-security",
+      "prompt": "An MSP operator has Network Contributor on a workload VNet in subscription B. A central DDoS Network Protection plan exists in subscription A in the same tenant, but associating the VNet fails authorization. Which missing permission most directly explains the failure?",
+      "kind": "SingleChoice", "difficulty": "Advanced",
+      "explanation": "Linking a VNet to an existing plan requires Microsoft.Network/ddosProtectionPlans/join/action on the plan in addition to permissions to update the VNet. Network Contributor on only the workload VNet doesn't grant rights over a plan in another subscription. Separate plans or a tenant-root Owner assignment are unnecessary.",
+      "sourceName": "Azure DDoS Protection plan permissions", "sourceUrl": "https://learn.microsoft.com/en-us/azure/ddos-protection/manage-permissions",
+      "choices": [
+        { "text": "Microsoft.Network/ddosProtectionPlans/join/action on the central plan", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Microsoft.Network/virtualNetworks/peer/action on the workload VNet", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Microsoft.Network/publicIPAddresses/join/action on every protected public IP", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Microsoft.Authorization/roleAssignments/write at the tenant root", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az700-scenario-global-regional-http-stack", "objectiveKey": "application-delivery",
+      "prompt": "A public HTTP application runs in two Azure regions. It needs one global edge entry point with acceleration and health-based regional failover. Inside each region, requests must be routed by URL path to separate private web tiers. Choose two services that together meet the requirements.",
+      "kind": "MultipleChoice", "difficulty": "Intermediate",
+      "explanation": "Azure Front Door provides the global edge HTTP entry point, acceleration, and health-based origin routing. Application Gateway provides regional layer-7 listeners and URL path-based routing to the regional tiers. Traffic Manager is DNS-based and doesn't supply an HTTP reverse proxy, while Load Balancer and NAT Gateway don't route by URL path.",
+      "sourceName": "Load-balancing options in Azure", "sourceUrl": "https://learn.microsoft.com/en-us/azure/architecture/guide/technology-choices/load-balancing-overview",
+      "choices": [
+        { "text": "Azure Front Door", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Azure Application Gateway", "isCorrect": true, "sortOrder": 1 },
+        { "text": "Azure Traffic Manager", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Azure Load Balancer", "isCorrect": false, "sortOrder": 3 },
+        { "text": "Azure NAT Gateway", "isCorrect": false, "sortOrder": 4 },
+        { "text": "Azure Route Server", "isCorrect": false, "sortOrder": 5 }
+      ]
+    },
+    {
+      "contentKey": "az700-scenario-expressroute-site-resiliency", "objectiveKey": "connectivity-services",
+      "prompt": "A regulated workload must retain private connectivity if an entire ExpressRoute peering location fails and should avoid an Azure gateway availability-zone dependency. Choose three design elements that provide the strongest fit.",
+      "kind": "MultipleChoice", "difficulty": "Advanced",
+      "explanation": "Location-level resilience requires circuits in distinct peering locations, with the required routes advertised redundantly so either path can carry traffic. A zone-redundant ExpressRoute virtual network gateway reduces the regional gateway's zone dependency. Two circuits at one peering location don't survive loss of that location, and advertising a prefix on only the preferred circuit leaves no routable backup.",
+      "sourceName": "Designing for high availability with ExpressRoute", "sourceUrl": "https://learn.microsoft.com/en-us/azure/expressroute/designing-for-high-availability-with-expressroute",
+      "choices": [
+        { "text": "Provision ExpressRoute circuits in two distinct peering locations", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Advertise the required on-premises prefixes through both circuits", "isCorrect": true, "sortOrder": 1 },
+        { "text": "Use a zone-redundant ExpressRoute virtual network gateway SKU", "isCorrect": true, "sortOrder": 2 },
+        { "text": "Provision both circuits at the same peering location but through different subscriptions", "isCorrect": false, "sortOrder": 3 },
+        { "text": "Advertise each required prefix only through the preferred circuit to prevent asymmetric routing", "isCorrect": false, "sortOrder": 4 }
+      ]
+    },
+    {
+      "contentKey": "az700-scenario-front-door-promotion-rate-limit", "objectiveKey": "network-security",
+      "prompt": "A promotion endpoint behind Azure Front Door Premium is exhausting an origin API when individual source IP addresses send bursts. Normal traffic to other paths must remain unaffected. Which WAF configuration best limits the abusive pattern?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "Create a Front Door WAF custom rate-limit rule that matches the promotion RequestUri, counts requests by source IP, and blocks after the chosen threshold and duration. A blanket managed-rule change doesn't express the per-client request rate, and an origin NSG can't filter by HTTP path.",
+      "sourceName": "Configure a WAF rate-limit rule for Azure Front Door", "sourceUrl": "https://learn.microsoft.com/en-us/azure/web-application-firewall/afds/waf-front-door-rate-limit-configure",
+      "choices": [
+        { "text": "A custom rate-limit rule matching the promotion RequestUri with a Block action", "isCorrect": true, "sortOrder": 0 },
+        { "text": "A managed-rule exclusion for the promotion RequestUri", "isCorrect": false, "sortOrder": 1 },
+        { "text": "A custom match rule with an Allow action for the promotion RequestUri", "isCorrect": false, "sortOrder": 2 },
+        { "text": "An NSG rule on the origin subnet that matches the promotion URL path", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az700-scenario-nested-traffic-manager-policy", "objectiveKey": "application-delivery",
+      "prompt": "A company exposes public endpoints in North America and Europe. Users must first stay within their geographic market for data-sovereignty reasons, then be sent to the lowest-latency healthy endpoint inside that market. Which Traffic Manager design meets both policies?",
+      "kind": "SingleChoice", "difficulty": "Advanced",
+      "explanation": "Use a parent profile with Geographic routing whose endpoints are nested child profiles, and use Performance routing in each child. The parent enforces market selection before the child chooses the lowest-latency healthy regional endpoint. One flat profile can't apply geographic and performance methods sequentially.",
+      "sourceName": "Nested Traffic Manager profiles", "sourceUrl": "https://learn.microsoft.com/en-us/azure/traffic-manager/traffic-manager-nested-profiles",
+      "choices": [
+        { "text": "A Geographic parent profile with a Performance child profile for each market", "isCorrect": true, "sortOrder": 0 },
+        { "text": "A Performance parent profile with a Geographic child profile for each endpoint", "isCorrect": false, "sortOrder": 1 },
+        { "text": "One Geographic profile with endpoint weights representing latency", "isCorrect": false, "sortOrder": 2 },
+        { "text": "One Performance profile with endpoint priorities representing sovereignty", "isCorrect": false, "sortOrder": 3 },
+        { "text": "A Priority parent profile with Weighted child profiles split by continent", "isCorrect": false, "sortOrder": 4 },
+        { "text": "A Weighted parent profile with MultiValue child profiles split by continent", "isCorrect": false, "sortOrder": 5 }
+      ]
+    }
+  ]
+}

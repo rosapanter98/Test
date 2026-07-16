@@ -1,0 +1,99 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:CertPrep.Features.Practice"
+             x:Class="CertPrep.Features.Practice.Views.PracticeView"
+             x:DataType="vm:PracticeViewModel">
+  <Grid RowDefinitions="*,Auto">
+    <ScrollViewer Grid.Row="0" HorizontalScrollBarVisibility="Disabled">
+      <StackPanel Margin="26,20,26,18" Spacing="14" MaxWidth="880" HorizontalAlignment="Center">
+      <Grid ColumnDefinitions="*,Auto">
+        <StackPanel Spacing="4">
+          <StackPanel Orientation="Horizontal" Spacing="10">
+            <Border Classes="pill" Background="{DynamicResource AccentSoftBrush}">
+              <TextBlock Text="{Binding ModeLabel}" Foreground="{DynamicResource AccentBrush}" FontSize="11" FontWeight="SemiBold" />
+            </Border>
+            <Border Classes="pill">
+              <TextBlock Text="{Binding DifficultyLabel}" Classes="muted" FontSize="11" />
+            </Border>
+          </StackPanel>
+          <TextBlock Text="{Binding QuestionPosition}" Classes="muted" FontSize="12" Margin="2,3,0,0" />
+        </StackPanel>
+        <Button Grid.Column="1" Classes="secondary" Content="Save for later" Command="{Binding ExitCommand}" VerticalAlignment="Top" />
+      </Grid>
+
+      <ProgressBar Minimum="0" Maximum="100" Value="{Binding ProgressValue}" />
+
+      <Border Classes="card" Padding="20">
+        <StackPanel Spacing="14">
+          <StackPanel Spacing="7">
+            <TextBlock Text="{Binding ObjectiveName}" Classes="eyebrow" />
+            <TextBlock Text="{Binding QuestionText}" FontSize="20" FontWeight="SemiBold" TextWrapping="Wrap" LineHeight="27" />
+            <TextBlock Text="{Binding AnswerInstruction}" Classes="muted" FontSize="13" />
+          </StackPanel>
+
+          <ItemsControl ItemsSource="{Binding Choices}">
+            <ItemsControl.ItemTemplate>
+              <DataTemplate x:DataType="vm:ChoiceOptionViewModel">
+                <ToggleButton Classes="choice"
+                              IsChecked="{Binding IsSelected, Mode=TwoWay}"
+                              IsEnabled="{Binding CanChangeSelection}">
+                  <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="13">
+                    <Border Width="28" Height="28" CornerRadius="6" Background="{DynamicResource SurfaceSoftBrush}">
+                      <TextBlock Text="{Binding Label}" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+                    <TextBlock Grid.Column="1" Text="{Binding Text}" TextWrapping="Wrap" VerticalAlignment="Center" FontWeight="Normal" />
+                    <Grid Grid.Column="2" Width="30">
+                      <TextBlock Text="✓" Foreground="{DynamicResource SuccessBrush}" FontSize="22" FontWeight="Bold" HorizontalAlignment="Center" IsVisible="{Binding ShowCorrectIndicator}" />
+                      <TextBlock Text="×" Foreground="{DynamicResource DangerBrush}" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center" IsVisible="{Binding ShowIncorrectIndicator}" />
+                    </Grid>
+                  </Grid>
+                </ToggleButton>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+
+          <Border IsVisible="{Binding ShowFeedback}"
+                  Background="{DynamicResource SurfaceSoftBrush}"
+                  BorderBrush="{DynamicResource StrokeBrush}"
+                  BorderThickness="1"
+                  CornerRadius="10"
+                  Padding="18">
+            <StackPanel Spacing="8">
+              <TextBlock Text="{Binding FeedbackHeading}" FontSize="16" FontWeight="SemiBold" Foreground="{DynamicResource AccentBrush}" />
+              <TextBlock Text="{Binding Explanation}" TextWrapping="Wrap" LineHeight="21" />
+              <Border Height="1" Background="{DynamicResource StrokeBrush}" Margin="0,4" />
+              <TextBlock Text="SOURCE" Classes="eyebrow" />
+              <TextBlock Text="{Binding SourceName}" FontWeight="SemiBold" />
+              <TextBlock Text="{Binding SourceUrl}" Classes="muted" TextWrapping="Wrap" FontSize="11" />
+            </StackPanel>
+          </Border>
+
+          <TextBlock Text="{Binding ErrorMessage}" Foreground="{DynamicResource DangerBrush}" TextWrapping="Wrap" />
+        </StackPanel>
+      </Border>
+      </StackPanel>
+    </ScrollViewer>
+
+    <Border Grid.Row="1"
+            Background="{DynamicResource CanvasBrush}"
+            BorderBrush="{DynamicResource StrokeBrush}"
+            BorderThickness="0,1,0,0"
+            Padding="26,10">
+      <Grid ColumnDefinitions="*,Auto" MaxWidth="880" HorizontalAlignment="Center">
+        <TextBlock Text="{Binding FooterHint}" Classes="muted" FontSize="11" VerticalAlignment="Center" />
+        <Button Grid.Column="1"
+                Classes="primary"
+                Content="{Binding SubmitButtonText}"
+                Command="{Binding SubmitCommand}"
+                IsVisible="{Binding !ShowFeedback}"
+                MinWidth="132" />
+        <Button Grid.Column="1"
+                Classes="primary"
+                Content="{Binding NextButtonText}"
+                Command="{Binding NextCommand}"
+                IsVisible="{Binding ShowFeedback}"
+                MinWidth="132" />
+      </Grid>
+    </Border>
+  </Grid>
+</UserControl>

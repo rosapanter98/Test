@@ -1,0 +1,151 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:anim="https://github.com/whistyun/AnimatedImage.Avalonia"
+             xmlns:vm="clr-namespace:CertPrep.Features.Results"
+             x:Class="CertPrep.Features.Results.Views.ResultsView"
+             x:DataType="vm:ResultsViewModel">
+  <Grid RowDefinitions="*,Auto">
+    <ScrollViewer Grid.Row="0">
+      <StackPanel Margin="26,20,26,18" Spacing="15" MaxWidth="880" HorizontalAlignment="Center">
+      <Border Classes="card" Background="{DynamicResource AccentSoftBrush}" Padding="22">
+        <Grid ColumnDefinitions="Auto,*,160" ColumnSpacing="24">
+          <Border Width="120" Height="120" CornerRadius="60" Background="{DynamicResource SurfaceRaisedBrush}" BorderBrush="{DynamicResource AccentBrush}" BorderThickness="2">
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="1">
+              <TextBlock Text="{Binding ScoreText}" FontSize="34" FontWeight="Bold" HorizontalAlignment="Center" />
+              <TextBlock Text="SCORE" Classes="eyebrow" HorizontalAlignment="Center" />
+            </StackPanel>
+          </Border>
+          <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="8">
+            <TextBlock Text="SESSION COMPLETE" Classes="eyebrow" />
+            <TextBlock Text="{Binding ResultHeading}" Classes="h1" TextWrapping="Wrap" />
+            <TextBlock Text="{Binding CorrectText}" FontSize="16" />
+            <StackPanel Orientation="Horizontal" Spacing="16">
+              <TextBlock Text="{Binding ExamCode}" Foreground="{DynamicResource AccentBrush}" FontWeight="SemiBold" />
+              <TextBlock Text="{Binding DurationText}" Classes="muted" />
+            </StackPanel>
+          </StackPanel>
+          <StackPanel Grid.Column="2" Spacing="6" VerticalAlignment="Center">
+            <Border Width="148"
+                    Height="148"
+                    CornerRadius="10"
+                    ClipToBounds="True"
+                    Background="Black"
+                    BorderBrush="{DynamicResource StrokeBrush}"
+                    BorderThickness="1">
+              <Image Stretch="UniformToFill"
+                     anim:ImageBehavior.AnimatedSource="{Binding ReactionAsset}"
+                     anim:ImageBehavior.RepeatBehavior="Forever" />
+            </Border>
+            <TextBlock Text="{Binding ReactionCaption}"
+                       TextAlignment="Center"
+                       TextWrapping="Wrap"
+                       FontWeight="SemiBold"
+                       FontSize="11" />
+          </StackPanel>
+        </Grid>
+      </Border>
+
+      <Border Classes="card">
+        <Grid ColumnDefinitions="180,*" ColumnSpacing="20">
+          <StackPanel Spacing="5">
+            <TextBlock Text="SESSION REWARDS" Classes="eyebrow" />
+            <TextBlock Text="{Binding EarnedXpText}" FontSize="29" FontWeight="Bold" Foreground="{DynamicResource AccentBrush}" />
+            <TextBlock Text="{Binding LevelText}" Classes="h3" />
+            <TextBlock Text="{Binding RankTitle}" Foreground="{DynamicResource AccentBrush}" FontWeight="Bold" TextWrapping="Wrap" />
+            <TextBlock Text="{Binding RankDescription}" Classes="muted" FontSize="11" TextWrapping="Wrap" />
+            <ProgressBar Minimum="0" Maximum="100" Value="{Binding LevelProgressPercent}" Margin="0,4,0,0" />
+            <TextBlock Text="{Binding LevelProgressText}" Classes="muted" FontSize="11" />
+          </StackPanel>
+          <StackPanel Grid.Column="1" Spacing="7">
+            <ItemsControl ItemsSource="{Binding RewardLines}">
+              <ItemsControl.ItemTemplate>
+                <DataTemplate x:DataType="vm:RewardLineViewModel">
+                  <Grid ColumnDefinitions="*,Auto" Margin="0,2">
+                    <TextBlock Text="{Binding Description}" />
+                    <TextBlock Grid.Column="1" Text="{Binding AmountText}" Foreground="{DynamicResource AccentBrush}" FontWeight="SemiBold" />
+                  </Grid>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            <TextBlock Text="{Binding PromotionText}" Classes="muted" FontSize="11" TextWrapping="Wrap" />
+          </StackPanel>
+        </Grid>
+      </Border>
+
+      <StackPanel Spacing="6">
+        <TextBlock Text="Objective breakdown" Classes="h2" />
+        <TextBlock Text="Use this to choose the next short session." Classes="muted" />
+      </StackPanel>
+
+      <ItemsControl ItemsSource="{Binding Objectives}">
+        <ItemsControl.ItemTemplate>
+          <DataTemplate x:DataType="vm:ObjectiveResultViewModel">
+            <Border Classes="card" Margin="0,0,0,9" Padding="16">
+              <Grid ColumnDefinitions="*,Auto" ColumnSpacing="18">
+                <StackPanel Spacing="5">
+                  <TextBlock Text="{Binding Context}" FontWeight="SemiBold" TextWrapping="Wrap" />
+                  <TextBlock Text="{Binding DetailText}" Classes="muted" FontSize="12" />
+                  <ProgressBar Minimum="0" Maximum="100" Value="{Binding ScorePercent}" Margin="0,4,0,0" />
+                </StackPanel>
+                <TextBlock Grid.Column="1" Text="{Binding ScoreText}" FontSize="23" FontWeight="Bold" VerticalAlignment="Center" />
+              </Grid>
+            </Border>
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+
+      <StackPanel Spacing="6" IsVisible="{Binding HasMissedQuestions}" Margin="0,6,0,0">
+        <TextBlock Text="Review missed questions" Classes="h2" />
+        <TextBlock Text="{Binding ReviewSummary}" Classes="muted" />
+      </StackPanel>
+
+      <ItemsControl ItemsSource="{Binding MissedQuestions}" IsVisible="{Binding HasMissedQuestions}">
+        <ItemsControl.ItemTemplate>
+          <DataTemplate x:DataType="vm:MissedQuestionReviewViewModel">
+            <Border Classes="card" Margin="0,0,0,10" Padding="18">
+              <StackPanel Spacing="12">
+                <TextBlock Text="{Binding Context}" Classes="eyebrow" />
+                <TextBlock Text="{Binding Prompt}" Classes="h3" TextWrapping="Wrap" />
+
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                  <Border Background="{DynamicResource DangerSoftBrush}" CornerRadius="7" Padding="12">
+                    <StackPanel Spacing="5">
+                      <TextBlock Text="YOUR ANSWER" Classes="eyebrow" Foreground="{DynamicResource DangerBrush}" />
+                      <TextBlock Text="{Binding SelectedAnswersText}" TextWrapping="Wrap" />
+                    </StackPanel>
+                  </Border>
+                  <Border Grid.Column="1" Background="{DynamicResource SuccessSoftBrush}" CornerRadius="7" Padding="12">
+                    <StackPanel Spacing="5">
+                      <TextBlock Text="CORRECT ANSWER" Classes="eyebrow" Foreground="{DynamicResource SuccessBrush}" />
+                      <TextBlock Text="{Binding CorrectAnswersText}" TextWrapping="Wrap" />
+                    </StackPanel>
+                  </Border>
+                </Grid>
+
+                <TextBlock Text="{Binding Explanation}" TextWrapping="Wrap" LineHeight="21" />
+                <TextBlock Text="{Binding SourceText}" Classes="muted" FontSize="11" TextWrapping="Wrap" />
+              </StackPanel>
+            </Border>
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+
+      </StackPanel>
+    </ScrollViewer>
+
+    <Border Grid.Row="1"
+            Background="{DynamicResource CanvasBrush}"
+            BorderBrush="{DynamicResource StrokeBrush}"
+            BorderThickness="0,1,0,0"
+            Padding="26,10">
+      <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="8" MaxWidth="880">
+        <Button Classes="secondary"
+                Content="Retry missed"
+                Command="{Binding RetryMissedCommand}"
+                IsVisible="{Binding HasMissedQuestions}" />
+        <Button Classes="secondary" Content="Dashboard" Command="{Binding DashboardCommand}" />
+        <Button Classes="primary" Content="View progress" Command="{Binding ProgressCommand}" />
+      </StackPanel>
+    </Border>
+  </Grid>
+</UserControl>

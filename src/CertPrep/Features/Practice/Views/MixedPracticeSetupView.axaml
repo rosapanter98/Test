@@ -1,0 +1,93 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:CertPrep.Features.Practice"
+             x:Class="CertPrep.Features.Practice.Views.MixedPracticeSetupView"
+             x:DataType="vm:MixedPracticeSetupViewModel">
+  <ScrollViewer>
+    <Grid Margin="26,22" ColumnDefinitions="1.15*,0.85*" ColumnSpacing="16" MaxWidth="980" HorizontalAlignment="Left">
+      <Border Classes="card">
+        <StackPanel Spacing="14">
+          <StackPanel Spacing="7">
+            <TextBlock Text="CROSS-EXAM PRACTICE" Classes="eyebrow" />
+            <TextBlock Text="Mix the question pool." Classes="h1" />
+            <TextBlock Text="Questions are balanced across the selected exams, then shuffled into one session. Every answer still counts toward its original exam and skills area."
+                       Classes="muted"
+                       TextWrapping="Wrap"
+                       LineHeight="21" />
+          </StackPanel>
+
+          <Border Height="1" Background="{DynamicResource StrokeBrush}" />
+
+          <StackPanel Spacing="10">
+            <TextBlock Text="INCLUDE EXAMS" Classes="eyebrow" />
+            <ItemsControl ItemsSource="{Binding Exams}">
+              <ItemsControl.ItemTemplate>
+                <DataTemplate x:DataType="vm:ExamSelectionViewModel">
+                  <Border Classes="metric" Padding="12" Margin="0,0,0,7">
+                    <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="13">
+                      <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay}" VerticalAlignment="Center" />
+                      <StackPanel Grid.Column="1" Spacing="2">
+                        <TextBlock Text="{Binding Code}" FontWeight="Bold" Foreground="{DynamicResource AccentBrush}" />
+                        <TextBlock Text="{Binding Title}" TextWrapping="Wrap" />
+                      </StackPanel>
+                      <TextBlock Grid.Column="2" Text="{Binding QuestionCountText}" Classes="muted" FontSize="11" VerticalAlignment="Center" />
+                    </Grid>
+                  </Border>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            <TextBlock Text="{Binding SelectionSummary}" Classes="muted" FontSize="12" />
+          </StackPanel>
+        </StackPanel>
+      </Border>
+
+      <Border Grid.Column="1" Classes="card">
+        <StackPanel Spacing="15">
+          <TextBlock Text="Configure mixed session" Classes="h2" />
+
+          <StackPanel Spacing="8">
+            <TextBlock Text="MODE" Classes="eyebrow" />
+            <ComboBox ItemsSource="{Binding ModeOptions}" SelectedItem="{Binding SelectedMode, Mode=TwoWay}">
+              <ComboBox.ItemTemplate>
+                <DataTemplate x:DataType="vm:PracticeModeOption">
+                  <StackPanel Spacing="2" Margin="3">
+                    <TextBlock Text="{Binding Name}" FontWeight="SemiBold" />
+                    <TextBlock Text="{Binding Description}" Classes="muted" FontSize="11" TextWrapping="Wrap" />
+                  </StackPanel>
+                </DataTemplate>
+              </ComboBox.ItemTemplate>
+            </ComboBox>
+            <TextBlock Text="{Binding SelectedMode.Description}" Classes="muted" FontSize="12" TextWrapping="Wrap" />
+          </StackPanel>
+
+          <StackPanel Spacing="8">
+            <TextBlock Text="SESSION CAP" Classes="eyebrow" />
+            <ComboBox ItemsSource="{Binding QuestionCountOptions}" SelectedItem="{Binding SelectedQuestionCount, Mode=TwoWay}">
+              <ComboBox.ItemTemplate>
+                <DataTemplate x:DataType="vm:QuestionCountOption">
+                  <TextBlock Text="{Binding Label}" />
+                </DataTemplate>
+              </ComboBox.ItemTemplate>
+            </ComboBox>
+            <TextBlock Text="The selected length is the hard maximum even when the combined pool is larger."
+                       Classes="muted"
+                       FontSize="12"
+                       TextWrapping="Wrap" />
+          </StackPanel>
+
+          <TextBlock Text="{Binding ErrorMessage}" Foreground="{DynamicResource DangerBrush}" TextWrapping="Wrap" />
+
+          <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10" Margin="0,5,0,0">
+            <Button Classes="secondary" Content="Back" Command="{Binding BackCommand}" />
+            <Button Grid.Column="1" Classes="primary" Command="{Binding StartCommand}">
+              <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="7">
+                <PathIcon Width="13" Height="13" Data="{StaticResource Icon.Mix}" />
+                <TextBlock Text="Start mixed session" Foreground="White" />
+              </StackPanel>
+            </Button>
+          </Grid>
+        </StackPanel>
+      </Border>
+    </Grid>
+  </ScrollViewer>
+</UserControl>

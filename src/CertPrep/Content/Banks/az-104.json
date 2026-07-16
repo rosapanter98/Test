@@ -1,0 +1,1006 @@
+{
+  "provider": "Microsoft",
+  "code": "AZ-104",
+  "title": "Microsoft Azure Administrator",
+  "summary": "Practice Azure identity, governance, storage, compute, networking, monitoring, backup, and recovery through realistic administration scenarios.",
+  "contentVersion": "2026.07 (skills measured 2026-04-17)",
+  "objectives": [
+    { "contentKey": "manage-identities-governance", "name": "Manage Azure identities and governance", "sortOrder": 0 },
+    { "contentKey": "implement-manage-storage", "name": "Implement and manage storage", "sortOrder": 1 },
+    { "contentKey": "deploy-manage-compute", "name": "Deploy and manage Azure compute resources", "sortOrder": 2 },
+    { "contentKey": "implement-manage-networking", "name": "Implement and manage virtual networking", "sortOrder": 3 },
+    { "contentKey": "monitor-maintain-resources", "name": "Monitor and maintain Azure resources", "sortOrder": 4 }
+  ],
+  "questions": [
+    {
+      "contentKey": "az104-rbac-least-scope", "objectiveKey": "manage-identities-governance",
+      "prompt": "An MSP operator must restart virtual machines in one customer resource group but must not manage other resource groups. What is the best role assignment?",
+      "kind": "SingleChoice", "difficulty": "Foundation",
+      "explanation": "Assign Virtual Machine Contributor at the resource-group scope. Azure RBAC permissions inherit downward, so the smallest required scope limits exposure while covering all VMs in that group.",
+      "sourceName": "Steps to assign an Azure role", "sourceUrl": "https://learn.microsoft.com/en-us/azure/role-based-access-control/role-assignments-steps",
+      "choices": [
+        { "text": "Virtual Machine Contributor on the required resource group", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Contributor on the customer subscription", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Virtual Machine Contributor on the customer management group", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Reader on each virtual machine", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az104-rbac-role-assignment-permission", "objectiveKey": "manage-identities-governance",
+      "prompt": "A technician has Contributor on a subscription but cannot grant Reader to another user. Which additional built-in role grants the needed capability without granting general resource management?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "Role Based Access Control Administrator can manage Azure role assignments. Contributor manages resources but cannot assign Azure RBAC roles.",
+      "sourceName": "Azure built-in roles", "sourceUrl": "https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles/privileged",
+      "choices": [
+        { "text": "Role Based Access Control Administrator", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Resource Policy Contributor", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Management Group Contributor", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Directory Readers", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az104-management-group-inheritance", "objectiveKey": "manage-identities-governance",
+      "prompt": "An MSP needs one Azure Policy assignment to govern every subscription under a customer landing zone, including subscriptions added later. Where should the assignment be scoped?",
+      "kind": "SingleChoice", "difficulty": "Foundation",
+      "explanation": "Assign the policy at the landing-zone management group. Policy assignments apply to resources within their scope and are inherited by child management groups and subscriptions.",
+      "sourceName": "What are Azure management groups?", "sourceUrl": "https://learn.microsoft.com/en-us/azure/governance/management-groups/overview",
+      "choices": [
+        { "text": "The landing-zone management group", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Each current subscription separately", "isCorrect": false, "sortOrder": 1 },
+        { "text": "The Microsoft Entra tenant root directory object", "isCorrect": false, "sortOrder": 2 },
+        { "text": "A resource group in the platform subscription", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az104-policy-remediation-existing", "objectiveKey": "manage-identities-governance",
+      "prompt": "A Modify policy that adds a required tag reports existing resources as non-compliant. Which two actions are required to update those existing resources?",
+      "kind": "MultipleChoice", "difficulty": "Advanced",
+      "explanation": "Modify remediation uses the policy assignment's managed identity and a remediation task. Evaluation alone reports compliance but does not retroactively change existing resources.",
+      "sourceName": "Remediate non-compliant resources", "sourceUrl": "https://learn.microsoft.com/en-us/azure/governance/policy/how-to/remediate-resources",
+      "choices": [
+        { "text": "Give the policy assignment's managed identity the required role", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Create a remediation task for the assignment", "isCorrect": true, "sortOrder": 1 },
+        { "text": "Change the policy effect from Modify to Audit", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Add a CanNotDelete lock to the assignment scope", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az104-cannotdelete-lock", "objectiveKey": "manage-identities-governance",
+      "prompt": "A resource group has a CanNotDelete lock. Which operation can a user with sufficient RBAC permissions still perform?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "A CanNotDelete lock permits authorized read and modification operations but blocks deletion. A ReadOnly lock permits control-plane read operations but blocks updates and deletions.",
+      "sourceName": "Lock Azure resources", "sourceUrl": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/lock-resources",
+      "choices": [
+        { "text": "Resize a virtual machine in the resource group", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Delete a child network interface", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Delete the resource group after deleting its children", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Remove the lock without lock-management permission", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az104-guest-object-tenant", "objectiveKey": "manage-identities-governance",
+      "prompt": "A customer invites an MSP engineer by Microsoft Entra B2B. Which statement describes the resulting identity in the customer tenant?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "B2B collaboration creates a user object in the resource tenant, normally with user type Guest, while the external user's credentials remain managed by the home identity provider.",
+      "sourceName": "B2B collaboration overview", "sourceUrl": "https://learn.microsoft.com/en-us/entra/external-id/what-is-b2b",
+      "choices": [
+        { "text": "A guest user object is created in the customer tenant and uses the engineer's home credentials", "isCorrect": true, "sortOrder": 0 },
+        { "text": "A synchronized member account is created and its password is stored in both tenants", "isCorrect": false, "sortOrder": 1 },
+        { "text": "A service principal replaces the engineer's user object in the customer tenant", "isCorrect": false, "sortOrder": 2 },
+        { "text": "The customer subscription is transferred to the engineer's home tenant", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az104-group-license-processing", "objectiveKey": "manage-identities-governance",
+      "prompt": "A license is assigned to a Microsoft Entra group. A new group member has no usage location and license processing fails. Where should the administrator investigate first?",
+      "kind": "SingleChoice", "difficulty": "Advanced",
+      "explanation": "Group-based licensing reports per-user assignment errors. The administrator should inspect the user's license state and correct properties such as usage location rather than repeatedly reassigning the group license.",
+      "sourceName": "Resolve group license assignment problems", "sourceUrl": "https://learn.microsoft.com/en-us/entra/identity/users/licensing-groups-resolve-problems",
+      "choices": [
+        { "text": "The affected user's license assignment state and error details", "isCorrect": true, "sortOrder": 0 },
+        { "text": "The group's membership type, changing it from Assigned to Dynamic", "isCorrect": false, "sortOrder": 1 },
+        { "text": "The product assignment on the group, repeatedly removing and re-adding it", "isCorrect": false, "sortOrder": 2 },
+        { "text": "The tenant's available license count, purchasing another unit before reviewing the user error", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+
+    {
+      "contentKey": "az104-sas-stored-access-policy", "objectiveKey": "implement-manage-storage",
+      "prompt": "An MSP issues service SAS tokens to a vendor and must be able to revoke all of those tokens without rotating the storage account keys. What should the tokens reference?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "A service SAS associated with a stored access policy inherits its constraints. Deleting or changing the policy can revoke or alter associated SAS tokens without rotating account keys.",
+      "sourceName": "Define a stored access policy", "sourceUrl": "https://learn.microsoft.com/en-us/rest/api/storageservices/define-stored-access-policy",
+      "choices": [
+        { "text": "A stored access policy on the target container", "isCorrect": true, "sortOrder": 0 },
+        { "text": "A user delegation key with no expiry", "isCorrect": false, "sortOrder": 1 },
+        { "text": "An account SAS stored in Azure Key Vault", "isCorrect": false, "sortOrder": 2 },
+        { "text": "A read-only resource lock on the storage account", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az104-storage-firewall-selected-networks", "objectiveKey": "implement-manage-storage",
+      "prompt": "A storage account must accept public-endpoint traffic only from two administration subnets in the same Azure region. Which configuration is required?",
+      "kind": "SingleChoice", "difficulty": "Foundation",
+      "explanation": "Enable the appropriate Storage service endpoint on each approved subnet, set the storage firewall default network access to Deny, and add virtual network rules for those subnets. Rules do not restrict other networks while default access remains Allow.",
+      "sourceName": "Configure Azure Storage firewalls", "sourceUrl": "https://learn.microsoft.com/en-us/azure/storage/common/storage-network-security",
+      "choices": [
+        { "text": "Enable Microsoft.Storage endpoints, set default network access to Deny, and add both subnets as virtual network rules", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Set default network access to Allow and add both subnets as virtual network rules", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Disable shared key access and add both subnets to Azure RBAC", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Enable infrastructure encryption and add both subnets as private DNS links", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az104-azure-files-rbac", "objectiveKey": "implement-manage-storage",
+      "prompt": "Users authenticate to an Azure file share with Microsoft Entra Kerberos. Which permission controls their SMB data access at the share level?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "Identity-based SMB access uses Azure RBAC share-level roles such as Storage File Data SMB Share Contributor. Windows ACLs can then further restrict directories and files.",
+      "sourceName": "Share-level permissions for Azure Files", "sourceUrl": "https://learn.microsoft.com/en-us/azure/storage/files/storage-files-identity-ad-ds-assign-permissions",
+      "choices": [
+        { "text": "An Azure Storage File Data SMB role assignment", "isCorrect": true, "sortOrder": 0 },
+        { "text": "A Storage Account Contributor assignment", "isCorrect": false, "sortOrder": 1 },
+        { "text": "A SAS stored access policy", "isCorrect": false, "sortOrder": 2 },
+        { "text": "A management-plane ReadOnly lock", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az104-ragzrs-read-secondary", "objectiveKey": "implement-manage-storage",
+      "prompt": "A customer needs zone resilience in the primary region and read access to replicated data in a paired secondary region before failover. Which redundancy option meets both requirements?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "RA-GZRS uses zone-redundant storage in the primary region, asynchronously replicates to a secondary region, and exposes the secondary endpoint for reads.",
+      "sourceName": "Azure Storage redundancy", "sourceUrl": "https://learn.microsoft.com/en-us/azure/storage/common/storage-redundancy",
+      "choices": [
+        { "text": "Read-access geo-zone-redundant storage (RA-GZRS)", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Geo-zone-redundant storage (GZRS)", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Read-access geo-redundant storage (RA-GRS)", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Zone-redundant storage (ZRS)", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az104-blob-lifecycle-base-blob", "objectiveKey": "implement-manage-storage",
+      "prompt": "Blobs should move to cool storage 30 days after their content was last changed and be deleted after 365 days. What should the administrator configure?",
+      "kind": "SingleChoice", "difficulty": "Foundation",
+      "explanation": "A Blob Storage lifecycle management policy can tier or delete base blobs using age conditions such as days after last modification.",
+      "sourceName": "Azure Blob Storage lifecycle management", "sourceUrl": "https://learn.microsoft.com/en-us/azure/storage/blobs/lifecycle-management-overview",
+      "choices": [
+        { "text": "A lifecycle management rule for base blobs using daysAfterModificationGreaterThan", "isCorrect": true, "sortOrder": 0 },
+        { "text": "An object replication policy with a 30-day synchronization interval", "isCorrect": false, "sortOrder": 1 },
+        { "text": "A stored access policy with cool and delete permissions", "isCorrect": false, "sortOrder": 2 },
+        { "text": "A file-share snapshot schedule with a 365-day retention", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az104-object-replication-prerequisites", "objectiveKey": "implement-manage-storage",
+      "prompt": "Which two settings are prerequisites for Azure Blob object replication between two storage accounts?",
+      "kind": "MultipleChoice", "difficulty": "Advanced",
+      "explanation": "Object replication requires blob versioning on both accounts and change feed on the source account so changes can be replicated asynchronously.",
+      "sourceName": "Object replication for block blobs", "sourceUrl": "https://learn.microsoft.com/en-us/azure/storage/blobs/object-replication-overview",
+      "choices": [
+        { "text": "Blob versioning on the source and destination accounts", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Change feed on the source account", "isCorrect": true, "sortOrder": 1 },
+        { "text": "Hierarchical namespace on both accounts", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Read-access geo-redundancy on the source account", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+
+    {
+      "contentKey": "az104-bicep-what-if", "objectiveKey": "deploy-manage-compute",
+      "prompt": "Before deploying a Bicep change to a customer subscription, an administrator wants to preview which resources will be created, modified, or deleted. What should be used?",
+      "kind": "SingleChoice", "difficulty": "Foundation",
+      "explanation": "Azure Resource Manager what-if previews expected deployment changes without applying them. It is available for Bicep and ARM template deployments.",
+      "sourceName": "ARM deployment what-if", "sourceUrl": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/deploy-what-if",
+      "choices": [
+        { "text": "The Resource Manager what-if operation", "isCorrect": true, "sortOrder": 0 },
+        { "text": "The Bicep decompile operation", "isCorrect": false, "sortOrder": 1 },
+        { "text": "The Azure Policy compliance scan", "isCorrect": false, "sortOrder": 2 },
+        { "text": "The deployment export operation", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az104-vm-availability-zones", "objectiveKey": "deploy-manage-compute",
+      "prompt": "Two virtual machines must remain available if one datacenter in an Azure region fails. Which placement option directly addresses this requirement?",
+      "kind": "SingleChoice", "difficulty": "Foundation",
+      "explanation": "Availability zones are physically separate datacenter groups within a region. Placing instances in separate zones protects against a zonal datacenter failure.",
+      "sourceName": "Availability options for Azure VMs", "sourceUrl": "https://learn.microsoft.com/en-us/azure/virtual-machines/availability",
+      "choices": [
+        { "text": "Deploy one virtual machine in each of two availability zones", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Place both virtual machines in one availability set", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Place both virtual machines in one proximity placement group", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Attach both virtual machines to the same scale set fault domain", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az104-encryption-at-host", "objectiveKey": "deploy-manage-compute",
+      "prompt": "A security baseline requires VM temporary disks and host-side caches for OS and data disks to be encrypted at rest. Which feature should be enabled?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "Encryption at host encrypts temporary disks and disk caches at the VM host. Storage service encryption already protects managed-disk data stored in Azure Storage.",
+      "sourceName": "Encryption at host", "sourceUrl": "https://learn.microsoft.com/en-us/azure/virtual-machines/disk-encryption",
+      "choices": [
+        { "text": "Encryption at host", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Trusted launch secure boot", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Azure Disk Encryption without host encryption", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Double encryption for the storage account", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az104-vmss-autoscale-rules", "objectiveKey": "deploy-manage-compute",
+      "prompt": "A VM scale set should add instances when average CPU remains above 75% and remove instances when it remains below 30%. What should be configured?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "Azure Monitor autoscale uses separate scale-out and scale-in rules within an autoscale profile, with thresholds, time grains, durations, and cooldown periods.",
+      "sourceName": "Autoscale virtual machine scale sets", "sourceUrl": "https://learn.microsoft.com/en-us/azure/virtual-machine-scale-sets/virtual-machine-scale-sets-autoscale-overview",
+      "choices": [
+        { "text": "One autoscale profile with a scale-out rule and a scale-in rule", "isCorrect": true, "sortOrder": 0 },
+        { "text": "One VM health extension with two repair thresholds", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Two scheduled scale-set reimage operations", "isCorrect": false, "sortOrder": 2 },
+        { "text": "One load-balancer health probe with upper and lower CPU limits", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az104-container-apps-scaling", "objectiveKey": "deploy-manage-compute",
+      "prompt": "A customer needs a managed container service that can scale HTTP workloads to zero and create new revisions during application updates. Which service fits?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "Azure Container Apps provides revision management and event-driven scaling, including scaling to zero for supported workloads. ACI runs containers without this application revision model.",
+      "sourceName": "Azure Container Apps overview", "sourceUrl": "https://learn.microsoft.com/en-us/azure/container-apps/overview",
+      "choices": [
+        { "text": "Azure Container Apps", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Azure Container Instances", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Azure Container Registry Tasks", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Azure App Service Environment without Web App for Containers", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az104-appservice-slot-settings", "objectiveKey": "deploy-manage-compute",
+      "prompt": "During an App Service deployment-slot swap, a staging database connection string must remain with the staging slot. What should be configured?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "Mark the connection string as a deployment slot setting. Slot-specific settings stay with their source slot instead of being swapped with application content and ordinary configuration.",
+      "sourceName": "Set up staging environments in App Service", "sourceUrl": "https://learn.microsoft.com/en-us/azure/app-service/deploy-staging-slots",
+      "choices": [
+        { "text": "Mark the connection string as a deployment slot setting", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Move the connection string to the App Service plan settings", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Disable auto swap for the production slot", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Add a routing rule that sends no production traffic to staging", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az104-appservice-vnet-integration", "objectiveKey": "deploy-manage-compute",
+      "prompt": "An App Service app must call a private API hosted in an Azure virtual network. The API does not need to initiate connections to the app. Which feature should be configured?",
+      "kind": "SingleChoice", "difficulty": "Advanced",
+      "explanation": "App Service virtual network integration gives the app outbound access into a virtual network. A private endpoint instead provides private inbound access to the app.",
+      "sourceName": "App Service virtual network integration", "sourceUrl": "https://learn.microsoft.com/en-us/azure/app-service/overview-vnet-integration",
+      "choices": [
+        { "text": "App Service virtual network integration", "isCorrect": true, "sortOrder": 0 },
+        { "text": "A private endpoint for the App Service app", "isCorrect": false, "sortOrder": 1 },
+        { "text": "An App Service access restriction for the API subnet", "isCorrect": false, "sortOrder": 2 },
+        { "text": "A service endpoint policy on the API subnet", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+
+    {
+      "contentKey": "az104-peering-not-transitive", "objectiveKey": "implement-manage-networking",
+      "prompt": "Spoke-A and Spoke-B are each peered with Hub but not with each other. No NVA or gateway routing is configured. Can a VM in Spoke-A reach a VM in Spoke-B through Hub?",
+      "kind": "SingleChoice", "difficulty": "Foundation",
+      "explanation": "Virtual network peering is not transitive. A separate peering or a routing design through an NVA or gateway is required for spoke-to-spoke connectivity.",
+      "sourceName": "Azure virtual network peering", "sourceUrl": "https://learn.microsoft.com/en-us/azure/virtual-network/virtual-network-peering-overview",
+      "choices": [
+        { "text": "No, peering does not provide transitive routing through Hub", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Yes, because both peerings allow virtual network access by default", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Yes, but only if all three virtual networks are in one subscription", "isCorrect": false, "sortOrder": 2 },
+        { "text": "No, unless both spokes use the same private DNS zone", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az104-nsg-priority", "objectiveKey": "implement-manage-networking",
+      "prompt": "An NSG has an inbound Allow rule at priority 300 and a matching Deny rule at priority 200. What happens to matching new connections?",
+      "kind": "SingleChoice", "difficulty": "Foundation",
+      "explanation": "NSG rules are processed in ascending priority number. The matching Deny rule at 200 is evaluated before the Allow rule at 300, so the traffic is denied.",
+      "sourceName": "Network security groups", "sourceUrl": "https://learn.microsoft.com/en-us/azure/virtual-network/network-security-groups-overview",
+      "choices": [
+        { "text": "The connection is denied because priority 200 is evaluated first", "isCorrect": true, "sortOrder": 0 },
+        { "text": "The connection is allowed because Allow overrides Deny", "isCorrect": false, "sortOrder": 1 },
+        { "text": "The connection is allowed because priority 300 is evaluated first", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Both rules are ignored because their source and destination match", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az104-bastion-no-public-ip", "objectiveKey": "implement-manage-networking",
+      "prompt": "Administrators need browser-based RDP and SSH from the Azure portal to VMs that have no public IPs, without deploying a client VPN. Which service should be deployed?",
+      "kind": "SingleChoice", "difficulty": "Foundation",
+      "explanation": "Azure Bastion provides RDP and SSH connectivity through the Azure portal or native clients while target VMs retain only private IP addresses.",
+      "sourceName": "What is Azure Bastion?", "sourceUrl": "https://learn.microsoft.com/en-us/azure/bastion/bastion-overview",
+      "choices": [
+        { "text": "Azure Bastion", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Just-in-time VM access in Microsoft Defender for Cloud", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Azure VPN Gateway point-to-site connectivity", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Azure Serial Console", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az104-private-vs-service-endpoint", "objectiveKey": "implement-manage-networking",
+      "prompt": "A storage account must be reached through a private IP address in the customer's virtual network, and public network access will be disabled. What should be created?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "A private endpoint places a private IP-backed network interface in the virtual network for the service. A service endpoint still connects to the service's public endpoint.",
+      "sourceName": "Azure Private Endpoint", "sourceUrl": "https://learn.microsoft.com/en-us/azure/private-link/private-endpoint-overview",
+      "choices": [
+        { "text": "A private endpoint for the storage subresource", "isCorrect": true, "sortOrder": 0 },
+        { "text": "A Microsoft.Storage service endpoint on the subnet", "isCorrect": false, "sortOrder": 1 },
+        { "text": "A NAT Gateway associated with the subnet", "isCorrect": false, "sortOrder": 2 },
+        { "text": "A public IP prefix delegated to the storage account", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az104-private-dns-vnet-link", "objectiveKey": "implement-manage-networking",
+      "prompt": "VMs in VNet-A must resolve records from the Azure private DNS zone corp.contoso.com. What should the administrator create?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "A private DNS virtual network link makes the zone resolvable from the linked VNet. Registration is optional and only controls automatic VM record creation.",
+      "sourceName": "Azure Private DNS zones", "sourceUrl": "https://learn.microsoft.com/en-us/azure/dns/private-dns-virtual-network-links",
+      "choices": [
+        { "text": "A virtual network link from the zone to VNet-A", "isCorrect": true, "sortOrder": 0 },
+        { "text": "A VNet peering from VNet-A to the zone resource group", "isCorrect": false, "sortOrder": 1 },
+        { "text": "A service endpoint for Microsoft.Network on VNet-A", "isCorrect": false, "sortOrder": 2 },
+        { "text": "A public DNS delegation from contoso.com to VNet-A", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az104-load-balancer-health-probe", "objectiveKey": "implement-manage-networking",
+      "prompt": "A Standard Load Balancer backend VM is running, but its application on TCP 443 has failed. How should the load balancer stop sending new flows to that instance?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "A health probe tests the configured backend endpoint. When an instance fails the probe threshold, Load Balancer stops directing new connections to it.",
+      "sourceName": "Azure Load Balancer health probes", "sourceUrl": "https://learn.microsoft.com/en-us/azure/load-balancer/load-balancer-custom-probe-overview",
+      "choices": [
+        { "text": "Configure a health probe that validates the application endpoint", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Configure an inbound NAT rule for TCP 443", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Configure a floating IP rule without a probe", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Configure a Traffic Manager performance endpoint", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+
+    {
+      "contentKey": "az104-diagnostic-settings-logs", "objectiveKey": "monitor-maintain-resources",
+      "prompt": "An operations team must run KQL queries across resource logs from several Azure services. Which two configurations are required?",
+      "kind": "MultipleChoice", "difficulty": "Intermediate",
+      "explanation": "Create a Log Analytics workspace and configure diagnostic settings on resources to route supported logs to that workspace. Metrics alone do not provide resource log tables for KQL analysis.",
+      "sourceName": "Diagnostic settings in Azure Monitor", "sourceUrl": "https://learn.microsoft.com/en-us/azure/azure-monitor/essentials/diagnostic-settings",
+      "choices": [
+        { "text": "A Log Analytics workspace", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Diagnostic settings that send resource logs to the workspace", "isCorrect": true, "sortOrder": 1 },
+        { "text": "Azure Monitor Agent installed on every resource that emits a platform resource log", "isCorrect": false, "sortOrder": 2 },
+        { "text": "A data collection rule that collects guest operating-system events instead of resource logs", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az104-action-group-reuse", "objectiveKey": "monitor-maintain-resources",
+      "prompt": "Multiple Azure Monitor alert rules should notify the same email, webhook, and ITSM connector. What should the administrator reuse across the rules?",
+      "kind": "SingleChoice", "difficulty": "Foundation",
+      "explanation": "An action group is a reusable collection of notification and automation actions. Multiple alert rules can invoke the same action group.",
+      "sourceName": "Azure Monitor action groups", "sourceUrl": "https://learn.microsoft.com/en-us/azure/azure-monitor/alerts/action-groups",
+      "choices": [
+        { "text": "An action group", "isCorrect": true, "sortOrder": 0 },
+        { "text": "An alert processing rule condition", "isCorrect": false, "sortOrder": 1 },
+        { "text": "A data collection endpoint", "isCorrect": false, "sortOrder": 2 },
+        { "text": "A workbook parameter", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az104-alert-processing-maintenance", "objectiveKey": "monitor-maintain-resources",
+      "prompt": "During planned maintenance, alert conditions should continue to be evaluated, but notifications for one resource group must be suppressed. What should be configured?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "An alert processing rule can suppress or add action groups for selected alerts on a schedule. The underlying alert rules still evaluate and alert instances remain visible.",
+      "sourceName": "Alert processing rules", "sourceUrl": "https://learn.microsoft.com/en-us/azure/azure-monitor/alerts/alerts-processing-rules",
+      "choices": [
+        { "text": "A scheduled alert processing rule that suppresses actions", "isCorrect": true, "sortOrder": 0 },
+        { "text": "A scheduled deletion and recreation of each alert rule", "isCorrect": false, "sortOrder": 1 },
+        { "text": "A diagnostic setting that filters the resource group", "isCorrect": false, "sortOrder": 2 },
+        { "text": "A data collection rule transformation that drops alert records", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az104-site-recovery-vs-backup", "objectiveKey": "monitor-maintain-resources",
+      "prompt": "A customer requires an Azure VM workload to start in a secondary Azure region after the primary region becomes unavailable, with an orchestrated failover process. Which service should be configured?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "Azure Site Recovery replicates workloads and orchestrates failover to a secondary location. Azure Backup protects recovery points but does not provide the same replication and failover orchestration.",
+      "sourceName": "About Site Recovery", "sourceUrl": "https://learn.microsoft.com/en-us/azure/site-recovery/site-recovery-overview",
+      "choices": [
+        { "text": "Azure Site Recovery", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Azure Backup with vault-redundant storage", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Azure Resource Mover", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Azure Update Manager", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az104-lighthouse-delegated-access", "objectiveKey": "manage-identities-governance",
+      "prompt": "An MSP must manage resources in many customer tenants from its own tenant without creating a separate guest account for every technician in every customer tenant. Which Azure capability is designed for this?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "Azure Lighthouse delegates subscription or resource-group scopes to identities in the managing tenant. Technicians can operate across customers from their own tenant while customers retain control of the delegation.",
+      "sourceName": "Azure Lighthouse overview", "sourceUrl": "https://learn.microsoft.com/en-us/azure/lighthouse/overview",
+      "choices": [
+        { "text": "Azure Lighthouse delegated resource management", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Microsoft Entra Connect cloud sync", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Azure management group nesting across tenants", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Subscription transfer to the MSP tenant", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az104-sspr-scope", "objectiveKey": "manage-identities-governance",
+      "prompt": "A customer wants to pilot Microsoft Entra self-service password reset with only the Helpdesk-Pilot group. Which SSPR configuration should be selected?",
+      "kind": "SingleChoice", "difficulty": "Foundation",
+      "explanation": "SSPR can be enabled for None, Selected, or All users. Selected allows a pilot group to use SSPR while other users remain outside the rollout.",
+      "sourceName": "Enable self-service password reset", "sourceUrl": "https://learn.microsoft.com/en-us/entra/identity/authentication/tutorial-enable-sspr",
+      "choices": [
+        { "text": "Enable SSPR for Selected and choose Helpdesk-Pilot", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Enable SSPR for All and exclude other users with Azure RBAC", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Enable password writeback only for Helpdesk-Pilot", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Assign Authentication Administrator to Helpdesk-Pilot", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az104-tags-not-inherited", "objectiveKey": "manage-identities-governance",
+      "prompt": "A resource group has a CostCenter tag, but newly created resources inside it do not show that tag. What explains this behavior?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "Tags applied to a resource group are not automatically inherited by child resources. Azure Policy with a Modify effect can enforce or inherit tags when that behavior is required.",
+      "sourceName": "Use tags to organize Azure resources", "sourceUrl": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/tag-resources",
+      "choices": [
+        { "text": "Tags do not automatically inherit from a resource group to its resources", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Tag inheritance occurs only after a cost-management export runs", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Only resources with a CanNotDelete lock inherit tags", "isCorrect": false, "sortOrder": 2 },
+        { "text": "The resource provider must be registered at management-group scope", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az104-user-delegation-sas", "objectiveKey": "implement-manage-storage",
+      "prompt": "A technician must grant time-limited Blob Storage access without signing the SAS with a storage account key. Which SAS type should be created?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "A user delegation SAS is secured with Microsoft Entra credentials through a user delegation key. Microsoft recommends it over account-key-signed SAS where supported.",
+      "sourceName": "Create a user delegation SAS", "sourceUrl": "https://learn.microsoft.com/en-us/azure/storage/blobs/storage-blob-user-delegation-sas-create-cli",
+      "choices": [
+        { "text": "A user delegation SAS", "isCorrect": true, "sortOrder": 0 },
+        { "text": "An account SAS", "isCorrect": false, "sortOrder": 1 },
+        { "text": "A service SAS signed with the secondary account key", "isCorrect": false, "sortOrder": 2 },
+        { "text": "A stored access policy without an associated SAS", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az104-files-soft-delete", "objectiveKey": "implement-manage-storage",
+      "prompt": "An administrator accidentally deletes an entire Azure file share. Which previously enabled feature allows the share and its contents to be recovered during a retention period?",
+      "kind": "SingleChoice", "difficulty": "Foundation",
+      "explanation": "Soft delete for Azure file shares retains a deleted share and its data for the configured retention period so the share can be restored.",
+      "sourceName": "Soft delete for Azure file shares", "sourceUrl": "https://learn.microsoft.com/en-us/azure/storage/files/storage-files-prevent-file-share-deletion",
+      "choices": [
+        { "text": "Soft delete for Azure file shares", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Blob container soft delete", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Object replication", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Point-in-time restore for block blobs", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az104-vm-cross-subscription-move", "objectiveKey": "deploy-manage-compute",
+      "prompt": "An administrator plans to move a VM and its dependent resources to another subscription. Which two conditions must be satisfied for a standard resource move?",
+      "kind": "MultipleChoice", "difficulty": "Advanced",
+      "explanation": "Source and destination subscriptions must be active and in the same Microsoft Entra tenant, and dependent resources must be included or otherwise satisfy move requirements. A move changes resource IDs and requires validation.",
+      "sourceName": "Move Azure resources to a new subscription", "sourceUrl": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/move-resource-group-and-subscription",
+      "choices": [
+        { "text": "The source and destination subscriptions use the same Microsoft Entra tenant", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Required dependent resources are included and the move validation succeeds", "isCorrect": true, "sortOrder": 1 },
+        { "text": "The VM is converted to a classic deployment before the move", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Both subscriptions belong to the same management group", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az104-acr-managed-identity-pull", "objectiveKey": "deploy-manage-compute",
+      "prompt": "A registry uses the RBAC Registry Permissions authorization mode. A container host with a managed identity must pull images without storing registry credentials. Which role should be assigned to the identity at the registry scope?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "For a registry using RBAC Registry Permissions, AcrPull grants image-pull access. Assigning it to the host's managed identity avoids the registry admin account or stored passwords. ABAC-enabled registries use repository-scoped roles instead.",
+      "sourceName": "Authenticate with a managed identity", "sourceUrl": "https://learn.microsoft.com/en-us/azure/container-registry/container-registry-authentication-managed-identity",
+      "choices": [
+        { "text": "AcrPull", "isCorrect": true, "sortOrder": 0 },
+        { "text": "AcrPush", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Container Registry Contributor and Data Access Configuration Administrator", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Reader", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az104-appservice-scale-up-out", "objectiveKey": "deploy-manage-compute",
+      "prompt": "An App Service workload needs more CPU cores and memory per running instance, but the instance count should remain unchanged. Which action is appropriate?",
+      "kind": "SingleChoice", "difficulty": "Foundation",
+      "explanation": "Scaling up changes the App Service plan pricing tier and instance size. Scaling out changes the number of instances.",
+      "sourceName": "Scale up an App Service app", "sourceUrl": "https://learn.microsoft.com/en-us/azure/app-service/manage-scale-up",
+      "choices": [
+        { "text": "Scale up the App Service plan", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Scale out the App Service plan", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Add a deployment slot", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Enable per-app scaling without changing worker size", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az104-gateway-transit-spoke", "objectiveKey": "implement-manage-networking",
+      "prompt": "A spoke VNet must use the VPN gateway deployed in its peered hub. Which two peering settings are required?",
+      "kind": "MultipleChoice", "difficulty": "Advanced",
+      "explanation": "Configure Allow gateway transit on the hub-to-spoke peering and Use remote gateways on the spoke-to-hub peering. The spoke cannot simultaneously use its own VNet gateway.",
+      "sourceName": "Configure VPN gateway transit for peering", "sourceUrl": "https://learn.microsoft.com/en-us/azure/vpn-gateway/vpn-gateway-peering-gateway-transit",
+      "choices": [
+        { "text": "Allow gateway transit on the hub peering", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Use remote gateways on the spoke peering", "isCorrect": true, "sortOrder": 1 },
+        { "text": "Use remote gateways on the hub peering", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Deploy another VPN gateway in the spoke", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az104-backup-policy-retention", "objectiveKey": "monitor-maintain-resources",
+      "prompt": "A customer requires daily Azure VM recovery points to be retained for 30 days and monthly recovery points for one year. Where should these schedules and retention periods be configured?",
+      "kind": "SingleChoice", "difficulty": "Foundation",
+      "explanation": "An Azure Backup policy defines the backup schedule and retention ranges for protected items associated with the vault.",
+      "sourceName": "Back up an Azure VM", "sourceUrl": "https://learn.microsoft.com/en-us/azure/backup/quick-backup-vm-portal",
+      "choices": [
+        { "text": "An Azure Backup policy in the vault", "isCorrect": true, "sortOrder": 0 },
+        { "text": "An Azure Monitor data collection rule", "isCorrect": false, "sortOrder": 1 },
+        { "text": "A Site Recovery replication policy only", "isCorrect": false, "sortOrder": 2 },
+        { "text": "A storage account lifecycle management rule", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az104-dynamic-group-membership", "objectiveKey": "manage-identities-governance",
+      "prompt": "An MSP wants users to enter the Customer-France group automatically when department equals Support and country equals France. What should be configured?",
+      "kind": "SingleChoice", "difficulty": "Foundation",
+      "explanation": "A dynamic user group evaluates a membership rule against user attributes and automatically adds or removes matching users. An assigned group requires manual membership management.",
+      "sourceName": "Dynamic membership rules for groups", "sourceUrl": "https://learn.microsoft.com/en-us/entra/identity/users/groups-dynamic-membership",
+      "choices": [
+        { "text": "A dynamic user group with a rule for department and country", "isCorrect": true, "sortOrder": 0 },
+        { "text": "An assigned security group with group-based licensing", "isCorrect": false, "sortOrder": 1 },
+        { "text": "A Microsoft 365 group with hidden membership", "isCorrect": false, "sortOrder": 2 },
+        { "text": "An administrative unit with a scoped role assignment", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az104-group-license-nested", "objectiveKey": "manage-identities-governance",
+      "prompt": "Group-A has a product license and contains Group-B as a nested member. A user belongs only to Group-B. Does the user inherit Group-A's license through nesting?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "Group-based licensing processes direct user members, not nested groups. Assign the license to a group in which the user is a direct member or directly to the user.",
+      "sourceName": "Manage Microsoft Entra groups", "sourceUrl": "https://learn.microsoft.com/en-us/entra/fundamentals/how-to-manage-groups",
+      "choices": [
+        { "text": "No, nested group members do not inherit group-based licenses", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Yes, licenses inherit through any number of nested security groups", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Yes, but only after Group-B receives an Azure RBAC role", "isCorrect": false, "sortOrder": 2 },
+        { "text": "No, because group-based licensing supports Microsoft 365 groups only", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az104-owner-vs-contributor", "objectiveKey": "manage-identities-governance",
+      "prompt": "A customer administrator must manage all resources in one subscription and grant Azure RBAC access to other operators. Which built-in role meets both requirements?",
+      "kind": "SingleChoice", "difficulty": "Foundation",
+      "explanation": "Owner grants full resource management and permission to assign Azure roles. Contributor manages resources but cannot create or delete role assignments.",
+      "sourceName": "Azure built-in privileged roles", "sourceUrl": "https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles/privileged",
+      "choices": [
+        { "text": "Owner", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Contributor", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Role Based Access Control Administrator", "isCorrect": false, "sortOrder": 2 },
+        { "text": "User Access Administrator", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az104-policy-initiative", "objectiveKey": "manage-identities-governance",
+      "prompt": "An MSP wants to assign and report compliance for a coordinated set of tagging, region, and diagnostic-settings policies as one unit. What should it create?",
+      "kind": "SingleChoice", "difficulty": "Foundation",
+      "explanation": "An initiative definition groups multiple policy definitions so they can be assigned, parameterized, and evaluated together. A single policy definition contains one policy rule.",
+      "sourceName": "Azure Policy initiative definitions", "sourceUrl": "https://learn.microsoft.com/en-us/azure/governance/policy/concepts/initiative-definition-structure",
+      "choices": [
+        { "text": "An Azure Policy initiative definition", "isCorrect": true, "sortOrder": 0 },
+        { "text": "An Azure Resource Manager deployment stack", "isCorrect": false, "sortOrder": 1 },
+        { "text": "A management group with no policy assignment", "isCorrect": false, "sortOrder": 2 },
+        { "text": "An Azure Monitor action group", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az104-policy-exemption", "objectiveKey": "manage-identities-governance",
+      "prompt": "One legacy resource must remain in scope of a policy assignment but be formally waived and reported as exempt until a migration date. What should be created?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "A policy exemption keeps the resource in assignment scope but marks it exempt, with metadata such as category and expiration. A notScope exclusion removes the resource from evaluation rather than recording a waiver.",
+      "sourceName": "Azure Policy exemption structure", "sourceUrl": "https://learn.microsoft.com/en-us/azure/governance/policy/concepts/exemption-structure",
+      "choices": [
+        { "text": "A policy exemption scoped to the legacy resource", "isCorrect": true, "sortOrder": 0 },
+        { "text": "A notScope exclusion on a new policy definition", "isCorrect": false, "sortOrder": 1 },
+        { "text": "A resource lock that expires on the migration date", "isCorrect": false, "sortOrder": 2 },
+        { "text": "A deny assignment excluding the compliance service", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az104-budget-does-not-stop-spend", "objectiveKey": "manage-identities-governance",
+      "prompt": "A subscription budget reaches 100% of its threshold. What happens by default if the budget has email notifications but no automation action?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "Azure budgets track and notify on actual or forecast costs; they do not stop resources or cap consumption. Cost-control actions require separate automation and careful authorization.",
+      "sourceName": "Create and manage Azure budgets", "sourceUrl": "https://learn.microsoft.com/en-us/azure/cost-management-billing/costs/tutorial-acm-create-budgets",
+      "choices": [
+        { "text": "Notifications are sent, but resources continue running", "isCorrect": true, "sortOrder": 0 },
+        { "text": "All billable resources in the budget scope are stopped", "isCorrect": false, "sortOrder": 1 },
+        { "text": "New deployments are denied by an automatic Azure Policy assignment", "isCorrect": false, "sortOrder": 2 },
+        { "text": "The subscription is changed to read-only until the next period", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az104-storage-key-rotation", "objectiveKey": "implement-manage-storage",
+      "prompt": "An application still uses a storage account key. Which rotation sequence avoids an immediate outage while moving it from key1 to a newly regenerated key?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "Because a storage account has two keys, update the application to the currently valid alternate key, regenerate the old key, then update the application again if desired. Regenerating the in-use key first breaks clients.",
+      "sourceName": "Manage storage account access keys", "sourceUrl": "https://learn.microsoft.com/en-us/azure/storage/common/storage-account-keys-manage",
+      "choices": [
+        { "text": "Move the app to key2, regenerate key1, then optionally move it back to key1", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Regenerate key1 first, then update the app to the new key1", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Regenerate both keys together, then redeploy the app", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Delete key1, create key3, then update the app", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az104-account-vs-service-sas", "objectiveKey": "implement-manage-storage",
+      "prompt": "A migration tool needs temporary access to Blob and File services in one storage account through a single SAS. Which SAS type supports this scope?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "An account SAS can delegate access across one or more storage services and resource types in an account. A service SAS is scoped to a resource in one storage service.",
+      "sourceName": "Create an account SAS", "sourceUrl": "https://learn.microsoft.com/en-us/rest/api/storageservices/create-account-sas",
+      "choices": [
+        { "text": "Account SAS", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Service SAS for a blob container", "isCorrect": false, "sortOrder": 1 },
+        { "text": "User delegation SAS for an Azure file share", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Stored access policy without a SAS", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az104-versioning-overwrite", "objectiveKey": "implement-manage-storage",
+      "prompt": "A client overwrites a block blob and the customer needs the previous content to remain directly available as an earlier version. Which feature should be enabled?",
+      "kind": "SingleChoice", "difficulty": "Foundation",
+      "explanation": "Blob versioning automatically preserves the prior version when a blob is created or modified. Blob soft delete primarily protects deleted blobs and versions for a retention period.",
+      "sourceName": "Blob versioning", "sourceUrl": "https://learn.microsoft.com/en-us/azure/storage/blobs/versioning-overview",
+      "choices": [
+        { "text": "Blob versioning", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Container soft delete only", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Geo-redundant storage", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Object replication without versioning", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az104-azcopy-entra-data-role", "objectiveKey": "implement-manage-storage",
+      "prompt": "A technician signs in to AzCopy with Microsoft Entra ID and must upload blobs without using account keys. What additional authorization is required?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "Microsoft Entra authentication identifies the technician, but an Azure Storage data-plane role such as Storage Blob Data Contributor is still required at an appropriate scope. Management-plane Contributor does not grant blob data access.",
+      "sourceName": "Authorize AzCopy with Microsoft Entra ID", "sourceUrl": "https://learn.microsoft.com/en-us/azure/storage/common/storage-use-azcopy-authorize-azure-active-directory",
+      "choices": [
+        { "text": "Storage Blob Data Contributor at the required storage scope", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Contributor on the storage account", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Storage Account Key Operator Service Role", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Reader and Data Access without a blob data role", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az104-managed-disk-snapshot", "objectiveKey": "deploy-manage-compute",
+      "prompt": "Before a risky OS change, an administrator needs a point-in-time, read-only copy of a managed OS disk that can create another disk later. What should be created?",
+      "kind": "SingleChoice", "difficulty": "Foundation",
+      "explanation": "A managed disk snapshot is a read-only point-in-time copy that can be used to create a managed disk. It is distinct from an Azure Backup recovery point and from a writable managed disk.",
+      "sourceName": "Snapshots of managed disks", "sourceUrl": "https://learn.microsoft.com/en-us/azure/virtual-machines/snapshot-copy-managed-disk",
+      "choices": [
+        { "text": "A managed disk snapshot", "isCorrect": true, "sortOrder": 0 },
+        { "text": "An empty managed disk of the same SKU", "isCorrect": false, "sortOrder": 1 },
+        { "text": "A compute gallery image version without generalizing the VM", "isCorrect": false, "sortOrder": 2 },
+        { "text": "A temporary OS disk", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az104-availability-set-domains", "objectiveKey": "deploy-manage-compute",
+      "prompt": "Two non-zonal VMs in one availability set must reduce exposure to a rack power failure and planned host maintenance. Which two placement constructs provide that separation?",
+      "kind": "MultipleChoice", "difficulty": "Intermediate",
+      "explanation": "Fault domains separate hardware groups sharing power and network infrastructure; update domains separate groups rebooted during planned maintenance. Availability sets use both constructs within one datacenter scope.",
+      "sourceName": "Availability sets overview", "sourceUrl": "https://learn.microsoft.com/en-us/azure/virtual-machines/availability-set-overview",
+      "choices": [
+        { "text": "Fault domains", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Update domains", "isCorrect": true, "sortOrder": 1 },
+        { "text": "Availability zones", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Proximity placement groups", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az104-vmss-upgrade-policy", "objectiveKey": "deploy-manage-compute",
+      "prompt": "A VM scale set model is updated. Existing instances must be upgraded only when an operator explicitly chooses each instance. Which upgrade policy mode should be used?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "Manual upgrade mode applies the updated scale-set model to new instances but leaves existing instances unchanged until they are manually upgraded. Automatic and rolling modes update existing instances automatically.",
+      "sourceName": "VM Scale Sets upgrade policies", "sourceUrl": "https://learn.microsoft.com/en-us/azure/virtual-machine-scale-sets/virtual-machine-scale-sets-upgrade-policy",
+      "choices": [
+        { "text": "Manual", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Automatic", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Rolling", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Immutable", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az104-aci-restart-policy", "objectiveKey": "deploy-manage-compute",
+      "prompt": "An Azure Container Instance runs a batch import once and must remain stopped after the process exits successfully. Which restart policy should be configured?",
+      "kind": "SingleChoice", "difficulty": "Foundation",
+      "explanation": "The Never restart policy runs the container without restarting it after termination. OnFailure restarts failed executions, while Always is the default for continuously running services.",
+      "sourceName": "Container restart policies", "sourceUrl": "https://learn.microsoft.com/en-us/azure/container-instances/container-instances-restart-policy",
+      "choices": [
+        { "text": "Never", "isCorrect": true, "sortOrder": 0 },
+        { "text": "OnFailure", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Always", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Manual", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az104-container-apps-traffic-split", "objectiveKey": "deploy-manage-compute",
+      "prompt": "A Container App has two active revisions. The MSP wants 10% of incoming traffic sent to the new revision for validation. What should be configured?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "In multiple-revision mode, Container Apps supports percentage-based traffic splitting between active revisions. Scaling rules change replica counts, not the share of requests sent to a revision.",
+      "sourceName": "Container Apps traffic splitting", "sourceUrl": "https://learn.microsoft.com/en-us/azure/container-apps/traffic-splitting",
+      "choices": [
+        { "text": "Revision traffic weights of 90% and 10%", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Replica minimums of 9 and 1", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Two ingress ports with different priorities", "isCorrect": false, "sortOrder": 2 },
+        { "text": "A Container Registry retention policy", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az104-appservice-backup-storage", "objectiveKey": "deploy-manage-compute",
+      "prompt": "An administrator configures a custom backup for an App Service app. Where are the backup files stored?",
+      "kind": "SingleChoice", "difficulty": "Foundation",
+      "explanation": "App Service custom backups are written to an Azure Storage account and container supplied in the backup configuration. A deployment slot is not backup storage.",
+      "sourceName": "Back up an App Service app", "sourceUrl": "https://learn.microsoft.com/en-us/azure/app-service/manage-backup",
+      "choices": [
+        { "text": "A selected Azure Storage account and container", "isCorrect": true, "sortOrder": 0 },
+        { "text": "The App Service plan's local temporary disk only", "isCorrect": false, "sortOrder": 1 },
+        { "text": "A Recovery Services vault", "isCorrect": false, "sortOrder": 2 },
+        { "text": "The production deployment slot's content share", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az104-udr-route-selection", "objectiveKey": "implement-manage-networking",
+      "prompt": "A subnet has routes for 10.0.0.0/8 to a virtual appliance and 10.20.0.0/16 to a VPN gateway. Which route is selected for destination 10.20.5.4?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "Azure selects the route with the longest matching prefix. The /16 route is more specific than the /8 route, so it is selected regardless of next-hop type.",
+      "sourceName": "Azure virtual network traffic routing", "sourceUrl": "https://learn.microsoft.com/en-us/azure/virtual-network/virtual-networks-udr-overview",
+      "choices": [
+        { "text": "10.20.0.0/16 to the VPN gateway", "isCorrect": true, "sortOrder": 0 },
+        { "text": "10.0.0.0/8 to the virtual appliance", "isCorrect": false, "sortOrder": 1 },
+        { "text": "The default 0.0.0.0/0 system route", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Both routes, using equal-cost multipath", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az104-public-ip-standard-nsg", "objectiveKey": "implement-manage-networking",
+      "prompt": "A VM with a Standard public IP must accept inbound HTTPS. What must explicitly allow the new inbound flow?",
+      "kind": "SingleChoice", "difficulty": "Foundation",
+      "explanation": "Standard public IP addresses are secure by default for inbound connectivity. An NSG rule must allow the required traffic; assigning the public IP alone does not open the port.",
+      "sourceName": "Public IP address features", "sourceUrl": "https://learn.microsoft.com/en-us/azure/virtual-network/ip-services/public-ip-addresses",
+      "choices": [
+        { "text": "An inbound NSG rule allowing TCP 443", "isCorrect": true, "sortOrder": 0 },
+        { "text": "An outbound NSG rule allowing TCP 443", "isCorrect": false, "sortOrder": 1 },
+        { "text": "A user-defined route to the Internet service tag", "isCorrect": false, "sortOrder": 2 },
+        { "text": "A private DNS A record for the VM", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az104-dns-alias-record", "objectiveKey": "implement-manage-networking",
+      "prompt": "A public DNS record should point to an Azure public IP resource and automatically track changes to its IP address. Which record should be used?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "An Azure DNS alias record references an Azure resource such as a public IP, so DNS tracks the resource when its address changes. A normal A record contains a fixed literal address.",
+      "sourceName": "Azure DNS alias records", "sourceUrl": "https://learn.microsoft.com/en-us/azure/dns/dns-alias",
+      "choices": [
+        { "text": "An alias A record targeting the public IP resource", "isCorrect": true, "sortOrder": 0 },
+        { "text": "A conventional A record containing the current address", "isCorrect": false, "sortOrder": 1 },
+        { "text": "A PTR record targeting the public IP resource", "isCorrect": false, "sortOrder": 2 },
+        { "text": "An NS record delegated to the public IP resource", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az104-internal-load-balancer", "objectiveKey": "implement-manage-networking",
+      "prompt": "A line-of-business service must load-balance TCP traffic from peered VNets but must not have an internet-facing frontend. Which design should be used?",
+      "kind": "SingleChoice", "difficulty": "Foundation",
+      "explanation": "An internal load balancer uses a private frontend IP from its VNet. A public load balancer uses a public frontend and is intended for internet-reachable scenarios.",
+      "sourceName": "Azure Load Balancer components", "sourceUrl": "https://learn.microsoft.com/en-us/azure/load-balancer/components",
+      "choices": [
+        { "text": "A Standard internal Load Balancer with a private frontend IP", "isCorrect": true, "sortOrder": 0 },
+        { "text": "A public Load Balancer with an outbound-only rule", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Azure Traffic Manager with private IP endpoints", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Azure NAT Gateway with an inbound NAT pool", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az104-service-endpoint-source", "objectiveKey": "implement-manage-networking",
+      "prompt": "A storage firewall allows a subnet through a Microsoft.Storage service endpoint. What source identity does the storage service use to authorize the network path?",
+      "kind": "SingleChoice", "difficulty": "Advanced",
+      "explanation": "A service endpoint extends the VNet's private address identity to the Azure service. The service can authorize the specific VNet and subnet even though the service is reached through its public endpoint.",
+      "sourceName": "Virtual network service endpoints", "sourceUrl": "https://learn.microsoft.com/en-us/azure/virtual-network/virtual-network-service-endpoints-overview",
+      "choices": [
+        { "text": "The originating virtual network and subnet identity", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Only the subnet's translated public egress IP", "isCorrect": false, "sortOrder": 1 },
+        { "text": "A private endpoint network interface identity", "isCorrect": false, "sortOrder": 2 },
+        { "text": "The Azure DNS zone linked to the subnet", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az104-metrics-vs-logs", "objectiveKey": "monitor-maintain-resources",
+      "prompt": "An operator needs near-real-time numeric CPU data for a VM alert with no KQL query. Which Azure Monitor data type is the direct fit?",
+      "kind": "SingleChoice", "difficulty": "Foundation",
+      "explanation": "Azure Monitor metrics are lightweight time-series numeric values suited to fast metric alerts. Logs hold richer records queried with KQL and are better for correlation and detailed analysis.",
+      "sourceName": "Azure Monitor data platform", "sourceUrl": "https://learn.microsoft.com/en-us/azure/azure-monitor/data-platform",
+      "choices": [
+        { "text": "Platform metrics", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Resource logs in Log Analytics", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Activity log administrative events", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Change Analysis records", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az104-vm-insights-map", "objectiveKey": "monitor-maintain-resources",
+      "prompt": "An MSP needs VM performance trends plus a visual map of processes and dependencies between monitored servers. Which Azure Monitor feature should it enable?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "VM insights provides performance monitoring and dependency mapping for Azure and hybrid VMs. Network Watcher topology focuses on Azure network resources rather than guest processes.",
+      "sourceName": "VM insights overview", "sourceUrl": "https://learn.microsoft.com/en-us/azure/azure-monitor/vm/vminsights-overview",
+      "choices": [
+        { "text": "VM insights", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Network Watcher topology", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Azure Advisor cost recommendations", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Service Health resource health alerts", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az104-connection-monitor-continuous", "objectiveKey": "monitor-maintain-resources",
+      "prompt": "The operations team needs continuous TCP reachability and latency tests between Azure VMs and an on-premises endpoint. Which Network Watcher capability should it configure?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "Connection Monitor runs recurring connectivity tests and records reachability, latency, and topology. Connection troubleshoot is an on-demand diagnostic rather than continuous monitoring.",
+      "sourceName": "Connection Monitor overview", "sourceUrl": "https://learn.microsoft.com/en-us/azure/network-watcher/connection-monitor-overview",
+      "choices": [
+        { "text": "Connection Monitor", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Connection troubleshoot", "isCorrect": false, "sortOrder": 1 },
+        { "text": "IP flow verify", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Next hop", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az104-backup-soft-delete", "objectiveKey": "monitor-maintain-resources",
+      "prompt": "A malicious operator deletes an Azure VM backup item. Which vault feature retains the deleted backup data for a recovery period?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "Soft delete for Azure Backup retains deleted backup data for an additional period, allowing recovery after accidental or malicious deletion. A resource lock alone does not provide retained recovery points after deletion.",
+      "sourceName": "Soft delete for Azure Backup", "sourceUrl": "https://learn.microsoft.com/en-us/azure/backup/backup-azure-security-feature-cloud",
+      "choices": [
+        { "text": "Soft delete for Azure Backup", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Cross-region restore", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Instant Restore snapshots", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Azure Site Recovery test failover", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az104-scenario-order-bicep-change-control", "objectiveKey": "deploy-manage-compute",
+      "prompt": "An MSP pipeline has already validated a customer's updated Bicep file. Change policy requires operators to preview its effect, obtain approval for that exact preview, and only then change Azure. Which sequence meets the policy?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "Run what-if against the intended scope first, review and approve that result, and then deploy the same Bicep revision. What-if predicts creates, modifications, and deletions without changing resources; deploying before review defeats the control, and editing after approval invalidates the approved preview.",
+      "sourceName": "ARM template deployment what-if operation", "sourceUrl": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/deploy-what-if",
+      "choices": [
+        { "text": "Run what-if -> review and approve the result -> deploy the same Bicep revision", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Deploy the Bicep revision -> run what-if -> review and approve the result", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Review and approve the Bicep source -> deploy it -> run what-if against the result", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Run what-if -> deploy the Bicep revision -> review and approve the result", "isCorrect": false, "sortOrder": 3 },
+        { "text": "Run what-if -> review and approve the result -> edit the Bicep revision -> deploy it", "isCorrect": false, "sortOrder": 4 }
+      ]
+    },
+    {
+      "contentKey": "az104-scenario-order-vm-backup-onboarding", "objectiveKey": "monitor-maintain-resources",
+      "prompt": "A customer has unprotected production VMs. The MSP must onboard them to Azure Backup with a customer-specific retention schedule and prove that the first recovery point was created. Which sequence should the operator follow?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "The vault must exist before its policy can be selected or created; the VM is then enabled for protection with that policy. An on-demand backup can be triggered only after protection is enabled, and its recovery point should be verified after the job finishes.",
+      "sourceName": "Back up Azure VMs in a Recovery Services vault", "sourceUrl": "https://learn.microsoft.com/en-us/azure/backup/backup-azure-arm-vms-prepare",
+      "choices": [
+        { "text": "Create the vault -> create or select the policy -> enable backup for the VMs -> run Backup now -> verify the recovery point", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Create the policy -> enable backup for the VMs -> create the vault -> run Backup now -> verify the recovery point", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Create the vault -> run Backup now -> create or select the policy -> enable backup for the VMs -> verify the recovery point", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Create the vault -> create or select the policy -> run Backup now -> enable backup for the VMs -> verify the recovery point", "isCorrect": false, "sortOrder": 3 },
+        { "text": "Create the vault -> enable backup for the VMs -> verify the recovery point -> create or select the policy -> run Backup now", "isCorrect": false, "sortOrder": 4 },
+        { "text": "Enable backup for the VMs -> create the vault -> create or select the policy -> verify the recovery point -> run Backup now", "isCorrect": false, "sortOrder": 5 }
+      ]
+    },
+    {
+      "contentKey": "az104-scenario-adls-private-endpoints", "objectiveKey": "implement-manage-storage",
+      "prompt": "An application in a VNet uses both Blob APIs and hierarchical-namespace operations such as Create Directory against an Azure Data Lake Storage account. Public network access will be disabled. Choose two private endpoint target subresources that are required for all of those operations.",
+      "kind": "MultipleChoice", "difficulty": "Advanced",
+      "explanation": "The application needs a private endpoint for the dfs subresource and another for blob. Hierarchical-namespace operations can be redirected between DFS and Blob endpoints, so configuring only one can break operations even though basic connectivity tests pass. File, queue, and table endpoints serve different storage services.",
+      "sourceName": "Use private endpoints for Azure Storage", "sourceUrl": "https://learn.microsoft.com/en-us/azure/storage/common/storage-private-endpoints",
+      "choices": [
+        { "text": "blob", "isCorrect": true, "sortOrder": 0 },
+        { "text": "dfs", "isCorrect": true, "sortOrder": 1 },
+        { "text": "file", "isCorrect": false, "sortOrder": 2 },
+        { "text": "queue", "isCorrect": false, "sortOrder": 3 },
+        { "text": "table", "isCorrect": false, "sortOrder": 4 }
+      ]
+    },
+    {
+      "contentKey": "az104-scenario-private-acr-app-service", "objectiveKey": "deploy-manage-compute",
+      "prompt": "A Linux App Service app must pull its custom image from an Azure Container Registry whose public network access is disabled. Password credentials are prohibited, and the registry uses RBAC Registry Permissions mode. The registry has a working private endpoint and private DNS zone. Choose four additional configurations required on the app or its identity.",
+      "kind": "MultipleChoice", "difficulty": "Advanced",
+      "explanation": "The app needs VNet integration to reach the registry private endpoint, vnetImagePullEnabled so the image pull uses that route, a managed identity with AcrPull in RBAC Registry Permissions mode, and App Service configured to use managed-identity registry credentials. An ABAC-enabled registry would instead use an appropriate repository-scoped role. A service endpoint doesn't replace the registry private endpoint, and publishing Docker credentials violates the passwordless requirement.",
+      "sourceName": "Configure a custom container in Azure App Service", "sourceUrl": "https://learn.microsoft.com/en-us/azure/app-service/configure-custom-container",
+      "choices": [
+        { "text": "Integrate the app with a VNet that can resolve and route to the registry private endpoint", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Set vnetImagePullEnabled to true on the app", "isCorrect": true, "sortOrder": 1 },
+        { "text": "Enable a managed identity on the app and grant it AcrPull on the registry", "isCorrect": true, "sortOrder": 2 },
+        { "text": "Configure the app to use managed-identity credentials for Azure Container Registry", "isCorrect": true, "sortOrder": 3 },
+        { "text": "Enable a Microsoft.ContainerRegistry service endpoint on the App Service integration subnet", "isCorrect": false, "sortOrder": 4 },
+        { "text": "Enable the registry admin account and store its password in app settings", "isCorrect": false, "sortOrder": 5 }
+      ]
+    },
+    {
+      "contentKey": "az104-scenario-blob-indefinite-legal-retention", "objectiveKey": "implement-manage-storage",
+      "prompt": "A customer must prevent case-evidence blobs from being modified or deleted until legal counsel explicitly releases each case. The end date isn't known when a case begins. Which immutability control best fits?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "A legal hold protects immutable blob data for an indefinite period and is cleared explicitly, which matches an unknown release date. A time-based retention policy is suited to a known minimum duration; soft delete and versioning preserve recoverability but don't impose the required WORM hold.",
+      "sourceName": "Overview of immutable storage for blob data", "sourceUrl": "https://learn.microsoft.com/en-us/azure/storage/blobs/immutable-storage-overview",
+      "choices": [
+        { "text": "Apply a legal hold with a case-specific tag", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Lock a seven-year time-based retention policy immediately", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Enable blob soft delete with an unlimited retention period", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Enable versioning and rely on the current version", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az104-scenario-lighthouse-jit-operator", "objectiveKey": "manage-identities-governance",
+      "prompt": "An MSP onboards a customer subscription through Azure Lighthouse. Engineers must always be able to inspect resources but may modify them only after MFA and approval for at most two hours. Which authorization design meets the requirement with least standing privilege?",
+      "kind": "SingleChoice", "difficulty": "Advanced",
+      "explanation": "Give the same MSP group a permanent Reader authorization and an eligible supported contributor role with an access policy requiring MFA, approval, and a two-hour maximum activation. Reader is needed for portal elevation, while making Contributor permanent or using a customer-tenant account creates unnecessary standing access.",
+      "sourceName": "Create eligible authorizations in Azure Lighthouse", "sourceUrl": "https://learn.microsoft.com/en-us/azure/lighthouse/how-to/create-eligible-authorizations",
+      "choices": [
+        { "text": "Permanent Reader plus eligible Contributor for the same MSP group, with MFA, approval, and a two-hour maximum duration", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Eligible Contributor only for the MSP group, with MFA, approval, and a two-hour maximum duration", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Permanent Contributor plus eligible Reader for the MSP group, with MFA and approval", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Permanent Reader for the MSP group and permanent Contributor for each engineer", "isCorrect": false, "sortOrder": 3 },
+        { "text": "A customer-tenant Global Administrator account protected by a two-hour Conditional Access session", "isCorrect": false, "sortOrder": 4 }
+      ]
+    },
+    {
+      "contentKey": "az104-scenario-custom-role-lock-operator", "objectiveKey": "manage-identities-governance",
+      "prompt": "A contractor must inspect resources and add or remove management locks in one customer resource group, but must not modify or delete the workloads themselves. Choose two elements of the least-privilege RBAC design.",
+      "kind": "MultipleChoice", "difficulty": "Advanced",
+      "explanation": "Define a custom role containing read operations plus Microsoft.Authorization/locks operations, without general resource write or delete actions, and assign it at the one resource-group scope. Reader can't manage locks, while Contributor and broader subscription assignments grant substantially more access than required.",
+      "sourceName": "Azure custom roles", "sourceUrl": "https://learn.microsoft.com/en-us/azure/role-based-access-control/custom-roles",
+      "choices": [
+        { "text": "Create a custom role with resource read operations and Microsoft.Authorization/locks operations, but no general workload write or delete operations", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Assign the custom role at the required customer resource-group scope", "isCorrect": true, "sortOrder": 1 },
+        { "text": "Assign Reader at the resource-group scope because Reader can create and remove locks", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Assign Contributor at the subscription scope and rely on the existing locks to prevent modifications", "isCorrect": false, "sortOrder": 3 },
+        { "text": "Create a custom role with Microsoft.Resources/deployments/* and assign it at the management-group scope", "isCorrect": false, "sortOrder": 4 },
+        { "text": "Assign Resource Policy Contributor at the subscription scope and exclude workload resource types", "isCorrect": false, "sortOrder": 5 }
+      ]
+    },
+    {
+      "contentKey": "az104-scenario-bastion-private-administration", "objectiveKey": "implement-manage-networking",
+      "prompt": "Customer VMs have private IP addresses only. Temporary MSP engineers need browser-based RDP and SSH without installing agents or exposing ports 3389 and 22 to the internet. Which Azure service best meets the requirement?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "Azure Bastion provides managed RDP and SSH connectivity to private VM addresses through the Azure portal over TLS, without public IPs on the target VMs or agents. Just-in-time access still requires a reachable management path, VPN Gateway extends private connectivity but isn't browser-based, and NAT Gateway is outbound-only.",
+      "sourceName": "What is Azure Bastion?", "sourceUrl": "https://learn.microsoft.com/en-us/azure/bastion/bastion-overview",
+      "choices": [
+        { "text": "Azure Bastion", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Microsoft Defender for Cloud just-in-time VM access without any other connectivity", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Azure VPN Gateway point-to-site connectivity", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Azure NAT Gateway", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az104-scenario-maintenance-alert-suppression", "objectiveKey": "monitor-maintain-resources",
+      "prompt": "Twelve VMs in one resource group enter maintenance every Sunday. Shared alert rules also monitor production VMs elsewhere and must continue evaluating all resources, but notifications for only the maintenance group must be suppressed during that window. What should the MSP configure?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "A scheduled alert processing rule can target the maintenance resource group and suppress its action groups while alert rules continue to evaluate and fire. Disabling shared alert rules would also blind production monitoring, and muting an action group globally would suppress unrelated alerts that use it.",
+      "sourceName": "Azure Monitor alert processing rules", "sourceUrl": "https://learn.microsoft.com/en-us/azure/azure-monitor/alerts/alerts-processing-rules",
+      "choices": [
+        { "text": "A scheduled alert processing rule scoped to the maintenance resource group that suppresses action groups", "isCorrect": true, "sortOrder": 0 },
+        { "text": "A schedule that disables every shared alert rule for the maintenance window", "isCorrect": false, "sortOrder": 1 },
+        { "text": "A global disable operation on the shared action group", "isCorrect": false, "sortOrder": 2 },
+        { "text": "An activity log alert that closes metric alerts from the maintenance group", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "az104-scenario-inspected-spoke-transit", "objectiveKey": "implement-manage-networking",
+      "prompt": "Spoke-A and Spoke-B are each peered only with a hub VNet. Traffic between the spokes must traverse an NVA in the hub, because VNet peering isn't transitive. Choose three configurations required for the inspected path.",
+      "kind": "MultipleChoice", "difficulty": "Advanced",
+      "explanation": "The spoke subnets need UDRs that send the other spoke's prefix to the hub NVA. The NVA must actually forward packets and have IP forwarding enabled on its NIC, and the relevant peerings must allow forwarded traffic. Gateway transit shares a VPN or ExpressRoute gateway; it doesn't make an NVA a spoke-to-spoke transit router.",
+      "sourceName": "Azure virtual network peering", "sourceUrl": "https://learn.microsoft.com/en-us/azure/virtual-network/virtual-network-peering-overview",
+      "choices": [
+        { "text": "Associate UDRs with the spoke workload subnets that use the NVA private IP as next hop for the other spoke's prefix", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Enable IP forwarding on the NVA NIC and configure the NVA operating system or appliance to forward traffic", "isCorrect": true, "sortOrder": 1 },
+        { "text": "Allow forwarded traffic on the relevant hub-and-spoke peerings", "isCorrect": true, "sortOrder": 2 },
+        { "text": "Enable gateway transit on both spokes and deploy a VPN gateway in each spoke", "isCorrect": false, "sortOrder": 3 },
+        { "text": "Enable a service endpoint for Microsoft.Network on both spoke subnets", "isCorrect": false, "sortOrder": 4 },
+        { "text": "Rely on the peering system routes to provide transitive spoke-to-spoke routing through the hub", "isCorrect": false, "sortOrder": 5 }
+      ]
+    }
+  ]
+}

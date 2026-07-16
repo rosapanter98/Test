@@ -1,0 +1,191 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:dashboard="clr-namespace:CertPrep.Features.Dashboard"
+             xmlns:dashboardViews="clr-namespace:CertPrep.Features.Dashboard.Views"
+             xmlns:practice="clr-namespace:CertPrep.Features.Practice"
+             xmlns:practiceViews="clr-namespace:CertPrep.Features.Practice.Views"
+             xmlns:progress="clr-namespace:CertPrep.Features.Progress"
+             xmlns:progressViews="clr-namespace:CertPrep.Features.Progress.Views"
+             xmlns:results="clr-namespace:CertPrep.Features.Results"
+             xmlns:resultsViews="clr-namespace:CertPrep.Features.Results.Views"
+             x:Class="CertPrep.App"
+             RequestedThemeVariant="Default">
+
+  <Application.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.ThemeDictionaries>
+        <ResourceDictionary x:Key="Dark">
+          <SolidColorBrush x:Key="CanvasBrush" Color="#080808" />
+          <SolidColorBrush x:Key="SidebarBrush" Color="#0B0B0B" />
+          <SolidColorBrush x:Key="SurfaceBrush" Color="#111111" />
+          <SolidColorBrush x:Key="SurfaceRaisedBrush" Color="#181818" />
+          <SolidColorBrush x:Key="SurfaceSoftBrush" Color="#202020" />
+          <SolidColorBrush x:Key="StrokeBrush" Color="#2B2B2B" />
+          <SolidColorBrush x:Key="TextBrush" Color="#F5F4F1" />
+          <SolidColorBrush x:Key="TextMutedBrush" Color="#A6A4A0" />
+          <SolidColorBrush x:Key="AccentBrush" Color="#77A7FF" />
+          <SolidColorBrush x:Key="AccentStrongBrush" Color="#3D7FE8" />
+          <SolidColorBrush x:Key="AccentSoftBrush" Color="#17191D" />
+          <SolidColorBrush x:Key="SuccessBrush" Color="#62D6A7" />
+          <SolidColorBrush x:Key="SuccessSoftBrush" Color="#102A21" />
+          <SolidColorBrush x:Key="DangerBrush" Color="#FF8B94" />
+          <SolidColorBrush x:Key="DangerSoftBrush" Color="#2F171A" />
+        </ResourceDictionary>
+        <ResourceDictionary x:Key="Light">
+          <SolidColorBrush x:Key="CanvasBrush" Color="#F4F2ED" />
+          <SolidColorBrush x:Key="SidebarBrush" Color="#ECE9E2" />
+          <SolidColorBrush x:Key="SurfaceBrush" Color="#FFFEFB" />
+          <SolidColorBrush x:Key="SurfaceRaisedBrush" Color="#F0EEE8" />
+          <SolidColorBrush x:Key="SurfaceSoftBrush" Color="#E7E4DC" />
+          <SolidColorBrush x:Key="StrokeBrush" Color="#D0CCC2" />
+          <SolidColorBrush x:Key="TextBrush" Color="#171717" />
+          <SolidColorBrush x:Key="TextMutedBrush" Color="#65635F" />
+          <SolidColorBrush x:Key="AccentBrush" Color="#2764D8" />
+          <SolidColorBrush x:Key="AccentStrongBrush" Color="#1E5ED2" />
+          <SolidColorBrush x:Key="AccentSoftBrush" Color="#E6ECF8" />
+          <SolidColorBrush x:Key="SuccessBrush" Color="#147A56" />
+          <SolidColorBrush x:Key="SuccessSoftBrush" Color="#DCEFE7" />
+          <SolidColorBrush x:Key="DangerBrush" Color="#B33140" />
+          <SolidColorBrush x:Key="DangerSoftBrush" Color="#F8E2E5" />
+        </ResourceDictionary>
+      </ResourceDictionary.ThemeDictionaries>
+
+      <StreamGeometry x:Key="Icon.Dashboard">M3 3H10V10H3Z M14 3H21V10H14Z M3 14H10V21H3Z M14 14H21V21H14Z</StreamGeometry>
+      <StreamGeometry x:Key="Icon.Progress">M4 19H20V21H4Z M5 11H9V18H5Z M10 7H14V18H10Z M15 3H19V18H15Z</StreamGeometry>
+      <StreamGeometry x:Key="Icon.Play">M7 4L20 12L7 20Z</StreamGeometry>
+      <StreamGeometry x:Key="Icon.Database">M12 2C6.48 2 2 4.24 2 7V17C2 19.76 6.48 22 12 22C17.52 22 22 19.76 22 17V7C22 4.24 17.52 2 12 2M12 4C16.42 4 20 5.34 20 7C20 8.66 16.42 10 12 10C7.58 10 4 8.66 4 7C4 5.34 7.58 4 12 4M12 20C7.58 20 4 18.66 4 17V14.04C5.81 15.25 8.71 16 12 16C15.29 16 18.19 15.25 20 14.04V17C20 18.66 16.42 20 12 20M12 14C7.58 14 4 12.66 4 11V10.04C5.81 11.25 8.71 12 12 12C15.29 12 18.19 11.25 20 10.04V11C20 12.66 16.42 14 12 14Z</StreamGeometry>
+      <StreamGeometry x:Key="Icon.Mix">M16 3H21V8H19V6.41L6.41 19H10V21H3V14H5V17.59L17.59 5H16V3Z M14.5 14.5L16 13L19 16V14H21V21H14V19H17.59L14.5 15.91Z M3 3H10V5H6.41L10.5 9.09L9.09 10.5L5 6.41V8H3V3Z</StreamGeometry>
+      <StreamGeometry x:Key="Icon.Theme">M12 2A10 10 0 1 0 22 12A8 8 0 0 1 12 2Z</StreamGeometry>
+      <StreamGeometry x:Key="Icon.Import">M11 3H13V13H17L12 18L7 13H11Z M4 19H20V21H4Z</StreamGeometry>
+      <StreamGeometry x:Key="Icon.ChevronRight">M9 4L17 12L9 20L7.6 18.6L14.2 12L7.6 5.4Z</StreamGeometry>
+      <StreamGeometry x:Key="Icon.Retry">M12 5V2L7 7L12 12V9C15.31 9 18 11.69 18 15C18 18.31 15.31 21 12 21C8.69 21 6 18.31 6 15H3C3 19.97 7.03 24 12 24C16.97 24 21 19.97 21 15C21 10.03 16.97 6 12 6Z</StreamGeometry>
+    </ResourceDictionary>
+  </Application.Resources>
+
+  <Application.DataTemplates>
+    <DataTemplate DataType="{x:Type dashboard:DashboardViewModel}">
+      <dashboardViews:DashboardView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type practice:PracticeSetupViewModel}">
+      <practiceViews:PracticeSetupView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type practice:MixedPracticeSetupViewModel}">
+      <practiceViews:MixedPracticeSetupView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type practice:PracticeViewModel}">
+      <practiceViews:PracticeView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type progress:ProgressViewModel}">
+      <progressViews:ProgressView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type results:ResultsViewModel}">
+      <resultsViews:ResultsView />
+    </DataTemplate>
+  </Application.DataTemplates>
+
+  <Application.Styles>
+    <FluentTheme />
+
+    <Style Selector="Window">
+      <Setter Property="Background" Value="{DynamicResource CanvasBrush}" />
+      <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
+      <Setter Property="FontFamily" Value="Inter" />
+    </Style>
+
+    <Style Selector="TextBlock">
+      <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
+    </Style>
+    <Style Selector="TextBlock.muted">
+      <Setter Property="Foreground" Value="{DynamicResource TextMutedBrush}" />
+    </Style>
+    <Style Selector="TextBlock.eyebrow">
+      <Setter Property="Foreground" Value="{DynamicResource AccentBrush}" />
+      <Setter Property="FontSize" Value="10" />
+      <Setter Property="FontWeight" Value="SemiBold" />
+      <Setter Property="LetterSpacing" Value="1.2" />
+    </Style>
+    <Style Selector="TextBlock.h1">
+      <Setter Property="FontSize" Value="28" />
+      <Setter Property="FontWeight" Value="Bold" />
+    </Style>
+    <Style Selector="TextBlock.h2">
+      <Setter Property="FontSize" Value="20" />
+      <Setter Property="FontWeight" Value="SemiBold" />
+    </Style>
+    <Style Selector="TextBlock.h3">
+      <Setter Property="FontSize" Value="16" />
+      <Setter Property="FontWeight" Value="SemiBold" />
+    </Style>
+
+    <Style Selector="Border.card">
+      <Setter Property="Background" Value="{DynamicResource SurfaceBrush}" />
+      <Setter Property="BorderBrush" Value="{DynamicResource StrokeBrush}" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="CornerRadius" Value="10" />
+      <Setter Property="Padding" Value="18" />
+    </Style>
+    <Style Selector="Border.metric">
+      <Setter Property="Background" Value="{DynamicResource SurfaceRaisedBrush}" />
+      <Setter Property="BorderBrush" Value="{DynamicResource StrokeBrush}" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="CornerRadius" Value="8" />
+      <Setter Property="Padding" Value="14" />
+    </Style>
+    <Style Selector="Border.pill">
+      <Setter Property="Background" Value="{DynamicResource SurfaceSoftBrush}" />
+      <Setter Property="CornerRadius" Value="20" />
+      <Setter Property="Padding" Value="8,4" />
+    </Style>
+
+    <Style Selector="Button">
+      <Setter Property="CornerRadius" Value="6" />
+      <Setter Property="Padding" Value="12,7" />
+      <Setter Property="FontWeight" Value="SemiBold" />
+    </Style>
+    <Style Selector="Button.primary">
+      <Setter Property="Background" Value="{DynamicResource AccentStrongBrush}" />
+      <Setter Property="Foreground" Value="White" />
+      <Setter Property="BorderThickness" Value="0" />
+    </Style>
+    <Style Selector="Button.secondary">
+      <Setter Property="Background" Value="{DynamicResource SurfaceRaisedBrush}" />
+      <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
+      <Setter Property="BorderBrush" Value="{DynamicResource StrokeBrush}" />
+      <Setter Property="BorderThickness" Value="1" />
+    </Style>
+    <Style Selector="Button.nav">
+      <Setter Property="HorizontalContentAlignment" Value="Left" />
+      <Setter Property="Background" Value="Transparent" />
+      <Setter Property="Foreground" Value="{DynamicResource TextMutedBrush}" />
+      <Setter Property="BorderThickness" Value="0" />
+    </Style>
+
+    <Style Selector="ToggleButton.choice">
+      <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+      <Setter Property="Background" Value="{DynamicResource SurfaceRaisedBrush}" />
+      <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
+      <Setter Property="BorderBrush" Value="{DynamicResource StrokeBrush}" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="CornerRadius" Value="8" />
+      <Setter Property="Padding" Value="12" />
+      <Setter Property="Margin" Value="0,0,0,8" />
+    </Style>
+    <Style Selector="ToggleButton.choice:checked">
+      <Setter Property="Background" Value="{DynamicResource AccentSoftBrush}" />
+      <Setter Property="BorderBrush" Value="{DynamicResource AccentBrush}" />
+    </Style>
+
+    <Style Selector="ProgressBar">
+      <Setter Property="Foreground" Value="{DynamicResource AccentBrush}" />
+      <Setter Property="Background" Value="{DynamicResource SurfaceSoftBrush}" />
+      <Setter Property="Height" Value="6" />
+    </Style>
+
+    <Style Selector="ComboBox">
+      <Setter Property="Background" Value="{DynamicResource SurfaceRaisedBrush}" />
+      <Setter Property="BorderBrush" Value="{DynamicResource StrokeBrush}" />
+      <Setter Property="MinHeight" Value="36" />
+      <Setter Property="CornerRadius" Value="6" />
+    </Style>
+  </Application.Styles>
+</Application>

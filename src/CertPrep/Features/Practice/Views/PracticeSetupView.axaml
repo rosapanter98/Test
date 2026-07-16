@@ -1,0 +1,84 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:CertPrep.Features.Practice"
+             x:Class="CertPrep.Features.Practice.Views.PracticeSetupView"
+             x:DataType="vm:PracticeSetupViewModel">
+  <ScrollViewer>
+    <Grid Margin="26,22" ColumnDefinitions="1.2*,0.8*" ColumnSpacing="16" MaxWidth="980" HorizontalAlignment="Left">
+      <Border Classes="card">
+        <StackPanel Spacing="14">
+          <StackPanel Spacing="6">
+            <TextBlock Text="{Binding Provider}" Classes="eyebrow" />
+            <TextBlock Text="{Binding ExamCode}" FontSize="32" FontWeight="Bold" Foreground="{DynamicResource AccentBrush}" />
+            <TextBlock Text="{Binding ExamTitle}" Classes="h2" TextWrapping="Wrap" />
+            <TextBlock Text="{Binding Summary}" Classes="muted" TextWrapping="Wrap" LineHeight="21" Margin="0,4,0,0" />
+          </StackPanel>
+
+          <Border Height="1" Background="{DynamicResource StrokeBrush}" />
+
+          <StackPanel Spacing="10">
+            <TextBlock Text="SKILLS MEASURED" Classes="eyebrow" />
+            <ItemsControl ItemsSource="{Binding Objectives}">
+              <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                  <Grid ColumnDefinitions="Auto,*" Margin="0,3">
+                    <TextBlock Text="•" Foreground="{DynamicResource AccentBrush}" Margin="0,0,9,0" />
+                    <TextBlock Grid.Column="1" Text="{Binding}" TextWrapping="Wrap" />
+                  </Grid>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+          </StackPanel>
+
+          <Border Classes="pill" HorizontalAlignment="Left">
+            <TextBlock Text="{Binding ContentVersion}" Classes="muted" FontSize="11" />
+          </Border>
+        </StackPanel>
+      </Border>
+
+      <Border Grid.Column="1" Classes="card">
+        <StackPanel Spacing="15">
+          <TextBlock Text="Configure session" Classes="h2" />
+
+          <StackPanel Spacing="8">
+            <TextBlock Text="MODE" Classes="eyebrow" />
+            <ComboBox ItemsSource="{Binding ModeOptions}" SelectedItem="{Binding SelectedMode, Mode=TwoWay}">
+              <ComboBox.ItemTemplate>
+                <DataTemplate x:DataType="vm:PracticeModeOption">
+                  <StackPanel Spacing="2" Margin="3">
+                    <TextBlock Text="{Binding Name}" FontWeight="SemiBold" />
+                    <TextBlock Text="{Binding Description}" Classes="muted" FontSize="11" TextWrapping="Wrap" />
+                  </StackPanel>
+                </DataTemplate>
+              </ComboBox.ItemTemplate>
+            </ComboBox>
+            <TextBlock Text="{Binding SelectedMode.Description}" Classes="muted" FontSize="12" TextWrapping="Wrap" />
+          </StackPanel>
+
+          <StackPanel Spacing="8">
+            <TextBlock Text="LENGTH" Classes="eyebrow" />
+            <ComboBox ItemsSource="{Binding QuestionCountOptions}" SelectedItem="{Binding SelectedQuestionCount, Mode=TwoWay}">
+              <ComboBox.ItemTemplate>
+                <DataTemplate x:DataType="vm:QuestionCountOption">
+                  <TextBlock Text="{Binding Label}" />
+                </DataTemplate>
+              </ComboBox.ItemTemplate>
+            </ComboBox>
+          </StackPanel>
+
+          <TextBlock Text="{Binding ErrorMessage}" Foreground="{DynamicResource DangerBrush}" TextWrapping="Wrap" />
+
+          <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10" Margin="0,5,0,0">
+            <Button Classes="secondary" Content="Back" Command="{Binding BackCommand}" />
+            <Button Grid.Column="1" Classes="primary" Command="{Binding StartCommand}">
+              <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="7">
+                <PathIcon Width="13" Height="13" Data="{StaticResource Icon.Play}" />
+                <TextBlock Text="Start session" Foreground="White" />
+              </StackPanel>
+            </Button>
+          </Grid>
+        </StackPanel>
+      </Border>
+    </Grid>
+  </ScrollViewer>
+</UserControl>

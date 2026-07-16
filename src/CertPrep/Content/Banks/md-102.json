@@ -1,0 +1,990 @@
+{
+  "provider": "Microsoft",
+  "code": "MD-102",
+  "title": "Endpoint Administrator",
+  "summary": "Microsoft Intune device enrollment, administration, application management, and endpoint protection at scale.",
+  "contentVersion": "Official objectives 2026-04-28; audited 2026.07",
+  "objectives": [
+    { "contentKey": "prepare-device-infrastructure", "name": "Prepare infrastructure for devices", "sortOrder": 0 },
+    { "contentKey": "manage-maintain-devices", "name": "Manage and maintain devices", "sortOrder": 1 },
+    { "contentKey": "manage-applications", "name": "Manage applications", "sortOrder": 2 },
+    { "contentKey": "protect-devices", "name": "Protect devices", "sortOrder": 3 }
+  ],
+  "questions": [
+    {
+      "contentKey": "md102-join-type-corporate",
+      "objectiveKey": "prepare-device-infrastructure",
+      "prompt": "A cloud-only customer owns its Windows 11 laptops. Users must sign in to Windows with organizational accounts, and the devices must have a Microsoft Entra device identity. Which join type should be used?",
+      "kind": "SingleChoice", "difficulty": "Foundation",
+      "explanation": "Microsoft Entra join is intended for organization-owned devices and uses Microsoft Entra accounts for Windows sign-in. Registration is normally used for personally owned devices.",
+      "sourceName": "Microsoft Entra device identity types", "sourceUrl": "https://learn.microsoft.com/en-us/entra/identity/devices/concept-device-registration",
+      "choices": [
+        { "text": "Microsoft Entra joined", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Microsoft Entra registered", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Microsoft Entra hybrid joined without AD DS", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Workplace joined to Microsoft Intune only", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "md102-enrollment-restriction-platform",
+      "objectiveKey": "prepare-device-infrastructure",
+      "prompt": "An MSP must prevent personally owned Android devices from enrolling in one customer tenant while still allowing corporate-owned Android enrollment. What should be configured?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "Intune enrollment restrictions can block personally owned devices by platform while allowing approved corporate enrollment methods.",
+      "sourceName": "Intune enrollment restrictions", "sourceUrl": "https://learn.microsoft.com/en-us/intune/intune-service/enrollment/enrollment-restrictions-set",
+      "choices": [
+        { "text": "A device platform enrollment restriction that blocks personally owned Android devices", "isCorrect": true, "sortOrder": 0 },
+        { "text": "A compliance policy that marks personally owned Android devices noncompliant", "isCorrect": false, "sortOrder": 1 },
+        { "text": "A Conditional Access policy that excludes corporate Android devices", "isCorrect": false, "sortOrder": 2 },
+        { "text": "An app protection policy that blocks enrollment for unmanaged devices", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "md102-windows-auto-enrollment",
+      "objectiveKey": "prepare-device-infrastructure",
+      "prompt": "Licensed users who join Windows devices to Microsoft Entra ID should be enrolled into Intune automatically. Which setting defines the users included in automatic MDM enrollment?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "The Intune MDM user scope controls which users automatically enroll supported devices into Intune during Microsoft Entra join or registration.",
+      "sourceName": "Enable Windows automatic enrollment", "sourceUrl": "https://learn.microsoft.com/en-us/intune/intune-service/enrollment/windows-enroll",
+      "choices": [
+        { "text": "The Microsoft Intune MDM user scope", "isCorrect": true, "sortOrder": 0 },
+        { "text": "The Microsoft Intune MAM user scope", "isCorrect": false, "sortOrder": 1 },
+        { "text": "The Windows Autopilot profile assignment scope", "isCorrect": false, "sortOrder": 2 },
+        { "text": "The Conditional Access device-filter scope", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "md102-ios-bulk-corporate",
+      "objectiveKey": "prepare-device-infrastructure",
+      "prompt": "A customer purchases hundreds of supervised iPhones through an authorized reseller. Devices must enroll without requiring users to install Company Portal manually. Which enrollment method is most appropriate?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "Apple Automated Device Enrollment, integrated through Apple Business Manager, supports large-scale corporate enrollment and supervised device setup.",
+      "sourceName": "Automated Device Enrollment for Apple devices", "sourceUrl": "https://learn.microsoft.com/en-us/intune/intune-service/enrollment/device-enrollment-program-enroll-ios",
+      "choices": [
+        { "text": "Apple Automated Device Enrollment through Apple Business Manager", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Apple User Enrollment through a managed Apple Account", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Intune device administrator enrollment through Company Portal", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Windows Autopilot self-deploying mode", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "md102-android-dedicated-mode",
+      "objectiveKey": "prepare-device-infrastructure",
+      "prompt": "Android tablets are customer-owned, shared by shift workers, and locked to a small set of line-of-business apps. Users must not sign in to a personal profile. Which enrollment profile should be used?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "Android Enterprise corporate-owned dedicated devices are intended for shared or kiosk use and can be restricted to a limited application set.",
+      "sourceName": "Android Enterprise dedicated device enrollment", "sourceUrl": "https://learn.microsoft.com/en-us/intune/intune-service/enrollment/android-kiosk-enroll",
+      "choices": [
+        { "text": "Corporate-owned dedicated device", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Corporate-owned fully managed device", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Corporate-owned device with a work profile", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Personally owned device with a work profile", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "md102-intune-scope-tags",
+      "objectiveKey": "prepare-device-infrastructure",
+      "prompt": "An MSP operates inside one Intune tenant for several regional business units. Regional operators must see and manage only the devices assigned to their region. Which two Intune RBAC elements should be combined?",
+      "kind": "MultipleChoice", "difficulty": "Advanced",
+      "explanation": "Role assignments provide permissions, while scope tags limit which tagged Intune objects an administrator can see. Scope groups control which users or devices can be managed.",
+      "sourceName": "Role-based access control for Microsoft Intune", "sourceUrl": "https://learn.microsoft.com/en-us/intune/intune-service/fundamentals/role-based-access-control",
+      "choices": [
+        { "text": "An Intune role assignment with the required permissions", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Regional scope tags applied to managed objects", "isCorrect": true, "sortOrder": 1 },
+        { "text": "A Microsoft Entra authentication strength", "isCorrect": false, "sortOrder": 2 },
+        { "text": "A Windows Autopilot group tag used as an authorization role", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "md102-compliance-grace-period",
+      "objectiveKey": "prepare-device-infrastructure",
+      "prompt": "Newly enrolled Windows devices need three days to receive required configuration before a missing BitLocker setting makes them noncompliant. Which compliance action should you configure?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "The Mark device noncompliant action can be scheduled after a grace period. Conditional Access can then use the resulting compliance state.",
+      "sourceName": "Actions for noncompliant devices", "sourceUrl": "https://learn.microsoft.com/en-us/intune/intune-service/protect/actions-for-noncompliance",
+      "choices": [
+        { "text": "Delay the Mark device noncompliant action for three days", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Delay the Retire device action for three days", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Set the compliance status validity period to three days", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Set the Conditional Access sign-in frequency to three days", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "md102-ca-require-compliant",
+      "objectiveKey": "prepare-device-infrastructure",
+      "prompt": "Exchange Online access should be allowed only from devices that Intune reports as compliant. Which two components are required?",
+      "kind": "MultipleChoice", "difficulty": "Intermediate",
+      "explanation": "Intune compliance policies evaluate device posture. A Microsoft Entra Conditional Access policy enforces the Require device to be marked as compliant grant control for Exchange Online.",
+      "sourceName": "Use Conditional Access with Intune compliance", "sourceUrl": "https://learn.microsoft.com/en-us/intune/intune-service/protect/create-conditional-access-intune",
+      "choices": [
+        { "text": "An Intune device compliance policy", "isCorrect": true, "sortOrder": 0 },
+        { "text": "A Conditional Access policy requiring a compliant device", "isCorrect": true, "sortOrder": 1 },
+        { "text": "An Intune security baseline assigned to all users", "isCorrect": false, "sortOrder": 2 },
+        { "text": "A Conditional Access policy requiring an approved client app only", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "md102-laps-rotation",
+      "objectiveKey": "prepare-device-infrastructure",
+      "prompt": "Each managed Windows device needs a unique local administrator password stored in Microsoft Entra ID and rotated automatically. Which solution should be configured?",
+      "kind": "SingleChoice", "difficulty": "Foundation",
+      "explanation": "Windows LAPS manages and rotates local administrator passwords and can back them up to Microsoft Entra ID for authorized recovery.",
+      "sourceName": "Windows LAPS overview", "sourceUrl": "https://learn.microsoft.com/en-us/windows-server/identity/laps/laps-overview",
+      "choices": [
+        { "text": "Windows Local Administrator Password Solution", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Windows Hello for Business cloud Kerberos trust", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Endpoint Privilege Management elevation rules", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Microsoft Entra Password Protection", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "md102-whfb-cloud-trust",
+      "objectiveKey": "prepare-device-infrastructure",
+      "prompt": "A hybrid organization wants Windows Hello for Business access to on-premises Kerberos resources while avoiding a public key infrastructure deployment. Which trust model should be considered first?",
+      "kind": "SingleChoice", "difficulty": "Advanced",
+      "explanation": "Cloud Kerberos trust is the recommended simplified Windows Hello for Business deployment model when certificate-based authentication scenarios are not required.",
+      "sourceName": "Windows Hello for Business cloud Kerberos trust", "sourceUrl": "https://learn.microsoft.com/en-us/windows/security/identity-protection/hello-for-business/deploy/hybrid-cloud-kerberos-trust",
+      "choices": [
+        { "text": "Cloud Kerberos trust", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Certificate trust", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Key trust with AD FS registration authority", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Pass-through authentication trust", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "md102-autopilot-user-driven",
+      "objectiveKey": "manage-maintain-devices",
+      "prompt": "New corporate Windows laptops are shipped directly to employees. Each employee should authenticate during setup and become the device's primary user. Which Windows Autopilot mode fits?",
+      "kind": "SingleChoice", "difficulty": "Foundation",
+      "explanation": "User-driven mode is designed for user-associated devices and prompts the assigned user to authenticate during out-of-box setup.",
+      "sourceName": "Windows Autopilot scenarios", "sourceUrl": "https://learn.microsoft.com/en-us/autopilot/windows-autopilot-scenarios",
+      "choices": [
+        { "text": "User-driven mode", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Self-deploying mode", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Pre-provisioned mode without user-driven completion", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Windows Autopilot device preparation without user assignment", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "md102-autopilot-self-deploy",
+      "objectiveKey": "manage-maintain-devices",
+      "prompt": "A customer is deploying shared Windows kiosks. No user should authenticate during initial provisioning, and the devices support TPM 2.0 attestation. Which Autopilot mode should be used?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "Self-deploying mode provisions shared or kiosk devices with little or no user interaction and uses TPM attestation.",
+      "sourceName": "Windows Autopilot self-deploying mode", "sourceUrl": "https://learn.microsoft.com/en-us/autopilot/self-deploying",
+      "choices": [
+        { "text": "Self-deploying mode", "isCorrect": true, "sortOrder": 0 },
+        { "text": "User-driven mode", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Pre-provisioned mode with user authentication in the technician flow", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Existing devices mode with a user provisioning package", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "md102-esp-blocking-apps",
+      "objectiveKey": "manage-maintain-devices",
+      "prompt": "Users must not reach the Windows desktop until a VPN client and endpoint security agent are installed during Autopilot. What should the Enrollment Status Page track?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "The Enrollment Status Page can block device use while selected required applications and policies are installed. Blocking apps should be limited to setup-critical dependencies.",
+      "sourceName": "Enrollment Status Page", "sourceUrl": "https://learn.microsoft.com/en-us/autopilot/enrollment-status",
+      "choices": [
+        { "text": "The VPN client and security agent as selected blocking applications", "isCorrect": true, "sortOrder": 0 },
+        { "text": "All available Company Portal applications as blocking applications", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Only the Autopilot profile assignment, because ESP cannot track applications", "isCorrect": false, "sortOrder": 2 },
+        { "text": "The compliance policy grace period instead of application installation", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "md102-preprovisioning",
+      "objectiveKey": "manage-maintain-devices",
+      "prompt": "A reseller should install device-targeted policies and applications before shipping a Windows laptop, but the final employee must complete their own user setup. Which deployment approach should be used?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "Windows Autopilot pre-provisioned deployment lets a technician complete the device phase before shipment, then reseal the device for the user's final phase.",
+      "sourceName": "Windows Autopilot pre-provisioned deployment", "sourceUrl": "https://learn.microsoft.com/en-us/autopilot/pre-provision",
+      "choices": [
+        { "text": "Windows Autopilot pre-provisioned deployment", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Windows Autopilot self-deploying mode", "isCorrect": false, "sortOrder": 1 },
+        { "text": "A runtime provisioning package applied by the employee", "isCorrect": false, "sortOrder": 2 },
+        { "text": "A Windows 365 provisioning policy assigned to the reseller", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "md102-provisioning-package",
+      "objectiveKey": "manage-maintain-devices",
+      "prompt": "A small offline branch must configure ten existing Windows devices with Wi-Fi settings and a local configuration package. Reimaging and Autopilot registration are not available. Which tool should create the package?",
+      "kind": "SingleChoice", "difficulty": "Foundation",
+      "explanation": "Windows Configuration Designer creates provisioning packages that apply configuration to existing Windows devices without deploying a new image.",
+      "sourceName": "Provisioning packages for Windows", "sourceUrl": "https://learn.microsoft.com/en-us/windows/configuration/provisioning-packages/provisioning-packages",
+      "choices": [
+        { "text": "Windows Configuration Designer", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Office Customization Tool", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Microsoft Deployment Toolkit only", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Microsoft Intune Endpoint Privilege Management", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "md102-feature-update-policy",
+      "objectiveKey": "manage-maintain-devices",
+      "prompt": "A customer wants a Windows device group held on a specific supported Windows 11 feature release while quality updates continue normally. Which Intune policy type should be used?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "Feature update policies specify the Windows feature version offered to targeted devices without replacing update-ring settings for quality updates and restart behavior.",
+      "sourceName": "Feature updates policy for Windows", "sourceUrl": "https://learn.microsoft.com/en-us/intune/intune-service/protect/windows-10-feature-updates",
+      "choices": [
+        { "text": "A feature updates policy for Windows", "isCorrect": true, "sortOrder": 0 },
+        { "text": "A Windows update ring with feature deferral set to zero", "isCorrect": false, "sortOrder": 1 },
+        { "text": "A quality updates policy with expedited installation disabled", "isCorrect": false, "sortOrder": 2 },
+        { "text": "A Windows security baseline with servicing-channel settings", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "md102-cloud-pc-provisioning",
+      "objectiveKey": "manage-maintain-devices",
+      "prompt": "Different departments need Windows 365 Cloud PCs in different regions and with different Windows images. Which object maps assigned users to these provisioning choices?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "A Windows 365 provisioning policy defines items such as network or region and image, and its assignments determine which licensed users receive Cloud PCs from that configuration.",
+      "sourceName": "Create Windows 365 provisioning policies", "sourceUrl": "https://learn.microsoft.com/en-us/windows-365/enterprise/create-provisioning-policy",
+      "choices": [
+        { "text": "A Windows 365 provisioning policy", "isCorrect": true, "sortOrder": 0 },
+        { "text": "A Windows Autopilot deployment profile", "isCorrect": false, "sortOrder": 1 },
+        { "text": "An Intune enrollment device platform restriction", "isCorrect": false, "sortOrder": 2 },
+        { "text": "A Microsoft Entra cross-tenant access policy", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "md102-assignment-filter",
+      "objectiveKey": "manage-maintain-devices",
+      "prompt": "A configuration profile is assigned to all corporate Windows devices, but it should apply only to devices whose model begins with Surface. The group membership must remain unchanged. What should you add?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "An Intune assignment filter can include or exclude devices from a policy assignment based on supported device properties without creating additional Microsoft Entra groups.",
+      "sourceName": "Use filters when assigning policies", "sourceUrl": "https://learn.microsoft.com/en-us/intune/intune-service/fundamentals/filters",
+      "choices": [
+        { "text": "An include assignment filter based on the device model property", "isCorrect": true, "sortOrder": 0 },
+        { "text": "A dynamic user group based on the user's assigned device model", "isCorrect": false, "sortOrder": 1 },
+        { "text": "A scope tag based on the device model property", "isCorrect": false, "sortOrder": 2 },
+        { "text": "A compliance policy with a model requirement", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "md102-epm-standard-user",
+      "objectiveKey": "manage-maintain-devices",
+      "prompt": "Users must remain standard users but need approved installer files to run with elevation under auditable rules. Which Intune Suite capability is designed for this?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "Endpoint Privilege Management lets standard users elevate approved processes under policy and records elevation activity without granting permanent local administrator membership.",
+      "sourceName": "Endpoint Privilege Management overview", "sourceUrl": "https://learn.microsoft.com/en-us/intune/intune-service/protect/epm-overview",
+      "choices": [
+        { "text": "Endpoint Privilege Management", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Windows Local Administrator Password Solution", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Microsoft Intune Remote Help", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Windows Defender Application Control managed installer", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "md102-retire-vs-wipe",
+      "objectiveKey": "manage-maintain-devices",
+      "prompt": "An employee leaves and keeps a personally owned phone. Company data, managed applications, and Intune settings should be removed without factory-resetting personal content. Which remote action should be used?",
+      "kind": "SingleChoice", "difficulty": "Foundation",
+      "explanation": "Retire removes managed company data and settings while preserving personal data. Wipe performs a much broader reset and is normally used for corporate devices or loss scenarios.",
+      "sourceName": "Retire or wipe devices using Intune", "sourceUrl": "https://learn.microsoft.com/en-us/intune/intune-service/remote-actions/devices-wipe",
+      "choices": [
+        { "text": "Retire", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Wipe", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Fresh Start", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Autopilot Reset", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "md102-bitlocker-key-rotate",
+      "objectiveKey": "manage-maintain-devices",
+      "prompt": "A support engineer disclosed a Windows device's BitLocker recovery key to its user. What Intune remote action should follow after recovery?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "Rotating the BitLocker recovery key replaces the disclosed recovery material and backs up the new key, reducing the risk from reuse of the disclosed key.",
+      "sourceName": "Manage BitLocker policy for Windows devices", "sourceUrl": "https://learn.microsoft.com/en-us/intune/intune-service/protect/encrypt-devices",
+      "choices": [
+        { "text": "BitLocker key rotation", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Windows LAPS password rotation", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Delete the device's Autopilot record", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Revoke the user's Microsoft Entra sessions", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "md102-device-query-realtime",
+      "objectiveKey": "manage-maintain-devices",
+      "prompt": "A technician needs near-real-time information about running processes on one online managed Windows device without deploying a script. Which Intune capability should be used?",
+      "kind": "SingleChoice", "difficulty": "Advanced",
+      "explanation": "Device query uses KQL to query supported inventory and state from an individual managed device on demand. It differs from aggregated reporting queries over stored data.",
+      "sourceName": "Device query for Microsoft Intune", "sourceUrl": "https://learn.microsoft.com/en-us/intune/advanced-analytics/device-query",
+      "choices": [
+        { "text": "Device query using KQL", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Log Analytics advanced hunting using KQL", "isCorrect": false, "sortOrder": 1 },
+        { "text": "A proactive remediation detection script", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Microsoft Entra sign-in diagnostics", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "md102-win32-prep",
+      "objectiveKey": "manage-applications",
+      "prompt": "A traditional Windows installer must be deployed as an Intune Win32 app. What must be done before uploading it?",
+      "kind": "SingleChoice", "difficulty": "Foundation",
+      "explanation": "The Microsoft Win32 Content Prep Tool packages source files into the .intunewin format required for an Intune Win32 app upload.",
+      "sourceName": "Prepare Win32 app content for upload", "sourceUrl": "https://learn.microsoft.com/en-us/intune/intune-service/apps/apps-win32-prepare",
+      "choices": [
+        { "text": "Package the source with the Microsoft Win32 Content Prep Tool", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Convert the installer into an MSIX app attach image", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Import the installer into the Office Customization Tool", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Sign the installer with the Intune tenant certificate", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "md102-win32-detection",
+      "objectiveKey": "manage-applications",
+      "prompt": "A Win32 app installs successfully, but Intune repeatedly reports it as not installed and retries. Which app configuration should be checked first?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "Detection rules tell the Intune Management Extension how to determine whether a Win32 app is installed. An incorrect rule can cause false failure or repeated installation attempts.",
+      "sourceName": "Win32 app management in Intune", "sourceUrl": "https://learn.microsoft.com/en-us/intune/intune-service/apps/apps-win32-app-management",
+      "choices": [
+        { "text": "The app's detection rules", "isCorrect": true, "sortOrder": 0 },
+        { "text": "The app's supersedence relationship only", "isCorrect": false, "sortOrder": 1 },
+        { "text": "The device compliance validity period", "isCorrect": false, "sortOrder": 2 },
+        { "text": "The Enrollment Status Page timeout", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "md102-enterprise-app-catalog",
+      "objectiveKey": "manage-applications",
+      "prompt": "An administrator wants to deploy a commonly used third-party Windows app from a maintained catalog that provides prepared metadata and can simplify updates. Which Intune Suite capability should be used?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "Enterprise App Management provides the Enterprise App Catalog, with prepared applications and metadata intended to simplify Win32 application deployment and updating.",
+      "sourceName": "Enterprise App Management", "sourceUrl": "https://learn.microsoft.com/en-us/intune/intune-service/apps/apps-enterprise-app-management",
+      "choices": [
+        { "text": "Enterprise App Management and the Enterprise App Catalog", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Managed Google Play private apps", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Microsoft Store app integration only", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Microsoft 365 Apps servicing profiles", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "md102-app-protection-byod",
+      "objectiveKey": "manage-applications",
+      "prompt": "Users access Microsoft 365 data in supported mobile apps on unenrolled personal devices. Corporate data must be encrypted and prevented from being pasted into unmanaged apps. What should you configure?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "Intune app protection policies apply data-protection controls at the application level and can protect organizational data without device enrollment.",
+      "sourceName": "App protection policies overview", "sourceUrl": "https://learn.microsoft.com/en-us/intune/intune-service/apps/app-protection-policy",
+      "choices": [
+        { "text": "An Intune app protection policy targeted to the users and supported apps", "isCorrect": true, "sortOrder": 0 },
+        { "text": "An Intune device compliance policy targeted to unenrolled devices", "isCorrect": false, "sortOrder": 1 },
+        { "text": "A device configuration profile targeted to personal devices", "isCorrect": false, "sortOrder": 2 },
+        { "text": "An Enrollment Status Page with data-transfer restrictions", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "md102-ca-app-protection",
+      "objectiveKey": "manage-applications",
+      "prompt": "Mobile access to Exchange Online from unenrolled devices must occur only through applications protected by Intune app protection policy. Which Conditional Access grant control is required?",
+      "kind": "SingleChoice", "difficulty": "Advanced",
+      "explanation": "Conditional Access can require an app protection policy for supported client applications, tying resource access to Intune MAM protection without requiring device enrollment.",
+      "sourceName": "Conditional Access grant controls", "sourceUrl": "https://learn.microsoft.com/en-us/entra/identity/conditional-access/concept-conditional-access-grant",
+      "choices": [
+        { "text": "Require app protection policy", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Require device to be marked as compliant", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Require Microsoft Entra hybrid joined device", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Require password change", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "md102-managed-app-config",
+      "objectiveKey": "manage-applications",
+      "prompt": "Outlook for iOS must receive a standard account configuration for both enrolled and unenrolled devices protected by MAM. Which app configuration channel should the administrator use?",
+      "kind": "SingleChoice", "difficulty": "Advanced",
+      "explanation": "Managed apps app configuration policies target users and deliver settings through the app-management channel, including to supported apps on unenrolled devices.",
+      "sourceName": "App configuration policies for Intune", "sourceUrl": "https://learn.microsoft.com/en-us/intune/intune-service/apps/app-configuration-policies-overview",
+      "choices": [
+        { "text": "An app configuration policy for managed apps", "isCorrect": true, "sortOrder": 0 },
+        { "text": "An app configuration policy for managed devices only", "isCorrect": false, "sortOrder": 1 },
+        { "text": "An iOS device feature profile", "isCorrect": false, "sortOrder": 2 },
+        { "text": "A Microsoft 365 Apps servicing profile", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "md102-m365-apps-autopilot",
+      "objectiveKey": "manage-applications",
+      "prompt": "Microsoft 365 Apps must install during Windows Autopilot with only Word, Excel, PowerPoint, and Outlook, using the Monthly Enterprise Channel. Which Intune app type provides these suite and channel choices?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "The Microsoft 365 Apps app type in Intune lets administrators choose suite components, architecture, update channel, and related deployment settings.",
+      "sourceName": "Add Microsoft 365 Apps to Windows devices", "sourceUrl": "https://learn.microsoft.com/en-us/intune/intune-service/apps/apps-add-office365",
+      "choices": [
+        { "text": "Microsoft 365 Apps for Windows 10 and later", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Microsoft Store app (new) for each Office desktop app", "isCorrect": false, "sortOrder": 1 },
+        { "text": "A web link app generated by the Office Customization Tool", "isCorrect": false, "sortOrder": 2 },
+        { "text": "An Enterprise App Catalog app with separate Office dependencies", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "md102-endpoint-security-intent",
+      "objectiveKey": "protect-devices",
+      "prompt": "A security team wants a focused Intune policy for Microsoft Defender Antivirus settings rather than a broad device configuration template. Where should the policy be created?",
+      "kind": "SingleChoice", "difficulty": "Foundation",
+      "explanation": "Intune endpoint security policies expose focused profiles for security technologies such as antivirus, disk encryption, firewall, and attack surface reduction.",
+      "sourceName": "Endpoint security policy in Intune", "sourceUrl": "https://learn.microsoft.com/en-us/intune/intune-service/protect/endpoint-security-policy",
+      "choices": [
+        { "text": "Endpoint security > Antivirus", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Devices > Compliance policies", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Apps > App protection policies", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Tenant administration > Scope tags", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "md102-asr-audit-first",
+      "objectiveKey": "protect-devices",
+      "prompt": "Before blocking Office applications from creating child processes, the security team needs telemetry about business impact. Which Attack Surface Reduction rule mode should be deployed first?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "Audit mode records events that indicate what an ASR rule would have affected without enforcing the block, making it appropriate for impact assessment.",
+      "sourceName": "Attack surface reduction rules", "sourceUrl": "https://learn.microsoft.com/en-us/defender-endpoint/attack-surface-reduction-rules-reference",
+      "choices": [
+        { "text": "Audit", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Warn", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Block", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Not configured with tamper protection enabled", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "md102-mde-intune-connector",
+      "objectiveKey": "protect-devices",
+      "prompt": "Intune compliance decisions must consider the machine risk level calculated by Microsoft Defender for Endpoint. Which integration must be enabled?",
+      "kind": "SingleChoice", "difficulty": "Advanced",
+      "explanation": "The Microsoft Defender for Endpoint connector shares device-risk information with Intune. A compliance policy can then set the maximum allowed machine risk score.",
+      "sourceName": "Configure Microsoft Defender for Endpoint in Intune", "sourceUrl": "https://learn.microsoft.com/en-us/intune/intune-service/protect/advanced-threat-protection-configure",
+      "choices": [
+        { "text": "The Microsoft Defender for Endpoint connector with device risk in an Intune compliance policy", "isCorrect": true, "sortOrder": 0 },
+        { "text": "The Microsoft Defender for Cloud Apps connector with app risk in a configuration profile", "isCorrect": false, "sortOrder": 1 },
+        { "text": "The Microsoft Entra Connect Health agent with sign-in risk in an update ring", "isCorrect": false, "sortOrder": 2 },
+        { "text": "The Windows Autopilot connector with Secure Score in an enrollment profile", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "md102-security-baseline-customize",
+      "objectiveKey": "protect-devices",
+      "prompt": "A customer adopts an Intune security baseline but one recommended setting breaks a required line-of-business application. What is the appropriate response?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "Security baselines are recommended starting configurations, not immutable controls. Administrators should test them and explicitly adjust settings when business requirements justify an exception.",
+      "sourceName": "Security baselines in Intune", "sourceUrl": "https://learn.microsoft.com/en-us/intune/intune-service/protect/security-baselines",
+      "choices": [
+        { "text": "Test and customize that baseline setting while documenting the exception", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Leave the setting unchanged because baseline values cannot be overridden", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Replace the security baseline with a device compliance policy", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Assign a second baseline with every setting set to Not configured", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "md102-update-ring-controls",
+      "objectiveKey": "protect-devices",
+      "prompt": "The help desk needs staged Windows quality updates with controlled deferral, active hours, restart behavior, and deadlines. Which Intune policy type provides these controls?",
+      "kind": "SingleChoice", "difficulty": "Foundation",
+      "explanation": "Windows update rings configure the update experience, including deferrals, deadlines, active hours, and restart behavior for targeted devices.",
+      "sourceName": "Manage Windows update ring policies", "sourceUrl": "https://learn.microsoft.com/en-us/intune/device-updates/windows/manage-update-rings",
+      "choices": [
+        { "text": "Update rings for Windows", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Feature updates for Windows", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Quality updates for Windows", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Windows driver update policies", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "md102-expedite-quality-update",
+      "objectiveKey": "protect-devices",
+      "prompt": "A critical Windows security fix must be installed as quickly as possible on a targeted emergency group, bypassing the normal quality-update deferral. What should you deploy?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "An expedited quality update policy accelerates installation of a specified recent quality update on targeted devices, overriding ordinary deferral timing for that deployment.",
+      "sourceName": "Expedite Windows quality updates", "sourceUrl": "https://learn.microsoft.com/en-us/intune/intune-service/protect/windows-10-expedite-updates",
+      "choices": [
+        { "text": "An expedited quality updates policy", "isCorrect": true, "sortOrder": 0 },
+        { "text": "A feature updates policy with immediate rollout", "isCorrect": false, "sortOrder": 1 },
+        { "text": "An update ring with feature deferral set to zero", "isCorrect": false, "sortOrder": 2 },
+        { "text": "A driver updates policy with automatic approval", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "md102-delivery-optimization",
+      "objectiveKey": "protect-devices",
+      "prompt": "Many branch-office Windows devices download the same update content over a constrained WAN link. Which Windows feature can let devices obtain update content from peers while retaining cloud-source fallback?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "Delivery Optimization can use peer-to-peer distribution for Microsoft content and fall back to Microsoft cloud sources according to policy and availability.",
+      "sourceName": "Delivery Optimization for Windows", "sourceUrl": "https://learn.microsoft.com/en-us/windows/deployment/do/waas-delivery-optimization",
+      "choices": [
+        { "text": "Delivery Optimization", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Windows Autopatch deployment rings", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Microsoft Connected Cache only", "isCorrect": false, "sortOrder": 2 },
+        { "text": "BranchCache hosted cache mode only", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "md102-autopilot-group-tag",
+      "objectiveKey": "prepare-device-infrastructure",
+      "prompt": "An MSP imports Windows Autopilot devices for several departments. Devices tagged Finance during import must automatically enter the Finance deployment group. Which dynamic-device rule property should be evaluated?",
+      "kind": "SingleChoice", "difficulty": "Advanced",
+      "explanation": "An Autopilot group tag is stored in the devicePhysicalIds value as an OrderID marker. A dynamic device group can match that marker and receive the department's Autopilot profile and device-targeted policies.",
+      "sourceName": "Create Windows Autopilot device groups", "sourceUrl": "https://learn.microsoft.com/en-us/autopilot/enrollment-autopilot",
+      "choices": [
+        { "text": "device.deviceOwnership equals Finance", "isCorrect": false, "sortOrder": 0 },
+        { "text": "device.devicePhysicalIds contains the Finance OrderID marker", "isCorrect": true, "sortOrder": 1 },
+        { "text": "device.enrollmentProfileName starts with Finance before profile assignment", "isCorrect": false, "sortOrder": 2 },
+        { "text": "device.managementType equals Finance", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "md102-corporate-device-identifiers",
+      "objectiveKey": "prepare-device-infrastructure",
+      "prompt": "A customer bought iPhones outside Apple Business Manager. Users will enroll them through Company Portal, but Intune must recognize the devices as corporate at enrollment. What should the administrator add before enrollment?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "Corporate device identifiers let Intune recognize supported iOS devices as corporate during enrollment by matching a serial number or IMEI. They do not enroll or configure the devices by themselves.",
+      "sourceName": "Corporate device identifiers", "sourceUrl": "https://learn.microsoft.com/en-us/intune/intune-service/enrollment/corporate-identifiers-add",
+      "choices": [
+        { "text": "The serial numbers as corporate device identifiers", "isCorrect": true, "sortOrder": 0 },
+        { "text": "The serial numbers as Intune scope tags", "isCorrect": false, "sortOrder": 1 },
+        { "text": "The users as device enrollment managers", "isCorrect": false, "sortOrder": 2 },
+        { "text": "The Android models to a compliance-policy exception", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "md102-enrollment-device-limit",
+      "objectiveKey": "prepare-device-infrastructure",
+      "prompt": "Standard users may enroll no more than three personally assigned devices in one tenant, while a dedicated device-enrollment account follows a separate bulk-enrollment design. Which Intune setting limits ordinary user enrollment?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "A device limit enrollment restriction defines how many devices an ordinary user can enroll. Microsoft Entra device limits and device enrollment manager behavior are separate considerations.",
+      "sourceName": "Intune enrollment restrictions", "sourceUrl": "https://learn.microsoft.com/en-us/intune/intune-service/enrollment/enrollment-restrictions-set",
+      "choices": [
+        { "text": "The Microsoft Entra maximum devices per user setting only", "isCorrect": false, "sortOrder": 0 },
+        { "text": "The compliance status validity period", "isCorrect": false, "sortOrder": 1 },
+        { "text": "An Intune device limit enrollment restriction set to three", "isCorrect": true, "sortOrder": 2 },
+        { "text": "The Enrollment Status Page device timeout", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "md102-apple-ade-prerequisites",
+      "objectiveKey": "prepare-device-infrastructure",
+      "prompt": "A new Intune tenant will enroll corporate iPhones through Apple Automated Device Enrollment. Which two Apple integration artifacts must be configured in Intune?",
+      "kind": "MultipleChoice", "difficulty": "Intermediate",
+      "explanation": "Apple enrollment requires an Apple MDM push certificate for device-management communication. Automated Device Enrollment also requires an enrollment-program token connected to Apple Business Manager or Apple School Manager.",
+      "sourceName": "Set up Automated Device Enrollment", "sourceUrl": "https://learn.microsoft.com/en-us/intune/intune-service/enrollment/device-enrollment-program-enroll-ios",
+      "choices": [
+        { "text": "An Apple MDM push certificate", "isCorrect": true, "sortOrder": 0 },
+        { "text": "A Managed Google Play binding", "isCorrect": false, "sortOrder": 1 },
+        { "text": "An Apple enrollment-program token", "isCorrect": true, "sortOrder": 2 },
+        { "text": "A Microsoft Entra Cloud Sync agent", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "md102-local-group-membership",
+      "objectiveKey": "prepare-device-infrastructure",
+      "prompt": "A Microsoft Entra group of field technicians must be added to the local Administrators group on selected Intune-managed Windows devices without distributing a local password. Which policy should be used?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "The Local user group membership profile under Endpoint security Account protection manages membership of built-in local groups by adding, removing, or replacing specified users or Microsoft Entra groups.",
+      "sourceName": "Manage local groups on Windows devices", "sourceUrl": "https://learn.microsoft.com/en-us/intune/intune-service/protect/endpoint-security-account-protection-policy",
+      "choices": [
+        { "text": "A Windows LAPS policy that grants technicians password read access", "isCorrect": false, "sortOrder": 0 },
+        { "text": "A device compliance policy requiring a local administrator", "isCorrect": false, "sortOrder": 1 },
+        { "text": "An Endpoint Privilege Management elevation rule for every process", "isCorrect": false, "sortOrder": 2 },
+        { "text": "An Account protection Local user group membership policy", "isCorrect": true, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "md102-android-cope-profile",
+      "objectiveKey": "prepare-device-infrastructure",
+      "prompt": "Employees receive company-owned Android phones that they may also use personally. The organization needs full control of the work profile but wants personal apps and data separated and private. Which enrollment profile fits?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "Android Enterprise corporate-owned devices with a work profile support organization-owned, single-user devices with a separately managed work profile and personal profile. Fully managed mode does not provide the same personal-profile separation.",
+      "sourceName": "Corporate-owned Android devices with a work profile", "sourceUrl": "https://learn.microsoft.com/en-us/intune/intune-service/enrollment/android-corporate-owned-work-profile-enroll",
+      "choices": [
+        { "text": "Corporate-owned dedicated device", "isCorrect": false, "sortOrder": 0 },
+        { "text": "Corporate-owned device with a work profile", "isCorrect": true, "sortOrder": 1 },
+        { "text": "Corporate-owned fully managed device", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Personally owned device administrator enrollment", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "md102-rbac-scope-groups",
+      "objectiveKey": "prepare-device-infrastructure",
+      "prompt": "A custom Intune role grants the correct actions and scope tags restrict visible objects. The administrator must manage only users and devices belonging to Customer North. Which role-assignment element defines that population?",
+      "kind": "SingleChoice", "difficulty": "Advanced",
+      "explanation": "In an Intune role assignment, scope groups determine which users and devices the administrators can target or manage. Scope tags restrict which tagged Intune objects they can see; role permissions define allowed actions.",
+      "sourceName": "Intune role-based access control", "sourceUrl": "https://learn.microsoft.com/en-us/intune/intune-service/fundamentals/role-based-access-control",
+      "choices": [
+        { "text": "Assignment filters", "isCorrect": false, "sortOrder": 0 },
+        { "text": "Administrative users", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Scope groups", "isCorrect": true, "sortOrder": 2 },
+        { "text": "Role permissions", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "md102-autopilot-name-template",
+      "objectiveKey": "manage-maintain-devices",
+      "prompt": "New Autopilot laptops need names beginning NB- followed by six random characters. The name must be assigned during deployment without a technician script. Where should the template be configured?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "A Windows Autopilot deployment profile can apply a device name template, including a fixed prefix and the %RAND:x% macro. A group tag organizes devices but does not rename Windows.",
+      "sourceName": "Configure Autopilot deployment profiles", "sourceUrl": "https://learn.microsoft.com/en-us/autopilot/profiles",
+      "choices": [
+        { "text": "In the Autopilot deployment profile as NB-%RAND:6%", "isCorrect": true, "sortOrder": 0 },
+        { "text": "In the Enrollment Status Page as NB-%SERIAL%", "isCorrect": false, "sortOrder": 1 },
+        { "text": "In the Autopilot group tag as NB-%RAND:6%", "isCorrect": false, "sortOrder": 2 },
+        { "text": "In the compliance policy as a device-name rule", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "md102-import-custom-admx",
+      "objectiveKey": "manage-maintain-devices",
+      "prompt": "A supported line-of-business Windows application supplies ADMX and language-specific ADML files, but its settings are absent from Intune's built-in templates. How should the settings be exposed for policy configuration?",
+      "kind": "SingleChoice", "difficulty": "Advanced",
+      "explanation": "Intune administrative templates can import supported custom ADMX and dependent ADML files. After import, an administrator creates a profile from the imported administrative template and configures its settings.",
+      "sourceName": "Import custom ADMX and ADML templates", "sourceUrl": "https://learn.microsoft.com/en-us/intune/intune-service/configuration/administrative-templates-import-custom",
+      "choices": [
+        { "text": "Convert the ADMX file into a Win32 detection rule", "isCorrect": false, "sortOrder": 0 },
+        { "text": "Import the ADMX and ADML files, then create a profile from the imported template", "isCorrect": true, "sortOrder": 1 },
+        { "text": "Upload the ADMX file as an Endpoint analytics remediation", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Add the ADMX file to an Enrollment Status Page blocking-app list", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "md102-multisession-profile",
+      "objectiveKey": "manage-maintain-devices",
+      "prompt": "An Azure Virtual Desktop host pool uses Windows 11 Enterprise multi-session. The administrator must configure settings that Intune explicitly supports for multi-session devices. Which targeting approach is appropriate?",
+      "kind": "SingleChoice", "difficulty": "Advanced",
+      "explanation": "Windows multi-session configuration in Intune uses supported device-scoped settings and targets device groups containing the session hosts. User-scoped settings and unsupported templates can report not applicable.",
+      "sourceName": "Manage Windows multi-session with Intune", "sourceUrl": "https://learn.microsoft.com/en-us/intune/intune-service/fundamentals/azure-virtual-desktop-multi-session",
+      "choices": [
+        { "text": "Assign any user-scoped settings catalog profile to the interactive users", "isCorrect": false, "sortOrder": 0 },
+        { "text": "Assign an iOS shared-device configuration to the host pool group", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Use supported device-scoped settings and assign them to a device group containing the session hosts", "isCorrect": true, "sortOrder": 2 },
+        { "text": "Enroll each user session as a separate Microsoft Entra registered device", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "md102-remote-help-control",
+      "objectiveKey": "manage-maintain-devices",
+      "prompt": "An MSP technician must assist a user on an Intune-managed Windows device through an authenticated session with role-based permissions and audit records. Which Intune Suite capability is designed for this?",
+      "kind": "SingleChoice", "difficulty": "Foundation",
+      "explanation": "Intune Remote Help provides organization-authenticated remote assistance, Intune RBAC controls, compliance warnings, and session reporting. Quick Assist does not provide the same Intune-managed controls.",
+      "sourceName": "Remote Help overview", "sourceUrl": "https://learn.microsoft.com/en-us/intune/intune-service/fundamentals/remote-help",
+      "choices": [
+        { "text": "Endpoint Privilege Management", "isCorrect": false, "sortOrder": 0 },
+        { "text": "Windows Autopilot Reset", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Microsoft Tunnel for MAM", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Microsoft Intune Remote Help", "isCorrect": true, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "md102-cloud-pki-scep",
+      "objectiveKey": "manage-maintain-devices",
+      "prompt": "Managed devices need SCEP certificates for Wi-Fi authentication. The customer wants Intune to provide the issuing certification authorities without deploying on-premises certificate connectors or AD CS. Which capability fits?",
+      "kind": "SingleChoice", "difficulty": "Advanced",
+      "explanation": "Microsoft Cloud PKI provides cloud-hosted issuing certification authorities integrated with Intune and can issue certificates to managed devices through Intune certificate profiles without on-premises PKI infrastructure.",
+      "sourceName": "Microsoft Cloud PKI overview", "sourceUrl": "https://learn.microsoft.com/en-us/intune/intune-service/protect/microsoft-cloud-pki-overview",
+      "choices": [
+        { "text": "Microsoft Cloud PKI", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Windows LAPS with certificate backup", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Microsoft Entra certificate-based authentication without an issuing CA", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Endpoint Privilege Management support-approved elevation", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "md102-mam-tunnel",
+      "objectiveKey": "manage-maintain-devices",
+      "prompt": "A supported line-of-business iOS app on unenrolled devices must reach an on-premises API through VPN, but the VPN must be available only inside apps protected by Intune MAM. Which capability should be implemented?",
+      "kind": "SingleChoice", "difficulty": "Advanced",
+      "explanation": "Microsoft Tunnel for Mobile Application Management extends per-app VPN access to supported unenrolled iOS and Android devices. Intune app protection and app configuration policies scope the tunnel to managed apps.",
+      "sourceName": "Microsoft Tunnel for MAM", "sourceUrl": "https://learn.microsoft.com/en-us/intune/intune-service/protect/microsoft-tunnel-mam",
+      "choices": [
+        { "text": "Always On VPN with device tunnel", "isCorrect": false, "sortOrder": 0 },
+        { "text": "Microsoft Tunnel for MAM with app protection and managed-app configuration", "isCorrect": true, "sortOrder": 1 },
+        { "text": "Microsoft Entra Private Access without an Intune app policy", "isCorrect": false, "sortOrder": 2 },
+        { "text": "A device configuration VPN profile assigned to unenrolled devices", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "md102-bulk-remote-action",
+      "objectiveKey": "manage-maintain-devices",
+      "prompt": "A faulty configuration requires 80 managed Windows devices to synchronize with Intune immediately. The action is supported in bulk and no per-device diagnostic data is needed. What is the most direct approach?",
+      "kind": "SingleChoice", "difficulty": "Foundation",
+      "explanation": "Intune bulk device actions can send a supported remote action such as Sync to a selected set of devices. A policy reassignment waits for normal check-in and does not itself initiate the requested immediate sync.",
+      "sourceName": "Use bulk device actions", "sourceUrl": "https://learn.microsoft.com/en-us/intune/intune-service/remote-actions/bulk-device-actions",
+      "choices": [
+        { "text": "Create a compliance policy whose only action is Sync", "isCorrect": false, "sortOrder": 0 },
+        { "text": "Restart the Intune Management Extension service through Endpoint analytics", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Select the devices and run the bulk Sync device action", "isCorrect": true, "sortOrder": 2 },
+        { "text": "Delete and recreate the affected configuration profile assignment", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "md102-windows-readiness-report",
+      "objectiveKey": "manage-maintain-devices",
+      "prompt": "Before a Windows 11 rollout, the MSP needs a per-device inventory of hardware readiness and blocking compatibility risks for managed Windows devices. Which Intune report should be reviewed?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "The Windows feature update device readiness report identifies readiness state and compatibility risks for upgrading managed devices to a selected Windows version. Update-ring reports focus on deployment state rather than pre-upgrade hardware readiness.",
+      "sourceName": "Windows feature update device readiness report", "sourceUrl": "https://learn.microsoft.com/en-us/intune/intune-service/protect/windows-update-compatibility-reports",
+      "choices": [
+        { "text": "Device compliance trends", "isCorrect": false, "sortOrder": 0 },
+        { "text": "Windows feature update device readiness", "isCorrect": true, "sortOrder": 1 },
+        { "text": "App protection status", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Microsoft Entra risky devices", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "md102-win32-dependency",
+      "objectiveKey": "manage-applications",
+      "prompt": "A Win32 line-of-business app must install only after a specific runtime package is detected or installed. Both packages are managed as Intune Win32 apps. What should be configured on the line-of-business app?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "Win32 app dependencies tell Intune to detect and, when configured, install prerequisite Win32 apps before the dependent app. Requirements decide applicability but do not install another app.",
+      "sourceName": "Win32 app dependencies", "sourceUrl": "https://learn.microsoft.com/en-us/intune/intune-service/apps/apps-win32-add",
+      "choices": [
+        { "text": "A supersedence relationship that uninstalls the runtime", "isCorrect": false, "sortOrder": 0 },
+        { "text": "A requirement rule that returns the runtime installer", "isCorrect": false, "sortOrder": 1 },
+        { "text": "A Win32 app dependency on the runtime package", "isCorrect": true, "sortOrder": 2 },
+        { "text": "An Enrollment Status Page timeout for both apps", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "md102-win32-supersedence",
+      "objectiveKey": "manage-applications",
+      "prompt": "Version 5 of an Intune Win32 app replaces version 4. The old app must be removed before the new package installs because the product codes are incompatible. Which relationship should be configured?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "Win32 app supersedence models replacement of an older app and can be configured to uninstall the superseded version before the superseding app installs. Dependencies model prerequisites, not replacement.",
+      "sourceName": "Win32 app supersedence", "sourceUrl": "https://learn.microsoft.com/en-us/intune/intune-service/apps/apps-win32-supersedence",
+      "choices": [
+        { "text": "Make version 4 a dependency and enable automatic install", "isCorrect": false, "sortOrder": 0 },
+        { "text": "Supersede version 4 and select uninstall previous version", "isCorrect": true, "sortOrder": 1 },
+        { "text": "Use the same detection rule and assign both versions as required", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Configure version 5 as available and version 4 as uninstall", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "md102-required-vs-available-app",
+      "objectiveKey": "manage-applications",
+      "prompt": "A licensed utility should appear in Company Portal for selected users to install when needed, but it must not install automatically. Which assignment intent should be used?",
+      "kind": "SingleChoice", "difficulty": "Foundation",
+      "explanation": "Available for enrolled devices exposes the app in Company Portal to assigned users and leaves installation optional. Required assignments initiate installation automatically on targeted users or devices.",
+      "sourceName": "Assign apps to groups", "sourceUrl": "https://learn.microsoft.com/en-us/intune/intune-service/apps/apps-deploy",
+      "choices": [
+        { "text": "Required", "isCorrect": false, "sortOrder": 0 },
+        { "text": "Uninstall", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Available for enrolled devices", "isCorrect": true, "sortOrder": 2 },
+        { "text": "Available with or without enrollment for any Win32 app", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "md102-managed-device-app-config",
+      "objectiveKey": "manage-applications",
+      "prompt": "A managed iPad application reads configuration from the platform's managed app configuration channel, and settings must be assigned directly to enrolled devices. Which Intune policy type should be used?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "An app configuration policy for managed devices delivers configuration through the device-management channel to enrolled devices. Managed-app configuration targets users through the MAM channel and also supports unenrolled scenarios.",
+      "sourceName": "App configuration policies overview", "sourceUrl": "https://learn.microsoft.com/en-us/intune/intune-service/apps/app-configuration-policies-overview",
+      "choices": [
+        { "text": "An app protection policy with no data-transfer settings", "isCorrect": false, "sortOrder": 0 },
+        { "text": "An app configuration policy for managed apps", "isCorrect": false, "sortOrder": 1 },
+        { "text": "A device compliance policy with custom settings", "isCorrect": false, "sortOrder": 2 },
+        { "text": "An app configuration policy for managed devices", "isCorrect": true, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "md102-office-cloud-policy",
+      "objectiveKey": "manage-applications",
+      "prompt": "A user signs in to Microsoft 365 Apps on several Windows devices, including one that is not Intune-enrolled. The same Office application settings must follow the user. Which management capability should be used?",
+      "kind": "SingleChoice", "difficulty": "Advanced",
+      "explanation": "Cloud Policy in the Microsoft 365 Apps admin center applies supported user-based Office policies when the user signs in, including on devices that are not domain joined or otherwise managed. Intune device profiles require managed-device targeting.",
+      "sourceName": "Cloud Policy service for Microsoft 365 Apps", "sourceUrl": "https://learn.microsoft.com/en-us/microsoft-365-apps/admin-center/overview-cloud-policy",
+      "choices": [
+        { "text": "A Windows security baseline assigned to the user", "isCorrect": false, "sortOrder": 0 },
+        { "text": "Cloud Policy in the Microsoft 365 Apps admin center", "isCorrect": true, "sortOrder": 1 },
+        { "text": "A managed-device app configuration policy", "isCorrect": false, "sortOrder": 2 },
+        { "text": "An Office Deployment Tool XML file copied to every device", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "md102-firewall-endpoint-policy",
+      "objectiveKey": "protect-devices",
+      "prompt": "Security administrators need one focused policy to enable Microsoft Defender Firewall on domain, private, and public profiles and configure inbound rules for managed Windows devices. Which Intune policy area should they use?",
+      "kind": "SingleChoice", "difficulty": "Foundation",
+      "explanation": "Endpoint security Firewall policies manage Microsoft Defender Firewall profile settings and reusable or policy rules. A compliance policy can evaluate firewall state but does not configure the firewall rules.",
+      "sourceName": "Firewall policy for endpoint security", "sourceUrl": "https://learn.microsoft.com/en-us/intune/intune-service/protect/endpoint-security-firewall-policy",
+      "choices": [
+        { "text": "Apps > App protection", "isCorrect": false, "sortOrder": 0 },
+        { "text": "Devices > Compliance policies", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Endpoint security > Firewall", "isCorrect": true, "sortOrder": 2 },
+        { "text": "Tenant administration > Connectors", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "md102-silent-bitlocker",
+      "objectiveKey": "protect-devices",
+      "prompt": "Compatible Microsoft Entra joined Windows laptops must enable BitLocker silently and escrow recovery keys to Microsoft Entra ID. Users are standard users and must not be prompted to choose encryption settings. Which Intune approach fits?",
+      "kind": "SingleChoice", "difficulty": "Advanced",
+      "explanation": "An Endpoint security Disk encryption policy can configure silent BitLocker enablement and recovery-key escrow when device prerequisites are met. A compliance policy only evaluates encryption and cannot turn BitLocker on.",
+      "sourceName": "Configure BitLocker with Intune", "sourceUrl": "https://learn.microsoft.com/en-us/intune/intune-service/protect/encrypt-devices",
+      "choices": [
+        { "text": "A compliance policy requiring encryption with immediate noncompliance", "isCorrect": false, "sortOrder": 0 },
+        { "text": "An Endpoint security Disk encryption policy configured for silent enablement and key escrow", "isCorrect": true, "sortOrder": 1 },
+        { "text": "A Windows LAPS policy storing the BitLocker recovery password", "isCorrect": false, "sortOrder": 2 },
+        { "text": "A Defender Antivirus policy with tamper protection", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "md102-ios-managed-update",
+      "objectiveKey": "protect-devices",
+      "prompt": "Supervised iPhones should install a specified iOS update at a scheduled local time, with Intune monitoring the deployment status. Which update mechanism should be configured?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "Intune managed software updates for supervised Apple devices use Apple's declarative device management capabilities to enforce a target OS version or build and schedule installation, with status reporting in Intune.",
+      "sourceName": "Managed software updates for Apple devices", "sourceUrl": "https://learn.microsoft.com/en-us/intune/intune-service/protect/managed-software-updates-ios-macos",
+      "choices": [
+        { "text": "A Windows update ring with a deadline", "isCorrect": false, "sortOrder": 0 },
+        { "text": "An iOS compliance policy with Mark noncompliant delayed", "isCorrect": false, "sortOrder": 1 },
+        { "text": "A Company Portal notification requesting a manual update", "isCorrect": false, "sortOrder": 2 },
+        { "text": "An Apple managed software update policy for the supervised devices", "isCorrect": true, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "md102-android-system-update-window",
+      "objectiveKey": "protect-devices",
+      "prompt": "Corporate-owned fully managed Android devices may install system updates automatically, but only during the nightly maintenance period. Which device-restriction setting should be used?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "Android Enterprise device restrictions support a Windowed system-update mode for corporate-owned devices. It installs updates automatically only during the configured daily maintenance window.",
+      "sourceName": "Android Enterprise device restriction settings", "sourceUrl": "https://learn.microsoft.com/en-us/intune/intune-service/configuration/device-restrictions-android-for-work",
+      "choices": [
+        { "text": "Automatic, with no maintenance window", "isCorrect": false, "sortOrder": 0 },
+        { "text": "Postponed for an unlimited period", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Windowed, with the nightly start and end times", "isCorrect": true, "sortOrder": 2 },
+        { "text": "Freeze periods in a Windows feature-update policy", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "md102-update-failure-report",
+      "objectiveKey": "protect-devices",
+      "prompt": "After deploying a Windows expedited quality update, the MSP needs device-level status and failure details for the targeted release. Which Intune reporting area should be used?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "Windows Update reports in Intune provide deployment and device status for feature, quality, driver, and expedited update policies, including alerts or failure information where available.",
+      "sourceName": "Windows Update reports in Intune", "sourceUrl": "https://learn.microsoft.com/en-us/intune/intune-service/protect/windows-update-reports",
+      "choices": [
+        { "text": "Windows Update reports for the applicable quality update policy", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Microsoft Entra audit logs filtered to device registration", "isCorrect": false, "sortOrder": 1 },
+        { "text": "App protection status for Windows", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Cloud Discovery traffic logs", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "md102-scenario-order-autopilot-preprovision",
+      "objectiveKey": "manage-maintain-devices",
+      "prompt": "An MSP reseller prepares customer-owned Windows laptops before shipping them to remote employees. Device-targeted apps must be installed by the technician, and each employee must complete the user portion of setup after delivery. Which sequence is correct?",
+      "kind": "SingleChoice", "difficulty": "Advanced",
+      "explanation": "The device must first be registered for Windows Autopilot and receive the assigned profile. The technician can then run the pre-provisioning flow, verify that the device phase succeeds, and reseal the device. The employee completes the user-driven phase only after delivery. Starting the technician flow before profile assignment or letting the employee sign in before resealing defeats the staged deployment.",
+      "sourceName": "Windows Autopilot pre-provisioned deployment", "sourceUrl": "https://learn.microsoft.com/en-us/autopilot/pre-provision",
+      "choices": [
+        { "text": "Register the device and assign the Autopilot profile; run the technician pre-provisioning flow; verify the device phase; reseal; let the employee complete the user phase", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Run the technician pre-provisioning flow; register the device and assign the profile; reseal; verify the device phase; let the employee complete the user phase", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Register the device and assign the profile; let the employee complete the user phase; run the technician flow; verify the device phase; reseal", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Register the device and assign the profile; run the technician flow; reseal immediately; let the employee complete the user phase; then verify the device phase", "isCorrect": false, "sortOrder": 3 },
+        { "text": "Register the device; run the technician flow; reseal; assign the Autopilot profile; let the employee complete the user phase", "isCorrect": false, "sortOrder": 4 }
+      ]
+    },
+    {
+      "contentKey": "md102-scenario-order-win32-deployment",
+      "objectiveKey": "manage-applications",
+      "prompt": "A customer gives the MSP an MSI-based VPN client that must be deployed as a Win32 app with device-specific requirements and reliable detection. Which implementation sequence should the endpoint administrator use?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "Intune requires the source files to be packaged as an .intunewin file before the Win32 app is created. During app creation, the administrator uploads the package and defines install behavior, requirements, and detection rules; assignments come afterward, followed by monitoring. Assigning before the app and its detection logic exist is impossible, and monitoring before assignment produces no deployment evidence.",
+      "sourceName": "Add, assign, and monitor a Win32 app", "sourceUrl": "https://learn.microsoft.com/en-us/intune/app-management/deployment/add-win32",
+      "choices": [
+        { "text": "Package the source; create and upload the Win32 app; configure requirements and detection; assign it; monitor installation status", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Create an assignment; package the source; configure detection; upload the Win32 app; monitor installation status", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Package the source; assign the app; upload it; monitor installation status; configure detection", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Configure detection; upload the unpackaged MSI; assign it; package the source; monitor installation status", "isCorrect": false, "sortOrder": 3 },
+        { "text": "Package the source; create and upload the app; assign it; monitor installation status; then add requirements and detection", "isCorrect": false, "sortOrder": 4 },
+        { "text": "Monitor installation status; package the source; create the app; configure requirements and detection; assign it", "isCorrect": false, "sortOrder": 5 }
+      ]
+    },
+    {
+      "contentKey": "md102-scenario-defender-onboarding-components",
+      "objectiveKey": "protect-devices",
+      "prompt": "A managed-services customer wants Intune-managed Windows devices onboarded to Microsoft Defender for Endpoint and wants Defender device-risk signals available to Intune. Choose two required implementation components.",
+      "kind": "MultipleChoice", "difficulty": "Advanced",
+      "explanation": "The service-to-service connector enables Intune and Defender for Endpoint to exchange onboarding and risk information. A separate endpoint detection and response onboarding policy must then be assigned to the devices. Enabling the connector alone does not onboard endpoints, while antivirus or compliance policies do not establish the service connection.",
+      "sourceName": "Configure Defender for Endpoint integration and onboarding", "sourceUrl": "https://learn.microsoft.com/en-us/intune/device-security/microsoft-defender/configure-integration",
+      "choices": [
+        { "text": "Enable the Microsoft Defender for Endpoint service connection in Intune", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Assign an endpoint detection and response onboarding policy to the Windows devices", "isCorrect": true, "sortOrder": 1 },
+        { "text": "Assign only a Defender Antivirus policy with real-time protection enabled", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Create only a compliance policy that evaluates machine risk", "isCorrect": false, "sortOrder": 3 },
+        { "text": "Register every device as a Microsoft Defender for Cloud server", "isCorrect": false, "sortOrder": 4 }
+      ]
+    },
+    {
+      "contentKey": "md102-scenario-byod-app-access-controls",
+      "objectiveKey": "manage-applications",
+      "prompt": "Contractors use personal iOS and Android devices that must remain unenrolled. They may access Exchange Online only through apps that protect work data and prevent copying it into personal apps. Choose two controls to deploy.",
+      "kind": "MultipleChoice", "difficulty": "Advanced",
+      "explanation": "An Intune app protection policy applies data-transfer and access controls to supported apps without requiring device enrollment. App-based Conditional Access enforces use of a protected app when accessing the cloud service. A device compliance requirement would conflict with the unenrolled-device constraint, and an app configuration policy alone does not provide the required data-loss controls.",
+      "sourceName": "App-based Conditional Access with Intune", "sourceUrl": "https://learn.microsoft.com/en-us/intune/device-security/conditional-access-integration/app-based-policies",
+      "choices": [
+        { "text": "An Intune app protection policy targeting the contractors and supported apps", "isCorrect": true, "sortOrder": 0 },
+        { "text": "A Conditional Access policy requiring an app protection policy for Exchange Online", "isCorrect": true, "sortOrder": 1 },
+        { "text": "A Conditional Access grant requiring the personal device to be marked compliant", "isCorrect": false, "sortOrder": 2 },
+        { "text": "A device configuration profile that blocks the system clipboard", "isCorrect": false, "sortOrder": 3 },
+        { "text": "An app configuration policy without an app protection policy", "isCorrect": false, "sortOrder": 4 },
+        { "text": "An enrollment restriction that forces all personal devices into MDM", "isCorrect": false, "sortOrder": 5 }
+      ]
+    },
+    {
+      "contentKey": "md102-scenario-assignment-filter-targeting",
+      "objectiveKey": "manage-maintain-devices",
+      "prompt": "An MSP assigns one Intune security profile to a large user group, but the profile must apply only to corporate-owned Windows devices and must react at policy evaluation without waiting for dynamic-group membership processing. What should be added to the assignment?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "A managed-device assignment filter can include only devices whose platform and ownership properties match, and it is evaluated when the policy evaluates. A dynamic device group can target similar properties but introduces group-membership evaluation, while scope tags control administrator visibility rather than policy applicability.",
+      "sourceName": "Assignment filters in Microsoft Intune", "sourceUrl": "https://learn.microsoft.com/en-us/intune/fundamentals/filters/overview",
+      "choices": [
+        { "text": "An Include assignment filter for Windows devices with corporate ownership", "isCorrect": true, "sortOrder": 0 },
+        { "text": "A scope tag named Corporate-Windows", "isCorrect": false, "sortOrder": 1 },
+        { "text": "A dynamic user group based on device ownership", "isCorrect": false, "sortOrder": 2 },
+        { "text": "A device category with no assignment filter", "isCorrect": false, "sortOrder": 3 }
+      ]
+    },
+    {
+      "contentKey": "md102-scenario-bitlocker-key-rotation",
+      "objectiveKey": "protect-devices",
+      "prompt": "A helpdesk technician disclosed a BitLocker recovery key to recover an Intune-managed Windows laptop. The device is online again, and the customer requires the disclosed key to become unusable without decrypting the drive. Which remote action should the MSP send?",
+      "kind": "SingleChoice", "difficulty": "Intermediate",
+      "explanation": "BitLocker key rotation generates and escrows a new recovery key so the disclosed key cannot be reused. Rotating Windows LAPS changes a local administrator password, while Retire, Wipe, and Fresh Start change device management or operating-system state rather than refreshing the BitLocker recovery key.",
+      "sourceName": "BitLocker recovery key rotation", "sourceUrl": "https://learn.microsoft.com/en-us/intune/device-management/actions/rotate-bitlocker-keys",
+      "choices": [
+        { "text": "BitLocker key rotation", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Rotate local admin password", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Retire", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Wipe", "isCorrect": false, "sortOrder": 3 },
+        { "text": "Fresh Start", "isCorrect": false, "sortOrder": 4 }
+      ]
+    },
+    {
+      "contentKey": "md102-scenario-corporate-device-identifiers",
+      "objectiveKey": "prepare-device-infrastructure",
+      "prompt": "A customer owns a batch of iPhones that will use device enrollment through Company Portal rather than Apple User Enrollment or Automated Device Enrollment. Personal iOS enrollment remains allowed, but these purchased devices must be identified as corporate at enrollment. What should the MSP do before users enroll them?",
+      "kind": "SingleChoice", "difficulty": "Advanced",
+      "explanation": "For a supported iOS device-enrollment flow, importing the devices' serial numbers or IMEIs as corporate identifiers before enrollment lets Intune classify matching devices as corporate. Scope tags and categories do not establish ownership during enrollment, and changing ownership afterward misses enrollment-time restriction decisions. Apple User Enrollment is excluded because corporate identifiers are not supported for that flow.",
+      "sourceName": "Corporate device identifiers in Intune", "sourceUrl": "https://learn.microsoft.com/en-us/intune/device-enrollment/add-corporate-identifiers",
+      "choices": [
+        { "text": "Import each iPhone's serial number or IMEI as a corporate device identifier before enrollment", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Apply a corporate scope tag to the enrollment restriction", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Create a device category and require users to select it during enrollment", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Change Device ownership to Corporate only after enrollment completes", "isCorrect": false, "sortOrder": 3 },
+        { "text": "Add the devices to a Microsoft Entra dynamic group based on ownership before enrollment", "isCorrect": false, "sortOrder": 4 },
+        { "text": "Use an app protection assignment filter to set the hardware ownership value", "isCorrect": false, "sortOrder": 5 }
+      ]
+    },
+    {
+      "contentKey": "md102-scenario-retire-personal-device",
+      "objectiveKey": "manage-maintain-devices",
+      "prompt": "A user's personally owned enrolled tablet is being removed from management. Company-managed profiles and organizational data must be removed, but personal apps and photos must remain. Which Intune remote action should the MSP use?",
+      "kind": "SingleChoice", "difficulty": "Foundation",
+      "explanation": "Retire removes company data and managed settings while preserving personal data. Wipe restores a device to factory settings, Delete removes the management record and performs retirement behavior but is less explicit for this operational requirement, and a Sync merely requests current policy.",
+      "sourceName": "Remote device actions in Intune", "sourceUrl": "https://learn.microsoft.com/en-us/intune/device-management/actions/",
+      "choices": [
+        { "text": "Retire", "isCorrect": true, "sortOrder": 0 },
+        { "text": "Wipe", "isCorrect": false, "sortOrder": 1 },
+        { "text": "Fresh Start", "isCorrect": false, "sortOrder": 2 },
+        { "text": "Sync", "isCorrect": false, "sortOrder": 3 }
+      ]
+    }
+  ]
+}

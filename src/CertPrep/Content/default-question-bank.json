@@ -1,0 +1,1198 @@
+{
+  "schemaVersion": 1,
+  "exams": [
+    {
+      "provider": "Microsoft",
+      "code": "AZ-900",
+      "title": "Microsoft Azure Fundamentals",
+      "summary": "Build a base across cloud concepts, Azure services, and governance before moving into role-based exams.",
+      "contentVersion": "2026.07 editorial bank",
+      "objectives": [
+        { "contentKey": "cloud-concepts", "name": "Describe cloud concepts", "sortOrder": 0 },
+        { "contentKey": "azure-architecture", "name": "Describe Azure architecture and services", "sortOrder": 1 },
+        { "contentKey": "azure-governance", "name": "Describe Azure management and governance", "sortOrder": 2 }
+      ],
+      "questions": [
+        {
+          "contentKey": "consumption-pricing",
+          "objectiveKey": "cloud-concepts",
+          "prompt": "Which cost behavior best represents a consumption-based cloud model?",
+          "kind": "SingleChoice",
+          "difficulty": "Foundation",
+          "explanation": "A consumption model bills for measured usage. Charges can rise or fall with use instead of requiring the full capacity to be purchased in advance.",
+          "sourceName": "Consumption-based model",
+          "sourceUrl": "https://learn.microsoft.com/en-us/training/modules/describe-cloud-compute/6-describe-consumption-based-model",
+          "choices": [
+            { "text": "Charges vary with the resources consumed during the billing period", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Charges are fixed at the cost of maximum possible capacity", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Charges are recorded only as depreciation of owned hardware", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Charges remain unchanged when resources are stopped or scaled down", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "capital-expenditure",
+          "objectiveKey": "cloud-concepts",
+          "prompt": "A company buys physical servers for a new datacenter. How is that purchase normally classified?",
+          "kind": "SingleChoice",
+          "difficulty": "Foundation",
+          "explanation": "Buying long-lived physical assets is normally capital expenditure. Metered cloud charges are generally operating expenditure.",
+          "sourceName": "Consumption-based model",
+          "sourceUrl": "https://learn.microsoft.com/en-us/training/modules/describe-cloud-compute/6-describe-consumption-based-model",
+          "choices": [
+            { "text": "An up-front capital expenditure", "isCorrect": true, "sortOrder": 0 },
+            { "text": "A fixed recurring operating expenditure", "isCorrect": false, "sortOrder": 1 },
+            { "text": "A usage-based operating expenditure", "isCorrect": false, "sortOrder": 2 },
+            { "text": "A reserved-capacity operating expenditure", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "paas-shared-responsibility",
+          "objectiveKey": "cloud-concepts",
+          "prompt": "An MSP hosts a customer application on a platform as a service (PaaS). Which responsibility remains with the customer?",
+          "kind": "SingleChoice",
+          "difficulty": "Foundation",
+          "explanation": "With PaaS, the provider manages the physical infrastructure, operating system, and platform runtime. The customer remains responsible for its data, identities, access, and application code.",
+          "sourceName": "Shared responsibility in the cloud",
+          "sourceUrl": "https://learn.microsoft.com/en-us/azure/security/fundamentals/shared-responsibility",
+          "choices": [
+            { "text": "Controlling access to the application data", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Replacing failed disks in the provider datacenter", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Patching the platform host operating system", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Maintaining power and cooling for the platform", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "hybrid-cloud-use-case",
+          "objectiveKey": "cloud-concepts",
+          "prompt": "A customer must keep regulated records in its private datacenter but wants to use public-cloud capacity during seasonal demand. Which cloud model fits this requirement?",
+          "kind": "SingleChoice",
+          "difficulty": "Foundation",
+          "explanation": "A hybrid cloud combines private and public cloud environments, allowing workloads or data to remain private while other capacity uses the public cloud.",
+          "sourceName": "Cloud models",
+          "sourceUrl": "https://learn.microsoft.com/en-us/training/modules/describe-cloud-compute/5-define-cloud-models",
+          "choices": [
+            { "text": "Hybrid cloud", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Public cloud", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Private cloud", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Community cloud", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "serverless-event-processing",
+          "objectiveKey": "cloud-concepts",
+          "prompt": "A team wants code to run when a message arrives and to pay mainly for execution time without managing servers. Which computing approach should it use?",
+          "kind": "SingleChoice",
+          "difficulty": "Foundation",
+          "explanation": "Serverless computing runs event-driven code while the provider manages the underlying infrastructure and automatic scaling. Azure Functions is an Azure serverless compute service.",
+          "sourceName": "Azure Functions overview",
+          "sourceUrl": "https://learn.microsoft.com/en-us/azure/azure-functions/functions-overview",
+          "choices": [
+            { "text": "Serverless computing", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Dedicated hosting", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Private-cloud virtualization", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Colocation hosting", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "cloud-scalability",
+          "objectiveKey": "cloud-concepts",
+          "prompt": "A web workload adds instances when demand grows so that it can process more requests. Which cloud benefit does this demonstrate most directly?",
+          "kind": "SingleChoice",
+          "difficulty": "Foundation",
+          "explanation": "Scalability is the ability to add resources to meet increased demand. High availability instead focuses on keeping a service accessible when failures occur.",
+          "sourceName": "Benefits of high availability and scalability",
+          "sourceUrl": "https://learn.microsoft.com/en-us/training/modules/describe-benefits-use-cloud-services/2-high-availability-scalability-cloud",
+          "choices": [
+            { "text": "Scalability", "isCorrect": true, "sortOrder": 0 },
+            { "text": "High availability", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Disaster recovery", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Cost predictability", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "cloud-elasticity",
+          "objectiveKey": "cloud-concepts",
+          "prompt": "A service automatically removes excess compute capacity after a traffic spike ends. Which characteristic is being demonstrated?",
+          "kind": "SingleChoice",
+          "difficulty": "Foundation",
+          "explanation": "Elasticity dynamically adds and removes resources as demand changes. Scaling down after a spike avoids paying for idle capacity.",
+          "sourceName": "Benefits of high availability and scalability",
+          "sourceUrl": "https://learn.microsoft.com/en-us/training/modules/describe-benefits-use-cloud-services/2-high-availability-scalability-cloud",
+          "choices": [
+            { "text": "Elasticity", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Fault tolerance", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Data sovereignty", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Capital planning", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "iaas-service-choice",
+          "objectiveKey": "cloud-concepts",
+          "prompt": "A customer must move a legacy server to Azure and retain control of the guest operating system and installed software. Which cloud service type is the best fit?",
+          "kind": "SingleChoice",
+          "difficulty": "Foundation",
+          "explanation": "Infrastructure as a service provides virtualized compute while leaving the guest operating system, applications, and data under customer control.",
+          "sourceName": "Infrastructure as a service",
+          "sourceUrl": "https://learn.microsoft.com/en-us/training/modules/describe-cloud-service-types/2-describe-infrastructure-service",
+          "choices": [
+            { "text": "Infrastructure as a service (IaaS)", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Platform as a service (PaaS)", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Software as a service (SaaS)", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Function as a service (FaaS)", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "saas-service-choice",
+          "objectiveKey": "cloud-concepts",
+          "prompt": "Users need a complete email application delivered over the internet while the provider operates the application and its platform. Which service type is this?",
+          "kind": "SingleChoice",
+          "difficulty": "Foundation",
+          "explanation": "Software as a service delivers a complete provider-operated application. The customer manages its data, identities, and access rather than the application stack.",
+          "sourceName": "Software as a service",
+          "sourceUrl": "https://learn.microsoft.com/en-us/training/modules/describe-cloud-service-types/4-describe-software-service",
+          "choices": [
+            { "text": "Software as a service (SaaS)", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Platform as a service (PaaS)", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Infrastructure as a service (IaaS)", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Container as a service (CaaS)", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "availability-zones",
+          "objectiveKey": "azure-architecture",
+          "prompt": "What is the primary purpose of Azure availability zones?",
+          "kind": "SingleChoice",
+          "difficulty": "Foundation",
+          "explanation": "Availability zones are physically separate groups of datacenters within a region. Zone-redundant designs can tolerate a datacenter-level failure in that region.",
+          "sourceName": "Azure availability zones",
+          "sourceUrl": "https://learn.microsoft.com/en-us/azure/reliability/availability-zones-overview",
+          "choices": [
+            { "text": "Provide separate fault domains within one Azure region", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Pair two Azure regions for cross-region recovery", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Group subscriptions under a common governance scope", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Create isolated sovereign Azure clouds", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "azure-dns",
+          "objectiveKey": "azure-architecture",
+          "prompt": "Which Azure service should host the public DNS zone for an internet-facing customer domain?",
+          "kind": "SingleChoice",
+          "difficulty": "Foundation",
+          "explanation": "Azure DNS can host public DNS zones and answer public name-resolution queries by using Microsoft's global DNS infrastructure.",
+          "sourceName": "Azure DNS overview",
+          "sourceUrl": "https://learn.microsoft.com/en-us/azure/dns/dns-overview",
+          "choices": [
+            { "text": "Azure DNS", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Azure Private DNS", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Azure Traffic Manager", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Azure Front Door", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "role-assignment-elements",
+          "objectiveKey": "azure-architecture",
+          "prompt": "Which three elements form an Azure role assignment? Select three.",
+          "kind": "MultipleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "A role assignment grants a security principal the permissions in a role definition at a particular scope.",
+          "sourceName": "Azure role-based access control overview",
+          "sourceUrl": "https://learn.microsoft.com/en-us/azure/role-based-access-control/overview",
+          "choices": [
+            { "text": "Security principal", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Role definition", "isCorrect": true, "sortOrder": 1 },
+            { "text": "Scope", "isCorrect": true, "sortOrder": 2 },
+            { "text": "Policy initiative", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "azure-region-pairs",
+          "objectiveKey": "azure-architecture",
+          "prompt": "Which Azure concept links two regions in the same geography for coordinated platform updates and some cross-region disaster-recovery services?",
+          "kind": "SingleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "Many Azure regions are paired within a geography. Region pairs support coordinated update sequencing and are used by some geo-redundant services, but customers must still design recovery for their workloads.",
+          "sourceName": "Azure paired regions",
+          "sourceUrl": "https://learn.microsoft.com/en-us/azure/reliability/regions-paired",
+          "choices": [
+            { "text": "Region pair", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Availability set", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Availability zone", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Management group", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "management-group-scope",
+          "objectiveKey": "azure-architecture",
+          "prompt": "An MSP needs one governance scope above several Azure subscriptions owned by the same organization. What should it use?",
+          "kind": "SingleChoice",
+          "difficulty": "Foundation",
+          "explanation": "Management groups sit above subscriptions in the Azure resource hierarchy. Governance applied to a management group can inherit to its child subscriptions.",
+          "sourceName": "Azure management groups",
+          "sourceUrl": "https://learn.microsoft.com/en-us/azure/governance/management-groups/overview",
+          "choices": [
+            { "text": "A management group", "isCorrect": true, "sortOrder": 0 },
+            { "text": "A resource group", "isCorrect": false, "sortOrder": 1 },
+            { "text": "An availability set", "isCorrect": false, "sortOrder": 2 },
+            { "text": "A virtual network", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "virtual-machine-scale-sets",
+          "objectiveKey": "azure-architecture",
+          "prompt": "Which Azure compute option manages a group of load-balanced virtual machines and can automatically change the number of instances?",
+          "kind": "SingleChoice",
+          "difficulty": "Foundation",
+          "explanation": "Azure Virtual Machine Scale Sets create and manage groups of load-balanced VMs and support automatic scaling based on demand or a schedule.",
+          "sourceName": "Virtual Machine Scale Sets overview",
+          "sourceUrl": "https://learn.microsoft.com/en-us/azure/virtual-machine-scale-sets/overview",
+          "choices": [
+            { "text": "Azure Virtual Machine Scale Sets", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Azure availability sets", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Azure Virtual Desktop host pools", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Azure Dedicated Host", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "azure-functions-choice",
+          "objectiveKey": "azure-architecture",
+          "prompt": "Which Azure service is designed to run event-triggered code without requiring the customer to manage virtual machines?",
+          "kind": "SingleChoice",
+          "difficulty": "Foundation",
+          "explanation": "Azure Functions is a serverless compute service for event-driven code. App Service and Container Apps are also managed services but target broader web-app or container workloads.",
+          "sourceName": "Azure Functions overview",
+          "sourceUrl": "https://learn.microsoft.com/en-us/azure/azure-functions/functions-overview",
+          "choices": [
+            { "text": "Azure Functions", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Azure App Service", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Azure Container Apps", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Azure Virtual Machines", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "vnet-peering",
+          "objectiveKey": "azure-architecture",
+          "prompt": "Two Azure virtual networks need direct private-IP connectivity over the Microsoft backbone. Which feature should be configured?",
+          "kind": "SingleChoice",
+          "difficulty": "Foundation",
+          "explanation": "Virtual network peering connects virtual networks so resources can communicate privately over Microsoft's backbone without a public internet path.",
+          "sourceName": "Virtual network peering",
+          "sourceUrl": "https://learn.microsoft.com/en-us/azure/virtual-network/virtual-network-peering-overview",
+          "choices": [
+            { "text": "Virtual network peering", "isCorrect": true, "sortOrder": 0 },
+            { "text": "A private endpoint", "isCorrect": false, "sortOrder": 1 },
+            { "text": "A network security group", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Azure DNS forwarding", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "private-endpoint-storage",
+          "objectiveKey": "azure-architecture",
+          "prompt": "A storage account must be reached through a private IP address in a customer's virtual network. Which feature provides that address?",
+          "kind": "SingleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "A private endpoint is a network interface with a private IP from the virtual network. A service endpoint secures access from a subnet but does not place the service behind a private IP in that subnet.",
+          "sourceName": "Azure private endpoint overview",
+          "sourceUrl": "https://learn.microsoft.com/en-us/azure/private-link/private-endpoint-overview",
+          "choices": [
+            { "text": "A private endpoint", "isCorrect": true, "sortOrder": 0 },
+            { "text": "A virtual network service endpoint", "isCorrect": false, "sortOrder": 1 },
+            { "text": "A public IP prefix", "isCorrect": false, "sortOrder": 2 },
+            { "text": "A NAT gateway", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "zone-redundant-storage",
+          "objectiveKey": "azure-architecture",
+          "prompt": "Which Azure Storage redundancy option synchronously copies data across availability zones in the primary region?",
+          "kind": "SingleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "Zone-redundant storage (ZRS) synchronously replicates data across availability zones in one region. GRS adds asynchronous replication to a secondary region.",
+          "sourceName": "Azure Storage redundancy",
+          "sourceUrl": "https://learn.microsoft.com/en-us/azure/storage/common/storage-redundancy",
+          "choices": [
+            { "text": "Zone-redundant storage (ZRS)", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Locally redundant storage (LRS)", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Geo-redundant storage (GRS)", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Read-access geo-redundant storage (RA-GRS)", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "azure-file-sync",
+          "objectiveKey": "azure-architecture",
+          "prompt": "An organization wants multiple Windows file servers to cache the same Azure file share while keeping frequently used files local. Which service should it use?",
+          "kind": "SingleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "Azure File Sync centralizes files in an Azure file share while Windows Servers maintain local caches and synchronize changes.",
+          "sourceName": "Azure File Sync overview",
+          "sourceUrl": "https://learn.microsoft.com/en-us/azure/storage/file-sync/file-sync-introduction",
+          "choices": [
+            { "text": "Azure File Sync", "isCorrect": true, "sortOrder": 0 },
+            { "text": "AzCopy", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Azure Storage Explorer", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Azure Data Box", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "entra-domain-services",
+          "objectiveKey": "azure-architecture",
+          "prompt": "A legacy application in Azure requires managed domain join, LDAP, and Kerberos without deploying domain controllers. Which service fits the requirement?",
+          "kind": "SingleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "Microsoft Entra Domain Services provides managed domain capabilities such as domain join, LDAP, and Kerberos without customers deploying or patching domain controllers.",
+          "sourceName": "Microsoft Entra Domain Services overview",
+          "sourceUrl": "https://learn.microsoft.com/en-us/entra/identity/domain-services/overview",
+          "choices": [
+            { "text": "Microsoft Entra Domain Services", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Microsoft Entra ID", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Microsoft Entra External ID", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Microsoft Entra ID Protection", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "azure-policy",
+          "objectiveKey": "azure-governance",
+          "prompt": "Which Azure service evaluates resources against organizational rules and reports or enforces compliance?",
+          "kind": "SingleChoice",
+          "difficulty": "Foundation",
+          "explanation": "Azure Policy evaluates resources against policy definitions and can audit, deny, modify, or remediate configurations. Azure RBAC controls who can perform actions.",
+          "sourceName": "Azure Policy overview",
+          "sourceUrl": "https://learn.microsoft.com/en-us/azure/governance/policy/overview",
+          "choices": [
+            { "text": "Azure Policy", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Azure role-based access control", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Azure Advisor", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Azure Resource Graph", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "resource-tags-cost-allocation",
+          "objectiveKey": "azure-governance",
+          "prompt": "An MSP needs to group Azure charges by customer workload and cost center without changing resource access. What should it apply?",
+          "kind": "SingleChoice",
+          "difficulty": "Foundation",
+          "explanation": "Tags attach metadata such as workload or cost center to Azure resources. They support organization and cost reporting but do not grant permissions.",
+          "sourceName": "Use tags to organize Azure resources",
+          "sourceUrl": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/tag-resources",
+          "choices": [
+            { "text": "Resource tags", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Azure role assignments", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Resource locks", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Management group nesting", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "cost-management-budget",
+          "objectiveKey": "azure-governance",
+          "prompt": "Which Azure Cost Management feature can notify administrators when actual or forecasted spending reaches configured thresholds?",
+          "kind": "SingleChoice",
+          "difficulty": "Foundation",
+          "explanation": "Budgets track actual or forecasted costs and can trigger alerts or action groups at thresholds. A budget does not automatically stop resources or impose a spending cap.",
+          "sourceName": "Create and manage Azure budgets",
+          "sourceUrl": "https://learn.microsoft.com/en-us/azure/cost-management-billing/costs/tutorial-acm-create-budgets",
+          "choices": [
+            { "text": "A budget", "isCorrect": true, "sortOrder": 0 },
+            { "text": "The pricing calculator", "isCorrect": false, "sortOrder": 1 },
+            { "text": "A reservation recommendation", "isCorrect": false, "sortOrder": 2 },
+            { "text": "A resource lock", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "cannot-delete-lock",
+          "objectiveKey": "azure-governance",
+          "prompt": "A resource must remain configurable, but accidental deletion must be blocked. Which Azure lock should be applied?",
+          "kind": "SingleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "A CanNotDelete lock permits authorized changes but blocks deletion. A ReadOnly lock also blocks updates through the control plane.",
+          "sourceName": "Lock Azure resources",
+          "sourceUrl": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/lock-resources",
+          "choices": [
+            { "text": "CanNotDelete", "isCorrect": true, "sortOrder": 0 },
+            { "text": "ReadOnly", "isCorrect": false, "sortOrder": 1 },
+            { "text": "DenyAction", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Audit", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "microsoft-purview-governance",
+          "objectiveKey": "azure-governance",
+          "prompt": "Which Microsoft service helps an organization discover, catalog, and govern data across its data estate?",
+          "kind": "SingleChoice",
+          "difficulty": "Foundation",
+          "explanation": "Microsoft Purview provides data governance capabilities for discovering, cataloging, classifying, and governing data across an organization's estate.",
+          "sourceName": "Microsoft Purview data governance overview",
+          "sourceUrl": "https://learn.microsoft.com/en-us/purview/data-governance-overview",
+          "choices": [
+            { "text": "Microsoft Purview", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Azure Policy", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Azure Resource Graph", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Microsoft Defender for Cloud", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "azure-cloud-shell",
+          "objectiveKey": "azure-governance",
+          "prompt": "An administrator wants an authenticated, browser-accessible shell with Azure CLI and Azure PowerShell available. Which tool should be used?",
+          "kind": "SingleChoice",
+          "difficulty": "Foundation",
+          "explanation": "Azure Cloud Shell is a browser-accessible, authenticated shell that provides both Bash with Azure CLI and PowerShell environments.",
+          "sourceName": "Azure Cloud Shell overview",
+          "sourceUrl": "https://learn.microsoft.com/en-us/azure/cloud-shell/overview",
+          "choices": [
+            { "text": "Azure Cloud Shell", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Azure CLI installed on a local workstation", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Azure Resource Graph Explorer", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Azure Monitor Logs", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "arm-template-deployment",
+          "objectiveKey": "azure-governance",
+          "prompt": "Which Azure capability defines infrastructure declaratively in a JSON file for repeatable deployments?",
+          "kind": "SingleChoice",
+          "difficulty": "Foundation",
+          "explanation": "An Azure Resource Manager template is a declarative JSON file that defines the desired Azure resources and their configuration for repeatable deployments.",
+          "sourceName": "ARM templates overview",
+          "sourceUrl": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/overview",
+          "choices": [
+            { "text": "An Azure Resource Manager template", "isCorrect": true, "sortOrder": 0 },
+            { "text": "An Azure Policy initiative", "isCorrect": false, "sortOrder": 1 },
+            { "text": "An Azure Automation runbook", "isCorrect": false, "sortOrder": 2 },
+            { "text": "An Azure Monitor workbook", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "azure-arc-hybrid-management",
+          "objectiveKey": "azure-governance",
+          "prompt": "An MSP wants to project servers running outside Azure into Azure Resource Manager for centralized inventory, policy, and management. Which service should it use?",
+          "kind": "SingleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "Azure Arc extends Azure management and governance to resources outside Azure, including on-premises and other-cloud servers.",
+          "sourceName": "Azure Arc overview",
+          "sourceUrl": "https://learn.microsoft.com/en-us/azure/azure-arc/overview",
+          "choices": [
+            { "text": "Azure Arc", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Azure Migrate", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Azure Lighthouse", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Azure Site Recovery", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "azure-advisor-recommendations",
+          "objectiveKey": "azure-governance",
+          "prompt": "Which Azure tool provides personalized recommendations for cost, security, reliability, operational excellence, and performance?",
+          "kind": "SingleChoice",
+          "difficulty": "Foundation",
+          "explanation": "Azure Advisor analyzes deployed resources and provides personalized recommendations across cost, security, reliability, operational excellence, and performance.",
+          "sourceName": "Azure Advisor overview",
+          "sourceUrl": "https://learn.microsoft.com/en-us/azure/advisor/advisor-overview",
+          "choices": [
+            { "text": "Azure Advisor", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Azure Service Health", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Azure Monitor", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Microsoft Defender for Cloud", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "azure-service-health",
+          "objectiveKey": "azure-governance",
+          "prompt": "Which Azure service reports outages, planned maintenance, and health advisories that affect a customer's subscriptions?",
+          "kind": "SingleChoice",
+          "difficulty": "Foundation",
+          "explanation": "Azure Service Health provides a personalized view of Azure service issues, planned maintenance, and advisories affecting the customer's resources and subscriptions.",
+          "sourceName": "Azure Service Health overview",
+          "sourceUrl": "https://learn.microsoft.com/en-us/azure/service-health/overview",
+          "choices": [
+            { "text": "Azure Service Health", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Azure Monitor", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Azure Advisor", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Azure Network Watcher", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "vm-scenario-shared-responsibility",
+          "objectiveKey": "cloud-concepts",
+          "prompt": "A customer runs a line-of-business application on an Azure virtual machine. Microsoft manages the physical host and datacenter. Choose two responsibilities that remain with the customer.",
+          "kind": "MultipleChoice",
+          "difficulty": "Foundation",
+          "explanation": "With infrastructure as a service, Microsoft manages the physical infrastructure and virtualization platform, while the customer remains responsible for the guest operating system and the applications and data running inside the virtual machine.",
+          "sourceName": "Describe the shared responsibility model",
+          "sourceUrl": "https://learn.microsoft.com/en-us/training/modules/describe-cloud-compute/4-describe-shared-responsibility-model",
+          "choices": [
+            { "text": "Patch the guest operating system", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Configure and secure the line-of-business application", "isCorrect": true, "sortOrder": 1 },
+            { "text": "Replace failed physical disks in the Azure datacenter", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Maintain the physical server hardware", "isCorrect": false, "sortOrder": 3 },
+            { "text": "Patch the Azure hypervisor", "isCorrect": false, "sortOrder": 4 },
+            { "text": "Provide power and cooling for the Azure region", "isCorrect": false, "sortOrder": 5 }
+          ]
+        },
+        {
+          "contentKey": "governance-scenario-order-resource-hierarchy",
+          "objectiveKey": "azure-architecture",
+          "prompt": "An MSP is documenting how an Azure resource inherits governance settings. Which sequence lists the management scopes from broadest to most specific?",
+          "kind": "SingleChoice",
+          "difficulty": "Foundation",
+          "explanation": "Azure management scope descends from management groups to subscriptions, resource groups, and individual resources. Settings assigned at a broader scope can be inherited by the child scopes beneath it.",
+          "sourceName": "Azure Resource Manager scope",
+          "sourceUrl": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/overview",
+          "choices": [
+            { "text": "Management group → subscription → resource group → resource", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Subscription → management group → resource → resource group", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Resource group → subscription → management group → resource", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Management group → resource group → subscription → resource", "isCorrect": false, "sortOrder": 3 },
+            { "text": "Resource → resource group → subscription → management group", "isCorrect": false, "sortOrder": 4 }
+          ]
+        },
+        {
+          "contentKey": "webapp-scenario-managed-platform",
+          "objectiveKey": "cloud-concepts",
+          "prompt": "A small operations team needs to host a web application in Azure. The team wants automatic platform patching and does not want to manage the guest operating system. Which Azure service is the best fit?",
+          "kind": "SingleChoice",
+          "difficulty": "Foundation",
+          "explanation": "Azure App Service is a platform-as-a-service offering for web applications. Microsoft manages the operating system and platform maintenance, while the customer manages the application, configuration, identities, and data.",
+          "sourceName": "Describe platform as a service",
+          "sourceUrl": "https://learn.microsoft.com/en-us/training/modules/describe-cloud-service-types/3-describe-platform-service",
+          "choices": [
+            { "text": "Azure App Service", "isCorrect": true, "sortOrder": 0 },
+            { "text": "An Azure virtual machine", "isCorrect": false, "sortOrder": 1 },
+            { "text": "An Azure dedicated host", "isCorrect": false, "sortOrder": 2 },
+            { "text": "A physical server in an Azure datacenter", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "network-scenario-expressroute-connectivity",
+          "objectiveKey": "azure-architecture",
+          "prompt": "A customer requires a private connection from its datacenter to Azure through a connectivity provider. The connection must not traverse the public internet. Which Azure service should the architect choose?",
+          "kind": "SingleChoice",
+          "difficulty": "Foundation",
+          "explanation": "Azure ExpressRoute extends an on-premises network into Microsoft cloud services through a private connection facilitated by a connectivity provider. A VPN gateway encrypts traffic over the public internet and therefore does not meet the stated requirement.",
+          "sourceName": "What is Azure ExpressRoute",
+          "sourceUrl": "https://learn.microsoft.com/en-us/azure/expressroute/expressroute-introduction",
+          "choices": [
+            { "text": "Azure ExpressRoute", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Azure VPN Gateway with a site-to-site tunnel", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Azure Bastion", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Azure Front Door", "isCorrect": false, "sortOrder": 3 },
+            { "text": "Azure DNS", "isCorrect": false, "sortOrder": 4 }
+          ]
+        },
+        {
+          "contentKey": "policy-scenario-approved-regions",
+          "objectiveKey": "azure-governance",
+          "prompt": "A customer permits deployments only in two approved Azure regions. Administrators need to block new resources in other regions and report existing resources that do not comply. Which service should they configure?",
+          "kind": "SingleChoice",
+          "difficulty": "Foundation",
+          "explanation": "Azure Policy evaluates resources against governance rules and can deny new noncompliant deployments while reporting compliance for existing resources. Azure RBAC controls who can act, but it does not express an allowed-region rule.",
+          "sourceName": "What is Azure Policy",
+          "sourceUrl": "https://learn.microsoft.com/en-us/azure/governance/policy/overview",
+          "choices": [
+            { "text": "Azure Policy", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Azure role-based access control", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Azure Advisor", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Azure Service Health", "isCorrect": false, "sortOrder": 3 },
+            { "text": "Azure Cost Management budgets", "isCorrect": false, "sortOrder": 4 },
+            { "text": "Microsoft Defender for Cloud", "isCorrect": false, "sortOrder": 5 }
+          ]
+        }
+      ]
+    },
+    {
+      "provider": "Microsoft",
+      "code": "SC-900",
+      "title": "Microsoft Security, Compliance, and Identity Fundamentals",
+      "summary": "Cover security principles, Microsoft Entra capabilities, and Microsoft's security and compliance solutions.",
+      "contentVersion": "2026.07 editorial bank",
+      "objectives": [
+        { "contentKey": "security-concepts", "name": "Describe the concepts of security, compliance, and identity", "sortOrder": 0 },
+        { "contentKey": "entra-capabilities", "name": "Describe the capabilities of Microsoft Entra", "sortOrder": 1 },
+        { "contentKey": "security-solutions", "name": "Describe the capabilities of Microsoft security solutions", "sortOrder": 2 },
+        { "contentKey": "compliance-solutions", "name": "Describe the capabilities of Microsoft compliance solutions", "sortOrder": 3 }
+      ],
+      "questions": [
+        {
+          "contentKey": "zero-trust-principles",
+          "objectiveKey": "security-concepts",
+          "prompt": "Which three principles are part of a Zero Trust strategy? Select three.",
+          "kind": "MultipleChoice",
+          "difficulty": "Foundation",
+          "explanation": "Zero Trust is summarized as verify explicitly, use least-privilege access, and assume breach. A network location or compliant device is a signal, not a reason for implicit trust.",
+          "sourceName": "Zero Trust guidance center",
+          "sourceUrl": "https://learn.microsoft.com/en-us/security/zero-trust/zero-trust-overview",
+          "choices": [
+            { "text": "Verify explicitly", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Use least-privilege access", "isCorrect": true, "sortOrder": 1 },
+            { "text": "Assume breach", "isCorrect": true, "sortOrder": 2 },
+            { "text": "Implicitly trust access from compliant devices", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "saas-customer-responsibility",
+          "objectiveKey": "security-concepts",
+          "prompt": "In a software as a service (SaaS) solution, which responsibility normally remains with the customer?",
+          "kind": "SingleChoice",
+          "difficulty": "Foundation",
+          "explanation": "The provider operates the application and underlying stack, while the customer remains responsible for organizational data, identities, access, and endpoint configuration.",
+          "sourceName": "Shared responsibility in the cloud",
+          "sourceUrl": "https://learn.microsoft.com/en-us/azure/security/fundamentals/shared-responsibility",
+          "choices": [
+            { "text": "Managing identities and access to organizational data", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Patching the provider-managed application runtime", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Maintaining the provider's physical datacenter", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Updating the provider's hypervisor hosts", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "authentication-versus-authorization",
+          "objectiveKey": "security-concepts",
+          "prompt": "A sign-in process verifies that a user is who they claim to be. Which security concept does this describe?",
+          "kind": "SingleChoice",
+          "difficulty": "Foundation",
+          "explanation": "Authentication verifies identity. Authorization determines what an authenticated identity is permitted to access or do.",
+          "sourceName": "Authentication versus authorization",
+          "sourceUrl": "https://learn.microsoft.com/en-us/entra/identity-platform/authentication-vs-authorization",
+          "choices": [
+            { "text": "Authentication", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Authorization", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Federation", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Provisioning", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "defense-in-depth-layers",
+          "objectiveKey": "security-concepts",
+          "prompt": "An organization uses identity controls, network filtering, endpoint protection, and data encryption so that one failed control does not expose the entire environment. Which concept is this?",
+          "kind": "SingleChoice",
+          "difficulty": "Foundation",
+          "explanation": "Defense in depth uses multiple security layers. If one layer fails, other layers continue to reduce the chance or impact of a compromise.",
+          "sourceName": "Defense in depth",
+          "sourceUrl": "https://learn.microsoft.com/en-us/training/modules/describe-security-concepts-methodologies/",
+          "choices": [
+            { "text": "Defense in depth", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Shared responsibility", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Federated identity", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Compliance scoring", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "entra-id-purpose",
+          "objectiveKey": "entra-capabilities",
+          "prompt": "What is the primary purpose of Microsoft Entra ID?",
+          "kind": "SingleChoice",
+          "difficulty": "Foundation",
+          "explanation": "Microsoft Entra ID is Microsoft's cloud-based identity and access management service for users, applications, devices, and resources.",
+          "sourceName": "What is Microsoft Entra ID?",
+          "sourceUrl": "https://learn.microsoft.com/en-us/entra/fundamentals/whatis",
+          "choices": [
+            { "text": "Cloud identity and access management", "isCorrect": true, "sortOrder": 0 },
+            { "text": "On-premises domain controller hosting", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Endpoint configuration management", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Security information and event management", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "conditional-access-signals",
+          "objectiveKey": "entra-capabilities",
+          "prompt": "Which three signals can Microsoft Entra Conditional Access evaluate in an access decision? Select three.",
+          "kind": "MultipleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "Conditional Access can evaluate signals such as user or group, location, device, application, and user or sign-in risk. It does not evaluate Azure subscription spending.",
+          "sourceName": "Conditional Access overview",
+          "sourceUrl": "https://learn.microsoft.com/en-us/entra/identity/conditional-access/overview",
+          "choices": [
+            { "text": "User or group membership", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Device state", "isCorrect": true, "sortOrder": 1 },
+            { "text": "Sign-in risk", "isCorrect": true, "sortOrder": 2 },
+            { "text": "Azure subscription cost threshold", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "entra-external-identities",
+          "objectiveKey": "entra-capabilities",
+          "prompt": "A customer wants a supplier to use the supplier's existing identity to access selected applications in the customer's tenant. Which capability is designed for this?",
+          "kind": "SingleChoice",
+          "difficulty": "Foundation",
+          "explanation": "Microsoft Entra External ID B2B collaboration lets external users use their own identities to access resources shared by the inviting organization.",
+          "sourceName": "External identities overview",
+          "sourceUrl": "https://learn.microsoft.com/en-us/entra/external-id/external-identities-overview",
+          "choices": [
+            { "text": "Microsoft Entra B2B collaboration", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Microsoft Entra Domain Services", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Microsoft Entra ID Protection", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Microsoft Entra Connect Health", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "hybrid-identity",
+          "objectiveKey": "entra-capabilities",
+          "prompt": "Users need one identity that works with on-premises Active Directory resources and Microsoft cloud services. Which identity approach addresses this?",
+          "kind": "SingleChoice",
+          "difficulty": "Foundation",
+          "explanation": "Hybrid identity creates a common user identity for authentication and authorization across on-premises and cloud resources.",
+          "sourceName": "Hybrid identity",
+          "sourceUrl": "https://learn.microsoft.com/en-us/entra/identity/hybrid/whatis-hybrid-identity",
+          "choices": [
+            { "text": "Hybrid identity", "isCorrect": true, "sortOrder": 0 },
+            { "text": "External identity", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Managed identity", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Workload identity federation", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "passwordless-authentication",
+          "objectiveKey": "entra-capabilities",
+          "prompt": "Which authentication method can provide phishing-resistant sign-in without a password?",
+          "kind": "SingleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "Passkeys based on FIDO2 use public-key cryptography and are phishing-resistant. SMS and one-time password codes still rely on transferable codes.",
+          "sourceName": "Passwordless authentication options",
+          "sourceUrl": "https://learn.microsoft.com/en-us/entra/identity/authentication/concept-authentication-passwordless",
+          "choices": [
+            { "text": "A FIDO2 security key or passkey", "isCorrect": true, "sortOrder": 0 },
+            { "text": "SMS verification", "isCorrect": false, "sortOrder": 1 },
+            { "text": "A software OATH one-time password", "isCorrect": false, "sortOrder": 2 },
+            { "text": "A password plus a security question", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "entra-access-reviews",
+          "objectiveKey": "entra-capabilities",
+          "prompt": "An MSP must periodically ask resource owners to confirm whether guest users still need access. Which Microsoft Entra capability should it use?",
+          "kind": "SingleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "Access reviews support recurring recertification of group memberships, application access, and role assignments, including access held by guests.",
+          "sourceName": "Microsoft Entra access reviews",
+          "sourceUrl": "https://learn.microsoft.com/en-us/entra/id-governance/access-reviews-overview",
+          "choices": [
+            { "text": "Access reviews", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Conditional Access", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Entitlement management access packages", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Privileged Identity Management alerts", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "entra-pim-activation",
+          "objectiveKey": "entra-capabilities",
+          "prompt": "Which Microsoft Entra capability provides time-bound, approval-based activation of privileged roles?",
+          "kind": "SingleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "Privileged Identity Management manages eligible role assignments and supports just-in-time activation with controls such as approval, MFA, justification, and limited duration.",
+          "sourceName": "Privileged Identity Management overview",
+          "sourceUrl": "https://learn.microsoft.com/en-us/entra/id-governance/privileged-identity-management/pim-configure",
+          "choices": [
+            { "text": "Microsoft Entra Privileged Identity Management", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Microsoft Entra access reviews", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Microsoft Entra Conditional Access", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Microsoft Entra Connect Sync", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "entra-id-protection-risk",
+          "objectiveKey": "entra-capabilities",
+          "prompt": "Which Microsoft Entra capability detects risky users and risky sign-ins and can feed risk into Conditional Access policies?",
+          "kind": "SingleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "Microsoft Entra ID Protection detects and reports identity risks. Its user-risk and sign-in-risk signals can be used in risk-based Conditional Access policies.",
+          "sourceName": "Microsoft Entra ID Protection overview",
+          "sourceUrl": "https://learn.microsoft.com/en-us/entra/id-protection/overview-identity-protection",
+          "choices": [
+            { "text": "Microsoft Entra ID Protection", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Microsoft Entra Permissions Management", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Microsoft Entra Domain Services", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Microsoft Entra Connect Health", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "defender-for-cloud",
+          "objectiveKey": "security-solutions",
+          "prompt": "Which Microsoft service combines cloud security posture management with protection for cloud workloads?",
+          "kind": "SingleChoice",
+          "difficulty": "Foundation",
+          "explanation": "Microsoft Defender for Cloud provides cloud security posture management and cloud workload protection across Azure and supported multicloud environments.",
+          "sourceName": "Microsoft Defender for Cloud overview",
+          "sourceUrl": "https://learn.microsoft.com/en-us/azure/defender-for-cloud/defender-for-cloud-introduction",
+          "choices": [
+            { "text": "Microsoft Defender for Cloud", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Microsoft Defender XDR", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Microsoft Sentinel", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Microsoft Purview Compliance Manager", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "microsoft-sentinel",
+          "objectiveKey": "security-solutions",
+          "prompt": "Which service is Microsoft's cloud-native security information and event management (SIEM) and security orchestration, automation, and response (SOAR) platform?",
+          "kind": "SingleChoice",
+          "difficulty": "Foundation",
+          "explanation": "Microsoft Sentinel provides SIEM analytics and SOAR capabilities across cloud and on-premises data sources.",
+          "sourceName": "Microsoft Sentinel overview",
+          "sourceUrl": "https://learn.microsoft.com/en-us/azure/sentinel/overview",
+          "choices": [
+            { "text": "Microsoft Sentinel", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Microsoft Defender XDR", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Microsoft Defender for Cloud", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Microsoft Entra ID Protection", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "azure-ddos-protection",
+          "objectiveKey": "security-solutions",
+          "prompt": "Which Azure service is designed to protect public IP resources from volumetric and protocol-based distributed denial-of-service attacks?",
+          "kind": "SingleChoice",
+          "difficulty": "Foundation",
+          "explanation": "Azure DDoS Protection provides enhanced DDoS mitigation for protected public IP resources. It is distinct from WAF protection for web application requests.",
+          "sourceName": "Azure DDoS Protection overview",
+          "sourceUrl": "https://learn.microsoft.com/en-us/azure/ddos-protection/ddos-protection-overview",
+          "choices": [
+            { "text": "Azure DDoS Protection", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Azure Web Application Firewall", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Azure Firewall", "isCorrect": false, "sortOrder": 2 },
+            { "text": "A network security group", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "azure-firewall",
+          "objectiveKey": "security-solutions",
+          "prompt": "Which managed Azure service centrally filters network and application traffic across virtual networks by using stateful rules and threat intelligence?",
+          "kind": "SingleChoice",
+          "difficulty": "Foundation",
+          "explanation": "Azure Firewall is a managed, stateful network security service with network, application, and threat-intelligence filtering capabilities.",
+          "sourceName": "Azure Firewall overview",
+          "sourceUrl": "https://learn.microsoft.com/en-us/azure/firewall/overview",
+          "choices": [
+            { "text": "Azure Firewall", "isCorrect": true, "sortOrder": 0 },
+            { "text": "A network security group", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Azure Web Application Firewall", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Azure DDoS Protection", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "web-application-firewall",
+          "objectiveKey": "security-solutions",
+          "prompt": "Which Azure security capability helps protect web applications from attacks such as SQL injection and cross-site scripting?",
+          "kind": "SingleChoice",
+          "difficulty": "Foundation",
+          "explanation": "Azure Web Application Firewall inspects HTTP and HTTPS traffic and applies web-attack rules, including protections based on the OWASP core rule set.",
+          "sourceName": "Azure Web Application Firewall overview",
+          "sourceUrl": "https://learn.microsoft.com/en-us/azure/web-application-firewall/overview",
+          "choices": [
+            { "text": "Azure Web Application Firewall", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Azure Firewall network rules", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Azure DDoS Protection", "isCorrect": false, "sortOrder": 2 },
+            { "text": "A network security group", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "network-security-groups",
+          "objectiveKey": "security-solutions",
+          "prompt": "Which Azure control filters inbound and outbound traffic for subnets and network interfaces by protocol, port, and IP address?",
+          "kind": "SingleChoice",
+          "difficulty": "Foundation",
+          "explanation": "A network security group contains stateful security rules that allow or deny network traffic to subnets and network interfaces.",
+          "sourceName": "Network security groups overview",
+          "sourceUrl": "https://learn.microsoft.com/en-us/azure/virtual-network/network-security-groups-overview",
+          "choices": [
+            { "text": "A network security group", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Azure Firewall Manager", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Azure Web Application Firewall", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Azure DDoS Protection", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "azure-bastion",
+          "objectiveKey": "security-solutions",
+          "prompt": "Administrators need RDP and SSH access to Azure virtual machines without assigning public IP addresses to those machines. Which service should they use?",
+          "kind": "SingleChoice",
+          "difficulty": "Foundation",
+          "explanation": "Azure Bastion provides managed RDP and SSH connectivity to virtual machines over their private IP addresses, avoiding public IP exposure on the VMs.",
+          "sourceName": "Azure Bastion overview",
+          "sourceUrl": "https://learn.microsoft.com/en-us/azure/bastion/bastion-overview",
+          "choices": [
+            { "text": "Azure Bastion", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Azure VPN Gateway", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Azure Private Link", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Just-in-time VM access", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "azure-key-vault",
+          "objectiveKey": "security-solutions",
+          "prompt": "Which Azure service is intended to securely store and control access to application secrets, keys, and certificates?",
+          "kind": "SingleChoice",
+          "difficulty": "Foundation",
+          "explanation": "Azure Key Vault protects secrets, encryption keys, and certificates and provides controlled, audited access to them.",
+          "sourceName": "Azure Key Vault overview",
+          "sourceUrl": "https://learn.microsoft.com/en-us/azure/key-vault/general/overview",
+          "choices": [
+            { "text": "Azure Key Vault", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Azure App Configuration", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Azure Managed HSM", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Microsoft Purview Information Protection", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "defender-cspm-recommendations",
+          "objectiveKey": "security-solutions",
+          "prompt": "Which capability identifies cloud-resource misconfigurations and produces recommendations to improve security posture?",
+          "kind": "SingleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "Cloud security posture management in Defender for Cloud continuously assesses resources against security standards and produces prioritized recommendations.",
+          "sourceName": "Cloud security posture management",
+          "sourceUrl": "https://learn.microsoft.com/en-us/azure/defender-for-cloud/concept-cloud-security-posture-management",
+          "choices": [
+            { "text": "Cloud security posture management in Microsoft Defender for Cloud", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Security orchestration in Microsoft Sentinel", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Endpoint detection and response in Defender for Endpoint", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Compliance assessments in Microsoft Purview", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "defender-for-endpoint",
+          "objectiveKey": "security-solutions",
+          "prompt": "Which Microsoft Defender service provides endpoint prevention, detection, investigation, and response for devices?",
+          "kind": "SingleChoice",
+          "difficulty": "Foundation",
+          "explanation": "Microsoft Defender for Endpoint is an enterprise endpoint security platform with preventative protection, attack-surface reduction, endpoint detection and response, and automated investigation.",
+          "sourceName": "Microsoft Defender for Endpoint overview",
+          "sourceUrl": "https://learn.microsoft.com/en-us/defender-endpoint/microsoft-defender-endpoint",
+          "choices": [
+            { "text": "Microsoft Defender for Endpoint", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Microsoft Defender for Identity", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Microsoft Defender for Office 365", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Microsoft Defender for Cloud Apps", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "defender-for-office-365",
+          "objectiveKey": "security-solutions",
+          "prompt": "Which Microsoft Defender service protects Microsoft 365 collaboration workloads against threats such as phishing and malicious links or attachments?",
+          "kind": "SingleChoice",
+          "difficulty": "Foundation",
+          "explanation": "Microsoft Defender for Office 365 protects email and collaboration workloads with capabilities such as anti-phishing, Safe Links, and Safe Attachments.",
+          "sourceName": "Microsoft Defender for Office 365 overview",
+          "sourceUrl": "https://learn.microsoft.com/en-us/defender-office-365/mdo-about",
+          "choices": [
+            { "text": "Microsoft Defender for Office 365", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Microsoft Defender for Endpoint", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Microsoft Defender for Identity", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Microsoft Defender for Cloud Apps", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "defender-for-identity",
+          "objectiveKey": "security-solutions",
+          "prompt": "Which Microsoft Defender service analyzes signals from on-premises Active Directory to detect identity-based threats?",
+          "kind": "SingleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "Microsoft Defender for Identity uses signals from Active Directory and related identity infrastructure to detect suspicious activities and compromised identities.",
+          "sourceName": "Microsoft Defender for Identity overview",
+          "sourceUrl": "https://learn.microsoft.com/en-us/defender-for-identity/what-is",
+          "choices": [
+            { "text": "Microsoft Defender for Identity", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Microsoft Defender for Endpoint", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Microsoft Entra ID Protection", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Microsoft Defender for Cloud Apps", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "service-trust-portal",
+          "objectiveKey": "compliance-solutions",
+          "prompt": "Where should a customer obtain Microsoft's independent audit reports and documentation about how Microsoft cloud services meet regulatory standards?",
+          "kind": "SingleChoice",
+          "difficulty": "Foundation",
+          "explanation": "The Microsoft Service Trust Portal provides audit reports, compliance guides, and other trust and regulatory documentation for Microsoft cloud services.",
+          "sourceName": "Service Trust Portal overview",
+          "sourceUrl": "https://learn.microsoft.com/en-us/purview/get-started-with-service-trust-portal",
+          "choices": [
+            { "text": "Microsoft Service Trust Portal", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Microsoft Purview Compliance Manager", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Microsoft Defender portal", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Microsoft Entra admin center", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "purview-compliance-manager",
+          "objectiveKey": "compliance-solutions",
+          "prompt": "Which Microsoft Purview capability provides assessments, recommended improvement actions, and a compliance score?",
+          "kind": "SingleChoice",
+          "difficulty": "Foundation",
+          "explanation": "Compliance Manager helps assess compliance posture, assigns improvement actions, and calculates a compliance score. The score is a risk-based measure, not a guarantee of compliance.",
+          "sourceName": "Microsoft Purview Compliance Manager",
+          "sourceUrl": "https://learn.microsoft.com/en-us/purview/compliance-manager",
+          "choices": [
+            { "text": "Compliance Manager", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Data Lifecycle Management", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Insider Risk Management", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Communication Compliance", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "purview-sensitivity-labels",
+          "objectiveKey": "compliance-solutions",
+          "prompt": "Which Microsoft Purview capability can classify a document and apply protection such as encryption or content markings that travel with the document?",
+          "kind": "SingleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "Sensitivity labels classify and protect content. Depending on label configuration, protection can include encryption, access restrictions, headers, footers, and watermarks.",
+          "sourceName": "Sensitivity labels",
+          "sourceUrl": "https://learn.microsoft.com/en-us/purview/sensitivity-labels",
+          "choices": [
+            { "text": "A sensitivity label", "isCorrect": true, "sortOrder": 0 },
+            { "text": "A retention label", "isCorrect": false, "sortOrder": 1 },
+            { "text": "A data loss prevention policy", "isCorrect": false, "sortOrder": 2 },
+            { "text": "An eDiscovery hold", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "purview-dlp",
+          "objectiveKey": "compliance-solutions",
+          "prompt": "Which Microsoft Purview solution can detect sensitive information and prevent users from sharing it through unsupported channels?",
+          "kind": "SingleChoice",
+          "difficulty": "Foundation",
+          "explanation": "Data Loss Prevention identifies sensitive information and can warn, restrict, or block inappropriate sharing across supported Microsoft 365 locations and endpoints.",
+          "sourceName": "Learn about data loss prevention",
+          "sourceUrl": "https://learn.microsoft.com/en-us/purview/dlp-learn-about-dlp",
+          "choices": [
+            { "text": "Data Loss Prevention", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Data Lifecycle Management", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Information Barriers", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Compliance Manager", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "purview-retention-label",
+          "objectiveKey": "compliance-solutions",
+          "prompt": "A records team needs to apply a retention period and disposition settings to individual documents. Which capability should it use?",
+          "kind": "SingleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "Retention labels apply retention and deletion settings at the item level and can mark items as records. Retention policies generally target locations or broad groups of content.",
+          "sourceName": "Retention policies and retention labels",
+          "sourceUrl": "https://learn.microsoft.com/en-us/purview/retention",
+          "choices": [
+            { "text": "A retention label", "isCorrect": true, "sortOrder": 0 },
+            { "text": "A retention policy", "isCorrect": false, "sortOrder": 1 },
+            { "text": "A sensitivity label", "isCorrect": false, "sortOrder": 2 },
+            { "text": "A data loss prevention rule", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "purview-content-explorer",
+          "objectiveKey": "compliance-solutions",
+          "prompt": "Which Microsoft Purview explorer lets authorized administrators inspect items that contain a selected sensitive information type or sensitivity label?",
+          "kind": "SingleChoice",
+          "difficulty": "Intermediate",
+          "explanation": "Content Explorer provides visibility into individual items summarized by classification. Activity Explorer focuses on activities performed on labeled or sensitive content.",
+          "sourceName": "Content Explorer",
+          "sourceUrl": "https://learn.microsoft.com/en-us/purview/data-classification-content-explorer",
+          "choices": [
+            { "text": "Content Explorer", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Activity Explorer", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Compliance Manager", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Audit search", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "microsoft-privacy-data-location",
+          "objectiveKey": "compliance-solutions",
+          "prompt": "Which area of Microsoft's commercial-cloud privacy commitment lets customers choose and understand where their data is stored?",
+          "kind": "SingleChoice",
+          "difficulty": "Foundation",
+          "explanation": "Know where your data is located describes Microsoft's data-residency choices and transparency about where commercial-cloud data is stored and processed.",
+          "sourceName": "Microsoft's privacy principles",
+          "sourceUrl": "https://learn.microsoft.com/en-us/training/modules/describe-compliance-management-capabilities-microsoft/3-describe-microsofts-privacy-principles",
+          "choices": [
+            { "text": "Know where your data is located", "isCorrect": true, "sortOrder": 0 },
+            { "text": "You control your data", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Your data is secured at rest and in transit", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Microsoft defends your data", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "zero-trust-scenario-access-controls",
+          "objectiveKey": "security-concepts",
+          "prompt": "An employee connects from a company laptop on the office network to an administrative portal. The organization is applying Zero Trust. Choose two controls that align with Zero Trust principles.",
+          "kind": "MultipleChoice",
+          "difficulty": "Foundation",
+          "explanation": "Zero Trust verifies explicitly by using available identity, device, location, and risk signals, and it limits access with least privilege. Being on the corporate network is not sufficient reason to trust the request or grant permanent broad access.",
+          "sourceName": "Zero Trust guidance center",
+          "sourceUrl": "https://learn.microsoft.com/en-us/security/zero-trust/zero-trust-overview",
+          "choices": [
+            { "text": "Evaluate identity, device compliance, and risk before allowing access", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Grant only the permissions required for the administrative task", "isCorrect": true, "sortOrder": 1 },
+            { "text": "Trust the request automatically because it originates on the office network", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Assign permanent Global Administrator access to avoid repeated checks", "isCorrect": false, "sortOrder": 3 },
+            { "text": "Disable sign-in logging for trusted company devices", "isCorrect": false, "sortOrder": 4 },
+            { "text": "Allow every internal user to access the administrative portal", "isCorrect": false, "sortOrder": 5 }
+          ]
+        },
+        {
+          "contentKey": "guest-scenario-access-review",
+          "objectiveKey": "entra-capabilities",
+          "prompt": "A customer regularly invites supplier users into Microsoft Teams. Project owners must periodically confirm which guests still need access and remove access for users who are no longer approved. Which Microsoft Entra capability fits?",
+          "kind": "SingleChoice",
+          "difficulty": "Foundation",
+          "explanation": "Microsoft Entra access reviews support recurring reviews of group, application, and guest access. Reviewers can approve or deny continued access, with configured results applied after the review.",
+          "sourceName": "What are access reviews",
+          "sourceUrl": "https://learn.microsoft.com/en-us/entra/id-governance/access-reviews-overview",
+          "choices": [
+            { "text": "Microsoft Entra access reviews", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Microsoft Entra password protection", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Microsoft Entra Connect Health", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Microsoft Entra Domain Services", "isCorrect": false, "sortOrder": 3 }
+          ]
+        },
+        {
+          "contentKey": "signin-scenario-identity-protection",
+          "objectiveKey": "entra-capabilities",
+          "prompt": "A customer wants Microsoft Entra to detect suspicious sign-ins and risky users, then use those risk signals in access decisions. Which capability provides the risk detections?",
+          "kind": "SingleChoice",
+          "difficulty": "Foundation",
+          "explanation": "Microsoft Entra ID Protection detects and reports identity risks such as risky sign-ins and risky users. Conditional Access can consume those risk signals to require remediation or block access, but it is not the component that produces the detections.",
+          "sourceName": "What is Microsoft Entra ID Protection",
+          "sourceUrl": "https://learn.microsoft.com/en-us/entra/id-protection/overview-identity-protection",
+          "choices": [
+            { "text": "Microsoft Entra ID Protection", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Microsoft Entra Domain Services", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Microsoft Entra Connect Sync", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Microsoft Entra application proxy", "isCorrect": false, "sortOrder": 3 },
+            { "text": "Microsoft Entra Verified ID", "isCorrect": false, "sortOrder": 4 }
+          ]
+        },
+        {
+          "contentKey": "soc-scenario-sentinel-platform",
+          "objectiveKey": "security-solutions",
+          "prompt": "A small SOC needs one cloud-native service to collect security data from Azure, Microsoft 365, and third-party sources, correlate detections, investigate incidents, and automate responses. Which service best matches the requirement?",
+          "kind": "SingleChoice",
+          "difficulty": "Foundation",
+          "explanation": "Microsoft Sentinel is a cloud-native SIEM and security orchestration, automation, and response solution. Defender products protect particular domains and can feed Sentinel, while Azure Monitor is not the full cross-domain SIEM and SOAR service described.",
+          "sourceName": "What is Microsoft Sentinel",
+          "sourceUrl": "https://learn.microsoft.com/en-us/azure/sentinel/overview",
+          "choices": [
+            { "text": "Microsoft Sentinel", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Microsoft Defender for Endpoint", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Microsoft Defender for Office 365", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Microsoft Defender for Identity", "isCorrect": false, "sortOrder": 3 },
+            { "text": "Microsoft Purview Compliance Manager", "isCorrect": false, "sortOrder": 4 },
+            { "text": "Azure Monitor", "isCorrect": false, "sortOrder": 5 }
+          ]
+        },
+        {
+          "contentKey": "purview-scenario-dlp-sharing",
+          "objectiveKey": "compliance-solutions",
+          "prompt": "A customer wants to detect credit card numbers in Exchange email, SharePoint, OneDrive, and Teams, and restrict inappropriate sharing while allowing documented business exceptions. Which Microsoft Purview capability should be used?",
+          "kind": "SingleChoice",
+          "difficulty": "Foundation",
+          "explanation": "Microsoft Purview Data Loss Prevention policies identify sensitive information across supported Microsoft 365 locations and can restrict activities, notify users, and allow configured overrides. Retention manages lifecycle, while sensitivity labels classify and protect items but do not replace this cross-location DLP requirement.",
+          "sourceName": "Learn about data loss prevention",
+          "sourceUrl": "https://learn.microsoft.com/en-us/purview/dlp-learn-about-dlp",
+          "choices": [
+            { "text": "Microsoft Purview Data Loss Prevention", "isCorrect": true, "sortOrder": 0 },
+            { "text": "Microsoft Purview retention policies", "isCorrect": false, "sortOrder": 1 },
+            { "text": "Microsoft Purview Audit only", "isCorrect": false, "sortOrder": 2 },
+            { "text": "Microsoft Purview eDiscovery only", "isCorrect": false, "sortOrder": 3 },
+            { "text": "Microsoft Purview Compliance Manager", "isCorrect": false, "sortOrder": 4 }
+          ]
+        }
+      ]
+    }
+  ]
+}

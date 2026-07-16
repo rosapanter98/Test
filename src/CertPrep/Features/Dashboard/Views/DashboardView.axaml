@@ -1,0 +1,192 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:CertPrep.Features.Dashboard"
+             x:Class="CertPrep.Features.Dashboard.Views.DashboardView"
+             x:DataType="vm:DashboardViewModel">
+  <ScrollViewer HorizontalScrollBarVisibility="Disabled">
+    <StackPanel Margin="26,22,26,34" Spacing="18">
+      <Border Classes="card" Background="{DynamicResource AccentSoftBrush}" Padding="22">
+        <Grid ColumnDefinitions="*,Auto">
+          <StackPanel Spacing="7" MaxWidth="650">
+            <TextBlock Classes="eyebrow" Text="BUILD RETENTION, NOT STREAKS" />
+            <TextBlock Classes="h1" Text="Practice the weak spots." />
+            <TextBlock Classes="muted"
+                       Text="Short sessions, immediate explanations, and objective-level progress. The sample bank is here to test the product workflow—not to imitate leaked exam material."
+                       TextWrapping="Wrap"
+                       FontSize="13"
+                       LineHeight="19" />
+          </StackPanel>
+          <Border Grid.Column="1"
+                  Width="86"
+                  Height="86"
+                  CornerRadius="10"
+                  Background="{DynamicResource SurfaceRaisedBrush}"
+                  BorderBrush="{DynamicResource StrokeBrush}"
+                  BorderThickness="1"
+                  Margin="24,0,0,0">
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="5">
+              <PathIcon Width="25" Height="25" Data="{StaticResource Icon.ChevronRight}" Foreground="{DynamicResource AccentBrush}" />
+              <TextBlock Text="CHECK" Classes="eyebrow" HorizontalAlignment="Center" />
+            </StackPanel>
+          </Border>
+        </Grid>
+      </Border>
+
+      <Border Classes="card"
+              Background="{DynamicResource SurfaceRaisedBrush}"
+              IsVisible="{Binding HasActiveSession}">
+        <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="14">
+          <Border Width="42" Height="42" CornerRadius="8" Background="{DynamicResource AccentSoftBrush}">
+            <PathIcon Width="18" Height="18" Data="{StaticResource Icon.Play}" Foreground="{DynamicResource AccentBrush}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+          </Border>
+          <StackPanel Grid.Column="1" Spacing="3" VerticalAlignment="Center">
+            <TextBlock Text="SAVED SESSION" Classes="eyebrow" />
+            <TextBlock Text="{Binding ActiveSessionTitle}" Classes="h3" />
+            <TextBlock Text="{Binding ActiveSessionProgress}" Classes="muted" FontSize="11" />
+          </StackPanel>
+          <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+            <Button Classes="secondary" Content="End session" Command="{Binding AbandonActiveCommand}" />
+            <Button Classes="primary" Content="Resume" Command="{Binding ResumeActiveCommand}" />
+          </StackPanel>
+        </Grid>
+      </Border>
+
+      <Grid ColumnDefinitions="*,*,*" ColumnSpacing="14">
+        <Border Classes="metric">
+          <StackPanel Spacing="5">
+            <TextBlock Classes="muted" Text="COMPLETED SESSIONS" FontSize="11" />
+            <TextBlock Text="{Binding SessionsText}" FontSize="25" FontWeight="Bold" />
+          </StackPanel>
+        </Border>
+        <Border Grid.Column="1" Classes="metric">
+          <StackPanel Spacing="5">
+            <TextBlock Classes="muted" Text="ANSWERS SUBMITTED" FontSize="11" />
+            <TextBlock Text="{Binding QuestionsText}" FontSize="25" FontWeight="Bold" />
+          </StackPanel>
+        </Border>
+        <Border Grid.Column="2" Classes="metric">
+          <StackPanel Spacing="5">
+            <TextBlock Classes="muted" Text="LIFETIME ACCURACY" FontSize="11" />
+            <TextBlock Text="{Binding AccuracyText}" FontSize="25" FontWeight="Bold" />
+          </StackPanel>
+        </Border>
+      </Grid>
+
+      <Grid ColumnDefinitions="1.1*,0.9*" ColumnSpacing="14">
+        <Border Classes="card">
+          <Grid ColumnDefinitions="*,Auto" ColumnSpacing="14">
+            <StackPanel Spacing="7">
+              <TextBlock Text="CAMPAIGN PROGRESSION" Classes="eyebrow" />
+              <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                <TextBlock Text="{Binding LevelTitle}" Classes="h2" TextWrapping="Wrap" VerticalAlignment="Center" />
+                <ToggleSwitch Grid.Column="1"
+                              Content="Roast mode"
+                              IsChecked="{Binding RoastModeEnabled}"
+                              FontSize="11"
+                              VerticalAlignment="Center" />
+              </Grid>
+              <TextBlock Text="{Binding RankTitle}"
+                         Foreground="{DynamicResource AccentBrush}"
+                         FontSize="16"
+                         FontWeight="Bold"
+                         TextWrapping="Wrap" />
+              <TextBlock Text="{Binding RankDescription}" Classes="muted" FontSize="11" TextWrapping="Wrap" />
+              <TextBlock Text="{Binding LevelMessage}" Classes="muted" TextWrapping="Wrap" />
+              <ProgressBar Minimum="0" Maximum="100" Value="{Binding LevelProgressPercent}" Margin="0,5,0,0" />
+              <TextBlock Text="{Binding UnlockedBadgesText}" Classes="muted" FontSize="11" TextWrapping="Wrap" />
+            </StackPanel>
+            <TextBlock Grid.Column="1"
+                       Text="{Binding LevelProgressText}"
+                       Foreground="{DynamicResource AccentBrush}"
+                       FontWeight="SemiBold"
+                       HorizontalAlignment="Right"
+                       VerticalAlignment="Center"
+                       TextWrapping="Wrap"
+                       FontSize="11" />
+          </Grid>
+        </Border>
+
+        <Border Grid.Column="1" Classes="card" Background="{DynamicResource SurfaceRaisedBrush}">
+          <Grid RowDefinitions="*,Auto">
+            <StackPanel Spacing="7">
+              <TextBlock Text="MIXED PRACTICE" Classes="eyebrow" />
+              <TextBlock Text="Join exam pools." Classes="h2" />
+              <TextBlock Text="Balanced selection, randomized order, one hard session cap." Classes="muted" TextWrapping="Wrap" />
+              <TextBlock Text="{Binding MixedPoolText}" Foreground="{DynamicResource AccentBrush}" FontSize="12" />
+            </StackPanel>
+            <Button Grid.Row="1"
+                    Classes="primary"
+                    Tag="BuildMixedSession"
+                    Command="{Binding OpenMixedCommand}"
+                    HorizontalAlignment="Left"
+                    Margin="0,14,0,0">
+              <StackPanel Orientation="Horizontal" Spacing="8">
+                <PathIcon Width="14" Height="14" Data="{StaticResource Icon.Mix}" />
+                <TextBlock Text="Build mixed session" Foreground="White" />
+              </StackPanel>
+            </Button>
+          </Grid>
+        </Border>
+      </Grid>
+
+      <StackPanel Spacing="6" Margin="0,5,0,0">
+        <TextBlock Classes="h2" Text="Choose an exam" />
+        <TextBlock Classes="muted" Text="Skills-measured areas stay lightweight and make the progress data useful." />
+      </StackPanel>
+
+      <TextBlock Text="{Binding ErrorMessage}" Foreground="{DynamicResource DangerBrush}" IsVisible="{Binding ErrorMessage, Converter={x:Static ObjectConverters.IsNotNull}}" />
+
+      <ItemsControl ItemsSource="{Binding Exams}">
+        <ItemsControl.ItemTemplate>
+          <DataTemplate x:DataType="vm:ExamCardViewModel">
+            <Border Classes="card" Margin="0,0,0,11">
+              <Grid ColumnDefinitions="72,*,Auto" ColumnSpacing="16">
+                <Border Width="72" Height="72" CornerRadius="8" Background="{DynamicResource AccentSoftBrush}" VerticalAlignment="Top">
+                  <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="2">
+                    <TextBlock Text="{Binding Code}" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center" />
+                    <TextBlock Text="{Binding Provider}" Classes="muted" FontSize="10" HorizontalAlignment="Center" />
+                  </StackPanel>
+                </Border>
+
+                <StackPanel Grid.Column="1" Spacing="6">
+                  <TextBlock Text="{Binding Title}" Classes="h3" />
+                  <TextBlock Text="{Binding Summary}" Classes="muted" TextWrapping="Wrap" MaxWidth="690" />
+                  <TextBlock Text="{Binding ObjectiveSummary}" Foreground="{DynamicResource AccentBrush}" TextWrapping="Wrap" FontSize="11" />
+                  <StackPanel Spacing="4">
+                    <Grid ColumnDefinitions="*,Auto">
+                      <TextBlock Text="{Binding ReadinessText}" Classes="muted" FontSize="11" />
+                      <TextBlock Grid.Column="1" Text="{Binding ReadinessPercent, StringFormat={}{0}%}" Foreground="{DynamicResource AccentBrush}" FontSize="11" />
+                    </Grid>
+                    <ProgressBar Minimum="0" Maximum="100" Value="{Binding ReadinessPercent}" />
+                  </StackPanel>
+                  <StackPanel Orientation="Horizontal" Spacing="15">
+                    <TextBlock Text="{Binding QuestionCountText}" Classes="muted" FontSize="12" />
+                    <TextBlock Text="{Binding ScoreText}" Classes="muted" FontSize="12" />
+                    <TextBlock Text="{Binding ContentVersion}" Classes="muted" FontSize="12" />
+                  </StackPanel>
+                </StackPanel>
+
+                <StackPanel Grid.Column="2" Spacing="7" VerticalAlignment="Center" MinWidth="142">
+                  <TextBlock Text="{Binding BossStatusText}" Classes="muted" FontSize="10" TextAlignment="Right" />
+                  <Button Classes="primary"
+                          Tag="StartPractice"
+                          Command="{Binding OpenCommand}"
+                          IsEnabled="{Binding CanStart}">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="7">
+                      <PathIcon Width="13" Height="13" Data="{StaticResource Icon.Play}" />
+                      <TextBlock Text="{Binding ActionText}" Foreground="White" />
+                    </StackPanel>
+                  </Button>
+                  <Button Classes="secondary"
+                          Content="Start Boss Exam"
+                          Command="{Binding StartBossCommand}"
+                          IsVisible="{Binding BossUnlocked}" />
+                </StackPanel>
+              </Grid>
+            </Border>
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>
