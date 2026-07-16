@@ -7,19 +7,8 @@
     <Grid Margin="26,22" ColumnDefinitions="1.15*,0.85*" ColumnSpacing="16" MaxWidth="980" HorizontalAlignment="Left">
       <Border Classes="card">
         <StackPanel Spacing="14">
-          <StackPanel Spacing="7">
-            <TextBlock Text="CROSS-EXAM PRACTICE" Classes="eyebrow" />
-            <TextBlock Text="Mix the question pool." Classes="h1" />
-            <TextBlock Text="Questions are balanced across the selected exams, then shuffled into one session. Every answer still counts toward its original exam and skills area."
-                       Classes="muted"
-                       TextWrapping="Wrap"
-                       LineHeight="21" />
-          </StackPanel>
-
-          <Border Height="1" Background="{DynamicResource StrokeBrush}" />
-
           <StackPanel Spacing="10">
-            <TextBlock Text="INCLUDE EXAMS" Classes="eyebrow" />
+            <TextBlock Text="Select exams" Classes="h2" />
             <ItemsControl ItemsSource="{Binding Exams}">
               <ItemsControl.ItemTemplate>
                 <DataTemplate x:DataType="vm:ExamSelectionViewModel">
@@ -57,7 +46,6 @@
                 </DataTemplate>
               </ComboBox.ItemTemplate>
             </ComboBox>
-            <TextBlock Text="{Binding SelectedMode.Description}" Classes="muted" FontSize="12" TextWrapping="Wrap" />
           </StackPanel>
 
           <StackPanel Spacing="8">
@@ -69,10 +57,6 @@
                 </DataTemplate>
               </ComboBox.ItemTemplate>
             </ComboBox>
-            <TextBlock Text="The selected length is the hard maximum even when the combined pool is larger."
-                       Classes="muted"
-                       FontSize="12"
-                       TextWrapping="Wrap" />
           </StackPanel>
 
           <TextBlock Text="{Binding ErrorMessage}" Foreground="{DynamicResource DangerBrush}" TextWrapping="Wrap" />

@@ -40,9 +40,6 @@ public partial class PracticeViewModel : ViewModelBase
             ? "Study mode"
             : "Exam simulation";
     public string SubmitButtonText => _run.Mode == PracticeMode.Study ? "Check answer" : "Submit answer";
-    public string FooterHint => _run.Mode == PracticeMode.Study
-        ? "Check the answer to reveal the explanation and source."
-        : "Answers are saved without feedback until the session is complete.";
     public string QuestionPosition => $"Question {_questionIndex + 1} of {_run.Questions.Count}";
     public double ProgressValue => (_questionIndex + 1) * 100d / _run.Questions.Count;
     public string NextButtonText => _questionIndex == _run.Questions.Count - 1 ? "Finish session" : "Next question";
@@ -62,9 +59,6 @@ public partial class PracticeViewModel : ViewModelBase
 
     [ObservableProperty]
     private string answerInstruction = string.Empty;
-
-    [ObservableProperty]
-    private string difficultyLabel = string.Empty;
 
     [ObservableProperty]
     private bool showFeedback;
@@ -106,7 +100,7 @@ public partial class PracticeViewModel : ViewModelBase
             }
 
             FeedbackIsCorrect = feedback.IsCorrect;
-            FeedbackHeading = feedback.IsCorrect ? "Correct" : "Review this one";
+            FeedbackHeading = feedback.IsCorrect ? "Correct" : "Incorrect";
             Explanation = feedback.Explanation;
             SourceName = feedback.SourceName;
             SourceUrl = feedback.SourceUrl;
@@ -155,7 +149,6 @@ public partial class PracticeViewModel : ViewModelBase
         AnswerInstruction = question.Kind == QuestionKind.MultipleChoice
             ? $"Select exactly {question.RequiredAnswerCount} answers."
             : "Select exactly 1 answer.";
-        DifficultyLabel = question.Difficulty.ToString();
         ShowFeedback = false;
         FeedbackHeading = string.Empty;
         Explanation = string.Empty;
@@ -168,9 +161,9 @@ public partial class PracticeViewModel : ViewModelBase
         {
             Choices.Add(new ChoiceOptionViewModel(
                 choice.SessionChoiceId,
-                ((char)('A' + Choices.Count)).ToString(),
                 choice.Text,
                 choice.IsSelected,
+                question.Kind == QuestionKind.SingleChoice,
                 OnChoiceChanged));
         }
         _loadingQuestion = false;
@@ -237,14 +230,15 @@ public partial class PracticeViewModel : ViewModelBase
 
 public partial class ChoiceOptionViewModel(
     int id,
-    string label,
     string text,
     bool selected,
+    bool usesRadioIndicator,
     Action<ChoiceOptionViewModel> changed) : ObservableObject
 {
     public int Id { get; } = id;
-    public string Label { get; } = label;
     public string Text { get; } = text;
+    public bool UsesRadioIndicator { get; } = usesRadioIndicator;
+    public bool UsesCheckboxIndicator => !UsesRadioIndicator;
 
     [ObservableProperty]
     private bool isSelected = selected;

@@ -4,31 +4,26 @@
         x:Class="CertPrep.Shell.MainWindow"
         x:DataType="shell:ShellViewModel"
         Title="CertPrep"
-        Width="1180"
-        Height="760"
+        Width="1360"
+        Height="840"
         MinWidth="920"
         MinHeight="640"
+        Icon="/Assets/App/certprep-icon.png"
         Closing="WindowClosing"
         WindowStartupLocation="CenterScreen">
 
-  <Grid ColumnDefinitions="212,*">
+  <Grid ColumnDefinitions="210,*">
     <Border Background="{DynamicResource SidebarBrush}"
             BorderBrush="{DynamicResource StrokeBrush}"
             BorderThickness="0,0,1,0"
-            Padding="18">
-      <Grid RowDefinitions="Auto,Auto,*,Auto">
-        <StackPanel Spacing="3">
-          <StackPanel Orientation="Horizontal" Spacing="9">
-            <Border Width="28" Height="28" CornerRadius="6" Background="{DynamicResource AccentStrongBrush}">
-              <TextBlock Text="C" FontSize="15" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" />
-            </Border>
+            Padding="16">
+      <Grid RowDefinitions="Auto,*">
+        <StackPanel Orientation="Horizontal" Spacing="9">
+            <Image Width="30" Height="30" Source="/Assets/App/certprep-icon.png" />
             <TextBlock Text="CertPrep" FontSize="19" FontWeight="Bold" VerticalAlignment="Center" />
-          </StackPanel>
-          <TextBlock Classes="muted" Text="Microsoft exam practice" FontSize="11" Margin="37,0,0,0" />
         </StackPanel>
 
-        <StackPanel Grid.Row="1" Margin="0,32,0,0" Spacing="5">
-          <TextBlock Classes="eyebrow" Text="WORKSPACE" Margin="9,0,0,5" />
+        <StackPanel Grid.Row="1" Margin="0,28,0,0" Spacing="5">
           <Button Classes="nav"
                   Command="{Binding ShowDashboardCommand}"
                   IsEnabled="{Binding IsNavigationEnabled}">
@@ -45,69 +40,26 @@
               <TextBlock Text="Progress" />
             </StackPanel>
           </Button>
-        </StackPanel>
-
-        <Border Grid.Row="3" Classes="card" Padding="13" Background="{DynamicResource AccentSoftBrush}">
-          <StackPanel Spacing="6">
-            <StackPanel Orientation="Horizontal" Spacing="7">
-              <PathIcon Width="13" Height="13" Data="{StaticResource Icon.Database}" Foreground="{DynamicResource AccentBrush}" />
-              <TextBlock Text="LOCAL FIRST" Classes="eyebrow" />
+          <Button Classes="nav"
+                  Tag="OptionsMenu"
+                  Command="{Binding ShowOptionsCommand}"
+                  IsEnabled="{Binding IsNavigationEnabled}">
+            <StackPanel Orientation="Horizontal" Spacing="10">
+              <PathIcon Width="15" Height="15" Data="{StaticResource Icon.Options}" />
+              <TextBlock Text="Options" />
             </StackPanel>
-            <TextBlock Text="Questions and progress stay on this device." TextWrapping="Wrap" FontSize="11" />
-            <TextBlock Text="Sample content is not an exam dump." Classes="muted" TextWrapping="Wrap" FontSize="10" />
-          </StackPanel>
-        </Border>
+          </Button>
+        </StackPanel>
       </Grid>
     </Border>
 
     <Grid Grid.Column="1" RowDefinitions="Auto,*">
-      <Border BorderBrush="{DynamicResource StrokeBrush}" BorderThickness="0,0,0,1" Padding="26,16">
-        <Grid ColumnDefinitions="*,Auto">
-          <StackPanel Spacing="3" Margin="0,0,16,0">
-            <TextBlock Classes="eyebrow" Text="{Binding SectionLabel}" />
-            <Grid ColumnDefinitions="Auto,*">
-              <TextBlock Text="{Binding PageTitle}" FontSize="20" FontWeight="SemiBold" />
-              <TextBlock Classes="muted"
-                         Grid.Column="1"
-                         Margin="11,0,0,0"
-                         Text="{Binding PageSubtitle}"
-                         VerticalAlignment="Center"
-                         TextTrimming="CharacterEllipsis" />
-            </Grid>
-            <TextBlock Text="{Binding ImportStatus}"
-                       Classes="muted"
-                       FontSize="10"
-                       TextTrimming="CharacterEllipsis"
-                       IsVisible="{Binding ImportStatus, Converter={x:Static ObjectConverters.IsNotNull}}" />
-          </StackPanel>
-          <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
-            <Button Classes="secondary"
-                    Padding="9,6"
-                    Click="ImportQuestionBank"
-                    IsEnabled="{Binding IsNavigationEnabled}"
-                    ToolTip.Tip="Merge catalog content from a compatible CertPrep SQLite database">
-              <StackPanel Orientation="Horizontal" Spacing="6">
-                <PathIcon Width="13" Height="13" Data="{StaticResource Icon.Import}" />
-                <TextBlock Text="Import" />
-              </StackPanel>
-            </Button>
-            <Border Classes="pill">
-              <StackPanel Orientation="Horizontal" Spacing="6">
-                <PathIcon Width="12" Height="12" Data="{StaticResource Icon.Theme}" Foreground="{DynamicResource TextMutedBrush}" />
-                <ComboBox Width="92"
-                          MinHeight="30"
-                          Padding="8,3"
-                          ItemsSource="{Binding ThemeOptions}"
-                          SelectedItem="{Binding SelectedTheme}" />
-              </StackPanel>
-            </Border>
-            <Border Classes="pill">
-              <StackPanel Orientation="Horizontal" Spacing="6">
-                <PathIcon Width="12" Height="12" Data="{StaticResource Icon.Database}" Foreground="{DynamicResource TextMutedBrush}" />
-                <TextBlock Text="SQLite" Classes="muted" FontSize="11" />
-              </StackPanel>
-            </Border>
-          </StackPanel>
+      <Border BorderBrush="{DynamicResource StrokeBrush}"
+              BorderThickness="0,0,0,1"
+              Padding="26,14"
+              IsVisible="{Binding ShowPageHeader}">
+        <Grid>
+          <TextBlock Text="{Binding PageTitle}" FontSize="20" FontWeight="SemiBold" VerticalAlignment="Center" />
         </Grid>
       </Border>
 

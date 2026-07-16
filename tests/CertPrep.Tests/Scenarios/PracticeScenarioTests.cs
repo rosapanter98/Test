@@ -42,6 +42,11 @@ public sealed class PracticeScenarioTests
             _ => Task.CompletedTask,
             _ => Task.CompletedTask);
         Assert.Equal($"Select exactly {correctIds.Count} answers.", viewModel.AnswerInstruction);
+        Assert.All(viewModel.Choices, choice =>
+        {
+            Assert.True(choice.UsesCheckboxIndicator);
+            Assert.False(choice.UsesRadioIndicator);
+        });
         Assert.False(viewModel.CanSubmit);
 
         foreach (var choice in viewModel.Choices.Take(correctIds.Count))

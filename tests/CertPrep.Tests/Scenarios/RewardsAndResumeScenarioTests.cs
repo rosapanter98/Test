@@ -10,6 +10,29 @@ namespace CertPrep.Tests.Scenarios;
 public sealed class RewardsAndResumeScenarioTests
 {
     [Fact]
+    public async Task Active_sessions_for_different_exams_remain_independently_resumable()
+    {
+        var cancellationToken = TestContext.Current.CancellationToken;
+        await using var database = await TestDatabase.CreateAsync(cancellationToken: cancellationToken);
+        var services = database.CreateServices(randomSeed: 5);
+        var exams = (await services.Catalog.GetExamSummariesAsync(cancellationToken)).Take(2).ToList();
+
+        var first = await services.Practice.StartAsync(exams[0].Id, PracticeMode.Study, 5, cancellationToken);
+        var second = await services.Practice.StartAsync(exams[1].Id, PracticeMode.ExamSimulation, 5, cancellationToken);
+
+        var active = await services.Practice.GetActiveSessionsAsync(cancellationToken);
+        Assert.Equal(2, active.Count);
+        Assert.Contains(active, session => session.SessionId == first.SessionId);
+        Assert.Contains(active, session => session.SessionId == second.SessionId);
+        Assert.NotNull((await services.Practice.ResumeAsync(first.SessionId, cancellationToken)).Run);
+        Assert.NotNull((await services.Practice.ResumeAsync(second.SessionId, cancellationToken)).Run);
+
+        await services.Practice.AbandonAsync(first.SessionId, cancellationToken);
+        var remaining = Assert.Single(await services.Practice.GetActiveSessionsAsync(cancellationToken));
+        Assert.Equal(second.SessionId, remaining.SessionId);
+    }
+
+    [Fact]
     public async Task Draft_selection_and_position_resume_from_a_new_service_graph()
     {
         var cancellationToken = TestContext.Current.CancellationToken;

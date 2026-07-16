@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
+    <OutputType>WinExe</OutputType>
     <TargetFramework>net10.0</TargetFramework>
     <RootNamespace>CertPrep</RootNamespace>
     <AssemblyName>CertPrep</AssemblyName>
@@ -9,6 +9,7 @@
     <LangVersion>latest</LangVersion>
     <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
     <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>Assets\App\certprep.ico</ApplicationIcon>
     <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
   </PropertyGroup>
 
@@ -29,6 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <AvaloniaResource Include="Assets\App\certprep-icon.png" />
     <AvaloniaResource Include="Assets\Reactions\*.gif" />
     <EmbeddedResource Include="Content\default-question-bank.json" />
     <EmbeddedResource Include="Content\Banks\*.json" />

@@ -26,11 +26,8 @@ public partial class PracticeSetupViewModel : ViewModelBase
         SelectedMode = ModeOptions[0];
     }
 
-    public string Provider => _exam.Provider;
     public string ExamCode => _exam.Code;
     public string ExamTitle => _exam.Title;
-    public string Summary => _exam.Summary;
-    public string ContentVersion => _exam.ContentVersion;
     public IReadOnlyList<string> Objectives => _exam.ObjectiveNames;
     public IReadOnlyList<QuestionCountOption> QuestionCountOptions { get; }
     public IReadOnlyList<PracticeModeOption> ModeOptions { get; }

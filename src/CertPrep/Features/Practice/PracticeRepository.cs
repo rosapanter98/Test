@@ -174,6 +174,10 @@ public sealed class PracticeRepository(IDbContextFactory<StudyDbContext> context
 
     public async Task<PracticeSession?> GetActiveSessionAsync(
         CancellationToken cancellationToken = default)
+        => (await GetActiveSessionsAsync(cancellationToken)).FirstOrDefault();
+
+    public async Task<IReadOnlyList<PracticeSession>> GetActiveSessionsAsync(
+        CancellationToken cancellationToken = default)
     {
         await using var context = await contextFactory.CreateDbContextAsync(cancellationToken);
         var sessions = await context.PracticeSessions
@@ -183,7 +187,7 @@ public sealed class PracticeRepository(IDbContextFactory<StudyDbContext> context
             .Include(session => session.Items)
                 .ThenInclude(item => item.Choices)
             .ToListAsync(cancellationToken);
-        return sessions.OrderByDescending(session => session.StartedAt).FirstOrDefault();
+        return sessions.OrderByDescending(session => session.StartedAt).ToList();
     }
 
     public async Task<PracticeSession?> GetSessionAsync(

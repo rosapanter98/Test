@@ -72,10 +72,7 @@
         </Grid>
       </Border>
 
-      <StackPanel Spacing="6">
-        <TextBlock Text="Objective breakdown" Classes="h2" />
-        <TextBlock Text="Use this to choose the next short session." Classes="muted" />
-      </StackPanel>
+      <TextBlock Text="Objective breakdown" Classes="h2" />
 
       <ItemsControl ItemsSource="{Binding Objectives}">
         <ItemsControl.ItemTemplate>

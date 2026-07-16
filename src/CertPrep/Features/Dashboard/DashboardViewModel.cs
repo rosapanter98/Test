@@ -23,18 +23,12 @@ public partial class DashboardViewModel(
     Func<int, Task> abandonSession) : ViewModelBase
 {
     private readonly List<ExamSummary> _loadedExams = [];
-    private ActiveSessionSummary? _activeSession;
     private LevelProgress? _levelProgress;
 
     public ObservableCollection<ExamCardViewModel> Exams { get; } = [];
-    public bool CanStartMixed => _loadedExams.Count >= 2 && !HasActiveSession;
-    public bool HasActiveSession => _activeSession is not null;
-    public string ActiveSessionTitle => _activeSession is null
-        ? string.Empty
-        : $"{_activeSession.ExamCode}  •  {ModeLabel(_activeSession.Mode)}";
-    public string ActiveSessionProgress => _activeSession is null
-        ? string.Empty
-        : $"{_activeSession.AnsweredQuestions} of {_activeSession.TotalQuestions} answered  •  started {_activeSession.StartedAt.LocalDateTime:g}";
+    public ObservableCollection<ActiveSessionCardViewModel> ActiveSessions { get; } = [];
+    public bool CanStartMixed => _loadedExams.Count >= 2;
+    public bool HasActiveSessions => ActiveSessions.Count > 0;
 
     [ObservableProperty]
     private int completedSessions;
@@ -94,20 +88,28 @@ public partial class DashboardViewModel(
         {
             var exams = await catalogRepository.GetExamSummariesAsync();
             var overview = await progressRepository.GetOverviewAsync();
-            _activeSession = await practiceService.GetActiveSessionAsync();
+            var activeSessions = await practiceService.GetActiveSessionsAsync();
             var readiness = await masteryService.GetExamReadinessAsync();
             var rewardOverview = await rewardService.GetOverviewAsync();
             var readinessByExam = readiness.ToDictionary(item => item.ExamId);
 
             Exams.Clear();
+            ActiveSessions.Clear();
             _loadedExams.Clear();
+            foreach (var session in activeSessions)
+            {
+                ActiveSessions.Add(new ActiveSessionCardViewModel(
+                    session,
+                    resumeSession,
+                    abandonSession));
+            }
+
             foreach (var exam in exams)
             {
                 _loadedExams.Add(exam);
                 Exams.Add(new ExamCardViewModel(
                     exam,
                     readinessByExam[exam.Id],
-                    !HasActiveSession,
                     openExam,
                     startBoss));
             }
@@ -142,12 +144,8 @@ public partial class DashboardViewModel(
             OnPropertyChanged(nameof(SessionsText));
             OnPropertyChanged(nameof(QuestionsText));
             OnPropertyChanged(nameof(CanStartMixed));
-            OnPropertyChanged(nameof(HasActiveSession));
-            OnPropertyChanged(nameof(ActiveSessionTitle));
-            OnPropertyChanged(nameof(ActiveSessionProgress));
+            OnPropertyChanged(nameof(HasActiveSessions));
             OpenMixedCommand.NotifyCanExecuteChanged();
-            ResumeActiveCommand.NotifyCanExecuteChanged();
-            AbandonActiveCommand.NotifyCanExecuteChanged();
         });
     }
 
@@ -172,23 +170,22 @@ public partial class DashboardViewModel(
     [RelayCommand(CanExecute = nameof(CanStartMixed))]
     private void OpenMixed() => openMixedPractice(_loadedExams);
 
-    [RelayCommand(CanExecute = nameof(HasActiveSession))]
-    private async Task ResumeActiveAsync()
-    {
-        if (_activeSession is not null)
-        {
-            await resumeSession(_activeSession.SessionId);
-        }
-    }
+}
 
-    [RelayCommand(CanExecute = nameof(HasActiveSession))]
-    private async Task AbandonActiveAsync()
-    {
-        if (_activeSession is not null)
-        {
-            await abandonSession(_activeSession.SessionId);
-        }
-    }
+public partial class ActiveSessionCardViewModel(
+    ActiveSessionSummary session,
+    Func<int, Task> resumeSession,
+    Func<int, Task> abandonSession) : ViewModelBase
+{
+    public int SessionId => session.SessionId;
+    public string Title => $"{session.ExamCode}  •  {ModeLabel(session.Mode)}";
+    public string Progress => $"{session.AnsweredQuestions} of {session.TotalQuestions} answered  •  started {session.StartedAt.LocalDateTime:g}";
+
+    [RelayCommand]
+    private async Task ResumeAsync() => await resumeSession(session.SessionId);
+
+    [RelayCommand]
+    private async Task AbandonAsync() => await abandonSession(session.SessionId);
 
     private static string ModeLabel(PracticeMode mode) =>
         mode == PracticeMode.Study ? "Study mode" : "Exam simulation";
@@ -203,34 +200,27 @@ public partial class ExamCardViewModel : ViewModelBase
     public ExamCardViewModel(
         ExamSummary exam,
         ExamReadiness readiness,
-        bool canStart,
         Action<ExamSummary> openExam,
         Func<int, Task> startBoss)
     {
         _exam = exam;
         _openExam = openExam;
         _startBoss = startBoss;
-        CanStart = canStart;
         ReadinessPercent = readiness.ReadinessPercent;
         ReadinessText = $"{readiness.ReadinessPercent}% readiness • {readiness.Status}";
-        BossUnlocked = readiness.BossUnlocked && canStart;
+        BossUnlocked = readiness.BossUnlocked;
         BossStatusText = readiness.BossUnlocked
             ? "Boss Exam unlocked"
             : $"Boss locked • {readiness.Objectives.Count(objective => objective.Tier >= MasteryTier.Reliable)} / {readiness.Objectives.Count} objectives Reliable";
     }
 
-    public string Provider => _exam.Provider;
     public string Code => _exam.Code;
     public string Title => _exam.Title;
-    public string Summary => _exam.Summary;
-    public string ContentVersion => _exam.ContentVersion;
-    public string ObjectiveSummary => string.Join("  •  ", _exam.ObjectiveNames);
-    public string QuestionCountText => $"{_exam.QuestionCount} sample questions";
+    public string QuestionCountText => $"{_exam.QuestionCount} questions";
     public string ScoreText => _exam.BestScorePercent is null
         ? "No completed sessions yet"
         : $"Best {_exam.BestScorePercent}%  •  {_exam.CompletedSessions} completed";
     public string ActionText => _exam.CompletedSessions == 0 ? "Start practice" : "Practice again";
-    public bool CanStart { get; }
     public int ReadinessPercent { get; }
     public string ReadinessText { get; }
     public bool BossUnlocked { get; }

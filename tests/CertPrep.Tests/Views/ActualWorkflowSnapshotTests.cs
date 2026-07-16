@@ -1,5 +1,6 @@
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
 using Avalonia.Headless;
 using Avalonia.Headless.XUnit;
 using Avalonia.Input;
@@ -8,6 +9,7 @@ using Avalonia.Styling;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
 using CertPrep.Features.Dashboard;
+using CertPrep.Features.Options;
 using CertPrep.Features.Practice;
 using CertPrep.Features.Results;
 using CertPrep.Shared;
@@ -38,7 +40,8 @@ public sealed class ActualWorkflowSnapshotTests
         await practice.ExitCommand.ExecuteAsync(null);
 
         dashboard = Assert.IsType<DashboardViewModel>(shell.CurrentPage);
-        Assert.True(dashboard.HasActiveSession);
+        Assert.True(dashboard.HasActiveSessions);
+        var savedSession = Assert.Single(dashboard.ActiveSessions);
         MainWindow window = new()
         {
             DataContext = shell,
@@ -48,7 +51,7 @@ public sealed class ActualWorkflowSnapshotTests
         window.Show();
         Capture(window, "16-resumable-session.png");
 
-        await dashboard.ResumeActiveCommand.ExecuteAsync(null);
+        await savedSession.ResumeCommand.ExecuteAsync(null);
         var resumed = Assert.IsType<PracticeViewModel>(shell.CurrentPage);
         Assert.True(resumed.Choices.Single(choice => choice.Id == selectedChoiceId).IsSelected);
 
@@ -90,9 +93,45 @@ public sealed class ActualWorkflowSnapshotTests
 
         window.Show();
         Capture(window, "14-dashboard-minimum-dark.png");
-        shell.SelectedTheme = AppTheme.Light;
+        shell.ShowOptionsCommand.Execute(null);
+        var options = Assert.IsType<OptionsViewModel>(shell.CurrentPage);
+        options.SelectedTheme = AppTheme.Light;
         Assert.Equal(ThemeVariant.Light, Application.Current.RequestedThemeVariant);
+        Capture(window, "20-options-minimum-light.png");
+        await shell.ShowDashboardCommand.ExecuteAsync(null);
         Capture(window, "15-dashboard-minimum-light.png");
+        window.Close();
+    }
+
+    [AvaloniaFact]
+    public async Task Incorrect_study_feedback_renders_the_wrong_and_correct_answers_immediately()
+    {
+        await using var database = await TestDatabase.CreateAsync();
+        var services = database.CreateServices(randomSeed: 31);
+        services.Appearance.SetTheme(AppTheme.Dark);
+        var shell = new ShellViewModel(services.Catalog, services.Progress, services.Practice, services.Mastery, services.Rewards, services.Ranks, services.Appearance, services.Importer);
+        await shell.InitializeAsync();
+        var dashboard = Assert.IsType<DashboardViewModel>(shell.CurrentPage);
+        dashboard.Exams[0].OpenCommand.Execute(null);
+        var setup = Assert.IsType<PracticeSetupViewModel>(shell.CurrentPage);
+        await setup.StartCommand.ExecuteAsync(null);
+        var practice = Assert.IsType<PracticeViewModel>(shell.CurrentPage);
+        var correctIds = await database.GetCorrectChoiceIdsAsync(practice.Choices.Select(choice => choice.Id));
+        practice.Choices.First(choice => !correctIds.Contains(choice.Id)).IsSelected = true;
+        await practice.SubmitCommand.ExecuteAsync(null);
+        Assert.True(practice.ShowFeedback);
+        Assert.False(practice.FeedbackIsCorrect);
+        Assert.Contains(practice.Choices, choice => choice.ShowIncorrectIndicator);
+        Assert.Contains(practice.Choices, choice => choice.ShowCorrectIndicator);
+
+        MainWindow window = new()
+        {
+            DataContext = shell,
+            Width = 1280,
+            Height = 800
+        };
+        window.Show();
+        Capture(window, "19-practice-incorrect.png");
         window.Close();
     }
 
@@ -115,6 +154,15 @@ public sealed class ActualWorkflowSnapshotTests
         window.Show();
         window = Capture(window, "01-dashboard.png");
 
+        var optionsButton = window.GetVisualDescendants()
+            .OfType<Button>()
+            .Single(button => Equals(button.Tag, "OptionsMenu"));
+        optionsButton.Command!.Execute(null);
+        Assert.IsType<OptionsViewModel>(shell.CurrentPage);
+        window = Capture(window, "17-options-page.png");
+        await shell.ShowDashboardCommand.ExecuteAsync(null);
+        Dispatcher.UIThread.RunJobs();
+
         var startButton = window.GetVisualDescendants()
             .OfType<Button>()
             .First(button => Equals(button.Tag, "StartPractice"));
@@ -127,8 +175,20 @@ public sealed class ActualWorkflowSnapshotTests
         var setup = (PracticeSetupViewModel)shell.CurrentPage!;
         await setup.StartCommand.ExecuteAsync(null);
         var practice = Assert.IsType<PracticeViewModel>(shell.CurrentPage);
+        Assert.All(practice.Choices, choice => Assert.True(choice.UsesRadioIndicator));
+        Dispatcher.UIThread.RunJobs();
+        var firstChoice = window.GetVisualDescendants()
+            .OfType<ToggleButton>()
+            .First(choice => Equals(choice.Tag, "AnswerChoice"));
+        var hoverPoint = firstChoice.TranslatePoint(
+            new Point(firstChoice.Bounds.Width / 2, firstChoice.Bounds.Height / 2),
+            window);
+        Assert.NotNull(hoverPoint);
+        window.MouseMove(hoverPoint.Value, RawInputModifiers.None);
         window = Capture(window, "03-practice-question.png");
+        window.MouseMove(new Point(0, 0), RawInputModifiers.None);
 
+        var capturedSelection = false;
         var capturedFeedback = false;
         while (shell.CurrentPage is PracticeViewModel currentPractice)
         {
@@ -136,6 +196,12 @@ public sealed class ActualWorkflowSnapshotTests
             foreach (var choice in currentPractice.Choices.Where(choice => correctIds.Contains(choice.Id)))
             {
                 choice.IsSelected = true;
+            }
+
+            if (!capturedSelection)
+            {
+                window = Capture(window, "18-practice-selected.png");
+                capturedSelection = true;
             }
 
             await currentPractice.SubmitCommand.ExecuteAsync(null);
@@ -287,9 +353,10 @@ public sealed class ActualWorkflowSnapshotTests
         Assert.True(file.Length > 10_000, $"Rendered frame was unexpectedly small: {file.Length} bytes.");
         using var renderedImage = SKBitmap.Decode(path);
         Assert.NotNull(renderedImage);
-        Assert.Contains(
-            renderedImage.GetPixel(40, 40),
-            new[] { new SKColor(0x3D, 0x7F, 0xE8), new SKColor(0x1E, 0x5E, 0xD2) });
+        var brandPixel = renderedImage.GetPixel(40, 40);
+        Assert.True(
+            brandPixel.Blue >= 0xD0 && brandPixel.Green >= 0x60 && brandPixel.Red <= 0x60,
+            $"Expected the CertPrep icon's blue mark at (40, 40), but found {brandPixel}.");
         return snapshotWindow;
     }
 
@@ -312,7 +379,12 @@ public sealed class ActualWorkflowSnapshotTests
         var scrollViewer = window.GetVisualDescendants()
             .OfType<ScrollViewer>()
             .OrderByDescending(viewer => viewer.Extent.Height - viewer.Viewport.Height)
-            .First(viewer => viewer.Extent.Height > viewer.Viewport.Height);
+            .FirstOrDefault(viewer => viewer.Extent.Height > viewer.Viewport.Height);
+        if (scrollViewer is null)
+        {
+            return;
+        }
+
         scrollViewer.Offset = new Vector(0, scrollViewer.Extent.Height - scrollViewer.Viewport.Height);
         Dispatcher.UIThread.RunJobs();
     }

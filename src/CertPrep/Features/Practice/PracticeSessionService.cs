@@ -13,18 +13,21 @@ public sealed class PracticeSessionService(
 {
     public async Task<ActiveSessionSummary?> GetActiveSessionAsync(
         CancellationToken cancellationToken = default)
+        => (await GetActiveSessionsAsync(cancellationToken)).FirstOrDefault();
+
+    public async Task<IReadOnlyList<ActiveSessionSummary>> GetActiveSessionsAsync(
+        CancellationToken cancellationToken = default)
     {
-        var session = await repository.GetActiveSessionAsync(cancellationToken);
-        return session is null
-            ? null
-            : new ActiveSessionSummary(
+        var sessions = await repository.GetActiveSessionsAsync(cancellationToken);
+        return sessions.Select(session => new ActiveSessionSummary(
                 session.Id,
                 session.ExamCodeSnapshot,
                 session.ExamTitleSnapshot,
                 session.Mode,
                 session.Items.Count(item => item.SubmittedAt is not null),
                 session.Items.Count,
-                session.StartedAt);
+                session.StartedAt))
+            .ToList();
     }
 
     public async Task<PracticeResume> ResumeAsync(

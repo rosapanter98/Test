@@ -4,20 +4,7 @@
              x:Class="CertPrep.Features.Progress.Views.ProgressView"
              x:DataType="vm:ProgressViewModel">
   <ScrollViewer>
-    <StackPanel Margin="26,22,26,36" Spacing="18">
-      <Border Classes="card" Background="{DynamicResource AccentSoftBrush}">
-        <Grid ColumnDefinitions="*,Auto">
-          <StackPanel Spacing="7" MaxWidth="720">
-            <TextBlock Text="OBJECTIVE-LEVEL SIGNAL" Classes="eyebrow" />
-            <TextBlock Text="Know where the misses cluster." Classes="h1" />
-            <TextBlock Text="Accuracy is based on submitted answers, including abandoned sessions. Best score only uses completed sessions." Classes="muted" TextWrapping="Wrap" />
-          </StackPanel>
-          <Border Grid.Column="1" Width="68" Height="68" CornerRadius="8" Background="{DynamicResource SurfaceRaisedBrush}" Margin="24,0,0,0">
-            <PathIcon Width="30" Height="30" Data="{StaticResource Icon.Progress}" Foreground="{DynamicResource AccentBrush}" HorizontalAlignment="Center" VerticalAlignment="Center" />
-          </Border>
-        </Grid>
-      </Border>
-
+    <StackPanel Margin="26,22,26,36" Spacing="16">
       <TextBlock Text="{Binding ErrorMessage}" Foreground="{DynamicResource DangerBrush}" TextWrapping="Wrap" />
 
       <ItemsControl ItemsSource="{Binding Exams}">
